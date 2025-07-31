@@ -1,20 +1,625 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title> FundMyFuture </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- BOOTSTRAP CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
-    <!-- BOOTSTRAP JAVASCRIPT -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <title> FundMyFuture </title>
 
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+
+  <style>
+
+    /* COLOUR PALLET (dark to light)
+    Blue 1:   #012A4A
+    Blue 2:   #013A63
+    Blue 3:   #01497C
+    Blue 4:   #014F86
+    Blue 5:   #2A6F97
+    Blue 6:   #2C7DA0
+    Blue 7:   #468FAF
+    Blue 8:   #61A5C2
+    Blue 9:   #89C2D9
+    Blue 10:  #A9D6E5
+    */
+
+    .navbar-custom {
+      background-color: #012A4A; 
+      height: 90px;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: #A9D6E5;
+    }
+
+    .navbar-brand:hover {
+        color: #0077b6;
+    }
+
+    .nav-link {
+        color: #CAF0F8 !important;
+        font-weight: 600;
+        margin-right: 15px;
+    }
+
+    .nav-link:hover {
+        color: #0077b6 !important;
+    }
+
+    .donate-btn {
+        background-color: #00b4d8;
+        color: white;
+        font-weight: bold;
+    }
+
+    .donate-btn:hover {
+        background-color: #0077b6;
+        color: #FEFAE0;
+    }
+
+    .search-bar {
+        position: absolute;
+        top: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        z-index: 999;
+    }
+
+    .search-input {
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .carousel-item img {
+        width: 600px;
+        height: 550px;
+        object-fit: cover;
+        margin: 20px;
+    }
+
+    .carousel-control-prev i,
+    .carousel-control-next i {
+        font-size: 3rem;
+        color: #FEFAE0;
+        border-radius: 50%;
+}
+
+#carouselExampleControls {
+    position: relative;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-right: 20px;
+  background-color: #FEFAE0;
+  border-radius: 10px;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 30px;
+  left: 5%;
+  width: 100%;
+  padding: 0 40px;
+  z-index: 1000;
+}
+
+.carousel-overlay h1 {
+  font-size: 50px;
+  color: #FEFAE0;
+  font-weight: bold;
+  padding: 40px 50px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.custom-howitworks {
+  background-color: #A9D6E5;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.custom-howitworks h2 {
+  font-size: 2rem;
+  color: #012A4A;
+  margin-bottom: 20px;
+}
+
+.custom-howitworks .step {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.custom-howitworks .step span {
+  line-height: 1.5;
+  font-size: 20px;
+  color: #012A4A;
+}
+
+
+.custom-section {
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin-right: 20px;
+  background-color: #A9D6E5;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #caf0f8;
+  background-color: #012A4A;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  top: 0;
+}
+
+.section-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #012A4A;
+  margin-bottom: 20px;
+  justify-content: left;
+}
+
+.section-button {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: #012A4A;
+  border: 2px solid #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.section-button:hover {
+  background-color: #012A4A;
+  border: 2px solid #012A4A;
+  color: #A9D6E5;
+}
+
+.featured-campaign {
+  background-color: #A9D6E5;
+  border-radius: 10px;
+}
+
+.trending-campaign {
+  background-color: #A9D6E5;
+  border-radius: 10px;
+}
+
+.campaign-section {
+  max-width: 600px;
+  margin-right: 20px;
+  margin-top: 100px;
+}
+
+.campaign-section h2 {
+  margin-bottom: 20px;
+}
+
+.campaign-card {
+  background-color: #e0f7fa;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.campaign-card img {
+  border-radius: 5px;
+}
+
+.progress {
+  height: 10px;
+  margin-top: 10px;
+  background-color: #012a4a30;
+}
+
+.progress-bar {
+  background-color: #012A4A;
+}
+
+.view-more-btn {
+   display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: #012A4A;
+  border: 2px solid #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.view-more-btn:hover {
+  background-color: #012A4A;
+  border: 2px solid #012A4A;
+  color: #A9D6E5;
+}
+
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+  </style>
 </head>
 <body>
+
+    <!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand ms-2" href="#">FundMyFuture</a>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="#">STUDENTS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FUNDERS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">ABOUT US</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn donate-btn ms-2" href="#">DONATE NOW</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Bar -->
+<div class="search-bar">
+  <div class="input-group">
+    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control search-input border-start-0" placeholder="Browse Campaigns...">
+  </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- CAROUSEL (Image Transitions)-->
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-overlay">
+  <h1> Because Every <br> Dream Deserves a <br> Chance </h1>
+  <!-- <h3> Help student in need make their <br> dreams come true and build their <br> futures. </h3> --> 
+</div>
+
+<!-- CAROUSEL CONTENTS -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="./assets/pexels-artempodrez-5726836.jpg" alt="First slide">
+    </div>
+
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./assets/pexels-divinetechygirl-1181233.jpg" alt="Second slide">
+    </div>
+
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./assets/pexels-theiykeibeh-17731675.jpg" alt="Third slide">
+    </div>
+  </div>
+
+  <!-- CAROUSEL BUTTONS -->
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+    <i class="bi bi-arrow-left-circle-fill"></i>
+  </a>
+
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+    <i class="bi bi-arrow-right-circle-fill"></i>
+  </a>
+</div>
+
+<!-- OUR STORY  -->
+<div class="container">
+  <div class="row g-2">
+
+    <div class="col-sm p-4 custom-section">
+      <h4 class="section-title text-center"> OUR STORY </h4>
+      <p class="section-content">
+        Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+      </p>
+
+      <p class="section-content">
+        Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+      </p>
+        <button type="button" class="btn btn-outline-primary section-button" style="float: right;"> FIND OUT MORE </button>
     
+      <br> <br> <br> <br>
+
+    <!-- OUR MISSION -->
+      <h4 class="section-title text-center"> OUR MISSION </h4>
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
+
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
+        <button type="button" class="btn btn-outline-primary section-button" style="float: right;"> READ MORE </button>
+    </div>
+
+  <!-- HOW IT WORKS -->
+    <div class="col-sm custom-howitworks">
+      <h2 class = "text-center">  How does <b> FundMyFuture </b> work? </h2>
+
+      <div class="step">
+        <i class="bi bi-1-circle-fill fs-3"></i>
+        <span> Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna.  </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-2-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-3-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-4-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-5-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row g-4">
+    <!-- Featured Campaigns -->
+    <div class="col-sm featured-campaign p-4 campaign-section">
+      <h2 class="section-title text-center">Featured Campaigns</h2>
+
+      <!-- Campaign Card 1 -->
+      <div class="campaign-card">
+        <div class="row">
+          <div class="col-4">
+            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+          </div>
+          <div class="col-8">
+            <h5>Campaign Name</h5>
+            <p>Short description of campaign</p>
+            <p><strong>John Doe</strong></p>
+            <p><i class="fas fa-map-marker-alt"></i> Cape Town</p>
+            <div class="progress">
+              <div class="progress-bar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>Raised: $5,000 (50%)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campaign Card 2 -->
+      <div class="campaign-card">
+        <div class="row">
+          <div class="col-4">
+            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+          </div>
+          <div class="col-8">
+            <h5>Campaign Name</h5>
+            <p>Short description of campaign</p>
+            <p><strong>Jane Smith</strong></p>
+            <p><i class="fas fa-map-marker-alt"></i> Johannesburg</p>
+            <div class="progress">
+              <div class="progress-bar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>Raised: $3,000 (30%)</small>
+          </div>
+        </div>
+      </div>
+
+      <button class="view-more-btn">VIEW MORE</button>
+    </div>
+
+
+    <!-- Trending Campaigns -->
+    <div class="col-sm trending-campaign p-4 campaign-section">
+      <h2 class="section-title text-center">Trending Campaigns</h2>
+
+      <!-- Campaign Card 1 -->
+      <div class="campaign-card">
+        <div class="row">
+          <div class="col-4">
+            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+          </div>
+          <div class="col-8">
+            <h5>Campaign Name</h5>
+            <p>Short description of campaign</p>
+            <p><strong>Alex Brown</strong></p>
+            <p><i class="fas fa-map-marker-alt"></i> Durban</p>
+            <div class="progress">
+              <div class="progress-bar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>Raised: $7,000 (70%)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campaign Card 2 -->
+      <div class="campaign-card">
+        <div class="row">
+          <div class="col-4">
+            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+          </div>
+          <div class="col-8">
+            <h5>Campaign Name</h5>
+            <p>Short description of campaign</p>
+            <p><strong>Lisa Green</strong></p>
+            <p><i class="fas fa-map-marker-alt"></i> Pretoria</p>
+            <div class="progress">
+              <div class="progress-bar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small>Raised: $9,000 (90%)</small>
+          </div>
+        </div>
+      </div>
+
+      <button class="view-more-btn">VIEW MORE</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-dark text-white px-3">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-6 mb-4 text-md-end">
+        <h5 class="fw-bold">Follow us</h5>
+        <div class="social-icons mt-2">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-tiktok"></i>
+          <i class="fab fa-linkedin"></i>
+          <i class="fas fa-x"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Campaign</a></li>
+          <li><a href="#">Stories</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Partnerships</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="#" class="me-3 text-white">Terms & Conditions</a>
+        <a href="#" class="me-3 text-white">Privacy Policy</a>
+        <a href="#" class="me-3 text-white">Cookies Policy</a>
+        <a href="#" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap + Font Awesome JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
 </body>
 </html>
