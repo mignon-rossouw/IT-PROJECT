@@ -188,20 +188,14 @@
   color: #A9D6E5;
 }
 
-.featured-campaign {
-  background-color: #A9D6E5;
-  border-radius: 10px;
-}
-
-.trending-campaign {
-  background-color: #A9D6E5;
-  border-radius: 10px;
-}
-
+/* Campaign Css */
 .campaign-section {
   max-width: 600px;
   margin-right: 20px;
+  margin-bottom: 100px;
   margin-top: 100px;
+  background-color: #A9D6E5;
+  border-radius: 10px;
 }
 
 .campaign-section h2 {
@@ -231,7 +225,7 @@
 }
 
 .view-more-btn {
-   display: inline-block;
+  display: inline-block;
   width: 200px;
   text-align: center;
   margin-left: auto;
@@ -250,6 +244,37 @@
   color: #A9D6E5;
 }
 
+/* Sucess Stories Css */    
+.card-container {
+  padding: 2rem 0;
+}
+
+.card-img-top {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 150px;
+  border-radius: 8px;
+}
+    
+.sucess-view-more-btn {
+  width: 300px;
+  padding: 15px 30px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  color: #A9D6E5;
+  background-color: #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sucess-view-more-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+}
+
+/* Footer Css */
 .footer {
   margin-top: 100px;
   background-color: #468FAF;
@@ -263,6 +288,10 @@
 
 .footer a:hover {
   text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
 }
 
 .footer-bottom {
@@ -293,16 +322,41 @@
 }
 
 .social-icons i {
-  font-size: 1.2rem;
+  font-size: 2rem;
   margin-right: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
   </style>
+
 </head>
 <body>
 
-    <!-- NAVBAR -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -342,29 +396,29 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- CAROUSEL (Image Transitions)-->
+<!-- Carousel (Image Transitions)-->
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-overlay">
   <h1> Because Every <br> Dream Deserves a <br> Chance </h1>
   <!-- <h3> Help student in need make their <br> dreams come true and build their <br> futures. </h3> --> 
 </div>
 
-<!-- CAROUSEL CONTENTS -->
+<!-- Carousel Contents -->
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img class="d-block w-100" src="./assets/pexels-artempodrez-5726836.jpg" alt="First slide">
     </div>
 
     <div class="carousel-item">
-      <img class="d-block w-100" src="./assets/pexels-divinetechygirl-1181233.jpg" alt="Second slide">
+      <img class="d-block w-100" src="./assets/pexels-theiykeibeh-17731675.jpg" alt="Second slide">
     </div>
 
     <div class="carousel-item">
-      <img class="d-block w-100" src="./assets/pexels-theiykeibeh-17731675.jpg" alt="Third slide">
+      <img class="d-block w-100" src="./assets/pexels-kaiariel-3563697.jpg" alt="Third slide">
     </div>
   </div>
 
-  <!-- CAROUSEL BUTTONS -->
+  <!-- Carousel Buttons -->
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
     <i class="bi bi-arrow-left-circle-fill"></i>
   </a>
@@ -374,15 +428,15 @@
   </a>
 </div>
 
-<!-- OUR STORY  -->
+<!-- Our Story  -->
 <div class="container">
   <div class="row g-2">
 
     <div class="col-sm p-4 custom-section">
       <h4 class="section-title text-center"> OUR STORY </h4>
-      <p class="section-content">
-        Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
-      </p>
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
 
       <p class="section-content">
         Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
@@ -391,7 +445,7 @@
     
       <br> <br> <br> <br>
 
-    <!-- OUR MISSION -->
+<!-- Our Mission -->
       <h4 class="section-title text-center"> OUR MISSION </h4>
         <p class="section-content">
           Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
@@ -403,7 +457,7 @@
         <button type="button" class="btn btn-outline-primary section-button" style="float: right;"> READ MORE </button>
     </div>
 
-  <!-- HOW IT WORKS -->
+<!-- How It Works -->
     <div class="col-sm custom-howitworks">
       <h2 class = "text-center">  How does <b> FundMyFuture </b> work? </h2>
 
@@ -436,17 +490,19 @@
   </div>
 </div>
 
+
+<!-- Campaigns -->
 <div class="container">
-  <div class="row g-4">
+  <div class="row justify-content-center g-4">
     <!-- Featured Campaigns -->
-    <div class="col-sm featured-campaign p-4 campaign-section">
+    <div class="col-12 col-sm-6 p-4 campaign-section">
       <h2 class="section-title text-center">Featured Campaigns</h2>
 
       <!-- Campaign Card 1 -->
       <div class="campaign-card">
         <div class="row">
           <div class="col-4">
-            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+            <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
           </div>
           <div class="col-8">
             <h5>Campaign Name</h5>
@@ -456,7 +512,7 @@
             <div class="progress">
               <div class="progress-bar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small>Raised: $5,000 (50%)</small>
+            <small>Raised: R5,000 (50%)</small>
           </div>
         </div>
       </div>
@@ -465,7 +521,7 @@
       <div class="campaign-card">
         <div class="row">
           <div class="col-4">
-            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+            <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
           </div>
           <div class="col-8">
             <h5>Campaign Name</h5>
@@ -475,24 +531,24 @@
             <div class="progress">
               <div class="progress-bar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small>Raised: $3,000 (30%)</small>
+            <small>Raised: R3,000 (30%)</small>
           </div>
         </div>
       </div>
 
-      <button class="view-more-btn">VIEW MORE</button>
+      <button class="view-more-btn" style="float: right;">VIEW MORE</button>
     </div>
 
 
-    <!-- Trending Campaigns -->
-    <div class="col-sm trending-campaign p-4 campaign-section">
+<!-- Trending Campaigns -->
+    <div class="col-12 col-sm-6 p-4 campaign-section">
       <h2 class="section-title text-center">Trending Campaigns</h2>
 
       <!-- Campaign Card 1 -->
       <div class="campaign-card">
         <div class="row">
           <div class="col-4">
-            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+            <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
           </div>
           <div class="col-8">
             <h5>Campaign Name</h5>
@@ -502,7 +558,7 @@
             <div class="progress">
               <div class="progress-bar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small>Raised: $7,000 (70%)</small>
+            <small>Raised: R7,000 (70%)</small>
           </div>
         </div>
       </div>
@@ -511,7 +567,7 @@
       <div class="campaign-card">
         <div class="row">
           <div class="col-4">
-            <img src="https://via.placeholder.com/100" alt="Campaign Image" class="img-fluid">
+            <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
           </div>
           <div class="col-8">
             <h5>Campaign Name</h5>
@@ -521,13 +577,57 @@
             <div class="progress">
               <div class="progress-bar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small>Raised: $9,000 (90%)</small>
+            <small>Raised: R9,000 (90%)</small>
           </div>
         </div>
       </div>
 
-      <button class="view-more-btn">VIEW MORE</button>
+      <button class="view-more-btn" style="float: right;">VIEW MORE</button>
     </div>
+  </div>
+</div>
+
+<!-- Sucess Stories -->
+ <div class="container">
+ <!-- Title -->
+  <h2 class="section-title text-center">Trending Campaigns</h2>
+
+  <!-- Cards -->
+  <div class="container card-container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="./assets/profile-user.png" class="card-img-top" alt="Card 1">
+          <div class="card-body">
+            <h5 class="card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="./assets/profile-user.png" class="card-img-top" alt="Card 2">
+          <div class="card-body">
+            <h5 class="card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="./assets/profile-user.png" class="card-img-top" alt="Card 3">
+          <div class="card-body">
+            <h5 class="card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View More Button -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary sucess-view-more-btn text-center">View More</button>
   </div>
 </div>
 
@@ -542,13 +642,13 @@
         <form class="d-flex icon-input-group">
           <i class="fa-regular fa-envelope"></i>
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
-          <button type="submit" class="btn btn-dark text-white px-3">SIGN UP</button>
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
       <!-- Social -->
       <div class="col-md-6 mb-4 text-md-end">
-        <h5 class="fw-bold">Follow us</h5>
+        <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
           <i class="fab fa-instagram"></i>
           <i class="fab fa-facebook"></i>
