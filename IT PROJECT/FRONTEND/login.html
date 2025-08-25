@@ -298,6 +298,21 @@
     color: #012A4A;
 }
 
+.btn-facebook {
+  background-color: #012A4A;
+  color: #A9D6E5;
+}
+
+.btn-google {
+    background-color: #012A4A;
+  color: #A9D6E5;
+}
+
+.btn-apple {
+    background-color: #012A4A;
+  color: #A9D6E5;
+}
+
 </style>
 
 </head>
@@ -360,29 +375,61 @@
 
 
 <!-- Login -->
-  <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="login-card rounded p-4" style="width: 100%; max-width: 400px;">
-        <!-- Login Title -->
-        <h1 class="text-center mb-4 fw-bold">Login</h1>
-        <!-- Login Form -->
-      <form>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="••••••••" required>
-        </div>
-        <div class="d-grid mb-3">
-          <button type="submit" class="btn btn-login fw-bold">Login</button>
-        </div>
-        <div class="text-center">
-          <a class="forgot"href="#">Forgot password?</a>
-        </div>
-      </form>
-    </div>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="login-card rounded p-4" style="width: 100%; max-width: 400px;">
+      <!-- Login Title -->
+      <h1 class="text-center mb-4 fw-bold">Login</h1>
+      <!-- Login Form -->
+    <form>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+      </div>
+
+      <!-- Forgot Password right-aligned & smaller -->
+      <div class="d-flex justify-content-end mb-3">
+        <a class="forgot small" href="#">Forgot password?</a>
+      </div>
+
+      <!-- Login Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-login fw-bold">Login</button>
+      </div>
+
+      <!-- Divider -->
+      <div class="d-flex align-items-center my-3">
+        <hr class="flex-grow-1">
+        <span class="mx-2 small text-muted">or</span>
+        <hr class="flex-grow-1">
+      </div>
+
+      <!-- Social Icons -->
+      <div class="d-flex justify-content-center gap-3">
+        <a href="#" class="btn btn-facebook rounded-circle">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="btn btn-google rounded-circle">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="#" class="btn btn-apple rounded-circle">
+          <i class="fab fa-apple"></i>
+        </a>
+      </div>
+
+      <!-- Already a member -->
+      <div class="text-center mt-4">
+        <p class="small">Don't have an account <a href="#">Sign Up</a></p>
+      </div>
+    </form>
   </div>
+</div>
+
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
