@@ -171,50 +171,6 @@
   background-color: #A9D6E5;
 }
 
-/* Toggle Button */
-.toggle-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.toggle-switch {
-  position: relative;
-  display: flex;
-  width: 300px;
-  background-color: #A9D6E5;
-  border-radius: 30px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.toggle-option {
-  flex: 1;
-  text-align: center;
-  padding: 12px 0;
-  z-index: 2;
-  font-weight: 800;
-  color: #012A4A;
-  transition: color 0.3s ease;
-  user-select: none;
-}
-
-.toggle-option.active {
-  color: #A9D6E5;
-}
-
-.toggle-indicator {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  background-color: #012A4A;
-  border-radius: 30px;
-  transition: left 0.3s ease;
-  z-index: 1;
-}
-
 .btn-submit-sign-up {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -225,7 +181,7 @@
 
 .btn-submit-sign-up:hover {
   color: #012A4A;
-  background-color: #89C2D9;
+  background-color: #ffd60a;
   transform: scale(1.02);
 }
 
@@ -234,9 +190,53 @@
   font-weight: bold;
 }
 
+.toggle-switch {
+  position: relative;
+  width: 220px;
+  height: 50px;
+  background-color: #012a4a2e;
+  border-radius: 25px;
+  display: flex;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-option {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  font-weight: bold;
+  color: #0B93FB;
+  transition: color 0.3s;
+}
+
+.toggle-option.active {
+  color: #fff;
+}
+
+.toggle-indicator {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 108px;
+  height: 46px;
+  background-color: #012A4A;
+  border-radius: 25px;
+  transition: left 0.3s;
+  z-index: 1;
+}
 
 </style>
+</style>
 
+<!-- firebase auth stuff + database -->
+<script type="module">
+  import { auth, db } from './firebase-config.js';
+</script>
+
+</head>
 <body>
 
 <!-- Navbar -->
@@ -252,7 +252,6 @@
     <!-- Offcanvas menu -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Menu</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
@@ -295,392 +294,256 @@
   </div>
 </div>
 
-<!-- Sign Up Content -->
-  <div class="container mt-5">
-    <h2 class="text-center mb-2">Sign Up</h2>
-    <h6 class="text-center text-muted fw-light mb-4"> Please fill in the following information to continue: </h6>
-    <form class="needs-validation" novalidate>
-      <!-- User Type Selection -->
-      <div class="mb-3">
-        <!-- User Type Toggle Buttons -->
-        <div class="toggle-wrapper mb-4">
-        <div class="toggle-switch" id="toggleSwitch">
-          <div class="toggle-option student active" onclick="selectUserType('student')">Student</div>
-          <div class="toggle-option funder" onclick="selectUserType('funder')">Funder</div>
-          <div class="toggle-indicator" id="toggleIndicator"></div>
+<!-- Sign Up Page -->
+<div class="container mt-5">
+  <h2 class="text-center mb-2">Sign Up</h2>
+  <h6 class="text-center text-muted fw-light mb-4">
+    Please fill in the following information to continue:
+  </h6>
+
+  <!-- User Type Toggle -->
+  <div class="toggle-wrapper mb-4 d-flex justify-content-center">
+    <div class="toggle-switch" id="toggleSwitch">
+      <div class="toggle-option student">Student</div>
+      <div class="toggle-option funder">Funder</div>
+      <div class="toggle-indicator" id="toggleIndicator"></div>
+    </div>
+    <input type="hidden" id="userType" />
+  </div>
+
+
+
+  <!-- All Form Sections (hidden initially) -->
+  <div id="signupFormSections" class="hidden">
+    <!-- Profile Section -->
+    <div id="profileSection" class="profile-card container mt-4 p-4 rounded">
+      <!-- Profile Picture -->
+      <div class="row align-items-center mb-4">
+        <div class="col-md-2 text-center">
+          <img src="./assets/profile-user.png" alt="Profile Picture" class="img-fluid mb-3 w-100" style="max-width: 200px;"/>
+          <input type="file" class="form-control form-control-sm mb-3" />
         </div>
-          <input type="hidden" id="userType" />
+        <!-- Name Fields -->
+        <div class="col-md-5">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="firstName" class="form-label">First Name *</label>
+              <input type="text" class="form-control" placeholder="First Name" id="firstName" required/>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="surName" class="form-label">Surname *</label>
+              <input type="text" class="form-control" placeholder="Surname" id="surName" required/>
+            </div>
+          </div>
+        </div>
+        <!-- ID & DOB -->
+        <div class="col-md-5">
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="idNumber" class="form-label">ID Number or Passport Number *</label>
+              <input type="text" class="form-control" placeholder="ID number or Passport Number" id="idNumber" required/>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="dob" class="form-label">Date of Birth *</label>
+              <input type="date" class="form-control" id="dob" required/>
+            </div>
+          </div>
         </div>
       </div>
-
-<!-- Profile Section -->
-<div id="profileSection" class="profile-card container mt-4 p-4 rounded hidden">
-  <div class="row align-items-center mb-4">
-    <!-- Profile Picture -->
-    <div class="col-md-2 text-center">
-      <img src="./assets/profile-user.png" alt="Profile Picture" class="img-fluid mb-3 w-100 w-md-50 w-lg-50" style="max-width: 200px;"/>
-      <input type="file" class="form-control form-control-sm mb-3" />
     </div>
 
-    <!-- First Name & Surname -->
-    <div class="col-md-5">
+    <!-- Student Fields -->
+    <div id="studentFields" class="form-section hidden mb-4 profile-card p-4 rounded">
+      <!-- Country of Citizenship, Birth, Residence -->
       <div class="row">
-        <div class="col-md-12 mb-3">
-          <label for="firstName" class="form-label">First Name *</label>
-            <div class="position-relative">
-              <i class="bi bi-person-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="First Name" id="firstName" required/>
-            </div>
+        <div class="col-md-4 mb-3">
+          <label for="coCitizenship" class="form-label">Country of Citizenship *</label>
+          <input type="text" class="form-control" placeholder="Country of citizenship" id="coCitizenship" required/>
         </div>
-        <div class="col-md-12 mb-3">
-          <label for="surName" class="form-label">Surname *</label>
-            <div class="position-relative">
-              <i class="bi bi-person-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Surname" id="surName" required/>
-            </div>
+        <div class="col-md-4 mb-3">
+          <label for="coBirth" class="form-label">Country of Birth *</label>
+          <input type="text" class="form-control" placeholder="Country of birth" id="coBirth" required/>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="coResidence" class="form-label">Country of Residence *</label>
+          <input type="text" class="form-control" placeholder="Country of residence" id="coResidence" required/>
+        </div>
+      </div>
+      <!-- Email & Contact -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="studentEmail" class="form-label">Student Email *</label>
+          <input type="email" class="form-control" placeholder="Student email" id="studentEmail" required/>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cNumber" class="form-label">Contact Number *</label>
+          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
+        </div>
+      </div>
+      <!-- Password -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="password" class="form-label">Password *</label>
+          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cPassword" class="form-label">Confirm Password *</label>
+          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
         </div>
       </div>
     </div>
 
-    <!-- ID & Date of Birth -->
-    <div class="col-md-5">
+    <!-- Funder Fields -->
+    <div id="funderFields" class="form-section hidden mb-4 profile-card p-4 rounded">
       <div class="row">
-        <div class="col-md-12 mb-3">
-          <label for="idNumber" class="form-label"> ID Number or Passport Number *</label>
-            <div class="position-relative">
-              <i class="bi bi-passport position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="ID number or Passport Number" id="idNumber" required/>
-            </div>
+        <div class="col-md-6 mb-3">
+          <label for="email" class="form-label">Email *</label>
+          <input type="email" class="form-control" placeholder="Email" id="email" required/>
         </div>
-        <div class="col-md-12 mb-3">
-          <label for="dob" class="form-label"> Date of Birth * </label>
-            <div class="position-relative">
-              <i class="bi bi-calendar-week-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="date" class="form-control ps-5" placeholder="Date of birth" id="dob" required/>
-            </div>
+        <div class="col-md-6 mb-3">
+          <label for="cNumber" class="form-label">Contact Number *</label>
+          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
         </div>
       </div>
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <label for="password" class="form-label">Password *</label>
+          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cPassword" class="form-label">Confirm Password *</label>
+          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center mt-5">
+      <h6 class="text-muted fw-light small">
+        By continuing, <br> you agree to our 
+        <a href="terms.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Terms & Conditions</a> and 
+        <a href="privacy.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Privacy Policy</a>.
+      </h6>
+
+      <div class="text-center mt-2">
+        <button type="submit" class="btn btn-submit-sign-up mt-2 px-4">Submit</button>
+      </div>
+
+      <h6 class="mt-3 fw-regular">
+        Already have an account? 
+        <a href="login.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Login</a>
+      </h6>
     </div>
   </div>
 </div>
 
-  <!-- Student Fields -->
-  <div id="studentFields" class="form-section hidden mb-4 align-items-center profile-card p-4 rounded">
-
-    <!-- First Row Input -->
-    <div class="row mb-5">
-      <!-- Country of Citizenship -->
-      <div class="container mt-4 col-md-4 mb-3">
-          <label for="coCitizenship" class="form-label"> Country of Citizenship *</label>
-            <div class="input-group">
-              <span class="input-group-text" id="basic addon1">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              </span>
-              <input type="text" class="form-control ps-5" placeholder="Country of citizenship" id="coCitizenship" aria-label="Email" aria-describedby="basic-addon1" required/>
-            </div>
-      </div>
-      <!-- Country of Birth -->
-      <div class="col-md-4 mb-3">
-          <label for="coBirth" class="form-label"> Country of Birth *</label>
-            <div class="position-relative">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Country of birth" id="coBirth" required/>
-            </div>
-      </div>
-      <!-- Country of Residence -->
-      <div class="col-md-4 mb-3">
-          <label for="coResidence" class="form-label"> Country of Residence *</label>
-            <div class="position-relative">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Country of residence" id="coResidence" required/>
-            </div>
-      </div>
-    </div>
-
-    <!-- Second Row Input-->
-    <div class="row mb-5">
-      <!-- Student Email -->
-      <div class="col-md-6 mb-3">
-          <label for="studentEmail" class="form-label"> Student Email *</label>
-            <div class="position-relative">
-              <i class="bi bi-envelope-fill text-muted" style="color: #333;"></i>
-              <input type="email" class="form-control ps-5" placeholder="Student email" id="studentEmail" required/>
-              <div class="invalid-feedback">Please enter a valid email address.</div>
-            </div>
-      </div>
-      <!-- Contact Number -->
-      <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label"> Contact Number *</label>
-            <div class="position-relative">
-              <i class="bi bi-telephone-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="tel" class="form-control ps-5" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
-              <div class="invalid-feedback">Enter a valid number (10–15 digits).</div>
-            </div>
-      </div>
-    </div>
-
-    <!-- Third Row -->
-     <div class="row mb-5">
-      <!-- Password -->
-      <div class="col-md-6 mb-3">
-          <label for="password" class="form-label"> Password *</label>
-            <div class="position-relative">
-              <i class="bi bi-lock-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="password" class="form-control ps-5" placeholder="Password" id="password" minlength="6" required/>
-              <div class="invalid-feedback">Password must be at least 6 characters long.</div>
-            </div>
-      </div>
-      <!-- Confirm Password -->
-      <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label"> Confirm Password *</label>
-            <div class="position-relative">
-              <i class="bi bi-lock-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="password" class="form-control ps-5" placeholder="Confirm password" id="cPassword" required/>
-              <div class="invalid-feedback">Passwords do not match.</div>
-            </div>
-      </div>
-     </div>
-
-    <!-- Fourth Row -->
-    <div class="row mb-5">
-      <!-- Race -->
-      <div class="col-md-6 mb-3">
-          <label for="race" class="form-label"> Race </label>
-            <div class="position-relative">
-              <i class="bi bi-person-bounding-box position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Race" id="race" />
-            </div>
-      </div>
-      <!-- Gender -->
-      <div class="col-md-6 mb-3">
-          <label for="gender" class="form-label"> Gender </label>
-            <div class="position-relative">
-              <i class="bi bi-gender-ambiguous position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <select class="form-select ps-5 text-muted" id="gender">
-                <option value="" disabled selected hidden>Select gender</option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-                <option value="nonbinary">Non-binary</option>
-                <option value="prefer_not">Prefer not to say</option>
-              </select>
-            </div>
-      </div>
-    </div>
-
-    <!-- Fifth Row -->
-    <div class="row mb-5">
-      <!-- School Matriculated From -->
-      <div class="col-md-6 mb-3">
-          <label for="matric" class="form-label"> School Matriculated From * </label>
-            <div class="position-relative">
-              <i class="bi bi-journals position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Matriculated" id="matric" required/>
-            </div>
-      </div>
-      <!-- Institute Currently Studying At -->
-      <div class="col-md-6 mb-3">
-          <label for="currently" class="form-label"> Institute Currently Studying At * </label>
-            <div class="position-relative">
-              <i class="bi bi-mortarboard-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Currently studying" id="currently" required/>
-            </div>
-      </div>
-     </div>
-  </div>
-
-  <!-- Funder Fields -->
-  <div id="funderFields" class="form-section hidden mb-4 align-items-center profile-card p-4 rounded">
-<!-- First Row Input -->
-    <div class="row mb-5">
-      <!-- Country of Citizenship -->
-      <div class="col-md-4 mb-3">
-          <label for="coCitizenship" class="form-label"> Country of Citizenship * </label>
-            <div class="position-relative">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Country of citizenship" id="coCitizenship" required/>
-            </div>
-      </div>
-      <!-- Country of Birth -->
-      <div class="col-md-4 mb-3">
-          <label for="coBirth" class="form-label"> Country of Birth *</label>
-            <div class="position-relative">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Country of birth" id="coBirth" required/>
-            </div>
-      </div>
-      <!-- Country of Residence -->
-      <div class="col-md-4 mb-3">
-          <label for="coResidence" class="form-label"> Country of Residence *</label>
-            <div class="position-relative">
-              <i class="bi bi-globe-europe-africa position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Country of residence" id="coResidence" required/>
-            </div>
-      </div>
-    </div>
-
-    <!-- Second Row Input-->
-    <div class="row mb-5">
-      <!-- Email -->
-      <div class="col-md-6 mb-3">
-          <label for="email" class="form-label"> Email *</label>
-            <div class="position-relative">
-              <i class="bi bi-envelope-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="email" class="form-control ps-5" placeholder="Email" id="email" required/>
-              <div class="invalid-feedback">Please enter a valid email address.</div>
-            </div>
-      </div>
-      <!-- Contact Number -->
-      <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label"> Contact Number *</label>
-            <div class="position-relative">
-              <i class="bi bi-telephone-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="tel" class="form-control ps-5" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
-              <div class="invalid-feedback">Enter a valid number (10–15 digits).</div>
-            </div>
-      </div>
-    </div>
-
-    <!-- Third Row -->
-     <div class="row mb-5">
-      <!-- Password -->
-      <div class="col-md-6 mb-3">
-          <label for="password" class="form-label"> Password *</label>
-            <div class="position-relative">
-              <i class="bi bi-lock-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="password" class="form-control ps-5" placeholder="Password" id="password" minlength="6" required/>
-              <div class="invalid-feedback">Password must be at least 6 characters long.</div>
-            </div>
-      </div>
-      <!-- Confirm Password -->
-      <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label"> Confirm Password *</label>
-            <div class="position-relative">
-              <i class="bi bi-lock-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="password" class="form-control ps-5" placeholder="Confirm password" id="cPassword" required/>
-              <div class="invalid-feedback">Passwords do not match.</div>
-            </div>
-      </div>
-     </div>
-
-    <!-- Fourth Row -->
-    <div class="row mb-5">
-      <!-- Race -->
-      <div class="col-md-6 mb-3">
-          <label for="race" class="form-label"> Race </label>
-            <div class="position-relative">
-              <i class="bi bi-person-bounding-box position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Race" id="race" />
-            </div>
-      </div>
-      <!-- Gender -->
-      <div class="col-md-6 mb-3">
-          <label for="gender" class="form-label"> Gender </label>
-            <div class="position-relative">
-              <i class="bi bi-gender-ambiguous position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <select class="form-select ps-5 text-muted" id="gender">
-                <option value="" disabled selected hidden>Select gender</option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-                <option value="nonbinary">Non-binary</option>
-                <option value="prefer_not">Prefer not to say</option>
-              </select>
-            </div>
-      </div>
-    </div>
-
-    <!-- Fifth Row -->
-    <div class="row mb-5">
-      <!-- Organization or Individual -->
-      <div class="col-md-6 mb-3">
-          <label for="org-ind" class="form-label"> Organization or Individual *</label>
-            <div class="position-relative">
-              <i class="bi bi-people-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <select class="form-select ps-5 text-muted" id="org-ind" required>
-                <option value="" disabled selected hidden>Select option</option>
-                <option value="org">Organization</option>
-                <option value="ind">Individual</option>
-              </select>
-            </div>
-      </div>
-      <!-- Organization -->
-      <div class="col-md-6 mb-3">
-          <label for="organization" class="form-label"> Organization Name *</label>
-            <div class="position-relative">
-              <i class="bi bi-briefcase-fill position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="color: #333;"></i>
-              <input type="text" class="form-control ps-5" placeholder="Organization name" id="organization"/>
-            </div>
-      </div>
-    </div>
-  </div>
-
-<!-- Submit Button & Terms of Conditions -->
-
-<div class="text-center mt-5">
-  <h6 class="text-muted fw-regular small">
-    By continuing, <br> you agree to our 
-    <a href="terms.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Terms & Conditions</a> and 
-    <a href="privacy.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Privacy Policy</a>.
-  </h6>
-
-  <button type="submit" class="btn btn-submit-sign-up mt-2 px-4">Submit</button>
-
-  <h6 class="mt-5 fw-regular">
-    Already have an account? 
-    <a href="login.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Login</a>
-  </h6>
-</div>
-
-    </form>
-  </div>
-
+<!-- JS to handle toggle -->
 <script>
-function selectUserType(type) {
+document.addEventListener("DOMContentLoaded", () => {
   const studentOption = document.querySelector(".toggle-option.student");
   const funderOption = document.querySelector(".toggle-option.funder");
   const indicator = document.getElementById("toggleIndicator");
   const userTypeInput = document.getElementById("userType");
-
-  // Update hidden input
-  userTypeInput.value = type;
-
-  // Toggle active class
-  studentOption.classList.remove("active");
-  funderOption.classList.remove("active");
-
-  // Toggle button styles
-  if (type === "student") {
-    studentOption.classList.add("active");
-    indicator.style.left = "0%";
-  } else {
-    funderOption.classList.add("active");
-    indicator.style.left = "50%";
-  }
-
-  // Trigger field visibility
-  toggleFields();
-}
-
-function toggleFields() {
-  const userType = document.getElementById("userType").value;
+  const signupFormSections = document.getElementById("signupFormSections");
   const studentFields = document.getElementById("studentFields");
   const funderFields = document.getElementById("funderFields");
-  const profileSection = document.getElementById("profileSection");
 
-  // Hide all sections first
-  studentFields.classList.add("hidden");
-  funderFields.classList.add("hidden");
-  profileSection.classList.add("hidden");
+  const selectUserType = (type) => {
+    userTypeInput.value = type;
 
-  // Show profile + relevant fields
-  if (userType === "student") {
-    profileSection.classList.remove("hidden");
-    studentFields.classList.remove("hidden");
-    } else if (userType === "funder") {
-    profileSection.classList.remove("hidden");
-    funderFields.classList.remove("hidden");
-    }
-}
-  </script>
+    // Show form container
+    signupFormSections.classList.remove("hidden");
+
+    // Show correct form fields
+    studentFields.classList.toggle("hidden", type !== "student");
+    funderFields.classList.toggle("hidden", type !== "funder");
+
+    // Highlight active option
+    studentOption.classList.toggle("active", type === "student");
+    funderOption.classList.toggle("active", type === "funder");
+
+    // Move indicator
+    indicator.style.left = type === "student" ? "2px" : "110px";
+  };
+
+  // Attach click handlers
+  studentOption.addEventListener("click", () => selectUserType("student"));
+  funderOption.addEventListener("click", () => selectUserType("funder"));
+});
+</script>
+
+<!-- Firebase -->
+<script type="module">
+import { auth, db } from './firebase-config.js';
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+// Track selected user type from toggle
+let selectedUserType = 'student'; // default
+window.selectUserType = (type) => {
+  selectedUserType = type;
+  document.getElementById("userType").value = type;
+
+  // Show/hide sections
+  document.getElementById("studentFields").classList.toggle("hidden", type !== "student");
+  document.getElementById("funderFields").classList.toggle("hidden", type !== "funder");
+};
+
+// Handle form submission
+const signupForm = document.querySelector("form");
+
+signupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Collect form fields
+  const email = document.getElementById(selectedUserType === "student" ? "studentEmail" : "email").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("cPassword").value;
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  try {
+    // Create Firebase Auth user
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // Prepare user data
+    const userData = {
+      uid: user.uid,
+      email: email,
+      role: selectedUserType,
+      firstName: document.getElementById("firstName")?.value || "",
+      surName: document.getElementById("surName")?.value || "",
+      idNumber: document.getElementById("idNumber")?.value || "",
+      dob: document.getElementById("dob")?.value || "",
+      coCitizenship: document.getElementById("coCitizenship")?.value || "",
+      coBirth: document.getElementById("coBirth")?.value || "",
+      coResidence: document.getElementById("coResidence")?.value || "",
+      cNumber: document.getElementById("cNumber")?.value || "",
+      race: document.getElementById("race")?.value || "",
+      gender: document.getElementById("gender")?.value || "",
+      matric: document.getElementById("matric")?.value || "",
+      currently: document.getElementById("currently")?.value || "",
+      orgInd: document.getElementById("org-ind")?.value || "",
+      organization: document.getElementById("organization")?.value || "",
+      createdAt: new Date()
+    };
+
+    // Save user data in Firestore
+    await setDoc(doc(db, "users", user.uid), userData);
+
+    alert("Sign-up successful!");
+    window.location.href = "login.html"; // redirect after signup
+  } catch (error) {
+    console.error(error);
+    alert("Sign-up failed: " + error.message);
+  }
+});
+</script>
+
 
 <!-- Footer -->
 <footer class="footer pt-5">
