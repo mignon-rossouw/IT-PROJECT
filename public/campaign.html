@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start a Campaign</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+/* Navbar CSS */
+.navbar-custom {
+  background-color: #012A4A; 
+  height: 90px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #A9D6E5;
+}
+
+.navbar-brand:hover {
+  color: #0077b6;
+}
+
+.nav-link {
+  color: #CAF0F8 !important;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.nav-link:hover {
+  color: #0077b6 !important;
+}
+
+/* navbar menu collapse for smaller screens */
+.navbar-toggler {
+  border-color: #A9D6E5;
+  background-color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: #ffd60a;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+/* --------------- */
+
+.donate-btn {
+  background-color: #00b4d8;
+  color: white;
+  font-weight: bold;
+}
+
+.donate-btn:hover {
+  background-color: #0077b6;
+  color: #FEFAE0;
+}
+
+.login-btn {
+  color: #ffd60a;
+}
+
+/* DASHBOARD-STYLE WRAPPER */
+.dashboard-container{
+  max-width:1100px;
+  margin:60px auto;
+  background:#ffffff;
+  border-radius:10px;
+  padding:40px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.section-title{
+  font-weight:700;
+  color:#012A4A;
+  margin-bottom:30px;
+  border-bottom:2px solid #A9D6E5;
+  padding-bottom:10px;
+}
+
+/* LEFT PROFILE CARD */
+.profile-card{
+  background:#A9D6E5;
+  border-radius:10px;
+  padding:30px;
+  text-align:center;
+  color:#012A4A;
+}
+
+.profile-card .avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:#012A4A;
+  margin:0 auto 20px;
+}
+
+.profile-card h4{
+  font-weight:700;
+}
+
+.action-btn {
+  background-color: #012A4A;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: #A9D6E5;
+  font-weight: 800;
+  font-size: small;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  color: #012A4A;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+
+/* RIGHT FORM CARD */
+.campaign-card{
+  background:#468FAF;
+  border-radius:10px;
+  padding:30px;
+  color:#012A4A;
+}
+
+.campaign-card label{
+  font-weight:600;
+  color:#012A4A;
+}
+
+.campaign-card .form-control, 
+.campaign-card .form-select{
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+.launch-btn{
+  background-color: #012A4A;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: #A9D6E5;
+  font-weight: 800;
+  font-size: medium;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.launch-btn:hover{
+  color: #012A4A;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+
+/* footer css */
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+    <!-- Toggler triggers offcanvas -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">ABOUT US</a>
+          </li>
+          <li class="nav-item me-2" id="login-area">
+            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- DASHBOARD STYLE CONTENT -->
+<div class="dashboard-container">
+  <div class="row g-4">
+    <!-- LEFT PROFILE -->
+    <div class="col-md-4">
+      <div class="profile-card">
+        <!-- Profile Image -->
+        <img src="/IT PROJECT/FRONTEND/assets/profile-user.png" class="rounded-circle mb-2" width="100" alt="Profile Picture" />
+        <h4 class="fw-bold">Name Surname</h4>
+
+        <div class="user-info d-flex flex-column align-items-center text-center mb-4">
+          <div class="dob text-muted">Date of Birth</div>
+          <div class="location text-muted">Location</div>
+          <div class="contact-information text-muted">Email</div>
+        </div>
+
+        <button class="action-btn w-100 mb-2">Update Profile</button>
+        <button class="action-btn w-100 mb-2">My Campaigns</button>
+        <button class="action-btn w-100 mb-2">My Donations</button>
+      </div>
+    </div>
+
+    <!-- RIGHT CAMPAIGN FORM -->
+    <div class="col-md-8">
+      <div class="campaign-card">
+        <h3 class="section-title text-center fw-bold">Create New Campaign</h3>
+        <form>
+          <label class="mb-2">Campaign Title</label>
+          <input type="text" class="form-control" placeholder="Enter a catchy title" required>
+
+          <label class="mb-2">Short Description</label>
+          <input type="text" class="form-control" placeholder="Brief summary" required>
+
+          <label class="mb-2">Funding Goal (ZAR)</label>
+          <input type="number" class="form-control" placeholder="e.g. 5000" required>
+
+          <label class="mb-2">Campaign End Date</label>
+          <input type="date" class="form-control" required>
+
+          <label class="mb-2">Category</label>
+          <select class="form-select" required>
+            <option value="">Select a category</option>
+            <option>Tuition</option>
+            <option>Books & Supplies</option>
+            <option>Living Expenses</option>
+            <option>Other</option>
+          </select>
+
+          <label class="mb-2">Your Story</label>
+          <textarea class="form-control" rows="5" placeholder="Share your journey" required></textarea>
+
+          <label class="mb-2">Upload Cover Image</label>
+          <input type="file" class="form-control" accept="image/*">
+
+          <button type="submit" class="launch-btn mt-3 w-100">Launch Campaign</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-6 mb-4 text-md-end">
+        <h5 class="fw-bold follow-us">Follow us</h5>
+        <div class="social-icons mt-2">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-linkedin"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="campaign.html">Campaigns</a></li>
+          <li><a href="story.html">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Blog</a></li>
+          <li><a href="faq.html">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

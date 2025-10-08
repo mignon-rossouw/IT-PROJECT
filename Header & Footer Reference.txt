@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Funder's Dashboard </title>
+    
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+ .navbar-custom {
+      background-color: #012A4A; 
+      height: 90px;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: #A9D6E5;
+    }
+
+    .navbar-brand:hover {
+        color: #0077b6;
+    }
+
+    .nav-link {
+        color: #CAF0F8 !important;
+        font-weight: 600;
+        margin-right: 15px;
+    }
+
+    .nav-link:hover {
+        color: #0077b6 !important;
+    }
+
+    .donate-btn {
+        background-color: #00b4d8;
+        color: white;
+        font-weight: bold;
+    }
+
+    .donate-btn:hover {
+        background-color: #0077b6;
+        color: #FEFAE0;
+    }
+
+    .search-bar {
+        position: absolute;
+        top: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        z-index: 999;
+    }
+
+    .search-input {
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand ms-2" href="#">FundMyFuture</a>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="#">STUDENTS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FUNDERS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">ABOUT US</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn donate-btn ms-2" href="#">DONATE NOW</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Search Bar -->
+<div class="search-bar">
+  <div class="input-group">
+    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control search-input border-start-0" placeholder="Browse Campaigns...">
+  </div>
+</div>
+
+
+
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Add Code Here -->
+
+
+<!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-6 mb-4 text-md-end">
+        <h5 class="fw-bold follow-us">Follow us</h5>
+        <div class="social-icons mt-2">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-tiktok"></i>
+          <i class="fab fa-linkedin"></i>
+          <i class="fas fa-x"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Campaign</a></li>
+          <li><a href="#">Stories</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Partnerships</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="#" class="me-3 text-white">Terms & Conditions</a>
+        <a href="#" class="me-3 text-white">Privacy Policy</a>
+        <a href="#" class="me-3 text-white">Cookies Policy</a>
+        <a href="#" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap + Font Awesome JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title> FundMyFuture </title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+
+  <style>
+
+    /* COLOUR PALLET (dark to light)
+    Blue 1:   #012A4A
+    Blue 2:   #013A63
+    Blue 3:   #01497C
+    Blue 4:   #014F86
+    Blue 5:   #2A6F97
+    Blue 6:   #2C7DA0
+    Blue 7:   #468FAF
+    Blue 8:   #61A5C2
+    Blue 9:   #89C2D9
+    Blue 10:  #A9D6E5
+    */
+
+/* Navbar CSS */
+.navbar-custom {
+  background-color: #012A4A; 
+  height: 90px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #A9D6E5;
+}
+
+.navbar-brand:hover {
+  color: #0077b6;
+}
+
+.nav-link {
+  color: #CAF0F8 !important;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.nav-link:hover {
+  color: #0077b6 !important;
+}
+
+/* navbar menu collapse for smaller screens */
+.navbar-toggler {
+  border-color: #A9D6E5;
+  background-color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: #ffd60a;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+/* --------------- */
+
+.donate-btn {
+  background-color: #00b4d8;
+  color: white;
+  font-weight: bold;
+}
+
+.donate-btn:hover {
+  background-color: #0077b6;
+  color: #FEFAE0;
+}
+
+.login-btn {
+  color: #ffd60a;
+}
+
+/* footer css */
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
+.carousel-item img {
+  width: 600px;
+  height: 550px;
+  object-fit: cover;
+  margin: 20px;
+}
+
+.carousel-control-prev i,
+.carousel-control-next i {
+  font-size: 3rem;
+  color: #FEFAE0;
+  border-radius: 50%;
+}
+
+#carouselExampleControls {
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-right: 20px;
+  border-radius: 10px;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 30px;
+  left: 5%;
+  width: 100%;
+  padding: 0 40px;
+  z-index: 1000;
+}
+
+.carousel-overlay h1 {
+  font-size: 50px;
+  color: #FEFAE0;
+  font-weight: bold;
+  padding: 40px 50px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.custom-howitworks {
+  background-color: #A9D6E5;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.custom-howitworks h2 {
+  font-size: 2rem;
+  color: #012A4A;
+  margin-bottom: 20px;
+}
+
+.custom-howitworks .step {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.custom-howitworks .step span {
+  line-height: 1.5;
+  font-size: 20px;
+  color: #012A4A;
+}
+
+
+.custom-section {
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin-right: 20px;
+  background-color: #A9D6E5;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #caf0f8;
+  background-color: #012A4A;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  top: 0;
+}
+
+.section-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #012A4A;
+  margin-bottom: 20px;
+  justify-content: left;
+}
+
+.section-button {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: #012A4A;
+  border: 2px solid #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.section-button:hover {
+  background-color: #012A4A;
+  border: 2px solid #012A4A;
+  color: #A9D6E5;
+}
+
+/* Campaign Css */
+.campaign-section {
+  max-width: 600px;
+  margin-right: 20px;
+  margin-bottom: 100px;
+  margin-top: 100px;
+  background-color: #A9D6E5;
+  border-radius: 10px;
+}
+
+.campaign-section h2 {
+  margin-bottom: 20px;
+}
+
+.campaign-card {
+  background-color: #e0f7fa;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.campaign-card img {
+  border-radius: 5px;
+}
+
+.progress {
+  height: 10px;
+  margin-top: 10px;
+  background-color: #012a4a30;
+}
+
+.progress-bar {
+  background-color: #012A4A;
+}
+
+.view-more-btn {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: #012A4A;
+  border: 2px solid #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.view-more-btn:hover {
+  background-color: #012A4A;
+  border: 2px solid #012A4A;
+  color: #A9D6E5;
+}
+
+/* Sucess Stories Css */    
+.card-container {
+  padding: 2rem 0;
+}
+
+.card-img-top {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 150px;
+  border-radius: 8px;
+}
+    
+.sucess-view-more-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sucess-view-more-btn:hover {
+  color: #012A4A;
+  background-color: #89C2D9;
+  transform: scale(1.01);
+}
+
+.btn-view-more {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-view-more:hover {
+  color: #012A4A;
+  background-color: #89C2D9;
+  transform: scale(1.01);
+}
+
+.campaign-name{
+  color: #012A4A;
+  transition: all 0.3s ease;
+}
+
+.campaign-name:hover {
+  color: #468FAF;
+  text-decoration: none;
+  transform: scale(1.02);
+}
+  </style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+    <!-- Toggler triggers offcanvas -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">ABOUT US</a>
+          </li>
+          <li class="nav-item me-2" id="login-area">
+            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Carousel (Image Transitions)-->
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-overlay">
+  <h1> Because Every <br> Dream Deserves a <br> Chance </h1>
+  <!-- <h3> Help student in need make their <br> dreams come true and build their <br> futures. </h3> --> 
+</div>
+
+<!-- Carousel Contents -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="./assets/pexels-artempodrez-5726836.jpg" alt="First slide">
+    </div>
+
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./assets/pexels-theiykeibeh-17731675.jpg" alt="Second slide">
+    </div>
+
+    <div class="carousel-item">
+      <img class="d-block w-100" src="./assets/pexels-expressivestanley-1454360.jpg" alt="Third slide">
+    </div>
+  </div>
+
+  <!-- Carousel Buttons -->
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+    <i class="bi bi-arrow-left-circle-fill"></i>
+  </a>
+
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+    <i class="bi bi-arrow-right-circle-fill"></i>
+  </a>
+</div>
+
+<!-- Our Story  -->
+<div class="container">
+  <div class="row g-2">
+
+    <div class="col-sm p-4 custom-section">
+      <h4 class="section-title text-center"> OUR STORY </h4>
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
+
+      <p class="section-content">
+        Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+      </p>
+        <a href="about.html" style="float: right;">
+          <button type="button" class="btn btn-outline-primary section-button">
+          FIND OUT MORE
+          </button>
+        </a>
+    
+      <br> <br> <br> <br>
+
+<!-- Our Mission -->
+      <h4 class="section-title text-center"> OUR MISSION </h4>
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
+
+        <p class="section-content">
+          Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. 
+        </p>
+        <a href="about.html" style="float: right;">
+          <button type="button" class="btn btn-outline-primary section-button">
+          FIND OUT MORE
+          </button>
+        </a>
+    </div>
+
+<!-- How It Works -->
+    <div class="col-sm custom-howitworks">
+      <h2 class = "text-center">  How does <b> FundMyFuture </b> work? </h2>
+
+      <div class="step">
+        <i class="bi bi-1-circle-fill fs-3"></i>
+        <span> Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna.  </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-2-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-3-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-4-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+      <div class="step">
+        <i class="bi bi-5-circle-fill fs-3"></i>
+        <span>Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Campaigns -->
+<div class="container mt-5 mb-4">
+  <div class="row g-4">
+    
+    <!-- Featured Campaigns -->
+    <div class="col-12 col-md-6">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <h2 class="section-title text-center fw-bold">Featured Campaigns</h2>
+        <hr>
+
+        <!-- Campaign Card 1 -->
+        <div class="campaign-card mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
+            </div>
+            <div class="col-8">
+              <h5 class="mb-2">
+                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
+                Campaign Name
+                </a>
+              </h5>
+              <p class="mb-1 text-muted small">Short description of campaign</p>
+              <p class="mb-1"><strong>John Doe</strong></p>
+              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Cape Town</p>
+              <div class="progress mt-2" style="height: 6px;">
+                <div class="progress-bar" style="width: 50%;"></div>
+              </div>
+              <small class="text-muted">Raised: R5,000 (50%)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign Card 2 -->
+        <div class="campaign-card mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
+            </div>
+            <div class="col-8">
+              <!-- User should be able to click and be directed to campaign -->
+              <h5 class="mb-2">
+                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
+                Campaign Name
+                </a>
+              </h5>
+              <p class="mb-1 text-muted small">Short description of campaign</p>
+              <p class="mb-1"><strong>Jane Smith</strong></p>
+              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Johannesburg</p>
+              <div class="progress mt-2" style="height: 6px;">
+                <div class="progress-bar" style="width: 30%;"></div>
+              </div>
+              <small class="text-muted">Raised: R3,000 (30%)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-3">
+          <a href="donate.html" style="float: right;">
+          <button type="button" class="btn btn-view-more">
+          FIND OUT MORE
+          </button>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trending Campaigns -->
+    <div class="col-12 col-md-6">
+      <div class="p-3 bg-light rounded shadow-sm h-100">
+        <h2 class="section-title text-center fw-bold">Trending Campaigns</h2>
+        <hr>
+
+        <!-- Campaign Card 1 -->
+        <div class="campaign-card mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
+            </div>
+            <div class="col-8">
+              <!-- User should be able to click and be directed to campaign -->
+              <h5 class="mb-2">
+                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
+                Campaign Name
+                </a>
+              </h5>
+              <p class="mb-1 text-muted small">Short description of campaign</p>
+              <p class="mb-1"><strong>Alex Brown</strong></p>
+              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Durban</p>
+              <div class="progress mt-2" style="height: 6px;">
+                <div class="progress-bar" style="width: 70%;"></div>
+              </div>
+              <small class="text-muted">Raised: R7,000 (70%)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign Card 2 -->
+        <div class="campaign-card mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
+            </div>
+            <div class="col-8">
+              <!-- User should be able to click and be directed to campaign -->
+              <h5 class="mb-2">
+                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
+                Campaign Name
+                </a>
+              </h5>
+              <p class="mb-1 text-muted small">Short description of campaign</p>
+              <p class="mb-1"><strong>Lisa Green</strong></p>
+              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Pretoria</p>
+              <div class="progress mt-2" style="height: 6px;">
+                <div class="progress-bar" style="width: 90%;"></div>
+              </div>
+              <small class="text-muted">Raised: R9,000 (90%)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-3">
+          <a href="donate.html" style="float: right;">
+          <button type="button" class="btn btn-view-more">
+          FIND OUT MORE
+          </button>
+        </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Sucess Stories -->
+ <div class="container mt-4">
+ <!-- Title -->
+  <h2 class="section-title text-center">Sucess Stories</h2>
+
+  <!-- Cards -->
+  <div class="container card-container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png" class="card-img-top" alt="Card 1">
+          <div class="card-body">
+            <h5 class="sucess-title card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png" class="card-img-top" alt="Card 2">
+          <div class="card-body">
+            <h5 class="card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png" class="card-img-top" alt="Card 3">
+          <div class="card-body">
+            <h5 class="card-title"><b>Sucess Story Title</b></h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur. Sapien proin risus mi nunc mi proin nullam vitae. Sagittis cras enim nisi quis tempus magna. </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View More Button -->
+  <div class="text-end mt-3">
+          <a href="story.html" style="float: right;">
+          <button type="button" class="btn btn-view-more">
+          FIND OUT MORE
+          </button>
+        </a>
+        </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-6 mb-4 text-md-end">
+        <h5 class="fw-bold follow-us">Follow us</h5>
+        <div class="social-icons mt-2">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-linkedin"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="campaign.html">Campaigns</a></li>
+          <li><a href="story.html">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Blog</a></li>
+          <li><a href="faq.html">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap + Font Awesome JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

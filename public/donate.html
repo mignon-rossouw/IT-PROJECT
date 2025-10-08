@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Donate Now </title>
+    
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+/* Navbar CSS */
+.navbar-custom {
+  background-color: #012A4A; 
+  height: 90px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #A9D6E5;
+}
+
+.navbar-brand:hover {
+  color: #0077b6;
+}
+
+.nav-link {
+  color: #CAF0F8 !important;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.nav-link:hover {
+  color: #0077b6 !important;
+}
+
+/* navbar menu collapse for smaller screens */
+.navbar-toggler {
+  border-color: #A9D6E5;
+  background-color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: #ffd60a;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+/* --------------- */
+
+.donate-btn {
+  background-color: #00b4d8;
+  color: white;
+  font-weight: bold;
+}
+
+.donate-btn:hover {
+  background-color: #0077b6;
+  color: #FEFAE0;
+}
+
+.login-btn {
+  color: #ffd60a;
+}
+
+/* footer css */
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #012A4A;
+  border-radius: 50%;
+}
+
+.card h5 {
+  font-size: 1rem;
+}
+
+.progress {
+  height: 20px;
+}
+
+.campaign-title {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.campaign-title:hover {
+  color: #468FAF;
+  text-decoration: none;
+  transform: scale(1.02);
+}
+
+.campaign-section-title {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.btn-carousel {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  font-size: small;
+  box-shadow: 0 8px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-carousel:hover {
+  color: #012A4A;
+  border: 1px solid #012A4A;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+
+.badge {
+  background-color: #ffd60a;
+}
+
+.progress {
+  background-color: #012a4a28;
+}
+
+.progress-bar {
+  background-color: #012A4A;
+}
+
+.filter-panel {
+  width: 300px;
+  background-color: #f9f9f9;
+  border-right: 1px solid #dee2e6;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-y: auto;
+}
+
+.btn-apply-filter {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  font-size: small;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-apply-filter:hover {
+  color: #012A4A;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+    <!-- Toggler triggers offcanvas -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">ABOUT US</a>
+          </li>
+          <li class="nav-item me-2" id="login-area">
+            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<div class="container-fluid mt-5">
+  <div class="d-flex flex-row vh-100">
+    
+    <!-- Filter Sidebar -->
+    <div class="filter-panel">
+
+  <div class="mb-3">
+    <label class="form-label">Category</label>
+    <select class="form-select">
+      <option selected>All</option>
+      <option>Tuition</option>
+      <option>Books & Materials</option>
+      <option>Living Expenses</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Institution</label>
+    <select class="form-select">
+      <option selected>All</option>
+      <option>UCT</option>
+      <option>Stellenbosch</option>
+      <option>Wits</option>
+      <option>UNISA</option>
+    </select>
+  </div>
+
+  <button class="btn btn-apply-filter w-100">Apply Filters</button>
+</div>
+
+
+    <!-- Campaign Content -->
+    <div class="flex-grow-1 p-4 overflow-auto">
+      
+      <!-- Top Campaigns -->
+      <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-trophy-fill me-3"></i>Top Campaigns</h2>
+      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+        View All Campaigns <i class="bi bi-arrow-right"></i>
+      </a>
+      <div id="topCampaignsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row g-4">
+              <!-- Campaign Cards -->
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Jane Doe – Tuition</h5>
+                    <p class="text-muted small">UCT | Computer Science</p>
+                    <p class="badge text-dark fw-light mb-4">R15 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 40%;">40%</div></div>
+                    <p class="small text-muted float-end">Raised: R6 000</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Lebo M. – Living Expenses</h5>
+                    <p class="text-muted small">Wits | Law</p>
+                    <p class="badge text-dark fw-light mb-4">R10 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 85%;">85%</div></div>
+                    <p class="small text-muted float-end">Raised: R8 500</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Ayesha K. – Tuition</h5>
+                    <p class="text-muted small">Stellenbosch | Medicine</p>
+                    <p class="badge text-dark fw-light mb-4">R20 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 60%;">60%</div></div>
+                    <p class="small text-muted float-end">Raised: R12 000</p>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
+                <i class="bi bi-arrow-left fs-4"></i>
+            </button>
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
+                <i class="bi bi-arrow-right fs-4"></i>
+            </button>
+        </div>
+      </div>
+
+      <!-- New Campaigns -->
+      <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-graph-up-arrow me-3"></i>New Campaigns</h2>
+      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+        View All Campaigns <i class="bi bi-arrow-right"></i>
+      </a>
+      <div id="newCampaignsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row g-4">
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Sipho M. – Books & Materials</h5>
+                    <p class="text-muted small">Stellenbosch | Engineering</p>
+                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
+                    <p class="small text-muted float-end">Raised: R3 200</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Zanele D. – Tuition</h5>
+                    <p class="text-muted small">UNISA | Psychology</p>
+                    <p class="badge text-dark fw-light mb-4">R12 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 12%;">12%</div></div>
+                    <p class="small text-muted float-end">Raised: R1 500</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Daniel K. – Living Expenses</h5>
+                    <p class="text-muted small">UCT | Architecture</p>
+                    <p class="badge text-dark fw-light mb-4">R8 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 25%;">25%</div></div>
+                    <p class="small text-muted float-end">Raised: R2 000</p>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
+                <i class="bi bi-arrow-left fs-4"></i>
+            </button>
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
+                <i class="bi bi-arrow-right fs-4"></i>
+            </button>
+        </div>
+
+      </div>
+
+      <!-- All Campaigns -->
+      <h2 class="campaign-section-title fw-bold mb-3"><i class="bi bi-columns-gap me-3"></i>All Campaigns</h2>
+      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+        View All Campaigns <i class="bi bi-arrow-right"></i>
+      </a>
+      <div id="newCampaignsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row g-4">
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Sipho M. – Books & Materials</h5>
+                    <p class="text-muted small">Stellenbosch | Engineering</p>
+                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
+                    <p class="small text-muted float-end">Raised: R3 200</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Zanele D. – Tuition</h5>
+                    <p class="text-muted small">UNISA | Psychology</p>
+                    <p class="badge text-dark fw-light mb-4">R12 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 12%;">12%</div></div>
+                    <p class="small text-muted float-end">Raised: R1 500</p>
+                </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="card h-100 border-1">
+                  <div class="card-body">
+                    <h5 class="fw-bold campaign-title fs-5 mb-0">Daniel K. – Living Expenses</h5>
+                    <p class="text-muted small">UCT | Architecture</p>
+                    <p class="badge text-dark fw-light mb-4">R8 000 Needed</p>
+                    <div class="progress mb-0"><div class="progress-bar" style="width: 25%;">25%</div></div>
+                    <p class="small text-muted float-end">Raised: R2 000</p>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
+                <i class="bi bi-arrow-left fs-4"></i>
+            </button>
+            <button class="btn btn-carousel rounded-pill" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
+                <i class="bi bi-arrow-right fs-4"></i>
+            </button>
+        </div>
+      </div>
+        </div>
+    </div>
+</div>
+
+  
+
+
+<!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+      <div class="col-md-6 mb-4 text-md-end">
+        <h5 class="fw-bold follow-us">Follow us</h5>
+        <div class="social-icons mt-2">
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-linkedin"></i>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="campaign.html">Campaigns</a></li>
+          <li><a href="story.html">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#">Blog</a></li>
+          <li><a href="faq.html">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap + Font Awesome JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+</html>
