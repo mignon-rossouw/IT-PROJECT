@@ -297,19 +297,7 @@ width: 100%;
 }
 
 .btn-share:hover {
-  background-color: #2A6F97;
-  transform: scale(1.01);
-}
-
-.btn-donate-now {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  transition: all 0.3s ease;
-}
-
-.btn-donate-now:hover {
-  background-color: #2A6F97;
+  background-color: #ffd60a;
   transform: scale(1.01);
 }
 
@@ -419,6 +407,27 @@ width: 100%;
   transform: scale(1.01);
 }
 
+.edit-btn i {
+  font-size: 2rem;
+  color: #A9D6E5;
+  transition: color 0.2s ease;
+}
+
+.edit-btn:hover i {
+  color: #ffda1f;
+}
+
+.share-update-btn i {
+  font-size: 1.2rem;
+  color: #A9D6E5;
+  transition: color 0.2s ease;
+}
+
+/* hover effect */
+.share-update-btn:hover i {
+  color: #ffd60a;
+}
+
     </style>
 </head>
 
@@ -517,45 +526,17 @@ width: 100%;
 </div>
 
 <div class="container py-4 px-3">
-<!-- Campaign & Donation Buttons -->
-<div class="row g-2">
-  <!-- Donations Button -->
-  <div class="col-12 col-md-6">
-    <button class="btn-donation w-100 mt-4" data-bs-toggle="collapse" data-bs-target="#donationsList" aria-expanded="false" aria-controls="donationsList">
-      Donations
-    </button>
-    <div class="collapse mt-2" id="donationsList">
-      <ul class="list-group">
-        <li class="list-group-item">Education Fund</li>
-        <li class="list-group-item">Medical Relief</li>
-        <li class="list-group-item">Community Outreach</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Campaigns Button -->
-  <div class="col-12 col-md-6">
-    <button class="btn-campaign w-100 mt-4" data-bs-toggle="collapse" data-bs-target="#campaignsList" aria-expanded="false" aria-controls="campaignsList">
-      Campaigns
-    </button>
-    <div class="collapse mt-2" id="campaignsList">
-      <ul class="list-group">
-        <li class="list-group-item">Lawrence's Engineering Journey</li>
-        <li class="list-group-item">Clean Water Initiative</li>
-        <li class="list-group-item">Youth Empowerment Drive</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
 
 <!-- Recent Donations -->
   <div class="container my-5">
   <div class="row">
     <!-- Left Column: Progress + Donations -->
-     <div class="donation-target-title mt-4">
-        <h4 class="fw-bolder"> Help Lawrence Study Engineering </h4>
-      </div>
+     <div class="donation-target-title mt-4 d-flex align-items-center justify-content-between">
+      <h4 class="fw-bolder mb-0">Help Lawrence Study Engineering</h4>
+        <button class="btn btn-link p-0 text-muted edit-btn" title="Edit campaign name">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+    </div>
     <div class="col-12 col-lg-6">
       <!-- Progress Section -->
       <div class="mb-3 mt-4">
@@ -574,15 +555,13 @@ width: 100%;
       </div>
 
       <!-- Share & Donate Buttons -->
-    <div class="row g-2">
-      <div class="col-12 col-md-6">
-        <button class="btn btn-share w-100"> <i class="bi bi-share-fill me-2"></i>Share</button>
+      <div class="row g-2">
+        <div class="col-12">
+          <button class="btn btn-share w-100">
+            <i class="bi bi-share-fill me-2"></i>Share
+          </button>
+        </div>
       </div>
-
-      <div class="col-12 col-md-6">
-        <button class="btn btn-donate-now w-100"> <i class="bi bi-gift me-2"></i>Donate now</button>
-      </div>
-    </div>
 
     <!--<hr class="my-4 custom-hr">-->
 
@@ -639,7 +618,12 @@ width: 100%;
 
       <!-- Description Text -->
         <div class="mb-4">
-          <h5 class="about-title fw-bold"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
+          <div class="about-title fw-bold mt-4 d-flex align-items-center justify-content-between">
+            <h5 class="fw-bolder mb-0"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
+              <button class="btn btn-link p-0 text-muted share-update-btn" title="Edit campaign name">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </div>
           <p class="text-muted">
           Lawrence is pursuing a degree in engineering and needs support to cover tuition, materials, and living expenses. Every contribution helps him get closer to his dream.
           </p>

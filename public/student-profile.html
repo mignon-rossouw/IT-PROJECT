@@ -194,12 +194,21 @@
   color: #012A4A;
 }
 
-.progress-bar {
-  background-color: #012A4A;
+.custom-progress {
+  height: 20px;
+  background-color: #e0af0057;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-.progress {
-  background-color: #012a4a36;
+.custom-bar {
+  background-color: #e0b000;
+  color: #012a4a;
+  font-weight: bold;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  transition: width 0.6s ease;
 }
 
 .btn-view-campaign {
@@ -217,19 +226,28 @@
   transform: scale(1.02);
 }
 
-.btn-donate {
-  background-color: #ffd60a;
-  color: #012A4A;
+.btn-share {
+  background-color: #012A4A;
+  color: #A9D6E5;
   font-weight: 800;
-  font-size: small;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
   transition: all 0.3s ease;
 }
 
-.btn-donate:hover {
-  color: #A9D6E5;
+.btn-share:hover {
+  background-color: #ffd60a;
+  transform: scale(1.01);
+}
+
+.btn-donate-now {
   background-color: #012A4A;
-  transform: scale(1.02);
+  color: #A9D6E5;
+  font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+.btn-donate-now:hover {
+  background-color: #ffd60a;
+  transform: scale(1.01);
 }
 
 .custom-accordion-btn {
@@ -279,6 +297,20 @@
   color: #A9D6E5;
   padding: 5px;
   border-radius: 5px;
+}
+
+.progress-section {
+  background-color: #86a9c35e;
+  border-radius: 5px;
+}
+
+.progress-title {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
     </style>
 </head>
@@ -421,18 +453,33 @@
                         <i class="bi bi-share-fill me-1 fs-4"></i>
                     </a>
                 </div>
+        <!-- Progress Section -->
+      <div class="mb-3 mt-4">
+        <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
+        <div class="progress-section p-3">
+          <h4 class="fw-bolder mb-1">R22 153</h4>
+          <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
+            <small class="text-muted">R30 000 target</small>
+            <small class="text-muted">⋅</small>
+            <small class="text-muted">83 donations</small>
+          </div>
+          <div class="progress custom-progress" style="height: 30px;">
+            <div class="progress-bar custom-bar" style="width: 36%;">36%</div>
+          </div>
+        </div>
+      </div>
 
-                <p class="text-muted small mb-2">Help me cover my university tuition fees for the upcoming semester.</p>
-                <p class="badge badge-needed fw-light mb-4 mt-4">R15 000 Needed</p>
-                <div class="progress" style="height: 25px;">
-                  <div class="progress-bar fw-bold" style="width: 40%;">40%</div>
-                </div>
-                <p class="badge mb-4 mt-0 text-muted fw-light float-end">Raised: R6 000</p>
-                <br>
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="#" class="btn btn-view-campaign btn-sm">View Full Campaign</a>
-                    <a href="#" class="btn btn-donate btn-sm"> Donate Now </a>
-                </div>
+   <!-- Share & Donate Buttons -->
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <button class="btn btn-share w-100"> <i class="bi bi-share-fill me-2"></i>Share</button>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <button class="btn btn-donate-now w-100"> <i class="bi bi-gift me-2"></i>Donate now</button>
+      </div>
+    </div>
+
 
             </div>
             </div>

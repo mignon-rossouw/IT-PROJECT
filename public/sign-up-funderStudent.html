@@ -1,506 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Sign Up</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign Up</title>
 
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+<!-- BOOTSTRAP -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
-
-.navbar-brand:hover {
-  color: #0077b6;
-}
-
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
-
-.nav-link:hover {
-  color: #0077b6 !important;
-}
-
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
-
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
-
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
-
-.login-btn {
-  color: #ffd60a;
-}
-
-/* footer css */
-.footer {
-  margin-top: 100px;
-  background-color: #468FAF;
-  color: #012A4A;
-}
-
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer li {
-  margin-bottom: 15px;
-}
-
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.icon-input-group {
-  position: relative;
-}
-
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
-
-.icon-input-group input {
-  padding-left: 2rem;
-}
-
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.social-icons i:hover {
-  color: #A9D6E5;
-}
-
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
-
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
-
-/* Dashboard */
-.dashboard-header {
-  background-color: #2A6F97;
-  padding: 30px 0;
-  margin-bottom: 0px;
-}
-
-.funder-heading {
-  color: #012A4A;
-}
-
-.dashboard-header {
-  color: #012A4A;
-}
-
-.hidden { 
-  display: none; 
-}
-
-.form-section { 
-  margin-top: 20px; 
-}
-
-.profile-card {
-  background-color: #A9D6E5;
-}
-
-.btn-submit-sign-up {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
-
-.btn-submit-sign-up:hover {
-  color: #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-
-.form-label {
-  font-size: small;
-  font-weight: bold;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 220px;
-  height: 50px;
-  background-color: #012a4a2e;
-  border-radius: 25px;
-  display: flex;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle-option {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  font-weight: bold;
-  color: #0B93FB;
-  transition: color 0.3s;
-}
-
-.toggle-option.active {
-  color: #fff;
-}
-
-.toggle-indicator {
-  position: absolute;
-  top: 2px;
-  left: 50%;
-  width: 108px;
-  height: 46px;
-  background-color: #012A4A;
-  border-radius: 25px;
-  transition: left 0.3s;
-  z-index: 1;
-}
-
+/* --- Your CSS --- */
+.toggle-switch { position: relative; width: 220px; height: 50px; background-color: #012a4a2e; border-radius: 25px; display: flex; cursor: pointer; user-select: none;}
+.toggle-option {flex:1; display:flex; justify-content:center; align-items:center; z-index:2; font-weight:bold; color:#0B93FB; transition: color 0.3s;}
+.toggle-option.active { color:#fff; }
+.toggle-indicator {position:absolute; top:2px; left:2px; width:108px; height:46px; background-color:#012A4A; border-radius:25px; transition:left 0.3s; z-index:1;}
+.hidden { display:none; }
 </style>
-</style>
-
-<!-- firebase auth stuff + database -->
-<script type="module">
-  import { auth, db } from './firebase-config.js';
-</script>
 
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
-
-    <!-- Toggler triggers offcanvas -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Offcanvas menu -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item me-3">
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <li class="nav-item me-2" id="login-area">
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav>
-
-
-<!-- Dashboard Header Section -->
-<div class="container-fluid dashboard-header">
-  <div class="d-flex flex-wrap align-items-center">
-    <!-- Image Column -->
-    <div class="flex-shrink-0 ms-4 me-3 mb-3 mb-md-0">
-      <img src="./assets/happy students.png" class="img-fluid" alt="Funder Icon">
-    </div>
-
-    <!-- Text Column -->
-    <div class="flex-grow-1 text-start">
-      <h4 class="fw-bold funder-heading mb-0">Welcome to</h4>
-      <h2 class="fw-bold dashboard-heading">FundMyFuture</h2>
-    </div>
-  </div>
-</div>
-
-<!-- Sign Up Page -->
 <div class="container mt-5">
   <h2 class="text-center mb-2">Sign Up</h2>
-  <h6 class="text-center text-muted fw-light mb-4">
-    Please fill in the following information to continue:
-  </h6>
 
   <!-- User Type Toggle -->
   <div class="toggle-wrapper mb-4 d-flex justify-content-center">
     <div class="toggle-switch" id="toggleSwitch">
-      <div class="toggle-option student">Student</div>
+      <div class="toggle-option student active">Student</div>
       <div class="toggle-option funder">Funder</div>
       <div class="toggle-indicator" id="toggleIndicator"></div>
     </div>
-    <input type="hidden" id="userType" />
+    <input type="hidden" id="userType" value="student"/>
   </div>
 
-
-
-  <!-- All Form Sections (hidden initially) -->
-  <div id="signupFormSections" class="hidden">
-    <!-- Profile Section -->
-    <div id="profileSection" class="profile-card container mt-4 p-4 rounded">
-      <!-- Profile Picture -->
-      <div class="row align-items-center mb-4">
-        <div class="col-md-2 text-center">
-          <img src="./assets/profile-user.png" alt="Profile Picture" class="img-fluid mb-3 w-100" style="max-width: 200px;"/>
-          <input type="file" class="form-control form-control-sm mb-3" />
-        </div>
-        <!-- Name Fields -->
-        <div class="col-md-5">
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="firstName" class="form-label">First Name *</label>
-              <input type="text" class="form-control" placeholder="First Name" id="firstName" required/>
-            </div>
-            <div class="col-md-12 mb-3">
-              <label for="surName" class="form-label">Surname *</label>
-              <input type="text" class="form-control" placeholder="Surname" id="surName" required/>
-            </div>
-          </div>
-        </div>
-        <!-- ID & DOB -->
-        <div class="col-md-5">
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <label for="idNumber" class="form-label">ID Number or Passport Number *</label>
-              <input type="text" class="form-control" placeholder="ID number or Passport Number" id="idNumber" required/>
-            </div>
-            <div class="col-md-12 mb-3">
-              <label for="dob" class="form-label">Date of Birth *</label>
-              <input type="date" class="form-control" id="dob" required/>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- FORM -->
+  <form id="signupForm">
+    <!-- Common Fields -->
+    <div class="mb-3">
+      <label class="form-label">First Name *</label>
+      <input type="text" class="form-control" id="firstName" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Surname *</label>
+      <input type="text" class="form-control" id="surName" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">ID Number or Passport Number *</label>
+      <input type="text" class="form-control" id="idNumber" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Date of Birth *</label>
+      <input type="date" class="form-control" id="dob" required>
     </div>
 
     <!-- Student Fields -->
-    <div id="studentFields" class="form-section hidden mb-4 profile-card p-4 rounded">
-      <!-- Country of Citizenship, Birth, Residence -->
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label for="coCitizenship" class="form-label">Country of Citizenship *</label>
-          <input type="text" class="form-control" placeholder="Country of citizenship" id="coCitizenship" required/>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="coBirth" class="form-label">Country of Birth *</label>
-          <input type="text" class="form-control" placeholder="Country of birth" id="coBirth" required/>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="coResidence" class="form-label">Country of Residence *</label>
-          <input type="text" class="form-control" placeholder="Country of residence" id="coResidence" required/>
-        </div>
+    <div id="studentFields" class="hidden">
+      <div class="mb-3">
+        <label class="form-label">Country of Citizenship *</label>
+        <input type="text" class="form-control" id="coCitizenship" required>
       </div>
-      <!-- Email & Contact -->
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="studentEmail" class="form-label">Student Email *</label>
-          <input type="email" class="form-control" placeholder="Student email" id="studentEmail" required/>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label">Contact Number *</label>
-          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
-        </div>
+      <div class="mb-3">
+        <label class="form-label">Country of Birth *</label>
+        <input type="text" class="form-control" id="coBirth" required>
       </div>
-      <!-- Password -->
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="password" class="form-label">Password *</label>
-          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label">Confirm Password *</label>
-          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
-        </div>
+      <div class="mb-3">
+        <label class="form-label">Country of Residence *</label>
+        <input type="text" class="form-control" id="coResidence" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-control" id="studentEmail" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Contact Number *</label>
+        <input type="tel" class="form-control" id="studentCNumber" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password *</label>
+        <input type="password" class="form-control" id="studentPassword" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Confirm Password *</label>
+        <input type="password" class="form-control" id="studentCPassword" required>
       </div>
     </div>
 
     <!-- Funder Fields -->
-    <div id="funderFields" class="form-section hidden mb-4 profile-card p-4 rounded">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="email" class="form-label">Email *</label>
-          <input type="email" class="form-control" placeholder="Email" id="email" required/>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label">Contact Number *</label>
-          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
-        </div>
+    <div id="funderFields" class="hidden">
+      <div class="mb-3">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-control" id="funderEmail" required>
       </div>
-      <div class="row mb-4">
-        <div class="col-md-6 mb-3">
-          <label for="password" class="form-label">Password *</label>
-          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label">Confirm Password *</label>
-          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
-        </div>
+      <div class="mb-3">
+        <label class="form-label">Contact Number *</label>
+        <input type="tel" class="form-control" id="funderCNumber" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password *</label>
+        <input type="password" class="form-control" id="funderPassword" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Confirm Password *</label>
+        <input type="password" class="form-control" id="funderCPassword" required>
       </div>
     </div>
 
-    <!-- Submit Button -->
-    <div class="text-center mt-5">
-      <h6 class="text-muted fw-light small">
-        By continuing, <br> you agree to our 
-        <a href="terms.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Terms & Conditions</a> and 
-        <a href="privacy.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Privacy Policy</a>.
-      </h6>
-
-      <div class="text-center mt-2">
-        <button type="submit" class="btn btn-submit-sign-up mt-2 px-4">Submit</button>
-      </div>
-
-      <h6 class="mt-3 fw-regular">
-        Already have an account? 
-        <a href="login.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Login</a>
-      </h6>
-    </div>
-  </div>
+    <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
+  </form>
 </div>
 
-<!-- JS to handle toggle -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const studentOption = document.querySelector(".toggle-option.student");
-  const funderOption = document.querySelector(".toggle-option.funder");
-  const indicator = document.getElementById("toggleIndicator");
-  const userTypeInput = document.getElementById("userType");
-  const signupFormSections = document.getElementById("signupFormSections");
-  const studentFields = document.getElementById("studentFields");
-  const funderFields = document.getElementById("funderFields");
-
-  const selectUserType = (type) => {
-    userTypeInput.value = type;
-
-    // Show form container
-    signupFormSections.classList.remove("hidden");
-
-    // Show correct form fields
-    studentFields.classList.toggle("hidden", type !== "student");
-    funderFields.classList.toggle("hidden", type !== "funder");
-
-    // Highlight active option
-    studentOption.classList.toggle("active", type === "student");
-    funderOption.classList.toggle("active", type === "funder");
-
-    // Move indicator
-    indicator.style.left = type === "student" ? "2px" : "110px";
-  };
-
-  // Attach click handlers
-  studentOption.addEventListener("click", () => selectUserType("student"));
-  funderOption.addEventListener("click", () => selectUserType("funder"));
-});
-</script>
-
-<!-- Firebase -->
+<!-- Firebase + Toggle JS -->
 <script type="module">
 import { auth, db } from './firebase-config.js';
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
 
-// Track selected user type from toggle
-let selectedUserType = 'student'; // default
-window.selectUserType = (type) => {
-  selectedUserType = type;
-  document.getElementById("userType").value = type;
+// --- Toggle ---
+const studentOption = document.querySelector(".toggle-option.student");
+const funderOption = document.querySelector(".toggle-option.funder");
+const indicator = document.getElementById("toggleIndicator");
+const userTypeInput = document.getElementById("userType");
+const studentFields = document.getElementById("studentFields");
+const funderFields = document.getElementById("funderFields");
 
-  // Show/hide sections
-  document.getElementById("studentFields").classList.toggle("hidden", type !== "student");
-  document.getElementById("funderFields").classList.toggle("hidden", type !== "funder");
+const selectUserType = (type) => {
+  userTypeInput.value = type;
+  studentFields.classList.toggle("hidden", type !== "student");
+  funderFields.classList.toggle("hidden", type !== "funder");
+  studentOption.classList.toggle("active", type === "student");
+  funderOption.classList.toggle("active", type === "funder");
+  indicator.style.left = type === "student" ? "2px" : "110px";
 };
 
-// Handle form submission
-const signupForm = document.querySelector("form");
+studentOption.addEventListener("click", () => selectUserType("student"));
+funderOption.addEventListener("click", () => selectUserType("funder"));
+
+// --- Form Submission ---
+const signupForm = document.getElementById("signupForm");
 
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Collect form fields
-  const email = document.getElementById(selectedUserType === "student" ? "studentEmail" : "email").value;
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("cPassword").value;
+  const userType = userTypeInput.value;
 
-  if (password !== confirmPassword) {
+  const email = userType === "student" ? document.getElementById("studentEmail").value : document.getElementById("funderEmail").value;
+  const password = userType === "student" ? document.getElementById("studentPassword").value : document.getElementById("funderPassword").value;
+  const confirmPassword = userType === "student" ? document.getElementById("studentCPassword").value : document.getElementById("funderCPassword").value;
+
+  if(password !== confirmPassword){
     alert("Passwords do not match.");
     return;
   }
@@ -508,124 +155,43 @@ signupForm.addEventListener("submit", async (e) => {
   try {
     // Create Firebase Auth user
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const uid = userCredential.user.uid;
 
-    // Prepare user data
+    // Collect user data
     const userData = {
-      uid: user.uid,
-      email: email,
-      role: selectedUserType,
-      firstName: document.getElementById("firstName")?.value || "",
-      surName: document.getElementById("surName")?.value || "",
-      idNumber: document.getElementById("idNumber")?.value || "",
-      dob: document.getElementById("dob")?.value || "",
-      coCitizenship: document.getElementById("coCitizenship")?.value || "",
-      coBirth: document.getElementById("coBirth")?.value || "",
-      coResidence: document.getElementById("coResidence")?.value || "",
-      cNumber: document.getElementById("cNumber")?.value || "",
-      race: document.getElementById("race")?.value || "",
-      gender: document.getElementById("gender")?.value || "",
-      matric: document.getElementById("matric")?.value || "",
-      currently: document.getElementById("currently")?.value || "",
-      orgInd: document.getElementById("org-ind")?.value || "",
-      organization: document.getElementById("organization")?.value || "",
-      createdAt: new Date()
+      uid,
+      role: userType,
+      firstName: document.getElementById("firstName").value,
+      surName: document.getElementById("surName").value,
+      idNumber: document.getElementById("idNumber").value,
+      dob: document.getElementById("dob").value,
+      email,
+      contactNumber: userType === "student" ? document.getElementById("studentCNumber").value : document.getElementById("funderCNumber").value,
+      createdAt: new Date().toISOString()
     };
 
-    // Save user data in Firestore
-    await setDoc(doc(db, "users", user.uid), userData);
+    // Extra student fields
+    if(userType === "student"){
+      userData.coCitizenship = document.getElementById("coCitizenship").value;
+      userData.coBirth = document.getElementById("coBirth").value;
+      userData.coResidence = document.getElementById("coResidence").value;
+    }
+
+    // Save to Realtime Database
+    await set(ref(db, "users/" + uid), userData);
 
     alert("Sign-up successful!");
-    window.location.href = "login.html"; // redirect after signup
-  } catch (error) {
+    window.location.href = "login.html";
+
+  } catch(error){
     console.error(error);
-    alert("Sign-up failed: " + error.message);
+    alert("Error: " + error.message);
   }
 });
 </script>
 
-
-<!-- Footer -->
-<footer class="footer pt-5">
-  <div class="container pb-4">
-    <div class="row">
-      <!-- Newsletter -->
-      <div class="col-md-6 mb-4">
-        <h5 class="fw-bold">Stay Connected</h5>
-        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <form class="d-flex icon-input-group">
-          <i class="fa-regular fa-envelope"></i>
-          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
-          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
-        </form>
-      </div>
-
-      <!-- Social -->
-      <div class="col-md-6 mb-4 text-md-end">
-        <h5 class="fw-bold follow-us">Follow us</h5>
-        <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
-        </div>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="row text-start text-md-start">
-      <!-- Navigate -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Navigate</h6>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
-          <li><a href="story.html">Stories</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact us</a></li>
-        </ul>
-      </div>
-
-      <!-- Company -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Company</h6>
-        <ul class="list-unstyled">
-          <li><a href="#">Blog</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div class="col-md-6 mb-4">
-        <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom Bar -->
-  <div class="footer-bottom py-3">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      <div class="mb-2 mb-md-0">
-        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
-        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
-        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
-        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
-      </div>
-      <div class="text-white">&copy;2025 FundMyFuture</div>
-    </div>
-  </div>
-</footer>
-
-<!-- Bootstrap + Font Awesome JS -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </body>
 </html>

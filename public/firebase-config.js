@@ -5,7 +5,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,6 +14,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.5.0/firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDriwBWl4ZmjtYtLHDQTL7wXU8YCjohYQU",
   authDomain: "fund-my-future-d3697.firebaseapp.com",
+  databaseURL: "https://fund-my-future-d3697-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "fund-my-future-d3697",
   storageBucket: "fund-my-future-d3697.firebasestorage.app",
   messagingSenderId: "148513429651",
@@ -26,5 +27,5 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getDatabase(app);
 // ---------------------------------------- //
