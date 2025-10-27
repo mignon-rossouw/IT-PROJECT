@@ -1,152 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
-    
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  
 
-    <style>
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
+  <!-- Bootstrap CSS for responsive layout and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-.navbar-brand:hover {
-  color: #0077b6;
-}
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
 
-.nav-link:hover {
-  color: #0077b6 !important;
-}
-
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
-
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
-
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
-
-.login-btn {
-  color: #ffd60a;
-}
-
-/* footer css */
-.footer {
-  margin-top: 100px;
-  background-color: #468FAF;
-  color: #012A4A;
-}
-
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer li {
-  margin-bottom: 15px;
-}
-
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.icon-input-group {
-  position: relative;
-}
-
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
-
-.icon-input-group input {
-  padding-left: 2rem;
-}
-
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.social-icons i:hover {
-  color: #A9D6E5;
-}
-
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
-
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
-
-
+  <style>
 /* ---------- Hero Section ---------- */
+/* Main hero section with geometric background pattern */
 .hero {
   width: 100%;
   padding: 60px 20px;
+  /* Complex geometric background using conic gradients and linear gradients */
   background:
     conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
     conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
@@ -161,16 +39,18 @@
   align-items: center;
 }
 
+/* Text container within hero section */
 .hero-text {
-  background: rgba(255, 255, 255, 0.85); /* Light overlay for readability */
+  background: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
   padding: 40px;
   border-radius: 12px;
   max-width: 800px;
   text-align: center;
-  color: #012a4a; /* Matches the deep blue from the pattern */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #012a4a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
+/* Styling for main about page heading */
 .about-heading {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -178,26 +58,31 @@
   border-radius: 5px;
 }
 
+/* Subheading styling in hero section */
 .hero h2 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
   font-weight: normal;
   opacity: 0.9;
 }
+
+/* Paragraph styling in hero section */
 .hero p {
   max-width: 750px;
   margin: 0.5rem auto;
   opacity: 0.95;
 }
 
-/* ---------- Story & Mission ---------- */
+/* ---------- Story & Mission Section ---------- */
+/* Grid layout for story and mission sections */
 .story-mission {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
   gap: 2rem;
   padding: 3rem 1.5rem;
 }
 
+/* Styling for "Our Story" heading */
 .our-story-heading {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -205,6 +90,7 @@
   border-radius: 5px;
 }
 
+/* Styling for "Our Mission" heading */
 .our-mission-heading {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -212,8 +98,8 @@
   border-radius: 5px;
 }
 
-
-/* ---------- Responsive tweaks ---------- */
+/* ---------- Responsive Design ---------- */
+/* Mobile-specific styles for smaller screens */
 @media (max-width: 600px) {
   .search-box { width: 90%; }
   .nav-right a { margin-left: 0.6rem; }
@@ -222,184 +108,218 @@
 </head>
 
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom px-3">
+      <div class="container-fluid">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Mobile menu toggle button -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Offcanvas menu -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        <!-- Offcanvas navigation menu for mobile -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+          <div class="offcanvas-header">
+            <!-- Close button for offcanvas -->
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <!-- Donate button -->
+              <li class="nav-item me-3">
+                <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+              </li>
+              <!-- Student section link -->
+              <li class="nav-item">
+                <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+              </li>
+              <!-- Funder section link -->
+              <li class="nav-item">
+                <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+              </li>
+              <!-- About us link (current page) -->
+              <li class="nav-item">
+                <a class="nav-link" href="about.html">ABOUT US</a>
+              </li>
+              <!-- Login button -->
+              <li class="nav-item me-2" id="login-area">
+                <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item me-3">
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <li class="nav-item me-2" id="login-area">
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
-          </li>
-        </ul>
+    </nav>
+
+    <!-- Bootstrap JavaScript for interactive components -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ===== HERO / ABOUT SECTION ===== -->
+    <section class="hero py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 bg-white p-3 rounded shadow text-center">
+            <!-- Main page title -->
+            <h1 class="about-heading fw-bold mb-1">About Us</h1>
+            <!-- Introductory paragraphs (placeholder content) -->
+            <p class="lead mt-5 mb-3">
+              FundMyFuture is a dedicated platform that connects students with generous funders to make education accessible to everyone. We believe that financial barriers should never prevent a motivated learner from achieving their dreams. Our platform allows students to share their stories and funding needs, while funders can directly support the educational journeys that inspire them the most.
+            </p>
+            <p class="lead mb-0">
+              At FundMyFuture, we are passionate about creating a transparent, secure, and empowering space for education crowdfunding. Every contribution, big or small, helps unlock potential and shape the future.
+            </p>
+            <!-- Company slogan -->
+            <h2 class="mt-5 slogon float-end fs-5 fw-bold">Fund locally. Impact globally.</h2>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
+    </section>
 
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ===== STORY & MISSION SECTION ===== -->
+    <section class="story-mission mt-0">
+        <!-- Our Story Section -->
+        <article>
+          <h3 class="our-story-heading text-center fw-bold">Story</h3>
+          <!-- Story content (placeholder) -->
+          <p class="mt-4 fw-semibold">
+            FundMyFuture was born from the simple idea that education is a right, not a privilege. Our founders witnessed countless talented students unable to pursue their studies due to financial constraints, and wanted to create a solution that bridges that gap.
+          </p>
+          <p class="text-muted">
+            We combined the transparency and accessibility of crowdfunding with the urgent need for education support, creating a platform where students’ ambitions meet funders’ generosity. From humble beginnings, our goal has always been to empower learners and create meaningful, lasting impact in communities.
+          </p>
+        </article>
 
- 
-
-<!-- ===== HERO / ABOUT ===== -->
-<section class="hero py-5">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 bg-white p-3 rounded shadow text-center">
-        <h1 class="about-heading fw-bold mb-1">About Us</h1>
-        <p class="lead mt-5 mb-3">
-          Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-          nullam vitae. Sagittis erat ornare convallis. Lorem ipsum dolor sit amet
-          consectetur. Sapien posuere nisl nunc proin nullam vitae.
-        </p>
-        <p class="lead mb-0">
-          Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-          nullam vitae. Sagittis erat ornare convallis.
-        </p>
-        <h2 class="mt-5 slogon float-end fs-5 fw-bold">Fund locally. Impact globally.</h2>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<!-- ===== STORY & MISSION ===== -->
-  <section class="story-mission mt-0">
-    <article>
-      <h3 class="our-story-heading text-center fw-bold">Story</h3>
-      <p class="mt-4 fw-semibold">
-        Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-        nullam vitae. Sagittis erat ornare convallis. Lorem ipsum dolor sit amet
-        consectetur. Sapien posuere nisl nunc proin nullam vitae.
-      </p>
-      <p class="text-muted">
-        Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-        nullam vitae.
-      </p>
-    </article>
-
-    <article>
-      <h3 class="our-mission-heading text-center fw-bold">Mission</h3>
-      <p class="mt-4 fw-semibold">
-        Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-        nullam vitae. Sagittis erat ornare convallis. Lorem ipsum dolor sit amet
-        consectetur. Sapien posuere nisl nunc proin nullam vitae.
-      </p>
-      <p class="text-muted">
-        Lorem ipsum dolor sit amet consectetur. Sapien posuere nisl nunc proin
-        nullam vitae.
-      </p>
-    </article>
-  </section>
+        <!-- Our Mission Section -->
+        <article>
+          <h3 class="our-mission-heading text-center fw-bold">Mission</h3>
+          <!-- Mission content (placeholder) -->
+          <p class="mt-4 fw-semibold">
+            Our mission is to make quality education attainable for all students, regardless of their financial circumstances. We aim to:
+          </p>
+          <ul>
+            <li class="mb-3">Empower students by providing them with a platform to share their educational goals.</li>
+            <li class="mb-3">Connect funders with meaningful opportunities to support learners directly.</li>
+            <li class="mb-3">Foster community through transparency, trust, and shared commitment to education.</li>
+            <li class="mb-3">Promote impact by ensuring every contribution goes toward real educational advancement.</li>
+          </ul>
+          <p class="text-muted">
+            FundMyFuture is more than just crowdfunding: it’s a movement to create opportunity, unlock potential, and invest in the future of learners everywhere.
+          </p>
+        </article>
+    </section>
 </body>
 
-<!-- Footer -->
+<!-- Footer Section -->
 <footer class="footer pt-5">
+
+  <!-- Main container for footer content -->
   <div class="container pb-4">
+    
     <div class="row">
-      <!-- Newsletter -->
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
         <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field -->
           <i class="fa-regular fa-envelope"></i>
+          <!-- Email input field -->
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <!-- Submit button -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
+          <!-- Instagram social media link -->
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- Facebook social media link -->
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <!-- LinkedIn social media link -->
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-linkedin"></i>
+          </a>
         </div>
       </div>
+
     </div>
 
-    <hr>
+    <hr> <!-- Horizontal separator line -->
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
           <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
-          
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-       <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
-    </div>
-  </div>
 
-  <!-- Bottom Bar -->
+    </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      
+      <!-- Legal & policy links -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
+
+      <!-- Copyright notice -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
+
 </footer>
 
 <!-- Bootstrap + Font Awesome JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 
     
 </body>

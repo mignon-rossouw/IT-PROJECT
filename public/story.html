@@ -1,146 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Success Stories </title>
     
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- External CSS libraries -->
+  <!-- Bootstrap CSS for responsive design and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
+
+    <!-- Page-specific inline styles for Stories page -->
     <style>
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
-
-.navbar-brand:hover {
-  color: #0077b6;
-}
-
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
-
-.nav-link:hover {
-  color: #0077b6 !important;
-}
-
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
-
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
-
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
-
-.login-btn {
-  color: #ffd60a;
-}
-
-/* footer css */
-.footer {
-  background-color: #468FAF;
-  color: #012A4A;
-}
-
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer li {
-  margin-bottom: 15px;
-}
-
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.icon-input-group {
-  position: relative;
-}
-
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
-
-.icon-input-group input {
-  padding-left: 2rem;
-}
-
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.social-icons i:hover {
-  color: #A9D6E5;
-}
-
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
-
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
-
+/* Story title styling with hover effects */
 .story-title {
   color: #012A4A;
   cursor: pointer;
@@ -148,12 +27,14 @@
   display: inline-block;
 }
 
+/* Hover effects for story titles */
 .story-title:hover {
   color: #468FAF;
   text-decoration: none;
   transform: scale(1.01);
 }
 
+/* Main heading styling with brand colors */
 .sucess-heading {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -161,14 +42,17 @@
   border-radius: 5px;
 }
 
+/* Call-to-action section background */
 .bg-cta {
   background-color: #012A4A;
 }
 
+/* Call-to-action title color */
 .cta-title {
   color: #A9D6E5;
 }
 
+/* Call-to-action button styling */
 .btn-cta {
   background-color: #A9D6E5;
   color: #012A4A;
@@ -178,46 +62,59 @@
   transition: all 0.3s ease;
 }
 
+/* CTA button hover effects */
 .btn-cta:hover {
   color: #012A4A;
   background-color: #ffd60a;
   transform: scale(1.03);
 }
 
+.footer {
+  padding-top: 0;
+}
+
     </style>
 </head>
 
-<body>
-<!-- Navbar -->
+<body class="d-flex flex-column min-vh-100">
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
+    <!-- Brand/logo linking to homepage -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
+    <!-- Mobile menu toggle button that triggers offcanvas -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas menu -->
+    <!-- Offcanvas menu for mobile navigation -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
+        <!-- Close button for offcanvas -->
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
+        <!-- Navigation links -->
         <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item me-3">
+            <!-- Donate button -->
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
           <li class="nav-item">
+            <!-- Students section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
           </li>
           <li class="nav-item">
+            <!-- Funders section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
           <li class="nav-item">
+            <!-- About us page link -->
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
           <li class="nav-item me-2" id="login-area">
+            <!-- Login button -->
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
         </ul>
@@ -226,125 +123,139 @@
   </div>
 </nav>
 
-<!-- Hero Section -->
+<main class="flex-grow-1">
+<!-- Hero Section for Stories Page -->
 <section class="text-center py-5">
   <div class="container">
+    <!-- Main page heading -->
     <h1 class="sucess-heading display-4 fw-bold">Success Stories</h1>
+    <!-- Subtitle describing the purpose of the page -->
     <p class="mt-4 text-muted fs-5 fw-light">See how your support is changing lives across South Africa</p>
   </div>
 </section>
 
-<!-- Grid for Stories -->
+<!-- Success Stories Grid Section -->
 <section id="stories" class="container py-5">
+  <!-- Responsive grid layout for story cards -->
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-    <!-- Story Card (more stories can be added or removed)-->
-    <!-- Story 1-->
+    <!-- Story Card Template (more stories can be added or removed)-->
+    <!-- Story 1 - Amina's Journey -->
     <div class="col">
       <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled image -->
+        <!-- Centered and styled profile image -->
         <div class="text-center">
-          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png"
+          <img src="./assets/profile-user.png"
               class="img-fluid rounded-circle"
               style="width: 120px; height: 120px; object-fit: cover;"
               alt="Amina's Story">
         </div>
 
         <div class="card-body text-center">
+          <!-- Clickable story title with hover effects -->
           <h5 class="card-title mb-4">
-            <a href="/story/amina" class="story-title text-decoration-none">
+            <a href="./story/amina" class="story-title text-decoration-none">
               Amina's Journey to Medicine
             </a>
           </h5>
-          <p class="card-text text-muted small">With EduFund's help, Amina is now in her final year of medical school, serving rural communities.</p>
+          <!-- Story description -->
+          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
         </div>
       </div>
     </div>
 
-    <!-- Story 2-->
+    <!-- Story 2 - Duplicate template (ready for content update) -->
     <div class="col">
       <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled image -->
+        <!-- Centered and styled profile image -->
         <div class="text-center">
-          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png"
+          <img src="./assets/profile-user.png"
               class="img-fluid rounded-circle"
               style="width: 120px; height: 120px; object-fit: cover;"
               alt="Amina's Story">
         </div>
 
         <div class="card-body text-center">
+          <!-- Clickable story title with hover effects -->
           <h5 class="card-title mb-4">
             <a href="/story/amina" class="story-title text-decoration-none">
               Amina's Journey to Medicine
             </a>
           </h5>
-          <p class="card-text text-muted small">With EduFund's help, Amina is now in her final year of medical school, serving rural communities.</p>
+          <!-- Story description -->
+          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
         </div>
       </div>
     </div>
 
-    <!-- Story 3-->
+    <!-- Story 3 - Duplicate template (ready for content update) -->
     <div class="col">
       <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled image -->
+        <!-- Centered and styled profile image -->
         <div class="text-center">
-          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png"
+          <img src="./assets/profile-user.png"
               class="img-fluid rounded-circle"
               style="width: 120px; height: 120px; object-fit: cover;"
               alt="Amina's Story">
         </div>
 
         <div class="card-body text-center">
+          <!-- Clickable story title with hover effects -->
           <h5 class="card-title mb-4">
             <a href="/story/amina" class="story-title text-decoration-none">
               Amina's Journey to Medicine
             </a>
           </h5>
-          <p class="card-text text-muted small">With EduFund's help, Amina is now in her final year of medical school, serving rural communities.</p>
+          <!-- Story description -->
+          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
         </div>
       </div>
     </div>
 
-    <!-- Story 4-->
+    <!-- Story 4 - Duplicate template (ready for content update) -->
     <div class="col">
       <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled image -->
+        <!-- Centered and styled profile image -->
         <div class="text-center">
-          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png"
+          <img src="./assets/profile-user.png"
               class="img-fluid rounded-circle"
               style="width: 120px; height: 120px; object-fit: cover;"
               alt="Amina's Story">
         </div>
 
         <div class="card-body text-center">
+          <!-- Clickable story title with hover effects -->
           <h5 class="card-title mb-4">
             <a href="/story/amina" class="story-title text-decoration-none">
               Amina's Journey to Medicine
             </a>
           </h5>
-          <p class="card-text text-muted small">With EduFund's help, Amina is now in her final year of medical school, serving rural communities.</p>
+          <!-- Story description -->
+          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
         </div>
       </div>
     </div>
 
-    <!-- Story 5-->
+    <!-- Story 5 - Duplicate template (ready for content update) -->
     <div class="col">
       <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled image -->
+        <!-- Centered and styled profile image -->
         <div class="text-center">
-          <img src="/IT PROJECT/FRONTEND/assets/profile-user.png"
+          <img src="./assets/profile-user.png"
               class="img-fluid rounded-circle"
               style="width: 120px; height: 120px; object-fit: cover;"
               alt="Amina's Story">
         </div>
 
         <div class="card-body text-center">
+          <!-- Clickable story title with hover effects -->
           <h5 class="card-title mb-4">
             <a href="/story/amina" class="story-title text-decoration-none">
               Amina's Journey to Medicine
             </a>
           </h5>
-          <p class="card-text text-muted small">With EduFund's help, Amina is now in her final year of medical school, serving rural communities.</p>
+          <!-- Story description -->
+          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
         </div>
       </div>
     </div>
@@ -352,28 +263,33 @@
   </div>
 </section>
 
-<!-- Testimonial Carousel (words from our community)-->
+<!-- Testimonial Carousel Section (words from our community) -->
 <section class="bg-light py-5">
   <div class="container text-center">
+    <!-- Section heading -->
     <h2 class="mb-4 fw-bold">Words from Our Community</h2>
+    <!-- Bootstrap carousel for testimonials -->
     <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
 
+        <!-- First testimonial (active) -->
         <div class="carousel-item active">
           <blockquote class="blockquote">
-            <p class="fs-5 fw-light mb-4">"EduFund gave me the chance to dream again. I'm now a teacher inspiring the next generation."</p>
+            <p class="fs-5 fw-light mb-4">"FundMyFuture's gave me the chance to dream again. I'm now a teacher inspiring the next generation."</p>
             <footer class="blockquote-footer small fw-lighter text-muted">Naledi, Eastern Cape</footer>
           </blockquote>
         </div>
 
+        <!-- Second testimonial -->
         <div class="carousel-item">
           <blockquote class="blockquote">
-            <p class="fs-5 fw-light mb-4">"Supporting students through EduFund has been the most rewarding experience of my life."</p>
+            <p class="fs-5 fw-light mb-4">"Supporting students through FundMyFuture's has been the most rewarding experience of my life."</p>
             <footer class="blockquote-footer small fw-lighter text-muted">Sipho, Donor from Johannesburg</footer>
           </blockquote>
         </div>
 
       </div>
+      <!-- Carousel navigation controls -->
       <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
       </button>
@@ -384,99 +300,132 @@
   </div>
 </section>
 
-<!-- CTA Section -->
-<section class="text-center py-4 bg-cta text-white mb-0">
-  <div class="container">
+<!-- Call-to-Action Section -->
+<section class="text-center bg-cta text-white">
+  <div class="container py-4">
     <h1 class="cta-title mb-3 fw-bold">Be the Change</h1>
     <p class="mb-5 fw-lighter">Your donation can help another student write their success story.</p>
     <a href="donate.html" class="btn btn-cta mb-2">Donate Now</a>
   </div>
 </section>
 
+</main>
 
-<!-- Footer -->
+
+<!-- Footer Section -->
 <footer class="footer pt-5">
+
+  <!-- Main container for footer content -->
   <div class="container pb-4">
+    
     <div class="row">
-      <!-- Newsletter -->
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <!-- Newsletter subscription form -->
         <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field -->
           <i class="fa-regular fa-envelope"></i>
+          <!-- Email input field -->
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <!-- Submit button -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
+          <!-- Instagram social media link -->
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- Facebook social media link -->
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <!-- LinkedIn social media link -->
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-linkedin"></i>
+          </a>
         </div>
       </div>
+
     </div>
 
-    <hr>
+    <hr> <!-- Horizontal separator line -->
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
           <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
-         
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
           <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
-    </div>
-  </div>
 
-  <!-- Bottom Bar -->
+    </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      
+      <!-- Legal & policy links section -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
+
+      <!-- Copyright information -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
+
 </footer>
 
 <!-- Bootstrap + Font Awesome JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap Icons -->
+<!-- Bootstrap Icons (duplicate - already loaded in head) -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Bootstrap JavaScript bundle with Popper (duplicate) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
 </body>
