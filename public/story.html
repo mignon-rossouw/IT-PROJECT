@@ -73,6 +73,22 @@
   padding-top: 0;
 }
 
+/* Circular image container for success story photos */
+.image-circle {
+  width: 180px;
+  height: 180px;
+  margin: 1rem auto 0;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+/* Success story image styling */
+.image-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
     </style>
 </head>
 
@@ -134,134 +150,145 @@
   </div>
 </section>
 
-<!-- Success Stories Grid Section -->
-<section id="stories" class="container py-5">
-  <!-- Responsive grid layout for story cards -->
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+<div class="container py-5">
+  <div class="row">
 
-    <!-- Story Card Template (more stories can be added or removed)-->
-    <!-- Story 1 - Amina's Journey -->
-    <div class="col">
-      <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled profile image -->
-        <div class="text-center">
-          <img src="./assets/profile-user.png"
-              class="img-fluid rounded-circle"
-              style="width: 120px; height: 120px; object-fit: cover;"
-              alt="Amina's Story">
-        </div>
-
-        <div class="card-body text-center">
-          <!-- Clickable story title with hover effects -->
-          <h5 class="card-title mb-4">
-            <a href="./story/amina" class="story-title text-decoration-none">
-              Amina's Journey to Medicine
-            </a>
-          </h5>
-          <!-- Story description -->
-          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
+      <!-- 1. Thandi Maseko -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-bule-2127348686-34377373.jpg" class="card-img-top" alt="Thandi Maseko">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Thandi Maseko</h5>
+            <p class="card-text text-secondary small mb-3">
+              Thandi grew up in a small village outside Tzaneen with a dream of studying <strong>Mechatronic Engineering</strong> at the University of Pretoria. 
+              Through <span class="text-success fw-semibold">FundMyFuture</span>, she raised <strong>R48,500</strong> to cover her first-semester fees and now works on 3D-printed prosthetic limbs for children.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “FundMyFuture didn’t just fund my studies—it restored my belief that people care about my dream.”
+            </blockquote>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Story 2 - Duplicate template (ready for content update) -->
-    <div class="col">
-      <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled profile image -->
-        <div class="text-center">
-          <img src="./assets/profile-user.png"
-              class="img-fluid rounded-circle"
-              style="width: 120px; height: 120px; object-fit: cover;"
-              alt="Amina's Story">
-        </div>
-
-        <div class="card-body text-center">
-          <!-- Clickable story title with hover effects -->
-          <h5 class="card-title mb-4">
-            <a href="/story/amina" class="story-title text-decoration-none">
-              Amina's Journey to Medicine
-            </a>
-          </h5>
-          <!-- Story description -->
-          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
+      <!-- 2. Aiden Naidoo -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-timothypictures-2826131.jpg" class="card-img-top" alt="Aiden Naidoo">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Aiden Naidoo</h5>
+            <p class="card-text text-secondary small mb-3">
+              Aiden, a passionate coder from Durban, almost deferred his studies after his father lost his job. 
+              With the help of <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R36,000</strong> to continue his <strong>Computer Science</strong> degree and now tutors coding at a local NGO.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “I used to think crowdfunding was just for startups — but it gave me my start.”
+            </blockquote>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Story 3 - Duplicate template (ready for content update) -->
-    <div class="col">
-      <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled profile image -->
-        <div class="text-center">
-          <img src="./assets/profile-user.png"
-              class="img-fluid rounded-circle"
-              style="width: 120px; height: 120px; object-fit: cover;"
-              alt="Amina's Story">
-        </div>
-
-        <div class="card-body text-center">
-          <!-- Clickable story title with hover effects -->
-          <h5 class="card-title mb-4">
-            <a href="/story/amina" class="story-title text-decoration-none">
-              Amina's Journey to Medicine
-            </a>
-          </h5>
-          <!-- Story description -->
-          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
+      <!-- 3. Nomvelo Khumalo -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-olly-3768911.jpg" class="card-img-top" alt="Nomvelo Khumalo">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Nomvelo Khumalo</h5>
+            <p class="card-text text-secondary small mb-3">
+              Nomvelo, a <strong>Pharmacy student</strong> from Pietermaritzburg, faced exclusion when her funding was delayed. 
+              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign went viral, raising <strong>R52,000</strong> in 10 days and allowing her to graduate on time.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “Every donation felt like a hand pulling me forward when I was ready to stop trying.”
+            </blockquote>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Story 4 - Duplicate template (ready for content update) -->
-    <div class="col">
-      <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled profile image -->
-        <div class="text-center">
-          <img src="./assets/profile-user.png"
-              class="img-fluid rounded-circle"
-              style="width: 120px; height: 120px; object-fit: cover;"
-              alt="Amina's Story">
-        </div>
-
-        <div class="card-body text-center">
-          <!-- Clickable story title with hover effects -->
-          <h5 class="card-title mb-4">
-            <a href="/story/amina" class="story-title text-decoration-none">
-              Amina's Journey to Medicine
-            </a>
-          </h5>
-          <!-- Story description -->
-          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
+      <!-- 4. Liam Jacobs -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-marta-klement-636760-1438081.jpg" class="card-img-top" alt="Liam Jacobs">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Liam Jacobs</h5>
+            <p class="card-text text-secondary small mb-3">
+              Liam, a <strong>Fine Arts</strong> student at Stellenbosch University, couldn’t afford materials for his final exhibition. 
+              Thanks to <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R18,000</strong> in two weeks and went on to win the Dean’s Award.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “The platform didn’t just help me finish my degree—it helped me believe that creativity has real value.”
+            </blockquote>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Story 5 - Duplicate template (ready for content update) -->
-    <div class="col">
-      <div class="card border-1 shadow-sm p-4">
-        <!-- Centered and styled profile image -->
-        <div class="text-center">
-          <img src="./assets/profile-user.png"
-              class="img-fluid rounded-circle"
-              style="width: 120px; height: 120px; object-fit: cover;"
-              alt="Amina's Story">
-        </div>
-
-        <div class="card-body text-center">
-          <!-- Clickable story title with hover effects -->
-          <h5 class="card-title mb-4">
-            <a href="/story/amina" class="story-title text-decoration-none">
-              Amina's Journey to Medicine
-            </a>
-          </h5>
-          <!-- Story description -->
-          <p class="card-text text-muted small">With FundMyFuture's help, Amina is now in her final year of medical school, serving rural communities.</p>
+      <!-- 5. Zanele Dlamini -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-divinetechygirl-1181672.jpg" class="card-img-top" alt="Zanele Dlamini">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Zanele Dlamini</h5>
+            <p class="card-text text-secondary small mb-3">
+              Zanele, a <strong>Biotechnology student</strong> at UKZN, was researching eco-friendly water filters but lacked lab funds. 
+              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign exceeded its target, raising <strong>R57,000</strong>, and later won a provincial science award.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “My project was small, but FundMyFuture turned it into something that could help communities across South Africa.”
+            </blockquote>
+          </div>
         </div>
       </div>
-    </div>
 
+      <!-- 6. Amy Daniels -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-anastasiya-gepp-654466-1462630.jpg" class="card-img-top" alt="Amy Daniels">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Amy Daniels</h5>
+            <p class="card-text text-secondary small mb-3">
+              Amy, a creative from Port Elizabeth, wanted to become a <strong>UX/UI designer</strong> but couldn’t afford design software or equipment. 
+              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R22,000</strong>, funding her tools and studies. She now mentors other design students.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “Every donation was like a vote of confidence in my creativity — I’ll never forget that.”
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Sasha Petersen -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="image-circle">
+            <img src="./assets/pexels-cristian-rojas-10041267.jpg" class="card-img-top" alt="Sasha Petersen">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Sasha Petersen</h5>
+            <p class="card-text text-secondary small mb-3">
+              Sasha grew up in Mitchells Plain with a lifelong goal to become a <strong>doctor</strong> serving underprivileged communities. 
+              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R64,000</strong> in 12 days, allowing her to continue her MBChB studies at Stellenbosch University.
+            </p>
+            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+              “Because of FundMyFuture, I didn’t just stay in school — I found a whole community that believes in my purpose.”
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</section>
+
 
 <!-- Testimonial Carousel Section (words from our community) -->
 <section class="bg-light py-5">
@@ -300,8 +327,10 @@
   </div>
 </section>
 
+</main>
+
 <!-- Call-to-Action Section -->
-<section class="text-center bg-cta text-white">
+<section class="text-center bg-cta text-white mb-0">
   <div class="container py-4">
     <h1 class="cta-title mb-3 fw-bold">Be the Change</h1>
     <p class="mb-5 fw-lighter">Your donation can help another student write their success story.</p>
@@ -309,11 +338,8 @@
   </div>
 </section>
 
-</main>
-
-
 <!-- Footer Section -->
-<footer class="footer pt-5">
+<footer class="footer pt-5 mt-0">
 
   <!-- Main container for footer content -->
   <div class="container pb-4">
