@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Student's Dashboard </title>
+
+  <!-- External CSS libraries -->
+  <!-- Bootstrap CSS for responsive design and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
     
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+    <!-- Page-specific inline styles for Student Dashboard -->
     <style>
-
     /* COLOUR PALLET (dark to light)
     Blue 1:   #012A4A
     Blue 2:   #013A63
@@ -23,445 +31,360 @@
     Blue 9:   #89C2D9
     Blue 10:  #A9D6E5
     */
-body {
-  overflow-x: hidden;
-}
 
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
+    /* Prevent horizontal scrolling */
+    body {
+      overflow-x: hidden;
+    }
 
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
+    /* Dashboard header styling */
+    .dashboard-header {
+      background-color: #2A6F97;
+      padding: 30px 0;
+      margin-bottom: 0px;
+    }
 
-.navbar-brand:hover {
-  color: #0077b6;
-}
+    /* Heading color styling */
+    .funder-heading {
+      color: #012A4A;
+    }
 
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
+    .dashboard-header {
+      color: #012A4A;
+    }
 
-.nav-link:hover {
-  color: #0077b6 !important;
-}
+    /* Profile card styling with shadow effects */
+    .profile-card {
+      background-color: #A9D6E5;
+      box-shadow: 10px 10px 17px -7px #000000, 10px 10px 15px 15px rgba(1,42,74,0);
+      border: none;
+    }
 
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
+    /* Profile image styling */
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
 
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
+    /* Profile information text styling */
+    .profile-info {
+      flex: 1;
+      color: #012A4A;
+      font-weight: 700;
+    }
 
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
+    /* Edit profile button styling */
+    .edit-profile-btn {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 700;
+      border: none;
+      width: 150px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
+    /* Edit profile button hover effects */
+    .edit-profile-btn:hover {
+      background-color: #2A6F97;
+      color: #012A4A;
+    }
 
-.login-btn {
-  color: #ffd60a;
-}
+    /* Donation target title styling */
+    .donation-target-title {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+    }
 
-/* footer css */
-.footer {
-  margin-top: 100px;
-  background-color: #468FAF;
-  color: #012A4A;
-}
+    /* Donation button styling */
+    .btn-donation {
+      background-color: #ffda1f;
+      color: #012A4A;
+      font-weight: 800;
+      font-size: x-large;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      padding: 10px;
+    }
 
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
+    /* Donation button hover effects */
+    .btn-donation:hover {
+      background-color: #e0b000;
+      color: #012A4A;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
+    }
 
-.footer a:hover {
-  text-decoration: underline;
-}
+    /* Campaign button styling */
+    .btn-campaign {
+      background-color: #ffda1f;
+      color: #012A4A;
+      font-weight: 800;
+      font-size: x-large;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      padding: 10px;
+    }
 
-.footer li {
-  margin-bottom: 15px;
-}
+    /* Campaign button hover effects */
+    .btn-campaign:hover {
+      background-color: #e0b000;
+      color: #012A4A;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
+    }
 
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
+    /* Background pattern for profile section */
+    .profile-background {
+    width: 100%;
+      background:
+        conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
+        conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
+        conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
+        conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
+        linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
+        conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
+        linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
+      background-size: 168px 194px;
+    }
 
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
+    /* Profile icon color */
+    .profile-icon {
+      color: #A9D6E5;
+    }
 
-.icon-input-group {
-  position: relative;
-}
+    /* Custom progress bar container */
+    .custom-progress {
+      height: 20px;
+      background-color: #e0af0057;
+      border-radius: 5px;
+      overflow: hidden;
+    }
 
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
+    /* Custom progress bar fill */
+    .custom-bar {
+      background-color: #e0b000;
+      color: #012a4a;
+      font-weight: bold;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 5px;
+      transition: width 0.6s ease;
+    }
 
-.icon-input-group input {
-  padding-left: 2rem;
-}
+    /* Progress section background */
+    .progress-section {
+      background-color: #86a9c35e;
+      border-radius: 5px;
+    }
 
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+    /* Share button styling */
+    .btn-share {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 800;
+      transition: all 0.3s ease;
+    }
 
-.social-icons i:hover {
-  color: #A9D6E5;
-}
+    /* Share button hover effects */
+    .btn-share:hover {
+      background-color: #ffd60a;
+      transform: scale(1.01);
+    }
 
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
+    /* View all button styling */
+    .btn-view-all {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+      transition: all 0.3s ease;
+    }
 
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+    /* View all button hover effects */
+    .btn-view-all:hover {
+      color: #012A4A;
+      background-color: #89C2D9;
+      transform: scale(1.01);
+    }
 
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
+    /* Custom horizontal rule styling */
+    .custom-hr {
+      border: none;
+      border-radius: 5px;
+      height: 2px;
+      background-color: #012a4aa7;
+    }
 
-.dashboard-header {
-  background-color: #2A6F97;
-  padding: 30px 0;
-  margin-bottom: 0px;
-}
+    /* Spacer utility class */
+    .spacer {
+      height: 20px;
+    }
 
-.funder-heading {
-  color: #012A4A;
-}
+    /* Progress title styling */
+    .progress-title {
+      background-color: #2A6F97;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
 
-.dashboard-header {
-  color: #012A4A;
-}
+    /* Donations title styling */
+    .donations-title {
+      background-color: #2A6F97;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
 
-.profile-card {
-  background-color: #A9D6E5;
-  box-shadow: 10px 10px 17px -7px #000000, 10px 10px 15px 15px rgba(1,42,74,0);
-  border: none;
-}
+    /* Donations link color */
+    .donations-link {
+      color: #A9D6E5;
+    }
 
-.profile-img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-}
+    /* About title styling */
+    .about-title {
+      background-color: #2A6F97;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
 
-.profile-info {
-  flex: 1;
-  color: #012A4A;
-  font-weight: 700;
-}
+    /* Share update title styling */
+    .share-update {
+      background-color: #2A6F97;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
 
-.edit-profile-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 700;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+    /* Updates title styling */
+    .updates {
+      background-color: #2A6F97;
+      color: #A9D6E5;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
 
-.edit-profile-btn:hover {
-  background-color: #2A6F97;
-  color: #012A4A;
-}
+    /* Update link color */
+    .update-link {
+      color: #A9D6E5;
+    }
 
-.donation-target-title {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-}
+    /* Post update button styling */
+    .btn-post-update {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+      transition: all 0.3s ease;
+    }
 
-.btn-donation {
-  background-color: #ffda1f;
-  color: #012A4A;
-  font-weight: 800;
-  font-size: x-large;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  padding: 10px;
-}
+    /* Post update button hover effects */
+    .btn-post-update:hover {
+      color: #012A4A;
+      background-color: #89C2D9;
+      transform: scale(1.01);
+    }
 
-.btn-donation:hover {
-  background-color: #e0b000;
-  color: #012A4A;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
-}
+    /* View update button styling */
+    .btn-view-update {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+      transition: all 0.3s ease;
+    }
 
-.btn-campaign {
-  background-color: #ffda1f;
-  color: #012A4A;
-  font-weight: 800;
-  font-size: x-large;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  padding: 10px;
-}
+    /* View update button hover effects */
+    .btn-view-update:hover {
+      color: #012A4A;
+      background-color: #89C2D9;
+      transform: scale(1.01);
+    }
 
-.btn-campaign:hover {
-  background-color: #e0b000;
-  color: #012A4A;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
-}
+    /* Edit button icon styling */
+    .edit-btn i {
+      font-size: 2rem;
+      color: #A9D6E5;
+      transition: color 0.2s ease;
+    }
 
-.profile-background {
-width: 100%;
-  background:
-    conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
-    conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
-    conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
-    conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
-    linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
-    conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
-    linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
-  background-size: 168px 194px;
-}
+    /* Edit button hover effects */
+    .edit-btn:hover i {
+      color: #ffda1f;
+    }
 
-.profile-icon {
-  color: #A9D6E5;
-}
+    /* Share update button icon styling */
+    .share-update-btn i {
+      font-size: 1.2rem;
+      color: #A9D6E5;
+      transition: color 0.2s ease;
+    }
 
-.custom-progress {
-  height: 20px;
-  background-color: #e0af0057;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.custom-bar {
-  background-color: #e0b000;
-  color: #012a4a;
-  font-weight: bold;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 5px;
-  transition: width 0.6s ease;
-}
-
-.progress-section {
-  background-color: #86a9c35e;
-  border-radius: 5px;
-}
-
-.btn-share {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  transition: all 0.3s ease;
-}
-
-.btn-share:hover {
-  background-color: #ffd60a;
-  transform: scale(1.01);
-}
-
-.btn-view-all {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
-
-.btn-view-all:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
-
-.custom-hr {
-  border: none;
-  border-radius: 5px;
-  height: 2px;
-  background-color: #012a4aa7;
-}
-
-.spacer {
-  height: 20px;
-}
-
-.progress-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.donations-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.donations-link {
-  color: #A9D6E5;
-}
-
-.about-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.share-update {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.updates {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.update-link {
-  color: #A9D6E5;
-}
-
-.btn-post-update {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
-
-.btn-post-update:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
-
-.btn-view-update {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
-
-.btn-view-update:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
-
-.edit-btn i {
-  font-size: 2rem;
-  color: #A9D6E5;
-  transition: color 0.2s ease;
-}
-
-.edit-btn:hover i {
-  color: #ffda1f;
-}
-
-.share-update-btn i {
-  font-size: 1.2rem;
-  color: #A9D6E5;
-  transition: color 0.2s ease;
-}
-
-/* hover effect */
-.share-update-btn:hover i {
-  color: #ffd60a;
-}
+    /* Share update button hover effects */
+    .share-update-btn:hover i {
+      color: #ffd60a;
+    }
 
     </style>
 </head>
 
 <body>
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
+    <!-- Brand/logo linking to homepage -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
+    <!-- Mobile menu toggle button that triggers offcanvas -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas menu -->
+    <!-- Offcanvas menu for mobile navigation -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
+        <!-- Close button for offcanvas -->
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
+        <!-- Navigation links -->
         <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item me-3">
+            <!-- Donate button -->
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
           <li class="nav-item">
+            <!-- Students section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
           </li>
           <li class="nav-item">
+            <!-- Funders section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
           <li class="nav-item">
+            <!-- About us page link -->
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
           <li class="nav-item me-2" id="login-area">
+            <!-- Login button -->
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
         </ul>
@@ -485,37 +408,47 @@ width: 100%;
 
     <!-- Text Column -->
     <div class="flex-grow-1 text-start">
+      <!-- User role indicator -->
       <h4 class="fw-bold funder-heading mb-0">Student</h4>
+      <!-- Main dashboard heading -->
       <h2 class="fw-bold dashboard-heading">Dashboard</h2>
     </div>
   </div>
 </div>
 
+<!-- Profile Background Section with Pattern -->
 <div class="container-fluid profile-background py-4 px-4">
   <!-- Personal Info & Stats -->
   <div class="row justify-content-center">
     <!-- Profile Card -->
     <div class="col-12 col-lg-12">
       <div class="card profile-card p-4 m-4 d-flex flex-row flex-wrap align-items-center">
+        <!-- Profile Image -->
         <img src="./assets/profile-user.png" class="rounded-circle profile-img me-3 img-fluid" alt="Profile">
+        <!-- Profile Information -->
         <div class="profile-info text-start">
+          <!-- Name Display -->
           <div class="d-flex gap-2 mb-1">
             <h5 class="fw-bold mb-0">Name</h5>
             <h5 class="fw-bold mb-0">Surname</h5>
           </div>
           <br>
+          <!-- Date of Birth -->
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-calendar2-week-fill me-2"></i>
             <span>01 Jan 1990</span>
           </div>
+          <!-- Location -->
           <div class="d-flex align-items-center mb-2">
             <i class="bi bi-geo-alt-fill me-2"></i>
             <span>Cape Town</span>
           </div>
+          <!-- Email -->
           <div class="d-flex align-items-center mb-3">
             <i class="bi bi-envelope-fill me-2"></i>
             <span>name@example.com</span>
           </div>
+          <!-- Edit Profile Button -->
           <div class="text-end mt-3">
             <button class="btn edit-profile-btn">Edit Profile</button>
           </div>
@@ -525,29 +458,37 @@ width: 100%;
   </div>
 </div>
 
+<!-- Main Dashboard Content Container -->
 <div class="container py-4 px-3">
 
-<!-- Recent Donations -->
+<!-- Campaign and Donations Section -->
   <div class="container my-5">
   <div class="row">
     <!-- Left Column: Progress + Donations -->
+    <!-- Campaign Title with Edit Button -->
      <div class="donation-target-title mt-4 d-flex align-items-center justify-content-between">
       <h4 class="fw-bolder mb-0">Help Lawrence Study Engineering</h4>
+        <!-- Edit Campaign Name Button -->
         <button class="btn btn-link p-0 text-muted edit-btn" title="Edit campaign name">
         <i class="bi bi-pencil-square"></i>
       </button>
     </div>
+    
+    <!-- Left Column: Progress Tracking and Donations -->
     <div class="col-12 col-lg-6">
       <!-- Progress Section -->
       <div class="mb-3 mt-4">
         <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
         <div class="progress-section p-3">
+          <!-- Current Amount Raised -->
           <h4 class="fw-bolder mb-1">R22 153</h4>
+          <!-- Campaign Statistics -->
           <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
             <small class="text-muted">R30 000 target</small>
             <small class="text-muted">⋅</small>
             <small class="text-muted">83 donations</small>
           </div>
+          <!-- Progress Bar -->
           <div class="progress custom-progress" style="height: 30px;">
             <div class="progress-bar custom-bar" style="width: 36%;">36%</div>
           </div>
@@ -557,20 +498,22 @@ width: 100%;
       <!-- Share & Donate Buttons -->
       <div class="row g-2">
         <div class="col-12">
+          <!-- Share Campaign Button -->
           <button class="btn btn-share w-100">
             <i class="bi bi-share-fill me-2"></i>Share
           </button>
         </div>
       </div>
 
-    <!--<hr class="my-4 custom-hr">-->
-
-    <div class="spacer"></div>
+      <!-- Spacer for visual separation -->
+      <div class="spacer"></div>
 
       <!-- Recent Donations Section -->
       <div class="my-5">
         <h5 class="donations-title mb-3 fw-bold"> <i class="bi bi-hearts me-2"></i>Donations <a href="#" class="donations-link ms-2">(67)</a></h5>
+        <!-- Donations List -->
         <ul class="list-group mb-3">
+          <!-- Recent Donation -->
           <li class="list-group-item">
             <div class="d-flex flex-column">
               <span class="fw-bold mb-2">Rachael Fox</span>
@@ -581,6 +524,7 @@ width: 100%;
               </div>
             </div>
           </li>
+          <!-- Top Donation -->
           <li class="list-group-item">
             <div class="d-flex flex-column">
               <span class="fw-bold mb-2">Megan Daniels</span>
@@ -591,6 +535,7 @@ width: 100%;
               </div>
             </div>
           </li>
+          <!-- First Donation -->
           <li class="list-group-item">
             <div class="d-flex flex-column">
               <span class="fw-bold mb-2">Jeffery Marsh</span>
@@ -602,28 +547,31 @@ width: 100%;
             </div>
           </li>
         </ul>
+        <!-- View All Donations Button -->
         <div class="d-flex flex-column gap-2 mb-4">
           <button class="btn btn-view-all">View All</button>
         </div>
       </div>
     </div>
 
-    <!-- Right Column: Updates -->
+    <!-- Right Column: Campaign Updates and Information -->
     <div class="col-12 col-lg-6">
       
-      <!-- Image -->
+      <!-- Campaign Image -->
         <div class="mb-4 mt-4 text-center">
           <img src="./assets/pexels-kaiariel-3563697.jpg" alt="Campaign Image" class="img-fluid w-100 rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
         </div>
 
-      <!-- Description Text -->
+      <!-- Campaign Description -->
         <div class="mb-4">
           <div class="about-title fw-bold mt-4 d-flex align-items-center justify-content-between">
             <h5 class="fw-bolder mb-0"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
+              <!-- Edit Campaign Description Button -->
               <button class="btn btn-link p-0 text-muted share-update-btn" title="Edit campaign name">
               <i class="bi bi-pencil-square"></i>
             </button>
           </div>
+          <!-- Campaign Description Text -->
           <p class="text-muted">
           Lawrence is pursuing a degree in engineering and needs support to cover tuition, materials, and living expenses. Every contribution helps him get closer to his dream.
           </p>
@@ -632,42 +580,48 @@ width: 100%;
       <!-- User Update Area -->
       <div class="mb-4">
         <h5 class="share-update fw-bold"><i class="bi bi-chat-left-heart-fill me-2"></i>Share an Update</h5>
+        <!-- Update Form -->
         <form>
           <div class="mb-3">
             <textarea class="form-control" rows="4" placeholder="Write your update here..."></textarea>
           </div>
+          <!-- Post Update Button -->
           <button type="submit" class="btn btn-post-update w-100 mb-4">Post Update</button>
         </form>
       </div>
 
-      <!-- Previous Updates -->
+      <!-- Previous Updates Section -->
       <div>
         <h5 class="updates fw-bold mb-3">Updates <a href="#" class="update-link ms-2">(4)</a></h5>
 
+        <!-- Update Card 1 -->
         <div class="card mb-3">
           <div class="card-body">
             <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
             <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I’ve just registered for my first semester and bought my textbooks.</p>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
           </div>
         </div>
 
+        <!-- Update Card 2 -->
         <div class="card mb-3">
           <div class="card-body">
             <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
             <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I’ve just registered for my first semester and bought my textbooks.</p>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
           </div>
         </div>
 
+        <!-- Update Card 3 -->
         <div class="card mb-3">
           <div class="card-body">
             <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
             <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I’ve just registered for my first semester and bought my textbooks.</p>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
           </div>
         </div>
 
+        <!-- View All Updates Button -->
         <div class="d-flex justify-content-end mt-3">
           <button class="btn btn-view-update">View All Updates</button>
         </div>
@@ -679,84 +633,112 @@ width: 100%;
 
 </div>
 
-
-
-<!-- Footer -->
+<!-- Footer Section -->
 <footer class="footer pt-5">
+
+  <!-- Main container for footer content -->
   <div class="container pb-4">
+    
     <div class="row">
-      <!-- Newsletter -->
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <!-- Newsletter subscription form -->
         <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field -->
           <i class="fa-regular fa-envelope"></i>
+          <!-- Email input field -->
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <!-- Submit button -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
+          <!-- Instagram social media link -->
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- Facebook social media link -->
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <!-- LinkedIn social media link -->
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-linkedin"></i>
+          </a>
         </div>
       </div>
+
     </div>
 
-    <hr>
+    <hr> <!-- Horizontal separator line -->
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
           <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
-        
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-           <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
-    </div>
-  </div>
 
-  <!-- Bottom Bar -->
+    </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      
+      <!-- Legal & policy links section -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
+
+      <!-- Copyright information -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
+
 </footer>
 
 <!-- Bootstrap + Font Awesome JS -->

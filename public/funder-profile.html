@@ -3,166 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Funder's Dashboard </title>
-    
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <title> Funder's Profile </title>
+
+  <!-- External CSS Libraries -->
+  <!-- Bootstrap CSS for responsive layout and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
+
     <style>
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
-
-.navbar-brand:hover {
-  color: #0077b6;
-}
-
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
-
-.nav-link:hover {
-  color: #0077b6 !important;
-}
-
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
-
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
-
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
-
-.login-btn {
-  color: #ffd60a;
-}
-
-/* footer css */
-.footer {
-  margin-top: 100px;
-  background-color: #468FAF;
-  color: #012A4A;
-}
-
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer li {
-  margin-bottom: 15px;
-}
-
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.icon-input-group {
-  position: relative;
-}
-
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
-
-.icon-input-group input {
-  padding-left: 2rem;
-}
-
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.social-icons i:hover {
-  color: #A9D6E5;
-}
-
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
-
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
-
-/* content css */
+/* ===== CONTENT STYLING ===== */
+/* Profile image sizing for consistent display (20% of container width) */
 .profile-image {
-    width: 20%;
+  width: 20%;
 }
 
+/* Badge card styling with brand light blue background */
 .badge-card {
-    border: none;
-    background-color: #A9D6E5;
+  border: none;
+  background-color: #A9D6E5;
 }
 
+/* About section card styling */
 .about-card {
-    border: none;
-    background-color: #A9D6E5;
+  border: none;
+  background-color: #A9D6E5;
 }
 
+/* Main profile info card styling */
 .profile-info {
-    border: none;
-    background-color: #A9D6E5;
+  border: none;
+  background-color: #A9D6E5;
 }
 
-
+/* ===== FUNDER STATS STYLING ===== */
+/* Stats section heading with brand colors (dark blue background, light blue text) */
 .funder-stats h5 {
   color: #A9D6E5;
   background-color: #012A4A;
@@ -170,20 +50,25 @@
   border-radius: 5px;
 }
 
+/* Individual stat item styling with subtle background */
 .stats {
   border: 1px solid #012a4a12;
   background-color: #012a4a12;
 }
 
+/* Stat label styling */
 .stats h6 {
   color: #012A4A;
   font-size: 0.9rem;
 }
 
+/* Stat value styling with emphasis */
 .stats p {
   color: #012A4A;
 }
 
+/* ===== BUTTON STYLING ===== */
+/* View campaign button styling with brand colors */
 .btn-view-campaign {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -193,27 +78,34 @@
   transition: all 0.3s ease;
 }
 
+/* View campaign button hover effects with yellow accent */
 .btn-view-campaign:hover {
   color: #012A4A;
   background-color: #ffd60a;
   transform: scale(1.02);
 }
 
+/* ===== BADGE AND AMOUNT STYLING ===== */
+/* Donation amount badge with highlight yellow color */
 .bg-amount {
   background-color: #ffc300;
   color: #012A4A;
 }
 
+/* ===== INTERACTIVE ELEMENT STYLING ===== */
+/* Social icon hover effects with smooth transitions */
 .hover-opacity i{
   transition: transform 0.3s ease, color 0.3s ease;
   cursor: pointer;
 }
 
+/* Social icon hover state with color change */
 .hover-opacity i:hover{
   color: #01497c;
   cursor: pointer;
 }
 
+/* General hover opacity effect for interactive elements */
 .hover-opacity:hover {
   transform: scale(1.2);
 }
@@ -223,35 +115,42 @@
 </head>
 
 <body>
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
+    <!-- Brand/Logo linking to homepage -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
+    <!-- Mobile menu toggle button -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas menu -->
+    <!-- Offcanvas navigation menu for mobile devices -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
+        <!-- Close button for offcanvas menu -->
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav ms-auto align-items-center">
+          <!-- Donate button call-to-action -->
           <li class="nav-item me-3">
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
+          <!-- Student section link -->
           <li class="nav-item">
             <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
           </li>
+          <!-- Funder section link -->
           <li class="nav-item">
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
+          <!-- About us informational link -->
           <li class="nav-item">
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
+          <!-- Login/authentication button -->
           <li class="nav-item me-2" id="login-area">
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
@@ -261,47 +160,60 @@
   </div>
 </nav>
 
-<!-- Bootstrap Icons -->
+<!-- Bootstrap Icons for additional icon options -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Bootstrap JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- ===== MAIN PROFILE CONTENT ===== -->
 <div class="container mt-5">
-<!-- Profile Header -->
+<!-- Profile Header Section -->
   <div class="profile-info card mb-4">
     <div class="card-body d-flex align-items-start justify-content-between">
-      <!-- Left: Profile Image and Info -->
+      <!-- Left: Profile Image and Basic Information -->
       <div class="d-flex align-items-center">
+        <!-- Profile picture with circular styling -->
         <img src="./assets/profile-user.png" class="profile-image img-fluid rounded-circle me-4" alt="Profile Picture">
         <div>
+          <!-- Funder name with emphasis -->
           <h2 class="card-title fw-bold fs-1">Jane Doe</h2>
+          <!-- Funder tagline, interests, and location -->
           <p class="card-text text-muted small">Education Advocate | STEM Enthusiast | Cape Town, South Africa</p>
         </div>
       </div>
 
-      <!-- Right: Social Icons -->
+      <!-- Right: Social Media Links -->
       <div class="d-flex flex-column align-items-end gap-2">
+        <!-- Email contact link with envelope icon -->
         <a href="mailto:jane@example.com" class="text-dark hover-opacity" target="_blank">
           <i class="bi bi-envelope-fill fs-5"></i>
         </a>
+        <!-- LinkedIn professional profile link -->
         <a href="https://www.linkedin.com/in/janedoe" class="text-dark hover-opacity" target="_blank">
           <i class="bi bi-linkedin fs-5"></i>
         </a>
+        <!-- Twitter/X social media profile link -->
         <a href="https://twitter.com/janedoe" class="text-dark hover-opacity" target="_blank">
           <i class="bi bi-twitter-x fs-5"></i>
         </a>
       </div>
     </div>
 
-    <!-- Badges -->
+    <!-- Badges Section -->
+    <!-- Achievement badges showing funder status, recognition, and participation level -->
     <div class="badge-card card mb-1">
       <div class="card-body">
+        <!-- Top Funder badge for high-contribution donors -->
         <span class="badge bg-success me-2">Top Funder</span>
+        <!-- Education Advocate badge for specific focus area -->
         <span class="badge bg-primary me-2">Education Advocate</span>
+        <!-- Early Supporter badge for long-term platform supporters -->
         <span class="badge bg-warning text-dark">Early Supporter</span>
       </div>
     </div>
 
     <!-- About Section -->
+    <!-- Personal description and funding philosophy/mission statement -->
     <div class="about-card card mb-1">
       <div class="card-body">
         <p>Passionate about making education accessible to underserved communities. I focus on funding STEM programs and scholarships for girls in rural areas.</p>
@@ -309,31 +221,39 @@
     </div>
   </div>
 
-    <!-- Funder Stats & Funded Campaigns Side-by-Side -->
+    <!-- ===== FUNDER STATS & FUNDED CAMPAIGNS LAYOUT ===== -->
+    <!-- Two-column responsive layout showing statistics and campaign history side by side -->
     <div class="row mb-4">
     
-    <!-- Funder Stats -->
+    <!-- Funder Statistics Column (Left - 4 columns on medium screens and up) -->
     <div class="col-md-4 mb-4">
       <div class="card border-0 funder-stats">
         <div class="card-body d-flex flex-column justify-content-between p-4">
+          <!-- Section title with brand styling -->
           <h5 class="card-title fw-bolder fs-4 mb-4">Funder Stats</h5>
+          <!-- Statistics grid layout -->
           <div class="d-grid gap-3">
+            <!-- Total campaigns funded statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Total Campaigns Funded</h6>
               <p class="fw-bolder mb-0 fs-4">12</p>
             </div>
+            <!-- Geographic impact statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Countries Impacted</h6>
               <p class="fw-bolder mb-0 fs-4">5</p>
             </div>
+            <!-- Membership duration statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Member Since</h6>
               <p class="fw-bolder mb-0 fs-4">2022</p>
             </div>
+            <!-- Average donation amount statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Average Donation</h6>
               <p class="fw-bolder mb-0 fs-4">R200</p>
             </div>
+            <!-- Total lifetime donations statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Total Amount Donated</h6>
               <p class="fw-bolder mb-0 fs-4">R20 000</p>
@@ -343,46 +263,57 @@
       </div>
     </div>
 
-
-
-    <!-- Funded Campaigns -->
+    <!-- Funded Campaigns Column (Right - 8 columns on medium screens and up) -->
+    <!-- Showcases specific campaigns the funder has supported with donation amounts -->
     <div class="col-md-8">
         <div class="card border-0 h-100 mt-2">
         <div class="card-body funded-campaigns-body">
+            <!-- Campaign cards grid - 1 column on mobile, 2 columns on medium screens and up -->
             <div class="row row-cols-1 row-cols-md-2 g-4">
             
-            <!-- Campaign Card 1 -->
+            <!-- Campaign Card 1: Girls in STEM - Kenya -->
             <div class="col">
                 <div class="card h-100">
                 <div class="card-body">
+                    <!-- Campaign title -->
                     <h5 class="card-title fw-bold mb-1">Girls in STEM - Kenya</h5>
+                    <!-- Donation amount badge with highlight color -->
                     <p class="badge bg-amount small fw-light">R2 000</p>
+                    <!-- Campaign description and impact details -->
                     <p class="card-text text-muted small mb-4">Providing laptops and coding workshops for 50 girls in Nairobi.</p>
+                    <!-- Action button to view full campaign details -->
                     <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
                 </div>
                 </div>
             </div>
 
-            <!-- Campaign Card 2 -->
+            <!-- Campaign Card 2: Rural School Renovation - Uganda -->
             <div class="col">
                 <div class="card h-100">
                 <div class="card-body">
+                    <!-- Campaign title -->
                     <h5 class="card-title fw-bold mb-1">Rural School Renovation - Uganda</h5>
+                    <!-- Donation amount badge -->
                     <p class="badge bg-amount small fw-light">R1 500</p>
+                    <!-- Campaign description -->
                     <p class="card-text text-muted small mb-4">Helping rebuild classrooms and supply books in a remote village.</p>
+                    <!-- Action button to view campaign details -->
                     <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
                 </div>
                 </div>
             </div>
 
-            <!-- Campaign Card 3 -->
+            <!-- Campaign Card 3: Scholarship Fund - South Africa -->
             <div class="col">
                 <div class="card h-100">
                 <div class="card-body">
+                    <!-- Campaign title -->
                     <h5 class="card-title fw-bold mb-1">Scholarship Fund - South Africa</h5>
+                    <!-- Donation amount badge -->
                     <p class="badge bg-amount small fw-light">R3 000</p>
+                    <!-- Campaign description -->
                     <p class="card-text text-muted small mb-4">Supporting university tuition for three first-generation students.</p>
-                    
+                    <!-- Action button to view campaign details -->
                     <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
                 </div>
                 </div>
@@ -395,88 +326,114 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-<!-- Footer -->
+<!-- Footer Section -->
 <footer class="footer pt-5">
+
+  <!-- Main container for footer content -->
   <div class="container pb-4">
+    
     <div class="row">
-      <!-- Newsletter -->
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
         <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field for visual context -->
           <i class="fa-regular fa-envelope"></i>
+          <!-- Email input field for newsletter subscription -->
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <!-- Submit button for newsletter signup -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
+          <!-- Instagram social media link -->
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- Facebook social media link -->
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <!-- LinkedIn social media link -->
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-linkedin"></i>
+          </a>
         </div>
       </div>
+
     </div>
 
-    <hr>
+    <hr> <!-- Horizontal separator line between sections -->
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
           <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
-          
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-         <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link for easy directions -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link for direct calling capability -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link for direct communication -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
-    </div>
-  </div>
 
-  <!-- Bottom Bar -->
+    </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      
+      <!-- Legal & policy links for compliance and user information -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
+
+      <!-- Copyright notice -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
+
 </footer>
 
-<!-- Bootstrap + Font Awesome JS -->
+<!-- Bootstrap + Font Awesome JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>

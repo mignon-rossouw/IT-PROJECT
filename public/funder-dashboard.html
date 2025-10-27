@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Funder's Dashboard </title>
-    
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- External CSS Libraries -->
+  <!-- Bootstrap CSS for responsive layout and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-
-    /* COLOUR PALLET (dark to light)
+    /* ===== COLOR PALETTE DOCUMENTATION ===== */
+    /* Blue color palette from dark to light for consistent branding */
+    /*
     Blue 1:   #012A4A
     Blue 2:   #013A63
     Blue 3:   #01497C
@@ -23,171 +31,50 @@
     Blue 9:   #89C2D9
     Blue 10:  #A9D6E5
     */
+
+/* Prevent horizontal scrolling */
 body {
   overflow-x: hidden;
 }
 
-/* Navbar CSS */
-.navbar-custom {
-  background-color: #012A4A; 
-  height: 90px;
-}
-
-.navbar-brand {
-  font-weight: bold;
-  color: #A9D6E5;
-}
-
-.navbar-brand:hover {
-  color: #0077b6;
-}
-
-.nav-link {
-  color: #CAF0F8 !important;
-  font-weight: 600;
-  margin-right: 15px;
-}
-
-.nav-link:hover {
-  color: #0077b6 !important;
-}
-
-/* navbar menu collapse for smaller screens */
-.navbar-toggler {
-  border-color: #A9D6E5;
-  background-color: #A9D6E5;
-  transition: all 0.3s ease;
-}
-
-.navbar-toggler:hover {
-  border-color: #ffd60a;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
-/* --------------- */
-
-.donate-btn {
-  background-color: #00b4d8;
-  color: white;
-  font-weight: bold;
-}
-
-.donate-btn:hover {
-  background-color: #0077b6;
-  color: #FEFAE0;
-}
-
-.login-btn {
-  color: #ffd60a;
-}
-
-/* footer css */
-.footer {
-  margin-top: 100px;
-  background-color: #468FAF;
-  color: #012A4A;
-}
-
-.footer a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-.footer li {
-  margin-bottom: 15px;
-}
-
-.footer-bottom {
-  background-color: #34637a;
-  color: white;
-  font-size: 0.9rem;
-}
-
-.form-control::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.icon-input-group {
-  position: relative;
-}
-
-.icon-input-group .fa-envelope {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-}
-
-.icon-input-group input {
-  padding-left: 2rem;
-}
-
-.social-icons i {
-  font-size: 2rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.social-icons i:hover {
-  color: #A9D6E5;
-}
-
-.follow-us {
-  font-size: 1.5rem;
-  margin-right: 20px;
-  margin-bottom: 50px;
-}
-
-.sign-up-btn {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  border: none;
-  width: 150px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sign-up-btn:hover {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  border: none;
-}
-
+/* ===== DASHBOARD HEADER STYLING ===== */
+/* Top header section with brand background color */
 .dashboard-header {
   background-color: #2A6F97;
   padding: 30px 0;
   margin-bottom: 50px;
 }
 
+/* Funder heading text color */
 .funder-heading {
   color: #012A4A;
 }
 
+/* Dashboard header text color */
 .dashboard-header {
   color: #012A4A;
 }
 
+/* ===== PROFILE CARD STYLING ===== */
+/* Profile information card with light blue background */
 .profile-card {
   background-color: #89C2D9;
   border: none;
 }
 
+/* Profile image sizing and cropping */
 .profile-img {
   width: 100px;
   height: 100px;
   object-fit: cover;
 }
 
+/* Profile info container flexibility */
 .profile-info {
   flex: 1;
 }
 
+/* Edit profile button styling */
 .edit-profile-btn {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -196,11 +83,14 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Edit profile button hover effects */
 .edit-profile-btn:hover {
   background-color: #2A6F97;
   color: #012A4A;
 }
 
+/* ===== TAB NAVIGATION STYLING ===== */
+/* Active tab state styling */
 .active-tab {
   background-color: #012A4A !important;
   color: #A9D6E5;
@@ -210,31 +100,38 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* Active tab hover effects */
 .active-tab:hover {
   background-color: #2A6F97 !important;
   color: #ffffff;
   box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
 }
 
+/* My Campaigns button styling */
 #btn-my-campaigns {
   background-color: #61A5C2;
 }
 
+/* My Campaigns button hover effects */
 #btn-my-campaigns:hover {
   background-color: #2A6F97;
   color: #A9D6E5;
 }
 
+/* My Donations button styling */
 #btn-my-donations {
   background-color: #61A5C2;
   margin-bottom: 10px;
 }
 
+/* My Donations button hover effects */
 #btn-my-donations:hover {
   background-color: #2A6F97;
   color: #A9D6E5;
 }
 
+/* ===== SECTION TITLE STYLING ===== */
+/* Donations section title with brand colors */
 .donations-title {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -242,6 +139,7 @@ body {
   padding: 10px;
 }
 
+/* Campaigns section title with brand colors */
 .campaigns-title {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -249,6 +147,8 @@ body {
   padding: 10px;
 }
 
+/* ===== ACTION BUTTON STYLING ===== */
+/* View donations button styling */
 .btn-view-donations {
   background-color: #A9D6E5;
   color: #012A4A;
@@ -260,11 +160,13 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* View donations button hover effects */
 .btn-view-donations:hover {
   background-color: #012A4A;
   color: #A9D6E5;
 }
 
+/* View campaigns button styling */
 .btn-view-campaigns {
   background-color: #A9D6E5;
   color: #012A4A;
@@ -276,22 +178,28 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* View campaigns button hover effects */
 .btn-view-campaigns:hover {
   background-color: #012A4A;
   color: #A9D6E5;
 }
 
+/* ===== PROGRESS BAR STYLING ===== */
+/* Progress bar background styling */
 .pb-background {
   background-color: #012a4a39;
   height: 20px;
 }
 
+/* Progress bar fill styling */
 .pb {
   background-color: #012A4A;
   color: #A9D6E5;
   border-radius: 10px;
 }
 
+/* ===== THANK YOU MESSAGES STYLING ===== */
+/* Thank you section title styling */
 .thank-title {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -299,11 +207,13 @@ body {
   border-radius: 5px;
 }
 
+/* Thank you message card styling */
 .thank-card {
   background-color: #A9D6E5;
   border: none;
 }
 
+/* View all stories button styling */
 .btn-view-all-stories {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -315,11 +225,13 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* View all stories button hover effects */
 .btn-view-all-stories:hover {
   background-color: #A9D6E5;
   color: #012A4A;
 }
 
+/* Reply button styling for thank you messages */
 .reply-btn {
   background-color: #012A4A;
   color: #A9D6E5;
@@ -331,6 +243,7 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* Reply button hover effects */
 .reply-btn:hover {
   background-color: #2A6F97;
   color: #A9D6E5;
@@ -340,35 +253,42 @@ body {
 </head>
 
 <body>
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
+    <!-- Brand/Logo -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
+    <!-- Mobile menu toggle button -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas menu -->
+    <!-- Offcanvas navigation menu for mobile -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
+        <!-- Close button for offcanvas -->
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav ms-auto align-items-center">
+          <!-- Donate button -->
           <li class="nav-item me-3">
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
+          <!-- Student section link -->
           <li class="nav-item">
             <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
           </li>
+          <!-- Funder section link -->
           <li class="nav-item">
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
+          <!-- About us link -->
           <li class="nav-item">
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
+          <!-- Login button -->
           <li class="nav-item me-2" id="login-area">
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
@@ -378,18 +298,19 @@ body {
   </div>
 </nav>
 
-<!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Bootstrap JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-<!-- Main Content -->
-<!-- Dashboard Header Section -->
+<!-- ===== MAIN DASHBOARD CONTENT ===== -->
+<!-- Dashboard Header Section with branding and illustration -->
 <div class="container-fluid dashboard-header">
   <div class="row align-items-center">
+    <!-- Dashboard illustration -->
     <div class="col-md-2 text-center">
-      <img src="/IT PROJECT/FRONTEND/assets/happy students.png" class="img-fluid" alt="Funder Icon">
+      <img src="./assets/happy students.png" class="img-fluid" alt="Funder Icon">
     </div>
+    <!-- Dashboard title and user role -->
     <div class="col-md-10 d-flex flex-column justify-content-center">
       <h4 class="fw-bold funder-heading mb-0">Funders</h4>
       <h2 class="fw-bold dashboard-heading">Dashboard</h2>
@@ -397,31 +318,39 @@ body {
   </div>
 </div>
 
+<!-- Main dashboard container -->
 <div class="container py-4 px-3">
-<!-- Personal Info & Stats -->
+<!-- ===== PERSONAL INFO & STATS SECTION ===== -->
 <div class="row mb-5">
   <!-- Profile Card -->
 <div class="col-12 col-md-12">
   <div class="card profile-card shadow-sm p-4 d-flex flex-row flex-wrap align-items-center w-100">
-    <img src="/IT PROJECT/FRONTEND/assets/profile-user.png" class="rounded-circle profile-img me-3 img-fluid" alt="Profile" style="max-width: 120px;">
+    <!-- Profile image -->
+    <img src="./assets/profile-user.png" class="rounded-circle profile-img me-3 img-fluid" alt="Profile" style="max-width: 120px;">
+    <!-- Profile information -->
     <div class="profile-info text-start flex-grow-1">
+      <!-- User name display -->
       <div class="d-flex gap-2 mb-1 flex-wrap">
         <h5 class="fw-bold mb-0">Name</h5>
         <h5 class="fw-bold mb-0">Surname</h5>
       </div>
       <br>
+      <!-- Date of birth with icon -->
       <div class="d-flex align-items-center mb-2">
         <i class="fa-solid fa-cake-candles text-muted me-3" style="width: 20px;"></i>
         <span>01 Jan 1990</span>
       </div>
+      <!-- Location with icon -->
       <div class="d-flex align-items-center mb-2">
         <i class="fa-solid fa-location-dot text-muted me-3" style="width: 20px;"></i>
         <span>Cape Town</span>
       </div>
+      <!-- Email with icon -->
       <div class="d-flex align-items-center mb-3">
         <i class="fa-solid fa-envelope text-muted me-3" style="width: 20px;"></i>
         <span>name@example.com</span>
       </div>
+      <!-- Edit profile action -->
       <div class="text-end mt-3">
         <button class="btn edit-profile-btn">Edit Profile</button>
       </div>
@@ -430,34 +359,41 @@ body {
 </div>
 </div>
 
-
-  <!-- Campaigns Section -->
+  <!-- ===== CAMPAIGNS & DONATIONS SECTION ===== -->
 <div class="row mb-5">
+  <!-- Navigation sidebar for campaigns and donations -->
   <div class="col-md-4">
+    <!-- My Campaigns navigation button -->
     <button id="btn-my-campaigns" class="btn d-flex justify-content-between align-items-center px-3 py-2 w-100 mb-3" onclick="showSection('campaigns')">
       <span>My Campaigns</span>
       <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span>
     </button>
+    <!-- My Donations navigation button -->
     <button id="btn-my-donations" class="btn d-flex justify-content-between align-items-center px-3 py-2 w-100" onclick="showSection('donations')">
       <span>My Donations</span>
       <span class="arrow-icon"><i class="fas fa-chevron-right"></i></span>
     </button>
   </div>
 
+  <!-- Content area for campaigns and donations -->
   <div class="col-md-8">
   <div class="card p-4 shadow-sm">
 
-    <!-- Donations Section -->
+    <!-- ===== DONATIONS SECTION ===== -->
+    <!-- Default visible section showing donor's donation history -->
     <div id="donations-section">
       <h5 class="donations-title fw-bold mb-3">My Donations</h5>
+      <!-- Filter buttons for donations -->
       <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-sm btn-outline-secondary">Active</button>
         <button class="btn btn-sm btn-outline-secondary">Previous</button>
       </div>
+      <!-- Donation campaign details -->
       <div class="mb-3">
         <div class="mt-5">
           <h5> Help Sarah Graduate</h5>
         </div>
+      <!-- Campaign timeline information -->
       <div class="d-flex justify-content-between mb-3">
         <div>
           <p class="mb-0 fw-lighter text-muted mt-3"><small>Start Date</small></p>
@@ -469,10 +405,12 @@ body {
         </div>
       </div>
 
+      <!-- Progress bar showing funding progress -->
       <div class="progress pb-background mb-2">
         <div class="progress-bar pb" style="width: 50%;">50%</div>
       </div>
 
+      <!-- Funding amount details -->
       <div class="d-flex justify-content-between mb-3">
         <div>
           <p class="mb-0 fw-regular"> R500 </p>
@@ -485,15 +423,19 @@ body {
       </div>
       </div>
 
+      <!-- Action button to view detailed donations -->
       <div class="d-flex gap-2">
         <button class="btn-view-donations">View Donations</button>
       </div>
     </div>
 
-    <!-- Campaigns Section -->
+    <!-- ===== CAMPAIGNS SECTION ===== -->
+    <!-- Hidden section for funder's created campaigns -->
     <div id="campaigns-section" style="display: none;">
       <h5 class=" campaigns-title fw-bold mb-3">My Campaigns</h5>
+      <!-- Empty state message -->
       <p>You haven't created any campaigns yet.</p>
+      <!-- Action button to view or create campaigns -->
       <button class="btn-view-campaigns">View Campaings </button>
     </div>
 
@@ -502,20 +444,28 @@ body {
 
 </div>
 
-<!-- Change Between My Donations & My Campaigns -->
+<!-- ===== SECTION TOGGLE JAVASCRIPT ===== -->
 <script>
+  /**
+   * Toggles between Donations and Campaigns sections
+   * @param {string} section - The section to show ('donations' or 'campaigns')
+   */
   function showSection(section) {
+    // Get DOM elements for sections and buttons
     const donations = document.getElementById('donations-section');
     const campaigns = document.getElementById('campaigns-section');
     const btnDonations = document.getElementById('btn-my-donations');
     const btnCampaigns = document.getElementById('btn-my-campaigns');
 
+    // Show donations section and hide campaigns
     if (section === 'donations') {
       donations.style.display = 'block';
       campaigns.style.display = 'none';
       btnDonations.classList.add('active-tab');
       btnCampaigns.classList.remove('active-tab');
-    } else {
+    } 
+    // Show campaigns section and hide donations
+    else {
       donations.style.display = 'none';
       campaigns.style.display = 'block';
       btnCampaigns.classList.add('active-tab');
@@ -524,35 +474,46 @@ body {
   }
 </script>
 
-
-
-  <!-- Thank You Messages -->
+  <!-- ===== THANK YOU MESSAGES SECTION ===== -->
+  <!-- Section displaying gratitude messages from supported students -->
   <div class="mb-5">
     <h4 class="fw-bold mb-3 thank-title">Thank You Messages</h4>
 
+    <!-- Individual thank you message card 1 -->
     <div class="card p-3 shadow-sm mb-3 thank-card">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
+          <!-- Student profile image -->
           <img src="./assets/profile-user.png" alt="Sarah M." class="rounded-circle me-2" width="40" height="40">
           <h5 class="fw-bold mb-0">Sarah M.</h5>
         </div>
+        <!-- Message date -->
         <small class="text-muted">2025-08-10</small>
       </div>
+      <!-- Thank you message content -->
       <p class="mt-2">"Thank you so much for helping me continue my studies. Your support means the world!"</p>
+      <!-- Reply action button -->
       <button class="reply-btn position-absolute bottom-0 end-0 m-3">Reply</button>
     </div>
 
+    <!-- Individual thank you message card 2 -->
     <div class="card p-3 shadow-sm thank-card">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
+          <!-- Student profile image -->
           <img src="./assets/profile-user.png" alt="Thabo K." class="rounded-circle me-2" width="40" height="40">
           <h5 class="fw-bold mb-0">Thabo K.</h5>
         </div>
+        <!-- Message date -->
         <small class="text-muted">2025-08-12</small>
       </div>
-      <p class="mt-2">"Your donation helped me buy textbooks I couldn’t afford. I’m truly grateful!"</p>
+      <!-- Thank you message content -->
+      <p class="mt-2">"Your donation helped me buy textbooks I couldn't afford. I'm truly grateful!"</p>
+      <!-- Reply action button -->
       <button class="reply-btn position-absolute bottom-0 end-0 m-3">Reply</button>
     </div>
+    
+    <!-- View all messages action -->
     <div class="d-flex justify-content-end">
       <button class="btn-view-all-stories float-right">
         View All
@@ -562,84 +523,111 @@ body {
 
 </div>
 
-
-
-<!-- Footer -->
+<!-- Footer Section -->
 <footer class="footer pt-5">
+
+  <!-- Main container for footer content -->
   <div class="container pb-4">
+    
     <div class="row">
-      <!-- Newsletter -->
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
         <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field -->
           <i class="fa-regular fa-envelope"></i>
+          <!-- Email input field -->
           <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <!-- Submit button -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <i class="fab fa-instagram"></i>
-          <i class="fab fa-facebook"></i>
-          <i class="fab fa-linkedin"></i>
+          <!-- Instagram social media link -->
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- Facebook social media link -->
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <!-- LinkedIn social media link -->
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+            <i class="fab fa-linkedin"></i>
+          </a>
         </div>
       </div>
+
     </div>
 
-    <hr>
+    <hr> <!-- Horizontal separator line -->
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
           <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
-          
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-        <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ’s</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St</p>
-        <p class="mb-1">Cape Town</p>
-        <p class="mb-1">8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
-    </div>
-  </div>
 
-  <!-- Bottom Bar -->
+    </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      
+      <!-- Legal & policy links -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
+
+      <!-- Copyright notice -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
+
 </footer>
 
 <!-- Bootstrap + Font Awesome JS -->
