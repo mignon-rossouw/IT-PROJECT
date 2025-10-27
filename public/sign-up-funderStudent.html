@@ -411,10 +411,31 @@
       margin-top: 10px;
       display: none;
     }
+
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 
 </head>
 <body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Processing...</p>
+  </div>
+</div>
 
 <!-- Alert Container for Global Messages -->
 <div class="alert-container" id="alertContainer"></div>
@@ -694,7 +715,6 @@
   </form>
 </div>
 
-
 <script>
 // Firebase Configuration
 const firebaseConfig = {
@@ -812,7 +832,7 @@ async function uploadProfilePicture(userId, file) {
   }
 }
 
-// MAIN FORM HANDLING FUNCTION - FIXED VERSION
+// MAIN FORM HANDLING FUNCTION
 async function handleSignup() {
   const submitButton = document.getElementById('submitButton');
   const progressIndicator = document.getElementById('progressIndicator');
@@ -825,7 +845,7 @@ async function handleSignup() {
     submitButton.disabled = true;
     submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
     progressIndicator.style.display = 'block';
-    loadingOverlay.style.display = 'flex';
+    if (loadingOverlay) loadingOverlay.style.display = 'flex';
 
     // Scroll to top to show progress
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -858,7 +878,7 @@ async function handleSignup() {
     if (!firstName || !surName || !idNumber || !dob || !email || !contactNumber || !password) {
       showAlert('Please fill in all required fields.', 'danger');
       resetButton(submitButton, progressIndicator, originalText);
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       return;
     }
 
@@ -866,7 +886,7 @@ async function handleSignup() {
     if (!validateEmail(email)) {
       showAlert('Please enter a valid email address.', 'danger');
       resetButton(submitButton, progressIndicator, originalText);
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       return;
     }
 
@@ -874,21 +894,21 @@ async function handleSignup() {
     if (!validatePhone(contactNumber)) {
       showAlert('Please enter a valid contact number (10-15 digits).', 'danger');
       resetButton(submitButton, progressIndicator, originalText);
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       return;
     }
 
     if (password !== confirmPassword) {
       showAlert("Passwords do not match.", 'danger');
       resetButton(submitButton, progressIndicator, originalText);
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       return;
     }
 
     if (password.length < 6) {
       showAlert("Password must be at least 6 characters long.", 'danger');
       resetButton(submitButton, progressIndicator, originalText);
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       return;
     }
 
@@ -917,7 +937,7 @@ async function handleSignup() {
       if (file.size > 5 * 1024 * 1024) {
         showAlert('Profile picture must be smaller than 5MB', 'danger');
         resetButton(submitButton, progressIndicator, originalText);
-        loadingOverlay.style.display = 'none';
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
         return;
       }
 
@@ -928,7 +948,7 @@ async function handleSignup() {
         console.error("Error uploading profile picture:", error);
         showAlert('Error uploading profile picture. Please try again.', 'danger');
         resetButton(submitButton, progressIndicator, originalText);
-        loadingOverlay.style.display = 'none';
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
         return;
       }
     }
@@ -960,7 +980,7 @@ async function handleSignup() {
       if (!userData.countryOfCitizenship || !userData.countryOfBirth || !userData.countryOfResidence) {
         showAlert('Please select all country fields.', 'danger');
         resetButton(submitButton, progressIndicator, originalText);
-        loadingOverlay.style.display = 'none';
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
         return;
       }
     } else {
@@ -982,7 +1002,7 @@ async function handleSignup() {
     `;
 
     setTimeout(() => {
-      loadingOverlay.style.display = 'none';
+      if (loadingOverlay) loadingOverlay.style.display = 'none';
       if (userType === 'student') {
         window.location.href = "student-dashboard.html";
       } else {
@@ -993,7 +1013,7 @@ async function handleSignup() {
   } catch (error) {
     console.error("Sign-up error:", error);
     resetButton(submitButton, progressIndicator, originalText);
-    loadingOverlay.style.display = 'none';
+    if (loadingOverlay) loadingOverlay.style.display = 'none';
     
     // User-friendly error messages
     if (error.code === 'auth/email-already-in-use') {
