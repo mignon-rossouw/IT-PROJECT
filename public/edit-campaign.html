@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Campaign - FundMyFuture</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+            authDomain: "fund-my-future-47844.firebaseapp.com",
+            projectId: "fund-my-future-47844",
+            storageBucket: "fund-my-future-47844.firebasestorage.app",
+            messagingSenderId: "581912293895",
+            appId: "1:581912293895:web:03468061fae2124ac770a2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        let currentCampaignId = null;
+        let currentCampaign = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentCampaignId = urlParams.get('id');
+            
+            if (currentCampaignId) {
+                loadCampaignForEditing();
+            } else {
+                window.location.href = 'student-dashboard.html';
+            }
+        });
+
+        async function loadCampaignForEditing() {
+            try {
+                const campaignDoc = await getDoc(doc(db, "campaigns", currentCampaignId));
+                if (campaignDoc.exists()) {
+                    currentCampaign = campaignDoc.data();
+                    populateEditForm(currentCampaign);
+                } else {
+                    showAlert('Campaign not found', 'danger');
+                    setTimeout(() => window.location.href = 'student-dashboard.html', 2000);
+                }
+            } catch (error) {
+                console.error("Error loading campaign:", error);
+                showAlert('Error loading campaign', 'danger');
+            }
+        }
+
+        function populateEditForm(campaign) {
+            document.getElementById('campaignTitle').value = campaign.title || '';
+            document.getElementById('campaignDescription').value = campaign.description || '';
+            document.getElementById('fundingGoal').value = campaign.goalAmount || '';
+            
+            // Format date for input field
+            if (campaign.endDate) {
+                const endDate = campaign.endDate.toDate ? campaign.endDate.toDate() : new Date(campaign.endDate);
+                document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+            }
+            
+            document.getElementById('category').value = campaign.category || '';
+            document.getElementById('story').value = campaign.story || '';
+            
+            // Display current cover image
+            if (campaign.coverImage) {
+                document.getElementById('currentImage').innerHTML = `
+                    <img src="${campaign.coverImage}" class="img-fluid rounded mb-2" style="max-height: 200px;">
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removeCurrentImage()">Remove Image</button>
+                `;
+            }
+            
+            // Set minimum date for end date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('endDate').min = today;
+        }
+
+        async function updateCampaign(event) {
+            event.preventDefault();
+            
+            const updates = {
+                title: document.getElementById('campaignTitle').value.trim(),
+                description: document.getElementById('campaignDescription').value.trim(),
+                goalAmount: parseFloat(document.getElementById('fundingGoal').value),
+                endDate: new Date(document.getElementById('endDate').value),
+                category: document.getElementById('category').value,
+                story: document.getElementById('story').value.trim(),
+                updatedAt: new Date()
+            };
+
+            // Handle new image upload
+            const newImage = document.getElementById('coverImage').files[0];
+            if (newImage) {
+                try {
+                    const storageRef = ref(storage, `campaign-images/${currentCampaign.studentId}/${Date.now()}_${newImage.name}`);
+                    await uploadBytes(storageRef, newImage);
+                    updates.coverImage = await getDownloadURL(storageRef);
+                } catch (error) {
+                    console.error("Error uploading image:", error);
+                    showAlert('Error uploading new image', 'warning');
+                }
+            }
+
+            try {
+                await updateDoc(doc(db, "campaigns", currentCampaignId), updates);
+                showAlert('Campaign updated successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = `view-campaign.html?id=${currentCampaignId}`;
+                }, 1500);
+            } catch (error) {
+                console.error("Error updating campaign:", error);
+                showAlert('Error updating campaign', 'danger');
+            }
+        }
+
+        function removeCurrentImage() {
+            document.getElementById('currentImage').innerHTML = '<p class="text-muted">No image selected</p>';
+            // You could also delete from storage here if desired
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        window.updateCampaign = updateCampaign;
+        window.removeCurrentImage = removeCurrentImage;
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        .navbar-custom { background-color: #012A4A; height: 90px; }
+        .edit-container { max-width: 800px; margin: 40px auto; padding: 30px; background: #f8f9fa; border-radius: 10px; }
+        .btn-primary { background-color: #012A4A; border-color: #012A4A; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-custom px-3">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="index.html">FundMyFuture</a>
+            <a href="student-dashboard.html" class="btn btn-outline-light">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="edit-container">
+            <h2 class="text-center mb-4">Edit Campaign</h2>
+            <form onsubmit="updateCampaign(event)">
+                <div class="mb-3">
+                    <label class="form-label">Campaign Title</label>
+                    <input type="text" id="campaignTitle" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Short Description</label>
+                    <input type="text" id="campaignDescription" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Funding Goal (ZAR)</label>
+                        <input type="number" id="fundingGoal" class="form-control" min="100" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">End Date</label>
+                        <input type="date" id="endDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select id="category" class="form-select" required>
+                        <option value="">Select category</option>
+                        <option value="Tuition">Tuition Fees</option>
+                        <option value="Books & Supplies">Books & Supplies</option>
+                        <option value="Living Expenses">Living Expenses</option>
+                        <option value="Technology">Technology & Equipment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Your Story</label>
+                    <textarea id="story" class="form-control" rows="6" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Current Cover Image</label>
+                    <div id="currentImage" class="mb-2">
+                        <p class="text-muted">No image selected</p>
+                    </div>
+                    <label class="form-label">Update Cover Image (Optional)</label>
+                    <input type="file" id="coverImage" class="form-control" accept="image/*">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Update Campaign</button>
+                    <a href="student-dashboard.html" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

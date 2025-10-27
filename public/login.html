@@ -3,22 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
+  <title>Login - FundMyFuture</title>
 
-  <!-- External CSS Libraries -->
-  <!-- Bootstrap CSS for responsive layout and components -->
+  <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
-
 <style>
-/* ===== BACKGROUND ANIMATION STYLING ===== */
-/* Keyframe animation for floating background elements */
+/* Your existing CSS styles */
+.navbar-custom {
+  background-color: #012A4A; 
+  height: 90px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #A9D6E5;
+}
+
+.navbar-brand:hover {
+  color: #0077b6;
+}
+
+.nav-link {
+  color: #CAF0F8 !important;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.nav-link:hover {
+  color: #0077b6 !important;
+}
+
+.navbar-toggler {
+  border-color: #A9D6E5;
+  background-color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: #ffd60a;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+
+.donate-btn {
+  background-color: #00b4d8;
+  color: white;
+  font-weight: bold;
+}
+
+.donate-btn:hover {
+  background-color: #0077b6;
+  color: #FEFAE0;
+}
+
+.login-btn {
+  color: #ffd60a;
+}
+
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
 @keyframes move {
     100% {
         transform: translate3d(0, 0, 1px) rotate(360deg);
@@ -185,48 +306,155 @@
 .btn-login {
   background-color: #012A4A;
   color: #A9D6E5;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 /* Login button hover effects */
 .btn-login:hover {
   background-color: #ffda1f;
+  color: #012A4A;
+  transform: translateY(-2px);
 }
 
 /* Forgot password link styling */
 .forgot {
   color: #012A4A;
+  text-decoration: none;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+  color: #01497C;
 }
 
 /* Social login button styling */
 .btn-facebook {
   background-color: #012A4A;
   color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.btn-facebook:hover {
+  background-color: #1877F2;
+  color: white;
+  transform: translateY(-2px);
 }
 
 .btn-google {
   background-color: #012A4A;
   color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.btn-google:hover {
+  background-color: #DB4437;
+  color: white;
+  transform: translateY(-2px);
 }
 
 .btn-apple {
   background-color: #012A4A;
   color: #A9D6E5;
+  transition: all 0.3s ease;
 }
 
+.btn-apple:hover {
+  background-color: #000000;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.alert-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 1050;
+  max-width: 400px;
+}
+
+.form-alert {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.loading-spinner {
+  display: none;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.is-valid {
+  border-color: #198754;
+}
+
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+/* Enhanced error styling for credentials */
+.credentials-error {
+  color: #dc3545;
+  font-size: 0.875em;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+.credentials-error.show {
+  display: block;
+}
+
+.form-feedback {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  display: none;
+}
+
+.form-feedback.show {
+  display: block;
+}
+
+.form-feedback.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.form-feedback.success {
+  background-color: #d1edff;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
 </style>
-
-<!-- Firebase Authentication and Database Import -->
-<!-- Import Firebase configuration for authentication and database functionality -->
-<script type="module">
-  import { auth, db } from './firebase-config.js';
-</script>
-
 </head>
 <body class="bg-light">
 
-    <!-- ===== ANIMATED BACKGROUND ===== -->
-    <!-- Background with floating animated elements for visual interest -->
-    <div class="background">
+<!-- Alert Container for Messages -->
+<div class="alert-container" id="alertContainer"></div>
+
+<div class="background">
     <span></span>
     <span></span>
     <span></span>
@@ -239,7 +467,7 @@
     <span></span>
     <span></span>
     <span></span>
-  </div>
+</div>
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
@@ -286,22 +514,28 @@
   </div>
 </nav>
 
-<!-- ===== LOGIN FORM SECTION ===== -->
+<!-- Login -->
 <div class="container d-flex justify-content-center align-items-center vh-100">
   <div class="login-card rounded p-4" style="width: 100%; max-width: 400px;">
       <!-- Login Title -->
       <h1 class="text-center mb-4 fw-bold">Login</h1>
       <!-- Login Form -->
-    <form>
-      <!-- Email Input Field -->
+    <form id="loginForm" novalidate>
+      <!-- Form feedback message -->
+      <div id="formFeedback" class="form-feedback"></div>
+      
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
         <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+        <div class="invalid-feedback">Please provide a valid email address.</div>
+        <div id="emailCredentialsError" class="credentials-error">No account found with this email address.</div>
       </div>
       <!-- Password Input Field -->
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+        <input type="password" class="form-control" id="password" placeholder="••••••••" required minlength="6">
+        <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+        <div id="passwordCredentialsError" class="credentials-error">Incorrect password. Please try again.</div>
       </div>
 
       <!-- Forgot Password Link -->
@@ -312,7 +546,13 @@
 
       <!-- Login Button -->
       <div class="d-grid mb-3">
-        <button type="submit" class="btn btn-login fw-bold">Login</button>
+        <button type="submit" class="btn btn-login fw-bold" id="loginButton">
+          <span class="loading-spinner" id="loginSpinner">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Signing in...
+          </span>
+          <span id="loginText">Login</span>
+        </button>
       </div>
 
       <!-- Divider for Social Login Options -->
@@ -322,8 +562,7 @@
         <hr class="flex-grow-1">
       </div>
 
-      <!-- Social Login Icons -->
-      <!-- Alternative login methods using social media platforms -->
+      <!-- Social Icons -->
       <div class="d-flex justify-content-center gap-3">
         <!-- Facebook Login -->
         <a href="#" class="btn btn-facebook rounded-circle">
@@ -342,13 +581,13 @@
       <!-- Registration Prompt -->
       <!-- Link to sign-up page for new users -->
       <div class="text-center mt-4">
-        <p class="small">Don't have an account <a href="sign-up-funderStudent.html">Sign Up</a></p>
+        <p class="small">Don't have an account? <a href="sign-up-funderStudent.html" class="fw-bold">Sign Up</a></p>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Footer Section -->
+<!-- Footer -->
 <footer class="footer pt-5">
 
   <!-- Main container for footer content -->
@@ -458,40 +697,285 @@
 <!-- Bootstrap + Font Awesome JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- ===== FIREBASE LOGIN AUTHENTICATION ===== -->
+<!-- Firebase Login Authentication -->
 <script type="module">
-// Import Firebase authentication functions
-import { auth } from './firebase-config.js';
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+  // Import Firebase modules with correct paths
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Get the login form element
-const loginForm = document.querySelector("form");
+  // Firebase configuration 
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+    authDomain: "fund-my-future-47844.firebaseapp.com",
+    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+    projectId: "fund-my-future-47844",
+    storageBucket: "fund-my-future-47844.firebasestorage.app",
+    messagingSenderId: "581912293895",
+    appId: "1:581912293895:web:03468061fae2124ac770a2",
+    measurementId: "G-LFC0R1GBE1"
+  };
 
-// Add submit event listener to the login form
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Prevent page refresh on form submission
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // Get user input values
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  // Check authentication state - FIXED VERSION
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      console.log("User is logged in:", user.uid);
+      
+      // Check if this is a fresh page load or a login
+      const isFreshLoad = !sessionStorage.getItem('loginProcessed');
+      
+      if (isFreshLoad) {
+        // User was already logged in when page loaded
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            console.log("User already logged in, redirecting to:", userData.userType);
+            
+            // Show a brief message then redirect
+            showAlert(`Welcome back! Redirecting to your dashboard...`, 'info');
+            
+            setTimeout(() => {
+              redirectBasedOnUserType(userData.userType);
+            }, 1500);
+          }
+        } catch (error) {
+          console.error("Error checking user data:", error);
+          // If there's an error, let the user manually login
+        }
+      } else {
+        // This was a fresh login, clear the flag
+        sessionStorage.removeItem('loginProcessed');
+      }
+    } else {
+      console.log("No user is logged in");
+      // User is not logged in, this is normal behavior
+    }
+  });
 
-  try {
-    // Attempt to sign in with email and password using Firebase Authentication
-    await signInWithEmailAndPassword(auth, email, password);
-    
-    // Success feedback and redirection
-    alert("Login successful!");
-    
-    // Redirect to homepage or user dashboard after successful login
-    window.location.href = "index.html";
-    
-  } catch (error) {
-    // Error handling for failed login attempts
-    console.error(error);
-    alert("Login failed: " + error.message);
+  function redirectBasedOnUserType(userType) {
+    switch(userType){
+      case 'student': 
+        window.location.href = 'student-dashboard.html'; 
+        break;
+      case 'funder': 
+        window.location.href = 'funder-dashboard.html'; 
+        break;
+      case 'admin': 
+        window.location.href = 'admin-dashboard.html'; 
+        break;
+      default: 
+        window.location.href = 'index.html';
+    }
   }
-});
-</script>
 
+  // Form elements
+  const loginForm = document.getElementById("loginForm");
+  const loginButton = document.getElementById("loginButton");
+  const loginSpinner = document.getElementById("loginSpinner");
+  const loginText = document.getElementById("loginText");
+
+  // Validate email
+  function validateEmail(email){
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  }
+
+  // Form validation
+  function validateForm(){
+    let valid = true;
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    
+    // Clear previous validation states
+    email.classList.remove('is-valid','is-invalid');
+    password.classList.remove('is-valid','is-invalid');
+    clearCredentialErrors();
+    hideFormFeedback();
+
+    if(!email.value || !validateEmail(email.value)){
+      email.classList.add('is-invalid'); 
+      valid = false;
+    } else { 
+      email.classList.add('is-valid'); 
+    }
+
+    if(!password.value || password.value.length<6){
+      password.classList.add('is-invalid'); 
+      valid = false;
+    } else { 
+      password.classList.add('is-valid'); 
+    }
+
+    return valid;
+  }
+
+  // Reset login button
+  function resetLoginButton(){
+    loginButton.disabled=false;
+    loginSpinner.style.display='none';
+    loginText.style.display='inline';
+  }
+
+  // Clear credential errors
+  function clearCredentialErrors() {
+    const emailError = document.getElementById('emailCredentialsError');
+    const passwordError = document.getElementById('passwordCredentialsError');
+    if (emailError) emailError.classList.remove('show');
+    if (passwordError) passwordError.classList.remove('show');
+  }
+
+  // Hide form feedback
+  function hideFormFeedback() {
+    const feedback = document.getElementById('formFeedback');
+    if (feedback) feedback.classList.remove('show');
+  }
+
+  // Handle login
+  async function handleLogin(){
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      loginButton.disabled=true;
+      loginSpinner.style.display='inline';
+      loginText.style.display='none';
+      clearCredentialErrors();
+      hideFormFeedback();
+
+      console.log("Attempting login for:", email);
+      
+      // Set flag to indicate we're processing a login
+      sessionStorage.setItem('loginProcessed', 'true');
+      
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("Login successful, user ID:", user.uid);
+
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if(userDoc.exists()){
+        const userData = userDoc.data();
+        console.log("User data retrieved:", userData);
+        
+        showAlert('Login successful! Redirecting...', 'success');
+        
+        setTimeout(() => redirectBasedOnUserType(userData.userType), 1500);
+      } else {
+        console.log("User document not found in Firestore");
+        showAlert('User data not found. Please contact support.', 'error');
+        resetLoginButton();
+        sessionStorage.removeItem('loginProcessed');
+      }
+    } catch(error){
+      console.error("Login error:", error);
+      resetLoginButton();
+      sessionStorage.removeItem('loginProcessed');
+      
+      let message = 'Login failed. Please try again.';
+      let showEmailError = false;
+      let showPasswordError = false;
+      
+      switch(error.code){
+        case 'auth/invalid-email': 
+          message = 'Invalid email address. Please check your email format.';
+          showEmailError = true;
+          break;
+        case 'auth/user-disabled': 
+          message = 'This account has been disabled. Please contact support.';
+          break;
+        case 'auth/user-not-found': 
+          message = 'No account found with this email address.';
+          showEmailError = true;
+          break;
+        case 'auth/wrong-password': 
+          message = 'Incorrect password. Please try again.';
+          showPasswordError = true;
+          break;
+        case 'auth/too-many-requests': 
+          message = 'Too many login attempts. Please try again later.';
+          break;
+        case 'auth/network-request-failed': 
+          message = 'Network error. Please check your connection and try again.';
+          break;
+        default:
+          message = 'An unexpected error occurred. Please try again.';
+      }
+      
+      // Show specific field errors
+      if (showEmailError) {
+        const emailError = document.getElementById('emailCredentialsError');
+        if (emailError) emailError.classList.add('show');
+      }
+      if (showPasswordError) {
+        const passwordError = document.getElementById('passwordCredentialsError');
+        if (passwordError) passwordError.classList.add('show');
+      }
+      
+      // Show the main error message
+      showAlert(message, 'error');
+    }
+  }
+
+  // Real-time validation
+  document.getElementById('email').addEventListener('input', function(){
+    if(this.value) {
+      this.classList.toggle('is-valid', validateEmail(this.value));
+      this.classList.toggle('is-invalid', !validateEmail(this.value));
+    }
+    // Clear credential errors when user starts typing
+    const emailError = document.getElementById('emailCredentialsError');
+    if (emailError) emailError.classList.remove('show');
+    hideFormFeedback();
+  });
+
+  document.getElementById('password').addEventListener('input', function(){
+    if(this.value) {
+      this.classList.toggle('is-valid', this.value.length>=6);
+      this.classList.toggle('is-invalid', this.value.length<6);
+    }
+    // Clear credential errors when user starts typing
+    const passwordError = document.getElementById('passwordCredentialsError');
+    if (passwordError) passwordError.classList.remove('show');
+    hideFormFeedback();
+  });
+
+  // Submit event
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    console.log("Form submitted");
+    
+    if(!validateForm()){
+      showAlert('Please fill in all required fields correctly.', 'error');
+      return;
+    }
+    
+    console.log("Form validated, attempting login...");
+    await handleLogin();
+  });
+
+  function showAlert(message, type) {
+    const alertContainer = document.getElementById('alertContainer');
+    const alertId = 'alert-' + Date.now();
+    const alertDiv = document.createElement('div');
+    alertDiv.id = alertId;
+    alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show form-alert`;
+    alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+    alertContainer.appendChild(alertDiv);
+    setTimeout(() => { 
+      if (document.getElementById(alertId)) {
+        alertDiv.remove();
+      }
+    }, type === 'danger' || type === 'error' ? 8000 : 5000);
+  }
+
+  // Debug: Check if Firebase is initialized
+  console.log("Firebase initialized:", app.name);
+  console.log("Login page loaded successfully");
+</script>
 </body>
 </html>

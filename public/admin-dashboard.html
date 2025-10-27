@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - FundMyFuture</title>
+    
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-dark: #012A4A;
+            --primary-medium: #2A6F97;
+            --primary-light: #61A5C2;
+            --accent-light: #A9D6E5;
+            --text-light: #ffffff;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            background-color: var(--primary-dark);
+            height: 70px;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--accent-light);
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background-color: var(--primary-medium);
+            padding: 25px 0;
+            margin-bottom: 30px;
+        }
+
+        /* Cards & Sections */
+        .profile-card {
+            background-color: var(--accent-light);
+            border: none;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary-medium);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .section-title {
+            background-color: var(--primary-dark);
+            color: var(--accent-light);
+            border-radius: 5px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tab {
+            background-color: var(--primary-light);
+            border: none;
+            color: white;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            background-color: var(--primary-medium);
+            color: white;
+        }
+
+        .nav-tab.active {
+            background-color: var(--primary-dark) !important;
+            color: var(--accent-light);
+        }
+
+        /* Tables */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: var(--primary-dark);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+        }
+
+        .table td {
+            padding: 10px 15px;
+            vertical-align: middle;
+        }
+
+        /* Badges */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .badge-active { background-color: #d4edda; color: #155724; }
+        .badge-pending { background-color: #fff3cd; color: #856404; }
+        .badge-inactive { background-color: #f8d7da; color: #721c24; }
+
+        /* Buttons */
+        .btn-admin {
+            background-color: var(--primary-dark);
+            color: var(--accent-light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-admin:hover {
+            background-color: var(--primary-medium);
+            color: white;
+        }
+
+        .btn-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .btn-view { background-color: var(--primary-medium); color: white; }
+        .btn-edit { background-color: var(--primary-light); color: white; }
+        .btn-delete { background-color: #dc3545; color: white; }
+
+        /* Footer */
+        .footer {
+            background-color: #468FAF;
+            color: var(--primary-dark);
+            margin-top: 50px;
+        }
+
+        .footer-bottom {
+            background-color: #34637a;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-header .col-md-2 {
+                text-align: center;
+                margin-bottom: 15px;
+            }
+            
+            .profile-card {
+                text-align: center;
+            }
+            
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <div class="container-fluid">
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+        <div class="navbar-nav ms-auto">
+            <span class="navbar-text text-white me-3">Welcome, Admin</span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()">LOGOUT</button>
+        </div>
+    </div>
+</nav>
+
+<!-- Dashboard Header -->
+<div class="container-fluid dashboard-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <img src="./assets/happy students.png" class="img-fluid" alt="Admin Icon" style="max-height: 80px;">
+            </div>
+            <div class="col-md-10">
+                <h4 class="fw-bold text-white mb-0">Administrator</h4>
+                <h2 class="fw-bold text-white">Dashboard</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container py-4">
+    <!-- Profile & Stats -->
+    <div class="row mb-4">
+        <!-- Profile Card -->
+        <div class="col-12 mb-4">
+            <div class="card profile-card shadow-sm p-3">
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <img src="./assets/profile-user.png" class="rounded-circle img-fluid" alt="Profile" style="max-width: 80px;">
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="fw-bold mb-1" id="adminName">Admin User</h5>
+                        <p class="mb-1" id="adminEmail">admin@fundmyfuture.com</p>
+                        <p class="mb-0 text-muted" id="adminJoinDate">Joined: Jan 2024</p>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button class="btn btn-admin" onclick="editAdminProfile()">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="col-md-3 col-6">
+            <div class="stat-card text-center">
+                <i class="fas fa-users fa-2x mb-2" style="color: var(--primary-medium);"></i>
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card text-center">
+                <i class="fas fa-hand-holding-heart fa-2x mb-2" style="color: var(--primary-medium);"></i>
+                <div class="stat-number" id="totalCampaigns">0</div>
+                <div class="stat-label">Active Campaigns</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card text-center">
+                <i class="fas fa-donate fa-2x mb-2" style="color: var(--primary-medium);"></i>
+                <div class="stat-number" id="totalDonations">R0</div>
+                <div class="stat-label">Total Donations</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stat-card text-center">
+                <i class="fas fa-clock fa-2x mb-2" style="color: var(--primary-medium);"></i>
+                <div class="stat-number" id="pendingApprovals">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="row">
+        <!-- Navigation -->
+        <div class="col-lg-3 mb-4">
+            <div class="d-grid gap-2">
+                <button class="btn nav-tab active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </button>
+                <button class="btn nav-tab" onclick="showSection('users')">
+                    <i class="fas fa-users me-2"></i>Users
+                </button>
+                <button class="btn nav-tab" onclick="showSection('campaigns')">
+                    <i class="fas fa-hand-holding-heart me-2"></i>Campaigns
+                </button>
+                <button class="btn nav-tab" onclick="showSection('donations')">
+                    <i class="fas fa-donate me-2"></i>Donations
+                </button>
+                <button class="btn nav-tab" onclick="showSection('settings')">
+                    <i class="fas fa-cog me-2"></i>Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="col-lg-9">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section">
+                <div class="section-title">
+                    <h5 class="fw-bold mb-0">System Overview</h5>
+                </div>
+                
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-3">Recent Activity</h6>
+                        <div id="recentActivity">
+                            <p class="text-muted">Loading recent activity...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users-section" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="section-title fw-bold mb-0">User Management</h5>
+                    <input type="text" class="form-control w-auto" placeholder="Search users..." id="userSearch">
+                </div>
+
+                <div class="data-table">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="5" class="text-center">Loading users...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaigns Section -->
+            <div id="campaigns-section" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="section-title fw-bold mb-0">Campaign Management</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" onclick="filterCampaigns('all')">All</button>
+                        <button class="btn btn-outline-success" onclick="filterCampaigns('active')">Active</button>
+                        <button class="btn btn-outline-warning" onclick="filterCampaigns('pending')">Pending</button>
+                    </div>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Student</th>
+                                    <th>Goal</th>
+                                    <th>Raised</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaignsTableBody">
+                                <tr><td colspan="6" class="text-center">Loading campaigns...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations Section -->
+            <div id="donations-section" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="section-title fw-bold mb-0">Donation Management</h5>
+                    <input type="text" class="form-control w-auto" placeholder="Search donations..." id="donationSearch">
+                </div>
+
+                <div class="data-table">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Funder</th>
+                                    <th>Campaign</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="donationsTableBody">
+                                <tr><td colspan="6" class="text-center">Loading donations...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" style="display: none;">
+                <h5 class="section-title fw-bold mb-3">System Settings</h5>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Platform Name</label>
+                            <input type="text" class="form-control" id="platformName" value="FundMyFuture">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Admin Email</label>
+                            <input type="email" class="form-control" id="adminEmailSetting" value="admin@fundmyfuture.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Campaign Approval Required</label>
+                            <select class="form-select" id="campaignApproval">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-admin" onclick="saveSettings()">Save Settings</button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">System Information</h6>
+                                <p><strong>Firebase Project:</strong> <span id="firebaseProject">FundMyFuture</span></p>
+                                <p><strong>Last Backup:</strong> <span id="lastBackup">Never</span></p>
+                                <p><strong>System Status:</strong> <span class="badge bg-success">Online</span></p>
+                                <button class="btn btn-admin w-100 mt-2" onclick="runBackup()">
+                                    <i class="fas fa-database me-2"></i>Run Backup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer pt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <h5 class="fw-bold">FundMyFuture</h5>
+                <p class="mb-0">Empowering students through education funding</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="social-icons">
+                    <a href="#" class="text-decoration-none me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="text-decoration-none me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-decoration-none"><i class="fab fa-linkedin fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p class="mb-0">&copy; 2025 FundMyFuture. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Firebase Integration -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { 
+        getFirestore, doc, getDoc, getDocs, collection, query, where, 
+        orderBy, limit, updateDoc, deleteDoc, serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+        authDomain: "fund-my-future-47844.firebaseapp.com",
+        projectId: "fund-my-future-47844",
+        storageBucket: "fund-my-future-47844.firebasestorage.app",
+        messagingSenderId: "581912293895",
+        appId: "1:581912293895:web:03468061fae2124ac770a2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentAdminId = null;
+    let allUsers = [];
+    let allCampaigns = [];
+    let allDonations = [];
+
+    // Authentication and initialization
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists() && userDoc.data().userType === 'admin') {
+                currentAdminId = user.uid;
+                const adminData = userDoc.data();
+                
+                // Update admin profile info
+                document.getElementById('adminName').textContent = 
+                    `${adminData.firstName || 'Admin'} ${adminData.surname || 'User'}`;
+                document.getElementById('adminEmail').textContent = adminData.email || 'admin@fundmyfuture.com';
+                
+                if (adminData.createdAt) {
+                    const joinDate = adminData.createdAt.toDate();
+                    document.getElementById('adminJoinDate').textContent = 
+                        `Joined: ${joinDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}`;
+                }
+                
+                await loadDashboardData();
+            } else {
+                alert('Access denied. Admin privileges required.');
+                window.location.href = 'login.html';
+            }
+        } else {
+            window.location.href = 'login.html';
+        }
+    });
+
+    async function loadDashboardData() {
+        try {
+            await Promise.all([
+                loadStatistics(),
+                loadRecentActivity(),
+                loadUsers(),
+                loadCampaigns(),
+                loadDonations()
+            ]);
+            
+            // Setup search functionality
+            document.getElementById('userSearch').addEventListener('input', filterUsers);
+            document.getElementById('donationSearch').addEventListener('input', filterDonations);
+            
+        } catch (error) {
+            console.error('Error loading dashboard data:', error);
+            showAlert('Error loading dashboard data', 'error');
+        }
+    }
+
+    async function loadStatistics() {
+        try {
+            // Load users count
+            const usersSnapshot = await getDocs(collection(db, "users"));
+            document.getElementById('totalUsers').textContent = usersSnapshot.size;
+
+            // Load active campaigns count
+            const activeCampaignsQuery = query(collection(db, "campaigns"), where("status", "==", "active"));
+            const activeCampaignsSnapshot = await getDocs(activeCampaignsQuery);
+            document.getElementById('totalCampaigns').textContent = activeCampaignsSnapshot.size;
+
+            // Load total donations
+            const donationsSnapshot = await getDocs(collection(db, "donations"));
+            let totalAmount = 0;
+            donationsSnapshot.forEach(doc => {
+                totalAmount += doc.data().amount || 0;
+            });
+            document.getElementById('totalDonations').textContent = `R${totalAmount.toLocaleString()}`;
+
+            // Load pending approvals
+            const pendingQuery = query(collection(db, "campaigns"), where("status", "==", "pending"));
+            const pendingSnapshot = await getDocs(pendingQuery);
+            document.getElementById('pendingApprovals').textContent = pendingSnapshot.size;
+
+        } catch (error) {
+            console.error('Error loading statistics:', error);
+        }
+    }
+
+    async function loadRecentActivity() {
+        const activityContainer = document.getElementById('recentActivity');
+        
+        try {
+            // Get recent donations
+            const donationsQuery = query(collection(db, "donations"), orderBy("createdAt", "desc"), limit(3));
+            const donationsSnapshot = await getDocs(donationsQuery);
+            
+            let activityHTML = '';
+            
+            donationsSnapshot.forEach(doc => {
+                const donation = doc.data();
+                activityHTML += `
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                        <div class="flex-grow-1">
+                            <i class="fas fa-donate text-success me-2"></i>
+                            <strong>New donation:</strong> R${donation.amount}
+                            <small class="text-muted d-block">
+                                ${donation.createdAt?.toDate().toLocaleDateString()}
+                            </small>
+                        </div>
+                    </div>
+                `;
+            });
+
+            activityContainer.innerHTML = activityHTML || '<p class="text-muted">No recent activity</p>';
+            
+        } catch (error) {
+            console.error('Error loading recent activity:', error);
+            activityContainer.innerHTML = '<p class="text-muted">Error loading activity</p>';
+        }
+    }
+
+    async function loadUsers() {
+        try {
+            const usersSnapshot = await getDocs(collection(db, "users"));
+            allUsers = [];
+            const tableBody = document.getElementById('usersTableBody');
+            
+            usersSnapshot.forEach(doc => {
+                const user = { id: doc.id, ...doc.data() };
+                allUsers.push(user);
+            });
+
+            renderUsersTable(allUsers);
+            
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    }
+
+    function renderUsersTable(users) {
+        const tableBody = document.getElementById('usersTableBody');
+        tableBody.innerHTML = '';
+
+        if (users.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No users found</td></tr>';
+            return;
+        }
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.firstName} ${user.surname}</td>
+                <td>${user.email}</td>
+                <td><span class="badge ${getUserTypeBadge(user.userType)}">${user.userType}</span></td>
+                <td><span class="badge-status ${user.profileComplete ? 'badge-active' : 'badge-pending'}">${user.profileComplete ? 'Active' : 'Incomplete'}</span></td>
+                <td>
+                    <button class="btn-action btn-view" onclick="viewUser('${user.id}')" title="View"><i class="fas fa-eye"></i></button>
+                    <button class="btn-action btn-edit" onclick="editUser('${user.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                    ${user.userType !== 'admin' ? `<button class="btn-action btn-delete" onclick="deleteUser('${user.id}')" title="Delete"><i class="fas fa-trash"></i></button>` : ''}
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    async function loadCampaigns() {
+        try {
+            const campaignsSnapshot = await getDocs(collection(db, "campaigns"));
+            allCampaigns = [];
+            
+            for (const doc of campaignsSnapshot.docs) {
+                const campaign = { id: doc.id, ...doc.data() };
+                
+                // Get student name
+                if (campaign.studentId) {
+                    const studentDoc = await getDoc(doc(db, "users", campaign.studentId));
+                    if (studentDoc.exists()) {
+                        const studentData = studentDoc.data();
+                        campaign.studentName = `${studentData.firstName} ${studentData.surname}`;
+                    }
+                }
+                
+                allCampaigns.push(campaign);
+            }
+
+            renderCampaignsTable(allCampaigns);
+            
+        } catch (error) {
+            console.error('Error loading campaigns:', error);
+        }
+    }
+
+    function renderCampaignsTable(campaigns) {
+        const tableBody = document.getElementById('campaignsTableBody');
+        tableBody.innerHTML = '';
+
+        if (campaigns.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No campaigns found</td></tr>';
+            return;
+        }
+
+        campaigns.forEach(campaign => {
+            const progress = campaign.goalAmount ? ((campaign.currentAmount || 0) / campaign.goalAmount * 100).toFixed(1) : 0;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${campaign.title || 'Untitled'}</td>
+                <td>${campaign.studentName || 'Unknown'}</td>
+                <td>R${campaign.goalAmount?.toLocaleString() || '0'}</td>
+                <td>R${(campaign.currentAmount || 0).toLocaleString()} (${progress}%)</td>
+                <td><span class="badge-status ${getCampaignStatusBadge(campaign.status)}">${campaign.status || 'pending'}</span></td>
+                <td>
+                    <button class="btn-action btn-view" onclick="viewCampaign('${campaign.id}')" title="View"><i class="fas fa-eye"></i></button>
+                    <button class="btn-action btn-edit" onclick="editCampaign('${campaign.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="btn-action btn-delete" onclick="deleteCampaign('${campaign.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    async function loadDonations() {
+        try {
+            const donationsSnapshot = await getDocs(collection(db, "donations"));
+            allDonations = [];
+            
+            for (const doc of donationsSnapshot.docs) {
+                const donation = { id: doc.id, ...doc.data() };
+                allDonations.push(donation);
+            }
+
+            renderDonationsTable(allDonations);
+            
+        } catch (error) {
+            console.error('Error loading donations:', error);
+        }
+    }
+
+    function renderDonationsTable(donations) {
+        const tableBody = document.getElementById('donationsTableBody');
+        tableBody.innerHTML = '';
+
+        if (donations.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No donations found</td></tr>';
+            return;
+        }
+
+        donations.forEach(donation => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${donation.anonymous ? 'Anonymous' : 'User'}</td>
+                <td>${donation.campaignId ? donation.campaignId.substring(0, 8) + '...' : 'Unknown'}</td>
+                <td>R${donation.amount?.toLocaleString() || '0'}</td>
+                <td><span class="badge ${donation.paymentStatus === 'completed' ? 'bg-success' : 'bg-warning'}">${donation.paymentStatus || 'pending'}</span></td>
+                <td>${donation.createdAt?.toDate().toLocaleDateString() || 'N/A'}</td>
+                <td>
+                    <button class="btn-action btn-view" onclick="viewDonation('${donation.id}')" title="View"><i class="fas fa-eye"></i></button>
+                    <button class="btn-action btn-edit" onclick="editDonation('${donation.id}')" title="Edit"><i class="fas fa-edit"></i></button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Utility functions
+    function getUserTypeBadge(userType) {
+        const types = {
+            'admin': 'bg-danger',
+            'funder': 'bg-primary',
+            'student': 'bg-success'
+        };
+        return types[userType] || 'bg-secondary';
+    }
+
+    function getCampaignStatusBadge(status) {
+        const statuses = {
+            'active': 'badge-active',
+            'pending': 'badge-pending',
+            'suspended': 'badge-inactive'
+        };
+        return statuses[status] || 'badge-pending';
+    }
+
+    // Navigation
+    function showSection(section) {
+        // Hide all sections
+        document.querySelectorAll('[id$="-section"]').forEach(sec => {
+            sec.style.display = 'none';
+        });
+        
+        // Remove active class from all tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Show selected section and activate tab
+        document.getElementById(`${section}-section`).style.display = 'block';
+        event.target.classList.add('active');
+    }
+
+    // Search and filter functions
+    function filterUsers() {
+        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+        const filtered = allUsers.filter(user => 
+            user.firstName?.toLowerCase().includes(searchTerm) ||
+            user.surname?.toLowerCase().includes(searchTerm) ||
+            user.email?.toLowerCase().includes(searchTerm) ||
+            user.userType?.toLowerCase().includes(searchTerm)
+        );
+        renderUsersTable(filtered);
+    }
+
+    function filterCampaigns(status) {
+        const filtered = status === 'all' 
+            ? allCampaigns 
+            : allCampaigns.filter(campaign => campaign.status === status);
+        renderCampaignsTable(filtered);
+    }
+
+    function filterDonations() {
+        const searchTerm = document.getElementById('donationSearch').value.toLowerCase();
+        const filtered = allDonations.filter(donation => 
+            donation.amount?.toString().includes(searchTerm) ||
+            donation.paymentStatus?.toLowerCase().includes(searchTerm)
+        );
+        renderDonationsTable(filtered);
+    }
+
+    // Action functions (simplified)
+    function viewUser(userId) {
+        const user = allUsers.find(u => u.id === userId);
+        if (user) {
+            alert(`User: ${user.firstName} ${user.surname}\nEmail: ${user.email}\nType: ${user.userType}`);
+        }
+    }
+
+    function editUser(userId) {
+        alert(`Edit user: ${userId}`);
+    }
+
+    async function deleteUser(userId) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            try {
+                await deleteDoc(doc(db, "users", userId));
+                await loadUsers();
+                await loadStatistics();
+                showAlert('User deleted successfully', 'success');
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                showAlert('Error deleting user', 'error');
+            }
+        }
+    }
+
+    function viewCampaign(campaignId) {
+        window.open(`campaign.html?id=${campaignId}`, '_blank');
+    }
+
+    function editCampaign(campaignId) {
+        alert(`Edit campaign: ${campaignId}`);
+    }
+
+    async function deleteCampaign(campaignId) {
+        if (confirm('Are you sure you want to delete this campaign?')) {
+            try {
+                await deleteDoc(doc(db, "campaigns", campaignId));
+                await loadCampaigns();
+                await loadStatistics();
+                showAlert('Campaign deleted successfully', 'success');
+            } catch (error) {
+                console.error('Error deleting campaign:', error);
+                showAlert('Error deleting campaign', 'error');
+            }
+        }
+    }
+
+    function viewDonation(donationId) {
+        const donation = allDonations.find(d => d.id === donationId);
+        if (donation) {
+            alert(`Donation: R${donation.amount}\nStatus: ${donation.paymentStatus}`);
+        }
+    }
+
+    function editDonation(donationId) {
+        alert(`Edit donation: ${donationId}`);
+    }
+
+    function saveSettings() {
+        alert('Settings saved successfully!');
+        document.getElementById('lastBackup').textContent = new Date().toLocaleString();
+    }
+
+    function runBackup() {
+        alert('Backup started...');
+        setTimeout(() => {
+            document.getElementById('lastBackup').textContent = new Date().toLocaleString();
+            alert('Backup completed successfully!');
+        }, 1500);
+    }
+
+    function editAdminProfile() {
+        alert('Edit admin profile');
+    }
+
+    async function logout() {
+        try {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    }
+
+    function showAlert(message, type) {
+        // Simple alert implementation
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 5000);
+    }
+
+    // Make functions globally available
+    window.showSection = showSection;
+    window.filterUsers = filterUsers;
+    window.filterCampaigns = filterCampaigns;
+    window.filterDonations = filterDonations;
+    window.viewUser = viewUser;
+    window.editUser = editUser;
+    window.deleteUser = deleteUser;
+    window.viewCampaign = viewCampaign;
+    window.editCampaign = editCampaign;
+    window.deleteCampaign = deleteCampaign;
+    window.viewDonation = viewDonation;
+    window.editDonation = editDonation;
+    window.saveSettings = saveSettings;
+    window.runBackup = runBackup;
+    window.editAdminProfile = editAdminProfile;
+    window.logout = logout;
+</script>
+</body>
+</html>

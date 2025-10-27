@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Details - FundMyFuture</title>
+    
+    <!-- Firebase Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+            authDomain: "fund-my-future-47844.firebaseapp.com",
+            databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+            projectId: "fund-my-future-47844",
+            storageBucket: "fund-my-future-47844.firebasestorage.app",
+            messagingSenderId: "581912293895",
+            appId: "1:581912293895:web:03468061fae2124ac770a2",
+            measurementId: "G-LFC0R1GBE1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentCampaign = null;
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCampaignDetails();
+            
+            // Check if user is logged in
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('loginButton').style.display = 'none';
+                    document.getElementById('dashboardButton').style.display = 'block';
+                } else {
+                    document.getElementById('loginButton').style.display = 'block';
+                    document.getElementById('dashboardButton').style.display = 'none';
+                }
+            });
+        });
+
+        async function loadCampaignDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const campaignId = urlParams.get('id');
+            
+            if (!campaignId) {
+                document.getElementById('campaignDetails').innerHTML = `
+                    <div class="alert alert-danger text-center">
+                        <h4>Campaign Not Found</h4>
+                        <p>No campaign ID provided in the URL.</p>
+                        <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                showLoading(true);
+                const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
+                
+                if (!campaignDoc.exists()) {
+                    document.getElementById('campaignDetails').innerHTML = `
+                        <div class="alert alert-danger text-center">
+                            <h4>Campaign Not Found</h4>
+                            <p>The campaign you're looking for doesn't exist or may have been removed.</p>
+                            <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+                        </div>
+                    `;
+                    showLoading(false);
+                    return;
+                }
+
+                currentCampaign = { id: campaignDoc.id, ...campaignDoc.data() };
+                
+                // Load student data
+                const userDoc = await getDocs(query(
+                    collection(db, "users"),
+                    where("__name__", "==", currentCampaign.studentId)
+                ));
+                
+                let userData = {};
+                if (!userDoc.empty) {
+                    userData = userDoc.docs[0].data();
+                }
+
+                displayCampaignDetails(currentCampaign, userData);
+                showLoading(false);
+                
+            } catch (error) {
+                console.error("Error loading campaign:", error);
+                document.getElementById('campaignDetails').innerHTML = `
+                    <div class="alert alert-danger text-center">
+                        <h4>Error Loading Campaign</h4>
+                        <p>There was an error loading the campaign details. Please try again.</p>
+                        <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+                    </div>
+                `;
+                showLoading(false);
+            }
+        }
+
+        function displayCampaignDetails(campaign, user) {
+            const progressPercentage = campaign.goalAmount > 0 ? 
+                Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100)) : 0;
+            
+            const endDate = campaign.endDate?.toDate ? campaign.endDate.toDate() : new Date(campaign.endDate);
+            const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+            const createdAt = campaign.createdAt?.toDate ? campaign.createdAt.toDate() : new Date();
+            
+            const userName = user ? `${user.firstName || ''} ${user.surname || ''}`.trim() : 'Anonymous Student';
+            const institution = user?.institution || 'Unknown Institution';
+            const course = user?.course || 'Unknown Course';
+            const userLocation = user?.location || 'Location not specified';
+            const userProfilePic = user?.profilePicture || './assets/profile-user.png';
+
+            document.getElementById('campaignDetails').innerHTML = `
+                <div class="row">
+                    <!-- Campaign Header -->
+                    <div class="col-12">
+                        <nav aria-label="breadcrumb" class="mb-4">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="donate.html">All Campaigns</a></li>
+                                <li class="breadcrumb-item active">${campaign.title}</li>
+                            </ol>
+                        </nav>
+                        
+                        <div class="campaign-header mb-5">
+                            ${campaign.coverImage ? `
+                                <img src="${campaign.coverImage}" class="img-fluid rounded campaign-cover mb-4" alt="${campaign.title}">
+                            ` : `
+                                <div class="campaign-cover-placeholder bg-light rounded d-flex align-items-center justify-content-center mb-4">
+                                    <i class="bi bi-flag display-1 text-muted"></i>
+                                </div>
+                            `}
+                            
+                            <h1 class="display-5 fw-bold text-primary mb-3">${campaign.title}</h1>
+                            <p class="lead fs-4">${campaign.description}</p>
+                            
+                            <!-- Progress Section -->
+                            <div class="progress-section bg-light rounded p-4 mb-4">
+                                <div class="progress mb-3" style="height: 30px;">
+                                    <div class="progress-bar" style="width: ${progressPercentage}%">
+                                        ${progressPercentage}% Funded
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <h3 class="text-primary fw-bold">R${campaign.currentAmount?.toLocaleString() || 0}</h3>
+                                        <small class="text-muted">Raised</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="fw-bold">R${campaign.goalAmount?.toLocaleString() || 0}</h3>
+                                        <small class="text-muted">Goal</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="fw-bold ${daysRemaining < 7 ? 'text-danger' : 'text-success'}">${daysRemaining}</h3>
+                                        <small class="text-muted">Days Left</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <!-- Story Section -->
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="bi bi-book me-2"></i>My Story</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="campaign-story">
+                                    ${campaign.story ? campaign.story.split('\n').map(paragraph => `<p>${paragraph}</p>`).join('') : '<p class="text-muted">No story provided.</p>'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Student Information -->
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="mb-0"><i class="bi bi-person me-2"></i>About the Student</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                        <img src="${userProfilePic}" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;" alt="${userName}">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p><strong>Name:</strong> ${userName}</p>
+                                                <p><strong>Institution:</strong> ${institution}</p>
+                                                <p><strong>Course:</strong> ${course}</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><strong>Location:</strong> ${userLocation}</p>
+                                                <p><strong>Campaign Created:</strong> ${createdAt.toLocaleDateString()}</p>
+                                                <p><strong>Campaign Ends:</strong> ${endDate.toLocaleDateString()}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm sticky-top" style="top: 20px;">
+                            <div class="card-body text-center">
+                                <h4 class="text-primary mb-3">Support This Campaign</h4>
+                                <p class="text-muted mb-4">Help ${userName.split(' ')[0]} achieve their educational goals</p>
+                                
+                                <div class="d-grid gap-2 mb-4">
+                                    <button class="btn btn-primary btn-lg py-3 fw-bold" onclick="donateToCampaign('${campaign.id}')">
+                                        <i class="bi bi-heart-fill me-2"></i>Donate Now
+                                    </button>
+                                </div>
+                                
+                                <div class="d-grid gap-2 mb-4">
+                                    <button class="btn btn-outline-primary" onclick="shareCampaign('${campaign.id}', '${campaign.title}')">
+                                        <i class="bi bi-share me-2"></i>Share Campaign
+                                    </button>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <div class="campaign-meta text-muted small">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-people me-2"></i>Supporters</span>
+                                        <span class="fw-bold">${campaign.donorCount || 0}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><i class="bi bi-calendar me-2"></i>Created</span>
+                                        <span>${createdAt.toLocaleDateString()}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span><i class="bi bi-tag me-2"></i>Category</span>
+                                        <span class="badge bg-warning text-dark">${campaign.category || 'General'}</span>
+                                    </div>
+                                </div>
+                                
+                                <hr class="my-4">
+                                
+                                <div class="trust-badges text-muted small">
+                                    <p><i class="bi bi-shield-check me-2 text-success"></i>Secure donation process</p>
+                                    <p><i class="bi bi-arrow-repeat me-2 text-success"></i>Transparent fund allocation</p>
+                                    <p><i class="bi bi-chat-dots me-2 text-success"></i>Direct student support</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function donateToCampaign(campaignId) {
+            if (currentUser) {
+                // User is logged in, redirect to donation page
+                window.location.href = `donation.html?campaignId=${campaignId}`;
+            } else {
+                // User is not logged in, redirect to login with return URL
+                window.location.href = `login.html?returnUrl=view-campaign.html?id=${campaignId}`;
+            }
+        }
+
+        function shareCampaign(campaignId, campaignTitle) {
+            const url = `${window.location.origin}${window.location.pathname}?id=${campaignId}`;
+            const text = `Support "${campaignTitle}" on FundMyFuture!`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: campaignTitle,
+                    text: text,
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(`${text} ${url}`);
+                });
+            } else {
+                copyToClipboard(`${text} ${url}`);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showAlert('Campaign link copied to clipboard! Share it with your friends.', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showAlert('Failed to copy link. Please copy the URL manually.', 'warning');
+            });
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            const content = document.getElementById('campaignDetails');
+            
+            if (show) {
+                spinner.classList.remove('d-none');
+                content.classList.add('d-none');
+            } else {
+                spinner.classList.add('d-none');
+                content.classList.remove('d-none');
+            }
+        }
+
+        // Make functions globally available
+        window.donateToCampaign = donateToCampaign;
+        window.shareCampaign = shareCampaign;
+    </script>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #012A4A;
+            --secondary-color: #2A6F97;
+            --accent-color: #A9D6E5;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+
+            /* Navbar CSS */
+.navbar-custom {
+  background-color: #012A4A; 
+  height: 90px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #A9D6E5;
+}
+
+.navbar-brand:hover {
+  color: #0077b6;
+}
+
+.nav-link {
+  color: #CAF0F8 !important;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.nav-link:hover {
+  color: #0077b6 !important;
+}
+
+/* navbar menu collapse for smaller screens */
+.navbar-toggler {
+  border-color: #A9D6E5;
+  background-color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+  border-color: #ffd60a;
+  background-color: #ffd60a;
+  transform: scale(1.02);
+}
+/* --------------- */
+
+.donate-btn {
+  background-color: #00b4d8;
+  color: white;
+  font-weight: bold;
+}
+
+.donate-btn:hover {
+  background-color: #0077b6;
+  color: #FEFAE0;
+}
+
+.login-btn {
+  color: #ffd60a;
+}
+
+
+            /* footer css */
+.footer {
+  margin-top: 100px;
+  background-color: #468FAF;
+  color: #012A4A;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer li {
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  background-color: #34637a;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.icon-input-group {
+  position: relative;
+}
+
+.icon-input-group .fa-envelope {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.icon-input-group input {
+  padding-left: 2rem;
+}
+
+.social-icons i {
+  font-size: 2rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #A9D6E5;
+}
+
+.follow-us {
+  font-size: 1.5rem;
+  margin-right: 20px;
+  margin-bottom: 50px;
+}
+
+.sign-up-btn {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  border: none;
+  width: 150px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sign-up-btn:hover {
+  background-color: #A9D6E5;
+  color: #012A4A;
+  border: none;
+}
+
+.custom-howitworks {
+  background-color: #A9D6E5;
+  padding: 25px;
+  border-radius: 8px;
+}
+
+.custom-howitworks h2 {
+  font-size: 2rem;
+  color: #012A4A;
+  margin-bottom: 20px;
+}
+
+.custom-howitworks .step {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.custom-howitworks .step span {
+  line-height: 1.5;
+  font-size: 20px;
+  color: #012A4A;
+}
+
+
+.custom-section {
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin-right: 20px;
+  background-color: #A9D6E5;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #caf0f8;
+  background-color: #012A4A;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  top: 0;
+}
+
+.section-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #012A4A;
+  margin-bottom: 20px;
+  justify-content: left;
+}
+
+.section-button {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 6px;
+  color: #012A4A;
+  border: 2px solid #012A4A;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.section-button:hover {
+  background-color: #012A4A;
+  border: 2px solid #012A4A;
+  color: #A9D6E5;
+}
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar-custom {
+            background-color: var(--primary-color);
+            height: 80px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--accent-color) !important;
+            font-size: 1.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .campaign-cover {
+            max-height: 400px;
+            width: 100%;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .campaign-cover-placeholder {
+            height: 300px;
+            width: 100%;
+        }
+        
+        .campaign-story {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .campaign-story p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-section {
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item.active {
+            color: #6c757d;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+        
+        .trust-badges i {
+            font-size: 1.2rem;
+        }
+        
+        .sticky-top {
+            z-index: 1020;
+        }
+        
+        /* Loading spinner */
+        #loadingSpinner {
+            z-index: 9999;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .display-5 {
+                font-size: 2rem;
+            }
+            
+            .lead {
+                font-size: 1.1rem;
+            }
+            
+            .campaign-cover, .campaign-cover-placeholder {
+                height: 200px;
+            }
+            
+            .sticky-top {
+                position: static !important;
+            }
+        }
+        
+        /* Animation for progress bar */
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+    <!-- Toggler triggers offcanvas -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas menu -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">ABOUT US</a>
+          </li>
+          <li class="nav-item me-2" id="login-area">
+            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="text-center py-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading campaign details...</p>
+        </div>
+        
+        <!-- Campaign Details -->
+        <div id="campaignDetails" class="d-none">
+            <!-- Content will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+<footer class="footer pt-5">
+  <div class="container pb-4">
+    <div class="row">
+      <!-- Newsletter -->
+      <div class="col-md-6 mb-4">
+        <h5 class="fw-bold">Stay Connected</h5>
+        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+        <form class="d-flex icon-input-group">
+          <i class="fa-regular fa-envelope"></i>
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Social -->
+  
+<div class="col-md-6 mb-4 text-md-end">
+  <h5 class="fw-bold follow-us">Follow us</h5>
+  <div class="social-icons mt-2">
+    <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-linkedin"></i>
+    </a>
+  </div>
+</div>
+
+
+    <hr>
+
+    <div class="row text-start text-md-start">
+      <!-- Navigate -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="donate.html">Donate</a></li>
+          <li><a href="campaign.html">Campaigns</a></li>
+          <li><a href="story.html">Stories</a></li>
+          <li><a href="about.html">About</a></li>
+         
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div class="col-6 col-md-3 mb-4">
+        <h6 class="fw-bold">Company</h6>
+        <ul class="list-unstyled">
+       <li><a href="contact.html">Contact us</a></li>
+          <li><a href="faq.html">FAQ’s</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-6 mb-4">
+        <h6 class="fw-bold">Contact</h6>
+        <p class="mb-1">5th floor 112 Long St</p>
+        <p class="mb-1">Cape Town</p>
+        <p class="mb-1">8000</p>
+        <p class="mb-1">Western Cape</p>
+        <p class="mb-1">+27 21 831 0700</p>
+        <p class="mb-0">fundmyfuture@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div class="mb-2 mb-md-0">
+        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+      </div>
+      <div class="text-white">&copy;2025 FundMyFuture</div>
+    </div>
+  </div>
+</footer>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

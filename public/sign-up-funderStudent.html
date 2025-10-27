@@ -1,130 +1,428 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <!-- Meta tags for character encoding and responsive viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Sign Up</title>
+  <title>Sign Up - FundMyFuture</title>
 
-  <!-- External CSS libraries -->
-  <!-- Bootstrap CSS for responsive design and components -->
+  <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
+  <style>
+    /* Your existing CSS remains the same */
+    .navbar-custom {
+      background-color: #012A4A; 
+      height: 90px;
+    }
 
-  <!-- Page-specific inline styles for signup page -->
-<style>
-/* Dashboard header styling */
-.dashboard-header {
-  background-color: #2A6F97;
-  padding: 30px 0;
-  margin-bottom: 0px;
-}
+    .navbar-brand {
+      font-weight: bold;
+      color: #A9D6E5;
+    }
 
-/* Heading color styling */
-.funder-heading {
-  color: #012A4A;
-}
+    .navbar-brand:hover {
+      color: #0077b6;
+    }
 
-.dashboard-header {
-  color: #012A4A;
-}
+    .nav-link {
+      color: #CAF0F8 !important;
+      font-weight: 600;
+      margin-right: 15px;
+    }
 
-/* Utility class to hide elements */
-.hidden { 
-  display: none; 
-}
+    .nav-link:hover {
+      color: #0077b6 !important;
+    }
 
-/* Form section spacing */
-.form-section { 
-  margin-top: 20px; 
-}
+    .navbar-toggler {
+      border-color: #A9D6E5;
+      background-color: #A9D6E5;
+      transition: all 0.3s ease;
+    }
 
-/* Profile card background color */
-.profile-card {
-  background-color: #A9D6E5;
-}
+    .navbar-toggler:hover {
+      border-color: #ffd60a;
+      background-color: #ffd60a;
+      transform: scale(1.02);
+    }
 
-/* Submit button styling */
-.btn-submit-sign-up {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+    .donate-btn {
+      background-color: #00b4d8;
+      color: white;
+      font-weight: bold;
+    }
 
-/* Submit button hover effects */
-.btn-submit-sign-up:hover {
-  color: #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
+    .donate-btn:hover {
+      background-color: #0077b6;
+      color: #FEFAE0;
+    }
 
-/* Form label styling */
-.form-label {
-  font-size: small;
-  font-weight: bold;
-}
+    .login-btn {
+      color: #ffd60a;
+    }
 
-/* Toggle switch container styling */
-.toggle-switch {
-  position: relative;
-  width: 220px;
-  height: 50px;
-  background-color: #012a4a2e;
-  border-radius: 25px;
-  display: flex;
-  cursor: pointer;
-  user-select: none;
-}
+    .footer {
+      margin-top: 100px;
+      background-color: #468FAF;
+      color: #012A4A;
+    }
 
-/* Individual toggle option styling */
-.toggle-option {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-  font-weight: bold;
-  color: #0B93FB;
-  transition: color 0.3s;
-}
+    .footer a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* Active toggle option styling */
-.toggle-option.active {
-  color: #fff;
-}
+    .footer a:hover {
+      text-decoration: underline;
+    }
 
-/* Moving indicator for toggle switch */
-.toggle-indicator {
-  position: absolute;
-  top: 2px;
-  left: 50%;
-  width: 108px;
-  height: 46px;
-  background-color: #012A4A;
-  border-radius: 25px;
-  transition: left 0.3s;
-  z-index: 1;
-}
+    .footer li {
+      margin-bottom: 15px;
+    }
 
-</style>
+    .footer-bottom {
+      background-color: #34637a;
+      color: white;
+      font-size: 0.9rem;
+    }
 
-<!-- Firebase authentication and database import -->
-<script type="module">
-  import { auth, db } from './firebase-config.js';
-</script>
+    .form-control::placeholder {
+      color: #6c757d;
+      opacity: 1;
+    }
+
+    .icon-input-group {
+      position: relative;
+    }
+
+    .icon-input-group .fa-envelope {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .icon-input-group input {
+      padding-left: 2rem;
+    }
+
+    .social-icons i {
+      font-size: 2rem;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .social-icons i:hover {
+      color: #A9D6E5;
+    }
+
+    .follow-us {
+      font-size: 1.5rem;
+      margin-right: 20px;
+      margin-bottom: 50px;
+    }
+
+    .sign-up-btn {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      border: none;
+      width: 150px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .sign-up-btn:hover {
+      background-color: #A9D6E5;
+      color: #012A4A;
+      border: none;
+    }
+
+    .dashboard-header {
+      background-color: #2A6F97;
+      padding: 30px 0;
+      margin-bottom: 0px;
+    }
+
+    .funder-heading {
+      color: #012A4A;
+    }
+
+    .dashboard-header {
+      color: #012A4A;
+    }
+
+    .hidden { 
+      display: none !important; 
+    }
+
+    .form-section { 
+      margin-top: 20px; 
+    }
+
+    .profile-card {
+      background-color: #A9D6E5;
+    }
+
+    .btn-submit-sign-up {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit-sign-up:hover {
+      color: #012A4A;
+      background-color: #ffd60a;
+      transform: scale(1.02);
+    }
+
+    .form-label {
+      font-size: small;
+      font-weight: bold;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 220px;
+      height: 50px;
+      background-color: #012a4a2e;
+      border-radius: 25px;
+      display: flex;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-option {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      font-weight: bold;
+      color: #0B93FB;
+      transition: color 0.3s;
+    }
+
+    .toggle-option.active {
+      color: #fff;
+    }
+
+    .toggle-indicator {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 108px;
+      height: 46px;
+      background-color: #012A4A;
+      border-radius: 25px;
+      transition: left 0.3s ease;
+      z-index: 1;
+    }
+
+    .form-section {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .form-section.hidden {
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+    }
+
+    .form-section:not(.hidden) {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile-picture-container {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #012A4A;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-picture-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #89C2D9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #012A4A;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-picture-placeholder:hover {
+      background-color: #61A5C2;
+    }
+
+    .profile-picture-placeholder i {
+      font-size: 2rem;
+      color: #012A4A;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .upload-text {
+      font-size: 0.8rem;
+      margin-top: 5px;
+      color: #2A6F97;
+      text-align: center;
+    }
+
+    .remove-picture-btn {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .remove-picture-btn:hover {
+      background: #c82333;
+      transform: scale(1.1);
+    }
+
+    .profile-picture-container.has-image .remove-picture-btn {
+      display: flex;
+    }
+
+    .profile-picture:hover {
+      opacity: 0.8;
+    }
+
+    .is-invalid {
+      border-color: #dc3545;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3cpath d='M6 7v2'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right calc(0.375em + 0.1875rem) center;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .is-valid {
+      border-color: #198754;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right calc(0.375em + 0.1875rem) center;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .invalid-feedback {
+      display: none;
+      width: 100%;
+      margin-top: 0.25rem;
+      font-size: 0.875em;
+      color: #dc3545;
+    }
+
+    .was-validated .form-control:invalid ~ .invalid-feedback,
+    .form-control.is-invalid ~ .invalid-feedback {
+      display: block;
+    }
+
+    .validation-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;
+    }
+
+    .valid-icon {
+      color: #198754;
+    }
+
+    .invalid-icon {
+      color: #dc3545;
+    }
+
+    .alert-container {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1050;
+      max-width: 400px;
+    }
+
+    .form-alert {
+      display: none;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .required-field::after {
+      content: " *";
+      color: #dc3545;
+    }
+
+    .field-hint {
+      font-size: 0.75rem;
+      color: #6c757d;
+      margin-top: 0.25rem;
+    }
+
+    .progress-indicator {
+      display: none;
+      margin: 20px 0;
+    }
+
+    .success-message {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
 
 </head>
 <body>
 
-<!-- Navigation Bar -->
+<!-- Alert Container for Global Messages -->
+<div class="alert-container" id="alertContainer"></div>
+
+<!-- Success Message -->
+<div class="success-message" id="successMsg">Account created successfully! Redirecting...</div>
+
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
     <!-- Brand/logo linking to homepage -->
@@ -195,39 +493,57 @@
     Please fill in the following information to continue:
   </h6>
 
-  <!-- User Type Toggle Switch -->
+  <!-- Progress Indicator -->
+  <div class="progress-indicator" id="progressIndicator">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Processing...</span>
+      </div>
+      <span class="ms-2">Creating your account...</span>
+    </div>
+  </div>
+
+  <!-- User Type Toggle -->
   <div class="toggle-wrapper mb-4 d-flex justify-content-center">
     <div class="toggle-switch" id="toggleSwitch">
-      <div class="toggle-option student">Student</div>
+      <div class="toggle-option student active">Student</div>
       <div class="toggle-option funder">Funder</div>
       <div class="toggle-indicator" id="toggleIndicator"></div>
     </div>
-    <!-- Hidden input to store selected user type -->
-    <input type="hidden" id="userType" />
+    <input type="hidden" id="userType" value="student" />
   </div>
 
-
-
-  <!-- All Form Sections (hidden initially until user type is selected) -->
-  <div id="signupFormSections" class="hidden">
-    <!-- Profile Section - Common fields for both user types -->
+  <!-- All Form Sections -->
+  <form id="signupForm" novalidate>
+    <!-- Profile Section -->
     <div id="profileSection" class="profile-card container mt-4 p-4 rounded">
       <!-- Profile Picture Upload -->
       <div class="row align-items-center mb-4">
         <div class="col-md-2 text-center">
-          <img src="./assets/profile-user.png" alt="Profile Picture" class="img-fluid mb-3 w-100" style="max-width: 200px;"/>
-          <input type="file" class="form-control form-control-sm mb-3" />
+          <div class="profile-picture-container">
+            <div id="profilePicturePlaceholder" class="profile-picture-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+            <img id="profilePicture" class="profile-picture hidden" alt="Profile Picture">
+            <input type="file" id="profilePictureInput" class="file-input" accept="image/*" />
+            <button type="button" class="remove-picture-btn" id="removePictureBtn" title="Remove photo">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="upload-text">Click the icon to upload a photo</div>
         </div>
         <!-- Name Fields -->
         <div class="col-md-5">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <label for="firstName" class="form-label">First Name *</label>
+              <label for="firstName" class="form-label required-field">First Name</label>
               <input type="text" class="form-control" placeholder="First Name" id="firstName" required/>
+              <div class="invalid-feedback">Please provide a valid first name.</div>
             </div>
             <div class="col-md-12 mb-3">
-              <label for="surName" class="form-label">Surname *</label>
+              <label for="surName" class="form-label required-field">Surname</label>
               <input type="text" class="form-control" placeholder="Surname" id="surName" required/>
+              <div class="invalid-feedback">Please provide a valid surname.</div>
             </div>
           </div>
         </div>
@@ -235,55 +551,84 @@
         <div class="col-md-5">
           <div class="row">
             <div class="col-md-12 mb-3">
-              <label for="idNumber" class="form-label">ID Number or Passport Number *</label>
-              <input type="text" class="form-control" placeholder="ID number or Passport Number" id="idNumber" required/>
+              <label for="idNumber" class="form-label required-field">ID Number or Passport Number</label>
+              <input type="text" class="form-control" placeholder="ID number or Passport Number" id="idNumber" required minlength="5"/>
+              <div class="invalid-feedback">Please provide a valid ID or passport number (minimum 5 characters).</div>
             </div>
             <div class="col-md-12 mb-3">
-              <label for="dob" class="form-label">Date of Birth *</label>
+              <label for="dob" class="form-label required-field">Date of Birth</label>
               <input type="date" class="form-control" id="dob" required/>
+              <div class="invalid-feedback">Please provide a valid date of birth (must be at least 16 years old).</div>
+              <div class="field-hint">You must be at least 16 years old to register</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Student Specific Fields (hidden by default) -->
-    <div id="studentFields" class="form-section hidden mb-4 profile-card p-4 rounded">
-      <!-- Country Information -->
+    <!-- Student Fields -->
+    <div id="studentFields" class="form-section mb-4 profile-card p-4 rounded">
+      <!-- Country of Citizenship, Birth, Residence -->
       <div class="row">
         <div class="col-md-4 mb-3">
-          <label for="coCitizenship" class="form-label">Country of Citizenship *</label>
-          <input type="text" class="form-control" placeholder="Country of citizenship" id="coCitizenship" required/>
+          <label for="coCitizenship" class="form-label required-field">Country of Citizenship</label>
+          <select class="form-select" id="coCitizenship" required>
+            <option value="">Select Country</option>
+            <!-- Countries will be populated by JavaScript -->
+          </select>
+          <div class="invalid-feedback">Please select your country of citizenship.</div>
         </div>
         <div class="col-md-4 mb-3">
-          <label for="coBirth" class="form-label">Country of Birth *</label>
-          <input type="text" class="form-control" placeholder="Country of birth" id="coBirth" required/>
+          <label for="coBirth" class="form-label required-field">Country of Birth</label>
+          <select class="form-select" id="coBirth" required>
+            <option value="">Select Country</option>
+            <!-- Countries will be populated by JavaScript -->
+          </select>
+          <div class="invalid-feedback">Please select your country of birth.</div>
         </div>
         <div class="col-md-4 mb-3">
-          <label for="coResidence" class="form-label">Country of Residence *</label>
-          <input type="text" class="form-control" placeholder="Country of residence" id="coResidence" required/>
+          <label for="coResidence" class="form-label required-field">Country of Residence</label>
+          <select class="form-select" id="coResidence" required>
+            <option value="">Select Country</option>
+            <!-- Countries will be populated by JavaScript -->
+          </select>
+          <div class="invalid-feedback">Please select your country of residence.</div>
         </div>
       </div>
       <!-- Email & Contact Information -->
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="studentEmail" class="form-label">Student Email *</label>
-          <input type="email" class="form-control" placeholder="Student email" id="studentEmail" required/>
+          <div class="position-relative">
+            <label for="studentEmail" class="form-label required-field">Student Email</label>
+            <input type="email" class="form-control" placeholder="student@example.com" id="studentEmail" required/>
+            <div class="invalid-feedback">Please provide a valid student email address.</div>
+            <i class="fas fa-check valid-icon validation-icon"></i>
+            <i class="fas fa-times invalid-icon validation-icon"></i>
+          </div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label">Contact Number *</label>
-          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
+          <div class="position-relative">
+            <label for="studentContact" class="form-label required-field">Contact Number</label>
+            <input type="tel" class="form-control" placeholder="+27 12 345 6789" id="studentContact" required/>
+            <div class="invalid-feedback">Please provide a valid contact number (10-15 digits).</div>
+            <i class="fas fa-check valid-icon validation-icon"></i>
+            <i class="fas fa-times invalid-icon validation-icon"></i>
+            <div class="field-hint">Format: +27 12 345 6789 or 0123456789</div>
+          </div>
         </div>
       </div>
       <!-- Password Fields -->
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="password" class="form-label">Password *</label>
-          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
+          <label for="studentPassword" class="form-label required-field">Password</label>
+          <input type="password" class="form-control" placeholder="Password" id="studentPassword" minlength="6" required/>
+          <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+          <div class="field-hint">Minimum 6 characters</div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label">Confirm Password *</label>
-          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
+          <label for="studentConfirmPassword" class="form-label required-field">Confirm Password</label>
+          <input type="password" class="form-control" placeholder="Confirm password" id="studentConfirmPassword" required/>
+          <div class="invalid-feedback">Passwords do not match.</div>
         </div>
       </div>
     </div>
@@ -292,22 +637,36 @@
     <div id="funderFields" class="form-section hidden mb-4 profile-card p-4 rounded">
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="email" class="form-label">Email *</label>
-          <input type="email" class="form-control" placeholder="Email" id="email" required/>
+          <div class="position-relative">
+            <label for="funderEmail" class="form-label required-field">Email</label>
+            <input type="email" class="form-control" placeholder="funder@example.com" id="funderEmail" required/>
+            <div class="invalid-feedback">Please provide a valid email address.</div>
+            <i class="fas fa-check valid-icon validation-icon"></i>
+            <i class="fas fa-times invalid-icon validation-icon"></i>
+          </div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="cNumber" class="form-label">Contact Number *</label>
-          <input type="tel" class="form-control" placeholder="Contact number" id="cNumber" pattern="[0-9]{10,15}" required/>
+          <div class="position-relative">
+            <label for="funderContact" class="form-label required-field">Contact Number</label>
+            <input type="tel" class="form-control" placeholder="+27 12 345 6789" id="funderContact" required/>
+            <div class="invalid-feedback">Please provide a valid contact number (10-15 digits).</div>
+            <i class="fas fa-check valid-icon validation-icon"></i>
+            <i class="fas fa-times invalid-icon validation-icon"></i>
+            <div class="field-hint">Format: +27 12 345 6789 or 0123456789</div>
+          </div>
         </div>
       </div>
       <div class="row mb-4">
         <div class="col-md-6 mb-3">
-          <label for="password" class="form-label">Password *</label>
-          <input type="password" class="form-control" placeholder="Password" id="password" minlength="6" required/>
+          <label for="funderPassword" class="form-label required-field">Password</label>
+          <input type="password" class="form-control" placeholder="Password" id="funderPassword" minlength="6" required/>
+          <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+          <div class="field-hint">Minimum 6 characters</div>
         </div>
         <div class="col-md-6 mb-3">
-          <label for="cPassword" class="form-label">Confirm Password *</label>
-          <input type="password" class="form-control" placeholder="Confirm password" id="cPassword" required/>
+          <label for="funderConfirmPassword" class="form-label required-field">Confirm Password</label>
+          <input type="password" class="form-control" placeholder="Confirm password" id="funderConfirmPassword" required/>
+          <div class="invalid-feedback">Passwords do not match.</div>
         </div>
       </div>
     </div>
@@ -323,7 +682,7 @@
 
       <!-- Submit button -->
       <div class="text-center mt-2">
-        <button type="submit" class="btn btn-submit-sign-up mt-2 px-4">Submit</button>
+        <button type="submit" class="btn btn-submit-sign-up mt-2 px-4" id="submitButton">Submit</button>
       </div>
 
       <!-- Login redirect for existing users -->
@@ -332,19 +691,389 @@
         <a href="login.html" class="text-decoration-underline fw-bold" style="color: #468FAF;">Login</a>
       </h6>
     </div>
-  </div>
+  </form>
 </div>
 
-<!-- JavaScript to handle user type toggle functionality -->
+
 <script>
-// Wait for DOM to be fully loaded before executing script
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+  authDomain: "fund-my-future-47844.firebaseapp.com",
+  databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+  projectId: "fund-my-future-47844",
+  storageBucket: "fund-my-future-47844.firebasestorage.app",
+  messagingSenderId: "581912293895",
+  appId: "1:581912293895:web:03468061fae2124ac770a2",
+  measurementId: "G-LFC0R1GBE1"
+};
+
+// Global functions
+function showAlert(message, type = 'info') {
+  const alertContainer = document.getElementById('alertContainer');
+  const alertId = 'alert-' + Date.now();
+  
+  const alertDiv = document.createElement('div');
+  alertDiv.id = alertId;
+  alertDiv.className = `alert alert-${type} alert-dismissible fade show form-alert`;
+  alertDiv.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  alertContainer.appendChild(alertDiv);
+  
+  setTimeout(() => {
+    alertDiv.style.display = 'block';
+  }, 10);
+  
+  const removeTime = type === 'danger' ? 8000 : 5000;
+  setTimeout(() => {
+    if (document.getElementById(alertId)) {
+      alertDiv.remove();
+    }
+  }, removeTime);
+}
+
+function validateEmail(email) {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+}
+
+function validatePhone(phone) {
+  const cleaned = phone.replace(/\D/g, '');
+  return cleaned.length >= 10 && cleaned.length <= 15;
+}
+
+function resetButton(button, progressIndicator, originalText) {
+  button.innerHTML = originalText;
+  button.disabled = false;
+  if (progressIndicator) {
+    progressIndicator.style.display = 'none';
+  }
+}
+
+// Image compression function
+function compressImage(file, maxWidth = 800, quality = 0.7) {
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = function() {
+      let width = img.width;
+      let height = img.height;
+      
+      // Calculate new dimensions
+      if (width > maxWidth) {
+        height = (height * maxWidth) / width;
+        width = maxWidth;
+      }
+      
+      canvas.width = width;
+      canvas.height = height;
+      
+      // Draw and compress
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(resolve, 'image/jpeg', quality);
+    };
+    
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// Upload profile picture after user is authenticated
+async function uploadProfilePicture(userId, file) {
+  try {
+    const { getStorage, ref, uploadBytes, getDownloadURL } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js');
+    const { getApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    
+    const app = getApp();
+    const storage = getStorage(app);
+    
+    // Compress image first
+    const compressedBlob = await compressImage(file);
+    const compressedFile = new File([compressedBlob], `profile-${userId}.jpg`, {
+      type: 'image/jpeg',
+      lastModified: Date.now()
+    });
+
+    // Upload to Firebase Storage
+    const storageRef = ref(storage, `profile-pictures/${userId}/profile.jpg`);
+    
+    // Upload the compressed file
+    const snapshot = await uploadBytes(storageRef, compressedFile);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    
+    return downloadURL;
+  } catch (error) {
+    console.error("Error uploading profile picture:", error);
+    throw error;
+  }
+}
+
+// MAIN FORM HANDLING FUNCTION - FIXED VERSION
+async function handleSignup() {
+  const submitButton = document.getElementById('submitButton');
+  const progressIndicator = document.getElementById('progressIndicator');
+  const successMsg = document.getElementById('successMsg');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const originalText = submitButton.innerHTML;
+  
+  try {
+    // Show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+    progressIndicator.style.display = 'block';
+    loadingOverlay.style.display = 'flex';
+
+    // Scroll to top to show progress
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Get user type
+    const userType = document.getElementById('userType').value;
+    
+    // Get common fields
+    const firstName = document.getElementById('firstName').value.trim();
+    const surName = document.getElementById('surName').value.trim();
+    const idNumber = document.getElementById('idNumber').value.trim();
+    const dob = document.getElementById('dob').value;
+    
+    // Get user type specific fields
+    let email, contactNumber, password, confirmPassword;
+    
+    if (userType === 'student') {
+      email = document.getElementById('studentEmail').value.trim();
+      contactNumber = document.getElementById('studentContact').value.trim();
+      password = document.getElementById('studentPassword').value;
+      confirmPassword = document.getElementById('studentConfirmPassword').value;
+    } else {
+      email = document.getElementById('funderEmail').value.trim();
+      contactNumber = document.getElementById('funderContact').value.trim();
+      password = document.getElementById('funderPassword').value;
+      confirmPassword = document.getElementById('funderConfirmPassword').value;
+    }
+
+    // Final validation check
+    if (!firstName || !surName || !idNumber || !dob || !email || !contactNumber || !password) {
+      showAlert('Please fill in all required fields.', 'danger');
+      resetButton(submitButton, progressIndicator, originalText);
+      loadingOverlay.style.display = 'none';
+      return;
+    }
+
+    // Email validation
+    if (!validateEmail(email)) {
+      showAlert('Please enter a valid email address.', 'danger');
+      resetButton(submitButton, progressIndicator, originalText);
+      loadingOverlay.style.display = 'none';
+      return;
+    }
+
+    // Phone validation
+    if (!validatePhone(contactNumber)) {
+      showAlert('Please enter a valid contact number (10-15 digits).', 'danger');
+      resetButton(submitButton, progressIndicator, originalText);
+      loadingOverlay.style.display = 'none';
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showAlert("Passwords do not match.", 'danger');
+      resetButton(submitButton, progressIndicator, originalText);
+      loadingOverlay.style.display = 'none';
+      return;
+    }
+
+    if (password.length < 6) {
+      showAlert("Password must be at least 6 characters long.", 'danger');
+      resetButton(submitButton, progressIndicator, originalText);
+      loadingOverlay.style.display = 'none';
+      return;
+    }
+
+    // Dynamically import Firebase modules
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+    const { getAuth, createUserWithEmailAndPassword } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+    const { getFirestore, setDoc, doc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Create Firebase Auth user FIRST
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    let profilePictureUrl = null;
+
+    // Handle profile picture upload to Storage (if provided) - AFTER user is created
+    const profilePictureInput = document.getElementById('profilePictureInput');
+    if (profilePictureInput.files.length > 0) {
+      const file = profilePictureInput.files[0];
+      
+      // Validate file size
+      if (file.size > 5 * 1024 * 1024) {
+        showAlert('Profile picture must be smaller than 5MB', 'danger');
+        resetButton(submitButton, progressIndicator, originalText);
+        loadingOverlay.style.display = 'none';
+        return;
+      }
+
+      try {
+        // Upload profile picture using the authenticated user's UID
+        profilePictureUrl = await uploadProfilePicture(user.uid, file);
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        showAlert('Error uploading profile picture. Please try again.', 'danger');
+        resetButton(submitButton, progressIndicator, originalText);
+        loadingOverlay.style.display = 'none';
+        return;
+      }
+    }
+
+    // Prepare user data for Firestore
+    const userData = {
+      email: email,
+      userType: userType,
+      createdAt: serverTimestamp(),
+      profileComplete: true,
+      firstName: firstName,
+      surname: surName,
+      idOrPassportNumber: idNumber,
+      dateOfBirth: new Date(dob),
+      contactNumber: contactNumber
+    };
+
+    // Add profile picture URL if available
+    if (profilePictureUrl) {
+      userData.profilePicture = profilePictureUrl;
+    }
+
+    // Add user type specific fields
+    if (userType === 'student') {
+      userData.countryOfCitizenship = document.getElementById('coCitizenship').value;
+      userData.countryOfBirth = document.getElementById('coBirth').value;
+      userData.countryOfResidence = document.getElementById('coResidence').value;
+      
+      if (!userData.countryOfCitizenship || !userData.countryOfBirth || !userData.countryOfResidence) {
+        showAlert('Please select all country fields.', 'danger');
+        resetButton(submitButton, progressIndicator, originalText);
+        loadingOverlay.style.display = 'none';
+        return;
+      }
+    } else {
+      userData.displayName = `${firstName} ${surName}`;
+      userData.totalDonated = 0;
+    }
+
+    // Save user data in Firestore
+    await setDoc(doc(db, "users", user.uid), userData);
+
+    // SUCCESS - Show success message and redirect
+    successMsg.style.display = 'block';
+    
+    progressIndicator.innerHTML = `
+      <div class="d-flex justify-content-center align-items-center">
+        <i class="fas fa-check-circle text-success me-2" style="font-size: 1.5rem;"></i>
+        <span>Account created successfully! Redirecting...</span>
+      </div>
+    `;
+
+    setTimeout(() => {
+      loadingOverlay.style.display = 'none';
+      if (userType === 'student') {
+        window.location.href = "student-dashboard.html";
+      } else {
+        window.location.href = "funder-dashboard.html";
+      }
+    }, 2000);
+    
+  } catch (error) {
+    console.error("Sign-up error:", error);
+    resetButton(submitButton, progressIndicator, originalText);
+    loadingOverlay.style.display = 'none';
+    
+    // User-friendly error messages
+    if (error.code === 'auth/email-already-in-use') {
+      showAlert('This email is already registered. Please use a different email or login.', 'danger');
+    } else if (error.code === 'auth/invalid-email') {
+      showAlert('Please enter a valid email address.', 'danger');
+    } else if (error.code === 'auth/weak-password') {
+      showAlert('Password is too weak. Please use a stronger password.', 'danger');
+    } else if (error.code === 'auth/network-request-failed') {
+      showAlert('Network error. Please check your internet connection and try again.', 'danger');
+    } else {
+      showAlert('Error creating account: ' + error.message, 'danger');
+    }
+  }
+}
+
+// DOM Content Loaded - Form Setup
 document.addEventListener("DOMContentLoaded", () => {
-  // Get DOM elements for toggle functionality
+  // Country data for dropdowns
+  const countries = [
+    "South Africa", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", 
+    "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", 
+    "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", 
+    "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", 
+    "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", 
+    "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", 
+    "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", 
+    "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", 
+    "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", 
+    "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan", 
+    "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", 
+    "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", 
+    "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", 
+    "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", 
+    "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", 
+    "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", 
+    "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", 
+    "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", 
+    "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", 
+    "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", 
+    "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", 
+    "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+  ];
+
+  // Populate country dropdowns
+  function populateCountryDropdowns() {
+    const countrySelects = document.querySelectorAll('select[id^="co"]');
+    countrySelects.forEach(select => {
+      while (select.options.length > 1) {
+        select.remove(1);
+      }
+      
+      countries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        select.appendChild(option);
+      });
+    });
+  }
+
+  // Initialize country dropdowns
+  populateCountryDropdowns();
+
+  // Set max date for date of birth (16 years ago)
+  const dobInput = document.getElementById('dob');
+  if (dobInput) {
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+    const maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+    
+    dobInput.min = minDate.toISOString().split('T')[0];
+    dobInput.max = maxDate.toISOString().split('T')[0];
+  }
+
+  // Toggle functionality
   const studentOption = document.querySelector(".toggle-option.student");
   const funderOption = document.querySelector(".toggle-option.funder");
   const indicator = document.getElementById("toggleIndicator");
   const userTypeInput = document.getElementById("userType");
-  const signupFormSections = document.getElementById("signupFormSections");
   const studentFields = document.getElementById("studentFields");
   const funderFields = document.getElementById("funderFields");
 
@@ -353,105 +1082,257 @@ document.addEventListener("DOMContentLoaded", () => {
     // Store selected user type in hidden input
     userTypeInput.value = type;
 
-    // Show form container when user type is selected
-    signupFormSections.classList.remove("hidden");
-
-    // Show/hide appropriate form fields based on user type
-    studentFields.classList.toggle("hidden", type !== "student");
-    funderFields.classList.toggle("hidden", type !== "funder");
-
-    // Update active state styling for toggle options
-    studentOption.classList.toggle("active", type === "student");
-    funderOption.classList.toggle("active", type === "funder");
-
-    // Move toggle indicator to selected position
-    indicator.style.left = type === "student" ? "2px" : "110px";
+    if (type === "student") {
+      studentFields.classList.remove("hidden");
+      funderFields.classList.add("hidden");
+      studentOption.classList.add("active");
+      funderOption.classList.remove("active");
+      indicator.style.left = "2px";
+    } else {
+      studentFields.classList.add("hidden");
+      funderFields.classList.remove("hidden");
+      studentOption.classList.remove("active");
+      funderOption.classList.add("active");
+      indicator.style.left = "110px";
+    }
   };
+
+  // Initialize with student selected
+  selectUserType("student");
 
   // Attach click event handlers to toggle options
   studentOption.addEventListener("click", () => selectUserType("student"));
   funderOption.addEventListener("click", () => selectUserType("funder"));
+
+  // Profile picture upload functionality
+  const profilePictureInput = document.getElementById('profilePictureInput');
+  const profilePicture = document.getElementById('profilePicture');
+  const profilePicturePlaceholder = document.getElementById('profilePicturePlaceholder');
+  const removePictureBtn = document.getElementById('removePictureBtn');
+  const profilePictureContainer = document.querySelector('.profile-picture-container');
+
+  // Click handlers for profile picture
+  profilePicturePlaceholder.addEventListener('click', () => {
+    profilePictureInput.click();
+  });
+
+  profilePicture.addEventListener('click', () => {
+    profilePictureInput.click();
+  });
+
+  profilePictureInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.match('image.*')) {
+        showAlert('Please select an image file (JPEG, PNG, etc.)', 'danger');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showAlert('Please select an image smaller than 5MB', 'danger');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        profilePicture.src = e.target.result;
+        profilePicturePlaceholder.classList.add('hidden');
+        profilePicture.classList.remove('hidden');
+        profilePictureContainer.classList.add('has-image');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Remove picture functionality 
+  removePictureBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    profilePictureInput.value = '';
+    profilePicture.classList.add('hidden');
+    profilePicturePlaceholder.classList.remove('hidden');
+    profilePictureContainer.classList.remove('has-image');
+  });
+
+  // Real-time validation for email and phone fields
+  function setupRealTimeValidation() {
+    const emailFields = ['studentEmail', 'funderEmail'];
+    const phoneFields = ['studentContact', 'funderContact'];
+
+    // Email validation
+    emailFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.addEventListener('input', function() {
+          const isValid = validateEmail(this.value);
+          const parent = this.parentElement;
+          const validIcon = parent.querySelector('.valid-icon');
+          const invalidIcon = parent.querySelector('.invalid-icon');
+
+          if (this.value === '') {
+            this.classList.remove('is-valid', 'is-invalid');
+            validIcon.style.display = 'none';
+            invalidIcon.style.display = 'none';
+          } else if (isValid) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+            validIcon.style.display = 'block';
+            invalidIcon.style.display = 'none';
+          } else {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+            validIcon.style.display = 'none';
+            invalidIcon.style.display = 'block';
+          }
+        });
+      }
+    });
+
+    // Phone validation
+    phoneFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.addEventListener('input', function() {
+          const isValid = validatePhone(this.value);
+          const parent = this.parentElement;
+          const validIcon = parent.querySelector('.valid-icon');
+          const invalidIcon = parent.querySelector('.invalid-icon');
+
+          if (this.value === '') {
+            this.classList.remove('is-valid', 'is-invalid');
+            validIcon.style.display = 'none';
+            invalidIcon.style.display = 'none';
+          } else if (isValid) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+            validIcon.style.display = 'block';
+            invalidIcon.style.display = 'none';
+          } else {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+            validIcon.style.display = 'none';
+            invalidIcon.style.display = 'block';
+          }
+        });
+      }
+    });
+
+    // Password confirmation validation
+    const passwordFields = [
+      { password: 'studentPassword', confirm: 'studentConfirmPassword' },
+      { password: 'funderPassword', confirm: 'funderConfirmPassword' }
+    ];
+
+    passwordFields.forEach(pair => {
+      const passwordField = document.getElementById(pair.password);
+      const confirmField = document.getElementById(pair.confirm);
+
+      if (passwordField && confirmField) {
+        const validatePasswordMatch = () => {
+          if (passwordField.value && confirmField.value) {
+            if (passwordField.value === confirmField.value) {
+              confirmField.classList.remove('is-invalid');
+              confirmField.classList.add('is-valid');
+            } else {
+              confirmField.classList.remove('is-valid');
+              confirmField.classList.add('is-invalid');
+            }
+          }
+        };
+
+        passwordField.addEventListener('input', validatePasswordMatch);
+        confirmField.addEventListener('input', validatePasswordMatch);
+      }
+    });
+  }
+
+  // Initialize real-time validation
+  setupRealTimeValidation();
+
+  // Form submission handling
+  const signupForm = document.getElementById('signupForm');
+  const submitButton = document.getElementById('submitButton');
+
+  if (signupForm) {
+    signupForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Validate form
+      if (!validateForm()) {
+        showAlert('Please fill in all required fields correctly before submitting.', 'danger');
+        signupForm.classList.add('was-validated');
+        return;
+      }
+
+      // If form is valid, proceed with submission
+      await handleSignup();
+    });
+  }
+
+  // Comprehensive form validation
+  function validateForm() {
+    let isValid = true;
+    
+    const currentUserType = document.getElementById('userType').value;
+    let requiredFields = [];
+    
+    const commonFields = ['firstName', 'surName', 'idNumber', 'dob'];
+    
+    if (currentUserType === 'student') {
+      requiredFields = [...commonFields, 'coCitizenship', 'coBirth', 'coResidence', 'studentEmail', 'studentContact', 'studentPassword', 'studentConfirmPassword'];
+    } else {
+      requiredFields = [...commonFields, 'funderEmail', 'funderContact', 'funderPassword', 'funderConfirmPassword'];
+    }
+
+    requiredFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.classList.remove('is-valid', 'is-invalid');
+        
+        if (field.closest('.hidden')) {
+          return;
+        }
+        
+        let fieldValid = true;
+        
+        if (field.type === 'email') {
+          fieldValid = field.value && validateEmail(field.value);
+        } else if (field.type === 'tel') {
+          fieldValid = field.value && validatePhone(field.value);
+        } else if (field.type === 'select-one') {
+          fieldValid = field.value !== '';
+        } else if (field.type === 'password' && field.id.includes('Confirm')) {
+          const passwordField = document.getElementById(field.id.replace('Confirm', ''));
+          fieldValid = field.value && passwordField.value === field.value;
+        } else if (field.type === 'password') {
+          fieldValid = field.value && field.value.length >= 6;
+        } else if (field.type === 'date') {
+          fieldValid = field.value !== '';
+          if (fieldValid) {
+            const selectedDate = new Date(field.value);
+            const minDate = new Date(field.min);
+            const maxDate = new Date(field.max);
+            fieldValid = selectedDate >= minDate && selectedDate <= maxDate;
+          }
+        } else {
+          fieldValid = field.value && field.value.trim() !== '';
+        }
+        
+        if (!fieldValid) {
+          field.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          field.classList.add('is-valid');
+        }
+      }
+    });
+
+    return isValid;
+  }
 });
 </script>
 
-<!-- Firebase authentication and user creation script -->
-<script type="module">
-// Import Firebase modules
-import { auth, db } from './firebase-config.js';
-import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-
-// Track selected user type from toggle (default to student)
-let selectedUserType = 'student';
-// Global function to set user type (called from toggle)
-window.selectUserType = (type) => {
-  selectedUserType = type;
-  document.getElementById("userType").value = type;
-
-  // Show/hide appropriate form sections
-  document.getElementById("studentFields").classList.toggle("hidden", type !== "student");
-  document.getElementById("funderFields").classList.toggle("hidden", type !== "funder");
-};
-
-// Handle form submission
-const signupForm = document.querySelector("form");
-
-signupForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  // Collect form fields based on user type
-  const email = document.getElementById(selectedUserType === "student" ? "studentEmail" : "email").value;
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("cPassword").value;
-
-  // Validate password match
-  if (password !== confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
-
-  try {
-    // Create Firebase Auth user account
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Prepare user data for Firestore
-    const userData = {
-      uid: user.uid,
-      email: email,
-      role: selectedUserType,
-      firstName: document.getElementById("firstName")?.value || "",
-      surName: document.getElementById("surName")?.value || "",
-      idNumber: document.getElementById("idNumber")?.value || "",
-      dob: document.getElementById("dob")?.value || "",
-      coCitizenship: document.getElementById("coCitizenship")?.value || "",
-      coBirth: document.getElementById("coBirth")?.value || "",
-      coResidence: document.getElementById("coResidence")?.value || "",
-      cNumber: document.getElementById("cNumber")?.value || "",
-      race: document.getElementById("race")?.value || "",
-      gender: document.getElementById("gender")?.value || "",
-      matric: document.getElementById("matric")?.value || "",
-      currently: document.getElementById("currently")?.value || "",
-      orgInd: document.getElementById("org-ind")?.value || "",
-      organization: document.getElementById("organization")?.value || "",
-      createdAt: new Date()
-    };
-
-    // Save user data in Firestore database
-    await setDoc(doc(db, "users", user.uid), userData);
-
-    // Success message and redirect
-    alert("Sign-up successful!");
-    window.location.href = "login.html"; // redirect to login after successful signup
-  } catch (error) {
-    console.error(error);
-    alert("Sign-up failed: " + error.message);
-  }
-});
-</script>
-
-
-<!-- Footer Section -->
+<!-- Footer -->
 <footer class="footer pt-5">
 
   <!-- Main container for footer content -->
@@ -514,7 +1395,7 @@ signupForm.addEventListener("submit", async (e) => {
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="#">Blog</a></li>
           <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
@@ -561,7 +1442,6 @@ signupForm.addEventListener("submit", async (e) => {
 
 <!-- Bootstrap + Font Awesome JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </body>
 </html>

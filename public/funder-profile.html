@@ -3,114 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Funder's Profile </title>
+    <title>Funder Profile - FundMyFuture</title>
+    
+    <!-- Firebase modules-->
+    <script type="module" src="/src/firebase-config.js"></script>
+    <script type="module" src="/src/auth-service.js"></script>
+    <script type="module" src="/src/campaign-service.js"></script>
+    <script type="module" src="/src/app.js"></script>
 
-  <!-- External CSS Libraries -->
-  <!-- Bootstrap CSS for responsive layout and components -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
-
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-/* ===== CONTENT STYLING ===== */
-/* Profile image sizing for consistent display (20% of container width) */
-.profile-image {
-  width: 20%;
-}
+    /* Navbar CSS */
+    .navbar-custom {
+      background-color: #012A4A; 
+      height: 90px;
+    }
 
-/* Badge card styling with brand light blue background */
-.badge-card {
-  border: none;
-  background-color: #A9D6E5;
-}
+    .navbar-brand {
+      font-weight: bold;
+      color: #A9D6E5;
+    }
 
-/* About section card styling */
-.about-card {
-  border: none;
-  background-color: #A9D6E5;
-}
+    .navbar-brand:hover {
+      color: #0077b6;
+    }
 
-/* Main profile info card styling */
-.profile-info {
-  border: none;
-  background-color: #A9D6E5;
-}
+    .nav-link {
+      color: #CAF0F8 !important;
+      font-weight: 600;
+      margin-right: 15px;
+    }
 
-/* ===== FUNDER STATS STYLING ===== */
-/* Stats section heading with brand colors (dark blue background, light blue text) */
-.funder-stats h5 {
-  color: #A9D6E5;
-  background-color: #012A4A;
-  padding: 10px;
-  border-radius: 5px;
-}
+    .nav-link:hover {
+      color: #0077b6 !important;
+    }
 
-/* Individual stat item styling with subtle background */
-.stats {
-  border: 1px solid #012a4a12;
-  background-color: #012a4a12;
-}
+    /* navbar menu collapse for smaller screens */
+    .navbar-toggler {
+      border-color: #A9D6E5;
+      background-color: #A9D6E5;
+      transition: all 0.3s ease;
+    }
 
-/* Stat label styling */
-.stats h6 {
-  color: #012A4A;
-  font-size: 0.9rem;
-}
+    .navbar-toggler:hover {
+      border-color: #ffd60a;
+      background-color: #ffd60a;
+      transform: scale(1.02);
+    }
+    /* --------------- */
 
-/* Stat value styling with emphasis */
-.stats p {
-  color: #012A4A;
-}
+    .donate-btn {
+      background-color: #00b4d8;
+      color: white;
+      font-weight: bold;
+    }
 
-/* ===== BUTTON STYLING ===== */
-/* View campaign button styling with brand colors */
-.btn-view-campaign {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  font-size: small;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+    .donate-btn:hover {
+      background-color: #0077b6;
+      color: #FEFAE0;
+    }
 
-/* View campaign button hover effects with yellow accent */
-.btn-view-campaign:hover {
-  color: #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
+    .login-btn {
+      color: #ffd60a;
+    }
 
-/* ===== BADGE AND AMOUNT STYLING ===== */
-/* Donation amount badge with highlight yellow color */
-.bg-amount {
-  background-color: #ffc300;
-  color: #012A4A;
-}
+    /* footer css */
+    .footer {
+      margin-top: 100px;
+      background-color: #468FAF;
+      color: #012A4A;
+    }
 
-/* ===== INTERACTIVE ELEMENT STYLING ===== */
-/* Social icon hover effects with smooth transitions */
-.hover-opacity i{
-  transition: transform 0.3s ease, color 0.3s ease;
-  cursor: pointer;
-}
+    .footer a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* Social icon hover state with color change */
-.hover-opacity i:hover{
-  color: #01497c;
-  cursor: pointer;
-}
+    .footer a:hover {
+      text-decoration: underline;
+    }
 
-/* General hover opacity effect for interactive elements */
-.hover-opacity:hover {
-  transform: scale(1.2);
-}
+    .footer li {
+      margin-bottom: 15px;
+    }
 
+    .footer-bottom {
+      background-color: #34637a;
+      color: white;
+      font-size: 0.9rem;
+    }
 
+    .form-control::placeholder {
+      color: #6c757d;
+      opacity: 1;
+    }
+
+    .icon-input-group {
+      position: relative;
+    }
+
+    .icon-input-group .fa-envelope {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .icon-input-group input {
+      padding-left: 2rem;
+    }
+
+    .social-icons i {
+      font-size: 2rem;
+      margin-right: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .social-icons i:hover {
+      color: #A9D6E5;
+    }
+
+    .follow-us {
+      font-size: 1.5rem;
+      margin-right: 20px;
+      margin-bottom: 50px;
+    }
+
+    .sign-up-btn {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      border: none;
+      width: 150px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .sign-up-btn:hover {
+      background-color: #A9D6E5;
+      color: #012A4A;
+      border: none;
+    }
+
+    .profile-image { 
+      width: 20%; 
+    }
+
+    .badge-card { 
+      border: none; 
+      background-color: #A9D6E5; 
+    }
+
+    .about-card { 
+      border: none; 
+      background-color: #A9D6E5; 
+    }
+
+    .profile-info { 
+      border: none; 
+      background-color: #A9D6E5; 
+    }
+
+    .funder-stats h5 { 
+      color: #A9D6E5; 
+      background-color: #012A4A; 
+      padding: 10px; 
+      border-radius: 5px; 
+    }
+
+    .stats { 
+      border: 1px solid #012a4a12; 
+      background-color: #012a4a12; 
+    }
+
+    .stats h6 { 
+      color: #012A4A; 
+      font-size: 0.9rem; 
+    }
+
+    .stats p { 
+      color: #012A4A; 
+    }
+
+    .btn-view-campaign { 
+      background-color: #012A4A; 
+      color: #A9D6E5; 
+      font-weight: 800; 
+      font-size: small; 
+      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2); 
+      transition: all 0.3s ease; 
+    }
+
+    .btn-view-campaign:hover { 
+      color: #012A4A; 
+      background-color: #ffd60a; 
+      transform: scale(1.02); 
+    }
+
+    .bg-amount { 
+      background-color: #ffc300; 
+      color: #012A4A; 
+    }
+
+    .hover-opacity i{ 
+      transition: transform 0.3s ease, color 0.3s ease; 
+      cursor: pointer; 
+    }
+
+    .hover-opacity i:hover{ 
+      color: #01497c; 
+      cursor: pointer; 
+    }
+
+    .hover-opacity:hover { 
+      transform: scale(1.2); 
+    }
+
+    .titles {
+      background-color: #012A4A;
+      color: #A9D6E5;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    /* Profile picture styles */
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #012A4A;
+    }
+
+    /* Personal details styles */
+    .profile-detail-item {
+      margin-bottom: 10px;
+      padding: 8px;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+    }
+
+    .detail-label {
+      font-weight: bold;
+      color: #012A4A;
+      font-size: 0.9rem;
+    }
+
+    .detail-value {
+      color: #2A6F97;
+      font-size: 0.95rem;
+    }
     </style>
 </head>
 
@@ -152,7 +297,7 @@
           </li>
           <!-- Login/authentication button -->
           <li class="nav-item me-2" id="login-area">
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+            <button class="btn login-btn fw-bolder" onclick="logout()">LOGOUT</button>
           </li>
         </ul>
       </div>
@@ -172,43 +317,58 @@
     <div class="card-body d-flex align-items-start justify-content-between">
       <!-- Left: Profile Image and Basic Information -->
       <div class="d-flex align-items-center">
-        <!-- Profile picture with circular styling -->
-        <img src="./assets/profile-user.png" class="profile-image img-fluid rounded-circle me-4" alt="Profile Picture">
+        <img id="funderProfilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
         <div>
-          <!-- Funder name with emphasis -->
-          <h2 class="card-title fw-bold fs-1">Jane Doe</h2>
-          <!-- Funder tagline, interests, and location -->
-          <p class="card-text text-muted small">Education Advocate | STEM Enthusiast | Cape Town, South Africa</p>
+          <h2 class="card-title fw-bold fs-1" id="funderName">Loading...</h2>
+          <p class="card-text text-muted small mb-2" id="funderTagline">
+            <i class="bi bi-envelope-fill me-1"></i> <span id="funderEmail">Loading...</span>
+          </p>
+          <p class="card-text text-muted small mb-2" id="funderContact">
+            <i class="bi bi-telephone-fill me-1"></i> <span id="contactNumber">Loading...</span>
+          </p>
         </div>
       </div>
 
       <!-- Right: Social Media Links -->
       <div class="d-flex flex-column align-items-end gap-2">
-        <!-- Email contact link with envelope icon -->
-        <a href="mailto:jane@example.com" class="text-dark hover-opacity" target="_blank">
+        <a href="#" class="text-dark hover-opacity" id="emailLink" target="_blank">
           <i class="bi bi-envelope-fill fs-5"></i>
         </a>
-        <!-- LinkedIn professional profile link -->
-        <a href="https://www.linkedin.com/in/janedoe" class="text-dark hover-opacity" target="_blank">
+        <a href="#" class="text-dark hover-opacity" id="linkedinLink" target="_blank">
           <i class="bi bi-linkedin fs-5"></i>
         </a>
-        <!-- Twitter/X social media profile link -->
-        <a href="https://twitter.com/janedoe" class="text-dark hover-opacity" target="_blank">
+        <a href="#" class="text-dark hover-opacity" id="twitterLink" target="_blank">
           <i class="bi bi-twitter-x fs-5"></i>
         </a>
       </div>
     </div>
 
-    <!-- Badges Section -->
-    <!-- Achievement badges showing funder status, recognition, and participation level -->
-    <div class="badge-card card mb-1">
-      <div class="card-body">
-        <!-- Top Funder badge for high-contribution donors -->
-        <span class="badge bg-success me-2">Top Funder</span>
-        <!-- Education Advocate badge for specific focus area -->
-        <span class="badge bg-primary me-2">Education Advocate</span>
-        <!-- Early Supporter badge for long-term platform supporters -->
-        <span class="badge bg-warning text-dark">Early Supporter</span>
+    <!-- Personal Details Section -->
+    <div class="card-body pt-0">
+      <h5 class="titles fw-bold mb-3">
+        <i class="bi bi-person-badge-fill me-2"></i> Personal Details
+      </h5>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="profile-detail-item">
+            <div class="detail-label">ID/Passport Number</div>
+            <div class="detail-value" id="idNumber">Loading...</div>
+          </div>
+          <div class="profile-detail-item">
+            <div class="detail-label">Date of Birth</div>
+            <div class="detail-value" id="dateOfBirth">Loading...</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="profile-detail-item">
+            <div class="detail-label">Member Since</div>
+            <div class="detail-value" id="memberSince">Loading...</div>
+          </div>
+          <div class="profile-detail-item">
+            <div class="detail-label">Total Impact</div>
+            <div class="detail-value" id="totalImpact">R0 across 0 campaigns</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -216,7 +376,10 @@
     <!-- Personal description and funding philosophy/mission statement -->
     <div class="about-card card mb-1">
       <div class="card-body">
-        <p>Passionate about making education accessible to underserved communities. I focus on funding STEM programs and scholarships for girls in rural areas.</p>
+        <h5 class="titles fw-bold mb-3">
+          <i class="bi bi-person-lines-fill me-2"></i> About Me
+        </h5>
+        <p id="funderBio">I'm passionate about supporting education and helping students achieve their dreams. Every contribution makes a difference in someone's educational journey.</p>
       </div>
     </div>
   </div>
@@ -236,97 +399,290 @@
             <!-- Total campaigns funded statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Total Campaigns Funded</h6>
-              <p class="fw-bolder mb-0 fs-4">12</p>
+              <p class="fw-bolder mb-0 fs-4" id="totalCampaignsFunded">0</p>
             </div>
             <!-- Geographic impact statistic -->
             <div class="stats py-2 px-3 rounded">
-              <h6 class="mb-1">Countries Impacted</h6>
-              <p class="fw-bolder mb-0 fs-4">5</p>
+              <h6 class="mb-1">Total Amount Donated</h6>
+              <p class="fw-bolder mb-0 fs-4" id="totalAmountDonated">R0</p>
             </div>
             <!-- Membership duration statistic -->
             <div class="stats py-2 px-3 rounded">
-              <h6 class="mb-1">Member Since</h6>
-              <p class="fw-bolder mb-0 fs-4">2022</p>
+              <h6 class="mb-1">Students Supported</h6>
+              <p class="fw-bolder mb-0 fs-4" id="studentsSupported">0</p>
             </div>
             <!-- Average donation amount statistic -->
             <div class="stats py-2 px-3 rounded">
               <h6 class="mb-1">Average Donation</h6>
-              <p class="fw-bolder mb-0 fs-4">R200</p>
+              <p class="fw-bolder mb-0 fs-4" id="averageDonation">R0</p>
             </div>
             <!-- Total lifetime donations statistic -->
             <div class="stats py-2 px-3 rounded">
-              <h6 class="mb-1">Total Amount Donated</h6>
-              <p class="fw-bolder mb-0 fs-4">R20 000</p>
+              <h6 class="mb-1">Last Donation</h6>
+              <p class="fw-bolder mb-0 fs-4" id="lastDonation">Never</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Funded Campaigns Column (Right - 8 columns on medium screens and up) -->
-    <!-- Showcases specific campaigns the funder has supported with donation amounts -->
+    <!-- Funded Campaigns -->
     <div class="col-md-8">
         <div class="card border-0 h-100 mt-2">
-        <div class="card-body funded-campaigns-body">
-            <!-- Campaign cards grid - 1 column on mobile, 2 columns on medium screens and up -->
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-            
-            <!-- Campaign Card 1: Girls in STEM - Kenya -->
-            <div class="col">
-                <div class="card h-100">
-                <div class="card-body">
-                    <!-- Campaign title -->
-                    <h5 class="card-title fw-bold mb-1">Girls in STEM - Kenya</h5>
-                    <!-- Donation amount badge with highlight color -->
-                    <p class="badge bg-amount small fw-light">R2 000</p>
-                    <!-- Campaign description and impact details -->
-                    <p class="card-text text-muted small mb-4">Providing laptops and coding workshops for 50 girls in Nairobi.</p>
-                    <!-- Action button to view full campaign details -->
-                    <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
-                </div>
-                </div>
+          <div class="card-body funded-campaigns-body">
+            <h5 class="titles fw-bold mb-4 fs-4">
+              <i class="bi bi-heart-fill me-2"></i> Funded Campaigns
+            </h5>
+            <div id="noCampaignsMessage" class="text-center py-5">
+              <p class="text-muted mb-3">You haven't funded any campaigns yet.</p>
+              <a href="campaign.html" class="btn btn-view-campaign">
+                <i class="bi bi-search me-2"></i>Browse Campaigns
+              </a>
             </div>
-
-            <!-- Campaign Card 2: Rural School Renovation - Uganda -->
-            <div class="col">
-                <div class="card h-100">
-                <div class="card-body">
-                    <!-- Campaign title -->
-                    <h5 class="card-title fw-bold mb-1">Rural School Renovation - Uganda</h5>
-                    <!-- Donation amount badge -->
-                    <p class="badge bg-amount small fw-light">R1 500</p>
-                    <!-- Campaign description -->
-                    <p class="card-text text-muted small mb-4">Helping rebuild classrooms and supply books in a remote village.</p>
-                    <!-- Action button to view campaign details -->
-                    <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
-                </div>
-                </div>
+            <div class="row row-cols-1 row-cols-md-2 g-4" id="fundedCampaignsContainer">
+              <!-- Campaign cards will be loaded here dynamically -->
             </div>
-
-            <!-- Campaign Card 3: Scholarship Fund - South Africa -->
-            <div class="col">
-                <div class="card h-100">
-                <div class="card-body">
-                    <!-- Campaign title -->
-                    <h5 class="card-title fw-bold mb-1">Scholarship Fund - South Africa</h5>
-                    <!-- Donation amount badge -->
-                    <p class="badge bg-amount small fw-light">R3 000</p>
-                    <!-- Campaign description -->
-                    <p class="card-text text-muted small mb-4">Supporting university tuition for three first-generation students.</p>
-                    <!-- Action button to view campaign details -->
-                    <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
-                </div>
-                </div>
-            </div>
-
-            </div>
-        </div>
+          </div>
         </div>
     </div>
     </div>
   </div>
 
-<!-- Footer Section -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Firebase Integration for Funder Profile -->
+<script type="module">
+  import { auth, db } from './firebase-config.js';
+  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  let currentUserId = null;
+
+  // Check if user is logged in and load profile data
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUserId = user.uid;
+      console.log("Funder logged in:", user.uid);
+      await loadFunderProfile(user.uid);
+      await loadFunderDonations(user.uid);
+    } else {
+      console.log("No user logged in");
+      window.location.href = "login.html";
+    }
+  });
+
+  async function loadFunderProfile(userId) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", userId));
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        console.log("Funder profile data:", userData);
+        
+        // Update profile information
+        document.getElementById('funderName').textContent = `${userData.firstName} ${userData.surname}`;
+        document.getElementById('funderEmail').textContent = userData.email || 'Email not provided';
+        document.getElementById('contactNumber').textContent = userData.contactNumber || 'Contact not provided';
+        
+        // Update personal details
+        document.getElementById('idNumber').textContent = userData.idOrPassportNumber || 'Not provided';
+        
+        if (userData.dateOfBirth) {
+          const dob = userData.dateOfBirth.toDate ? userData.dateOfBirth.toDate() : new Date(userData.dateOfBirth);
+          document.getElementById('dateOfBirth').textContent = dob.toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+        } else {
+          document.getElementById('dateOfBirth').textContent = 'Not provided';
+        }
+        
+        // Update member since
+        if (userData.createdAt) {
+          const memberSince = userData.createdAt.toDate ? userData.createdAt.toDate().getFullYear() : new Date(userData.createdAt).getFullYear();
+          document.getElementById('memberSince').textContent = memberSince;
+        } else {
+          document.getElementById('memberSince').textContent = new Date().getFullYear();
+        }
+        
+        // Update profile picture if available
+        if (userData.profilePicture) {
+          document.getElementById('funderProfilePicture').src = userData.profilePicture;
+        }
+        
+        // Update email link
+        const emailLink = document.getElementById('emailLink');
+        emailLink.href = `mailto:${userData.email}`;
+        
+      } else {
+        console.log("No funder data found");
+        showErrorMessage("No profile data found. Please complete your profile setup.");
+      }
+    } catch (error) {
+      console.error("Error loading funder profile:", error);
+      showErrorMessage("Error loading profile data. Please try refreshing the page.");
+    }
+  }
+
+  async function loadFunderDonations(userId) {
+    try {
+      // Get all donations by this funder
+      const donationsQuery = query(
+        collection(db, "donations"),
+        where("funderId", "==", userId),
+        where("paymentStatus", "==", "completed"),
+        orderBy("createdAt", "desc")
+      );
+      
+      const donationsSnapshot = await getDocs(donationsQuery);
+      let totalAmount = 0;
+      let donationCount = 0;
+      let uniqueCampaigns = new Set();
+      let uniqueStudents = new Set();
+      let campaignDetails = [];
+      let lastDonationDate = null;
+      
+      if (donationsSnapshot.empty) {
+        // No donations found
+        document.getElementById('noCampaignsMessage').style.display = 'block';
+        document.getElementById('fundedCampaignsContainer').style.display = 'none';
+        return;
+      }
+      
+      // Process donations
+      donationsSnapshot.forEach(doc => {
+        const donation = doc.data();
+        totalAmount += donation.amount || 0;
+        donationCount++;
+        uniqueCampaigns.add(donation.campaignId);
+        
+        if (donation.studentId) {
+          uniqueStudents.add(donation.studentId);
+        }
+        
+        // Get the most recent donation date
+        if (!lastDonationDate || donation.createdAt > lastDonationDate) {
+          lastDonationDate = donation.createdAt;
+        }
+        
+        // Store donation for campaign details
+        campaignDetails.push({
+          campaignId: donation.campaignId,
+          amount: donation.amount,
+          donationDate: donation.createdAt,
+          studentId: donation.studentId
+        });
+      });
+      
+      // Update stats
+      document.getElementById('totalCampaignsFunded').textContent = uniqueCampaigns.size;
+      document.getElementById('totalAmountDonated').textContent = `R${totalAmount.toLocaleString()}`;
+      document.getElementById('studentsSupported').textContent = uniqueStudents.size;
+      
+      // Calculate average donation
+      const averageDonation = donationCount > 0 ? Math.round(totalAmount / donationCount) : 0;
+      document.getElementById('averageDonation').textContent = `R${averageDonation}`;
+      
+      // Update last donation
+      if (lastDonationDate) {
+        const lastDonation = lastDonationDate.toDate ? lastDonationDate.toDate() : new Date(lastDonationDate);
+        document.getElementById('lastDonation').textContent = lastDonation.toLocaleDateString('en-US', {
+          month: 'short', day: 'numeric'
+        });
+      }
+      
+      // Update total impact
+      document.getElementById('totalImpact').textContent = `R${totalAmount.toLocaleString()} across ${uniqueCampaigns.size} campaigns`;
+      
+      // Hide no campaigns message and show container
+      document.getElementById('noCampaignsMessage').style.display = 'none';
+      document.getElementById('fundedCampaignsContainer').style.display = 'flex';
+      
+      // Load campaign details for funded campaigns
+      await loadCampaignDetails(Array.from(uniqueCampaigns), campaignDetails);
+      
+    } catch (error) {
+      console.error("Error loading funder donations:", error);
+      document.getElementById('noCampaignsMessage').style.display = 'block';
+    }
+  }
+
+  async function loadCampaignDetails(campaignIds, donationDetails) {
+    try {
+      const campaignsContainer = document.getElementById('fundedCampaignsContainer');
+      campaignsContainer.innerHTML = '';
+      
+      // Get campaign details for each campaign ID
+      for (const campaignId of campaignIds) {
+        const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
+        
+        if (campaignDoc.exists()) {
+          const campaign = campaignDoc.data();
+          
+          // Find total donated to this campaign and get student info
+          const campaignDonations = donationDetails.filter(d => d.campaignId === campaignId);
+          const totalDonatedToCampaign = campaignDonations.reduce((sum, d) => sum + d.amount, 0);
+          
+          // Get student name if available
+          let studentName = "Student";
+          if (campaign.studentId) {
+            const studentDoc = await getDoc(doc(db, "users", campaign.studentId));
+            if (studentDoc.exists()) {
+              const studentData = studentDoc.data();
+              studentName = `${studentData.firstName} ${studentData.surname}`;
+            }
+          }
+          
+          // Create campaign card
+          const campaignCard = `
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold mb-1">${campaign.title}</h5>
+                  <p class="text-muted small mb-2">by ${studentName}</p>
+                  <p class="badge bg-amount small fw-light mb-3">R${totalDonatedToCampaign.toLocaleString()} donated</p>
+                  <p class="card-text text-muted small mb-4">${campaign.description || 'No description available.'}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Progress: ${Math.round((campaign.currentAmount / campaign.goalAmount) * 100)}%</small>
+                    <a href="campaign-details.html?id=${campaignId}" class="btn btn-view-campaign">View Campaign</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          campaignsContainer.innerHTML += campaignCard;
+        }
+      }
+      
+    } catch (error) {
+      console.error("Error loading campaign details:", error);
+    }
+  }
+
+  function showErrorMessage(message) {
+    // Create a simple alert for errors
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+    alertDiv.innerHTML = `
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
+  }
+
+  // Logout function
+  window.logout = async function() {
+    try {
+      await signOut(auth);
+      window.location.href = "login.html";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+</script>
+
+<!-- Footer -->
 <footer class="footer pt-5">
 
   <!-- Main container for footer content -->
@@ -433,8 +789,5 @@
 
 </footer>
 
-<!-- Bootstrap + Font Awesome JavaScript for interactive components -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    </body>
+</body>
 </html>

@@ -4,745 +4,778 @@
     <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Student's Dashboard </title>
-
-  <!-- External CSS libraries -->
-  <!-- Bootstrap CSS for responsive design and components -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
+    <title>Student Dashboard - FundMyFuture</title>
     
-    <!-- Page-specific inline styles for Student Dashboard -->
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-    /* COLOUR PALLET (dark to light)
-    Blue 1:   #012A4A
-    Blue 2:   #013A63
-    Blue 3:   #01497C
-    Blue 4:   #014F86
-    Blue 5:   #2A6F97
-    Blue 6:   #2C7DA0
-    Blue 7:   #468FAF
-    Blue 8:   #61A5C2
-    Blue 9:   #89C2D9
-    Blue 10:  #A9D6E5
-    */
-
-    /* Prevent horizontal scrolling */
-    body {
-      overflow-x: hidden;
-    }
-
-    /* Dashboard header styling */
-    .dashboard-header {
-      background-color: #2A6F97;
-      padding: 30px 0;
-      margin-bottom: 0px;
-    }
-
-    /* Heading color styling */
-    .funder-heading {
-      color: #012A4A;
-    }
-
-    .dashboard-header {
-      color: #012A4A;
-    }
-
-    /* Profile card styling with shadow effects */
-    .profile-card {
-      background-color: #A9D6E5;
-      box-shadow: 10px 10px 17px -7px #000000, 10px 10px 15px 15px rgba(1,42,74,0);
-      border: none;
-    }
-
-    /* Profile image styling */
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-    }
-
-    /* Profile information text styling */
-    .profile-info {
-      flex: 1;
-      color: #012A4A;
-      font-weight: 700;
-    }
-
-    /* Edit profile button styling */
-    .edit-profile-btn {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      font-weight: 700;
-      border: none;
-      width: 150px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Edit profile button hover effects */
-    .edit-profile-btn:hover {
-      background-color: #2A6F97;
-      color: #012A4A;
-    }
-
-    /* Donation target title styling */
-    .donation-target-title {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    /* Donation button styling */
-    .btn-donation {
-      background-color: #ffda1f;
-      color: #012A4A;
-      font-weight: 800;
-      font-size: x-large;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      padding: 10px;
-    }
-
-    /* Donation button hover effects */
-    .btn-donation:hover {
-      background-color: #e0b000;
-      color: #012A4A;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      transform: translateY(-2px);
-    }
-
-    /* Campaign button styling */
-    .btn-campaign {
-      background-color: #ffda1f;
-      color: #012A4A;
-      font-weight: 800;
-      font-size: x-large;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      padding: 10px;
-    }
-
-    /* Campaign button hover effects */
-    .btn-campaign:hover {
-      background-color: #e0b000;
-      color: #012A4A;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      transform: translateY(-2px);
-    }
-
-    /* Background pattern for profile section */
-    .profile-background {
-    width: 100%;
-      background:
-        conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
-        conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
-        conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
-        conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
-        linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
-        conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
-        linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
-      background-size: 168px 194px;
-    }
-
-    /* Profile icon color */
-    .profile-icon {
-      color: #A9D6E5;
-    }
-
-    /* Custom progress bar container */
-    .custom-progress {
-      height: 20px;
-      background-color: #e0af0057;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    /* Custom progress bar fill */
-    .custom-bar {
-      background-color: #e0b000;
-      color: #012a4a;
-      font-weight: bold;
-      text-align: center;
-      line-height: 30px;
-      border-radius: 5px;
-      transition: width 0.6s ease;
-    }
-
-    /* Progress section background */
-    .progress-section {
-      background-color: #86a9c35e;
-      border-radius: 5px;
-    }
-
-    /* Share button styling */
-    .btn-share {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      font-weight: 800;
-      transition: all 0.3s ease;
-    }
-
-    /* Share button hover effects */
-    .btn-share:hover {
-      background-color: #ffd60a;
-      transform: scale(1.01);
-    }
-
-    /* View all button styling */
-    .btn-view-all {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    /* View all button hover effects */
-    .btn-view-all:hover {
-      color: #012A4A;
-      background-color: #89C2D9;
-      transform: scale(1.01);
-    }
-
-    /* Custom horizontal rule styling */
-    .custom-hr {
-      border: none;
-      border-radius: 5px;
-      height: 2px;
-      background-color: #012a4aa7;
-    }
-
-    /* Spacer utility class */
-    .spacer {
-      height: 20px;
-    }
-
-    /* Progress title styling */
-    .progress-title {
-      background-color: #2A6F97;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    /* Donations title styling */
-    .donations-title {
-      background-color: #2A6F97;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    /* Donations link color */
-    .donations-link {
-      color: #A9D6E5;
-    }
-
-    /* About title styling */
-    .about-title {
-      background-color: #2A6F97;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    /* Share update title styling */
-    .share-update {
-      background-color: #2A6F97;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    /* Updates title styling */
-    .updates {
-      background-color: #2A6F97;
-      color: #A9D6E5;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    /* Update link color */
-    .update-link {
-      color: #A9D6E5;
-    }
-
-    /* Post update button styling */
-    .btn-post-update {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    /* Post update button hover effects */
-    .btn-post-update:hover {
-      color: #012A4A;
-      background-color: #89C2D9;
-      transform: scale(1.01);
-    }
-
-    /* View update button styling */
-    .btn-view-update {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      font-weight: 800;
-      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-      transition: all 0.3s ease;
-    }
-
-    /* View update button hover effects */
-    .btn-view-update:hover {
-      color: #012A4A;
-      background-color: #89C2D9;
-      transform: scale(1.01);
-    }
-
-    /* Edit button icon styling */
-    .edit-btn i {
-      font-size: 2rem;
-      color: #A9D6E5;
-      transition: color 0.2s ease;
-    }
-
-    /* Edit button hover effects */
-    .edit-btn:hover i {
-      color: #ffda1f;
-    }
-
-    /* Share update button icon styling */
-    .share-update-btn i {
-      font-size: 1.2rem;
-      color: #A9D6E5;
-      transition: color 0.2s ease;
-    }
-
-    /* Share update button hover effects */
-    .share-update-btn:hover i {
-      color: #ffd60a;
-    }
-
+        body { overflow-x: hidden; }
+        .navbar-custom { background-color: #012A4A; height: 90px; }
+        .dashboard-header { background-color: #2A6F97; padding: 30px 0; }
+        .profile-card { background-color: #A9D6E5; }
+        .btn-primary-custom { background-color: #012A4A; color: #A9D6E5; }
+        .btn-primary-custom:hover { background-color: #2A6F97; color: #012A4A; }
+        
+        /* Edit Modal Styles */
+        .edit-modal .modal-content {
+            background-color: #A9D6E5;
+            border: 3px solid #012A4A;
+        }
+        .edit-modal .form-label {
+            color: #012A4A;
+            font-weight: bold;
+        }
+        
+        /* Campaign card styles */
+        .campaign-card {
+            transition: transform 0.2s;
+        }
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Alert positioning */
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+        
+        /* Loading spinner */
+        #loadingSpinner {
+            z-index: 9999;
+        }
+        
+        /* Profile picture upload */
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-picture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+        .profile-picture-container:hover .profile-picture-overlay {
+            opacity: 1;
+        }
     </style>
 </head>
-
 <body>
-<!-- Navigation Bar -->
+<!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <!-- Brand/logo linking to homepage -->
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
-
-    <!-- Mobile menu toggle button that triggers offcanvas -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Offcanvas menu for mobile navigation -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <!-- Close button for offcanvas -->
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <!-- Navigation links -->
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item me-3">
-            <!-- Donate button -->
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <li class="nav-item">
-            <!-- Students section link -->
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <li class="nav-item">
-            <!-- Funders section link -->
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <li class="nav-item">
-            <!-- About us page link -->
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <li class="nav-item me-2" id="login-area">
-            <!-- Login button -->
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
-          </li>
-        </ul>
-      </div>
+    <div class="container-fluid">
+        <a class="navbar-brand ms-2 text-white fw-bold" href="index.html">FundMyFuture</a>
+        <div class="navbar-nav ms-auto">
+            <button class="btn login-btn fw-bolder text-white" id="logoutButton">LOGOUT</button>
+        </div>
     </div>
-  </div>
 </nav>
 
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+<!-- Dashboard Header -->
+<div class="container-fluid dashboard-header">
+    <div class="container">
+        <h1 class="text-white fw-bold">Student Dashboard</h1>
+        <p class="text-white-50">Welcome back, <span id="welcomeName">Student</span>!</p>
+    </div>
+</div>
 
 <!-- Main Content -->
-<!-- Dashboard Header Section -->
-<div class="container-fluid dashboard-header">
-  <div class="d-flex flex-wrap align-items-center">
-    <!-- Image Column -->
-    <div class="flex-shrink-0 ms-4 me-3 mb-3 mb-md-0">
-      <img src="./assets/happy students.png" class="img-fluid" alt="Funder Icon">
-    </div>
-
-    <!-- Text Column -->
-    <div class="flex-grow-1 text-start">
-      <!-- User role indicator -->
-      <h4 class="fw-bold funder-heading mb-0">Student</h4>
-      <!-- Main dashboard heading -->
-      <h2 class="fw-bold dashboard-heading">Dashboard</h2>
-    </div>
-  </div>
-</div>
-
-<!-- Profile Background Section with Pattern -->
-<div class="container-fluid profile-background py-4 px-4">
-  <!-- Personal Info & Stats -->
-  <div class="row justify-content-center">
-    <!-- Profile Card -->
-    <div class="col-12 col-lg-12">
-      <div class="card profile-card p-4 m-4 d-flex flex-row flex-wrap align-items-center">
-        <!-- Profile Image -->
-        <img src="./assets/profile-user.png" class="rounded-circle profile-img me-3 img-fluid" alt="Profile">
-        <!-- Profile Information -->
-        <div class="profile-info text-start">
-          <!-- Name Display -->
-          <div class="d-flex gap-2 mb-1">
-            <h5 class="fw-bold mb-0">Name</h5>
-            <h5 class="fw-bold mb-0">Surname</h5>
-          </div>
-          <br>
-          <!-- Date of Birth -->
-          <div class="d-flex align-items-center mb-2">
-            <i class="bi bi-calendar2-week-fill me-2"></i>
-            <span>01 Jan 1990</span>
-          </div>
-          <!-- Location -->
-          <div class="d-flex align-items-center mb-2">
-            <i class="bi bi-geo-alt-fill me-2"></i>
-            <span>Cape Town</span>
-          </div>
-          <!-- Email -->
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-envelope-fill me-2"></i>
-            <span>name@example.com</span>
-          </div>
-          <!-- Edit Profile Button -->
-          <div class="text-end mt-3">
-            <button class="btn edit-profile-btn">Edit Profile</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Main Dashboard Content Container -->
-<div class="container py-4 px-3">
-
-<!-- Campaign and Donations Section -->
-  <div class="container my-5">
-  <div class="row">
-    <!-- Left Column: Progress + Donations -->
-    <!-- Campaign Title with Edit Button -->
-     <div class="donation-target-title mt-4 d-flex align-items-center justify-content-between">
-      <h4 class="fw-bolder mb-0">Help Lawrence Study Engineering</h4>
-        <!-- Edit Campaign Name Button -->
-        <button class="btn btn-link p-0 text-muted edit-btn" title="Edit campaign name">
-        <i class="bi bi-pencil-square"></i>
-      </button>
-    </div>
-    
-    <!-- Left Column: Progress Tracking and Donations -->
-    <div class="col-12 col-lg-6">
-      <!-- Progress Section -->
-      <div class="mb-3 mt-4">
-        <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
-        <div class="progress-section p-3">
-          <!-- Current Amount Raised -->
-          <h4 class="fw-bolder mb-1">R22 153</h4>
-          <!-- Campaign Statistics -->
-          <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
-            <small class="text-muted">R30 000 target</small>
-            <small class="text-muted">⋅</small>
-            <small class="text-muted">83 donations</small>
-          </div>
-          <!-- Progress Bar -->
-          <div class="progress custom-progress" style="height: 30px;">
-            <div class="progress-bar custom-bar" style="width: 36%;">36%</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Share & Donate Buttons -->
-      <div class="row g-2">
-        <div class="col-12">
-          <!-- Share Campaign Button -->
-          <button class="btn btn-share w-100">
-            <i class="bi bi-share-fill me-2"></i>Share
-          </button>
-        </div>
-      </div>
-
-      <!-- Spacer for visual separation -->
-      <div class="spacer"></div>
-
-      <!-- Recent Donations Section -->
-      <div class="my-5">
-        <h5 class="donations-title mb-3 fw-bold"> <i class="bi bi-hearts me-2"></i>Donations <a href="#" class="donations-link ms-2">(67)</a></h5>
-        <!-- Donations List -->
-        <ul class="list-group mb-3">
-          <!-- Recent Donation -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Rachael Fox</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R40</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-secondary rounded-pill">Recent</small>
-              </div>
-            </div>
-          </li>
-          <!-- Top Donation -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Megan Daniels</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R500</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-success rounded-pill">Top</small>
-              </div>
-            </div>
-          </li>
-          <!-- First Donation -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Jeffery Marsh</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R100</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-primary rounded-pill">First</small>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <!-- View All Donations Button -->
-        <div class="d-flex flex-column gap-2 mb-4">
-          <button class="btn btn-view-all">View All</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column: Campaign Updates and Information -->
-    <div class="col-12 col-lg-6">
-      
-      <!-- Campaign Image -->
-        <div class="mb-4 mt-4 text-center">
-          <img src="./assets/pexels-kaiariel-3563697.jpg" alt="Campaign Image" class="img-fluid w-100 rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
-        </div>
-
-      <!-- Campaign Description -->
-        <div class="mb-4">
-          <div class="about-title fw-bold mt-4 d-flex align-items-center justify-content-between">
-            <h5 class="fw-bolder mb-0"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
-              <!-- Edit Campaign Description Button -->
-              <button class="btn btn-link p-0 text-muted share-update-btn" title="Edit campaign name">
-              <i class="bi bi-pencil-square"></i>
-            </button>
-          </div>
-          <!-- Campaign Description Text -->
-          <p class="text-muted">
-          Lawrence is pursuing a degree in engineering and needs support to cover tuition, materials, and living expenses. Every contribution helps him get closer to his dream.
-          </p>
-        </div>
-
-      <!-- User Update Area -->
-      <div class="mb-4">
-        <h5 class="share-update fw-bold"><i class="bi bi-chat-left-heart-fill me-2"></i>Share an Update</h5>
-        <!-- Update Form -->
-        <form>
-          <div class="mb-3">
-            <textarea class="form-control" rows="4" placeholder="Write your update here..."></textarea>
-          </div>
-          <!-- Post Update Button -->
-          <button type="submit" class="btn btn-post-update w-100 mb-4">Post Update</button>
-        </form>
-      </div>
-
-      <!-- Previous Updates Section -->
-      <div>
-        <h5 class="updates fw-bold mb-3">Updates <a href="#" class="update-link ms-2">(4)</a></h5>
-
-        <!-- Update Card 1 -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- Update Card 2 -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- Update Card 3 -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- View All Updates Button -->
-        <div class="d-flex justify-content-end mt-3">
-          <button class="btn btn-view-update">View All Updates</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
-
-<!-- Footer Section -->
-<footer class="footer pt-5">
-
-  <!-- Main container for footer content -->
-  <div class="container pb-4">
-    
+<div class="container my-5">
+    <!-- Profile Section -->
     <div class="row">
-      
-      <!-- Newsletter Signup Column -->
-      <div class="col-md-6 mb-4">
-        <h5 class="fw-bold">Stay Connected</h5>
-        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <!-- Newsletter subscription form -->
-        <form class="d-flex icon-input-group">
-          <!-- Envelope icon inside input field -->
-          <i class="fa-regular fa-envelope"></i>
-          <!-- Email input field -->
-          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
-          <!-- Submit button -->
-          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
-        </form>
-      </div>
-
-      <!-- Social Media Column -->
-      <div class="col-md-6 mb-4 text-md-end">
-        <h5 class="fw-bold follow-us">Follow us</h5>
-        <div class="social-icons mt-2">
-          <!-- Instagram social media link -->
-          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <!-- Facebook social media link -->
-          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-facebook"></i>
-          </a>
-          <!-- LinkedIn social media link -->
-          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-linkedin"></i>
-          </a>
+        <div class="col-12">
+            <div class="card profile-card shadow-lg mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>Profile Information</h4>
+                    <button class="btn btn-sm btn-light" id="editProfileButton">
+                        <i class="bi bi-pencil-square me-1"></i>Edit Profile
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-3">
+                            <div class="profile-picture-container">
+                                <img id="profileImage" src="./assets/profile-user.png" 
+                                     class="img-fluid rounded-circle border" 
+                                     style="width: 150px; height: 150px; object-fit: cover;" 
+                                     alt="Profile Picture">
+                                <div class="profile-picture-overlay" id="profilePictureOverlay">
+                                    <i class="bi bi-camera text-white fs-1"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-primary-custom" id="changePhotoButton">
+                                    <i class="bi bi-camera me-1"></i>Change Photo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Full Name</label>
+                                        <p id="displayFullName" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Email</label>
+                                        <p id="displayEmail" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Phone Number</label>
+                                        <p id="displayPhone" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Date of Birth</label>
+                                        <p id="displayDOB" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">ID Number</label>
+                                        <p id="displayID" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Location</label>
+                                        <p id="displayLocation" class="form-control-plaintext">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
     </div>
 
-    <hr> <!-- Horizontal separator line -->
-
-    <div class="row text-start text-md-start">
-
-      <!-- Navigate Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Navigate</h6>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="donate.html">Donate</a></li>
-          <li><a href="story.html">Stories</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-      </div>
-
-      <!-- Company Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Company</h6>
-        <ul class="list-unstyled">
-          <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ's</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Info Column -->
-      <div class="col-md-6 mb-4">
-        <h6 class="fw-bold">Contact</h6>
-        <!-- Address with clickable Google Maps link -->
-        <p class="mb-1">
-          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
-            5th floor 112 Long St <br> 
-            Cape Town <br> 
-            8000 <br> 
-            Western Cape
-          </a>
-        </p>
-        <!-- Phone number link -->
-        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
-        <!-- Email link -->
-        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
-      </div>
-
+    <!-- Academic Information -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card profile-card shadow-lg mb-4">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="bi bi-book me-2"></i>Academic Information</h4>
+                    <button class="btn btn-sm btn-light" id="editAcademicButton">
+                        <i class="bi bi-pencil-square me-1"></i>Edit Academic Info
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Institution</label>
+                                <p id="displayInstitution" class="form-control-plaintext">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Course/Program</label>
+                                <p id="displayCourse" class="form-control-plaintext">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Year of Study</label>
+                                <p id="displayYear" class="form-control-plaintext">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Expected Graduation</label>
+                                <p id="displayGraduation" class="form-control-plaintext">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div> <!-- End container -->
 
-  <!-- Footer Bottom Bar -->
-  <div class="footer-bottom py-3">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      
-      <!-- Legal & policy links section -->
-      <div class="mb-2 mb-md-0">
-        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
-        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
-        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
-        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
-      </div>
-
-      <!-- Copyright information -->
-      <div class="text-white">&copy;2025 FundMyFuture</div>
+    <!-- Campaign Management -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card profile-card shadow-lg">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="bi bi-flag me-2"></i>My Campaigns</h4>
+                    <button class="btn btn-sm btn-light" id="createCampaignButton">
+                        <i class="bi bi-plus-circle me-1"></i>Create Campaign
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="campaignsList">
+                        <div class="text-center py-4">
+                            <i class="bi bi-flag display-1 text-muted"></i>
+                            <h5 class="mt-3">No campaigns yet</h5>
+                            <p class="text-muted">Create your first campaign to start receiving support!</p>
+                            <button class="btn btn-primary-custom" id="createFirstCampaignButton">
+                                Create Your First Campaign
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-</footer>
+<!-- Edit Profile Modal -->
+<div class="modal fade edit-modal" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div id="profileEditFields">
+                        <!-- Dynamic fields will be loaded here -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary-custom" id="saveProfileChangesButton">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Bootstrap + Font Awesome JS -->
+<!-- Loading Spinner -->
+<div id="loadingSpinner" class="d-none position-fixed top-50 start-50 translate-middle" style="z-index: 9999;">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    </body>
+<!-- Firebase Integration -->
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+        authDomain: "fund-my-future-47844.firebaseapp.com",
+        databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+        projectId: "fund-my-future-47844",
+        storageBucket: "fund-my-future-47844.firebasestorage.app",
+        messagingSenderId: "581912293895",
+        appId: "1:581912293895:web:03468061fae2124ac770a2",
+        measurementId: "G-LFC0R1GBE1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    let currentUser = null;
+    let currentUserId = null;
+    let editMode = null;
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeDashboard();
+    });
+
+    async function initializeDashboard() {
+        console.log('Initializing dashboard...');
+        
+        // Add event listeners
+        document.getElementById('logoutButton').addEventListener('click', logout);
+        document.getElementById('editProfileButton').addEventListener('click', () => openEditModal('profile'));
+        document.getElementById('editAcademicButton').addEventListener('click', () => openEditModal('academic'));
+        document.getElementById('changePhotoButton').addEventListener('click', changeProfilePicture);
+        document.getElementById('profilePictureOverlay').addEventListener('click', changeProfilePicture);
+        document.getElementById('createCampaignButton').addEventListener('click', createNewCampaign);
+        document.getElementById('createFirstCampaignButton').addEventListener('click', createNewCampaign);
+        
+        // Save button event listener - with null check and retry
+        const saveButton = document.getElementById('saveProfileChangesButton');
+        if (saveButton) {
+            saveButton.addEventListener('click', saveProfileChanges);
+            console.log('Save button event listener registered');
+        } else {
+            console.error('Save button not found!');
+        }
+
+        // Check authentication and load data
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserId = user.uid;
+                showLoading(true);
+                await loadUserData(user.uid);
+                showLoading(false);
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    }
+
+    async function loadUserData(userId) {
+        try {
+            const userDoc = await getDoc(doc(db, "users", userId));
+            if (userDoc.exists()) {
+                currentUser = { id: userDoc.id, ...userDoc.data() };
+                displayUserData(currentUser);
+                await loadUserCampaigns(userId);
+            } else {
+                console.error("User document not found");
+                showAlert('User data not found', 'danger');
+            }
+        } catch (error) {
+            console.error("Error loading user data:", error);
+            showAlert('Error loading user data', 'danger');
+        }
+    }
+
+    function displayUserData(userData) {
+        // Personal Information
+        document.getElementById('welcomeName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`;
+        document.getElementById('displayFullName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`;
+        document.getElementById('displayEmail').textContent = userData.email || 'Not provided';
+        document.getElementById('displayPhone').textContent = userData.phoneNumber || 'Not provided';
+        
+        // Date of Birth - Handle both Firestore Timestamp and Date objects
+        if (userData.dateOfBirth) {
+            let dobDate;
+            if (userData.dateOfBirth.toDate) {
+                dobDate = userData.dateOfBirth.toDate();
+            } else if (userData.dateOfBirth instanceof Date) {
+                dobDate = userData.dateOfBirth;
+            } else {
+                dobDate = new Date(userData.dateOfBirth);
+            }
+            document.getElementById('displayDOB').textContent = dobDate.toLocaleDateString();
+        } else {
+            document.getElementById('displayDOB').textContent = 'Not provided';
+        }
+        
+        document.getElementById('displayID').textContent = userData.idNumber || 'Not provided';
+        document.getElementById('displayLocation').textContent = userData.location || 'Not provided';
+
+        // Academic Information
+        document.getElementById('displayInstitution').textContent = userData.institution || 'Not provided';
+        document.getElementById('displayCourse').textContent = userData.course || 'Not provided';
+        document.getElementById('displayYear').textContent = userData.yearOfStudy || 'Not provided';
+        document.getElementById('displayGraduation').textContent = userData.expectedGraduation || 'Not provided';
+
+        // Profile Picture - Ensure profile picture is displayed
+        if (userData.profilePicture) {
+            document.getElementById('profileImage').src = userData.profilePicture;
+        } else {
+            document.getElementById('profileImage').src = './assets/profile-user.png';
+        }
+    }
+
+    async function loadUserCampaigns(userId) {
+        try {
+            const campaignsQuery = query(
+                collection(db, "campaigns"),
+                where("studentId", "==", userId)
+            );
+            const querySnapshot = await getDocs(campaignsQuery);
+            
+            const campaignsList = document.getElementById('campaignsList');
+            
+            if (querySnapshot.empty) {
+                campaignsList.innerHTML = `
+                    <div class="text-center py-4">
+                        <i class="bi bi-flag display-1 text-muted"></i>
+                        <h5 class="mt-3">No campaigns yet</h5>
+                        <p class="text-muted">Create your first campaign to start receiving support!</p>
+                        <button class="btn btn-primary-custom" id="createFirstCampaignButton2">
+                            Create Your First Campaign
+                        </button>
+                    </div>
+                `;
+                // Add event listener to the new button
+                document.getElementById('createFirstCampaignButton2').addEventListener('click', createNewCampaign);
+                return;
+            }
+
+            let campaignsHTML = '<div class="row">';
+            querySnapshot.forEach((doc) => {
+                const campaign = doc.data();
+                const progressPercentage = campaign.goalAmount > 0 ? 
+                    Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100)) : 0;
+                    
+                campaignsHTML += `
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 campaign-card">
+                            <div class="card-body">
+                                <h5 class="card-title">${campaign.title || 'Untitled Campaign'}</h5>
+                                <p class="card-text">${campaign.description || 'No description provided'}</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-${campaign.status === 'active' ? 'success' : 'secondary'}">
+                                        ${campaign.status || 'draft'}
+                                    </span>
+                                </div>
+                                <div class="progress mb-2">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: ${progressPercentage}%"
+                                         aria-valuenow="${progressPercentage}" 
+                                         aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <p class="small text-muted">
+                                    R${campaign.currentAmount || 0} raised of R${campaign.goalAmount || 0}
+                                </p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary flex-fill view-campaign-btn" data-campaign-id="${doc.id}">
+                                        <i class="bi bi-eye me-1"></i>View
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary flex-fill edit-campaign-btn" data-campaign-id="${doc.id}">
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger flex-fill delete-campaign-btn" data-campaign-id="${doc.id}">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            campaignsHTML += '</div>';
+            campaignsList.innerHTML = campaignsHTML;
+
+            // Add event listeners to campaign buttons
+            document.querySelectorAll('.view-campaign-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const campaignId = e.target.closest('.view-campaign-btn').dataset.campaignId;
+                    viewCampaign(campaignId);
+                });
+            });
+
+            document.querySelectorAll('.edit-campaign-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const campaignId = e.target.closest('.edit-campaign-btn').dataset.campaignId;
+                    editCampaign(campaignId);
+                });
+            });
+
+            document.querySelectorAll('.delete-campaign-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const campaignId = e.target.closest('.delete-campaign-btn').dataset.campaignId;
+                    deleteCampaign(campaignId);
+                });
+            });
+
+        } catch (error) {
+            console.error("Error loading campaigns:", error);
+            showAlert('Error loading campaigns', 'danger');
+        }
+    }
+
+    function openEditModal(mode) {
+        editMode = mode;
+        const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+        
+        document.getElementById('editModalTitle').textContent = 
+            mode === 'profile' ? 'Edit Personal Information' : 'Edit Academic Information';
+        
+        let formFields = '';
+        
+        if (mode === 'profile') {
+            // Handle date format properly
+            let dobValue = '';
+            if (currentUser.dateOfBirth) {
+                let dobDate;
+                if (currentUser.dateOfBirth.toDate) {
+                    dobDate = currentUser.dateOfBirth.toDate();
+                } else if (currentUser.dateOfBirth instanceof Date) {
+                    dobDate = currentUser.dateOfBirth;
+                } else {
+                    dobDate = new Date(currentUser.dateOfBirth);
+                }
+                dobValue = dobDate.toISOString().split('T')[0];
+            }
+            
+            formFields = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="editFirstName" value="${currentUser.firstName || ''}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Surname *</label>
+                            <input type="text" class="form-control" id="editSurname" value="${currentUser.surname || ''}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="editPhone" value="${currentUser.phoneNumber || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="editDOB" value="${dobValue}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">ID Number</label>
+                            <input type="text" class="form-control" id="editID" value="${currentUser.idNumber || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" id="editLocation" value="${currentUser.location || ''}">
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            formFields = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Institution *</label>
+                            <input type="text" class="form-control" id="editInstitution" value="${currentUser.institution || ''}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Course/Program *</label>
+                            <input type="text" class="form-control" id="editCourse" value="${currentUser.course || ''}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Year of Study</label>
+                            <input type="number" class="form-control" id="editYear" min="1" max="10" value="${currentUser.yearOfStudy || ''}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Expected Graduation</label>
+                            <input type="month" class="form-control" id="editGraduation" value="${currentUser.expectedGraduation || ''}">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        document.getElementById('profileEditFields').innerHTML = formFields;
+        modal.show();
+    }
+
+    async function saveProfileChanges() {
+        console.log('saveProfileChanges function called!');
+        
+        try {
+            const form = document.getElementById('editProfileForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const updates = {};
+            
+            if (editMode === 'profile') {
+                updates.firstName = document.getElementById('editFirstName').value.trim();
+                updates.surname = document.getElementById('editSurname').value.trim();
+                updates.phoneNumber = document.getElementById('editPhone').value.trim();
+                
+                const dobValue = document.getElementById('editDOB').value;
+                if (dobValue) {
+                    updates.dateOfBirth = new Date(dobValue);
+                } else {
+                    updates.dateOfBirth = null;
+                }
+                
+                updates.idNumber = document.getElementById('editID').value.trim();
+                updates.location = document.getElementById('editLocation').value.trim();
+            } else {
+                updates.institution = document.getElementById('editInstitution').value.trim();
+                updates.course = document.getElementById('editCourse').value.trim();
+                updates.yearOfStudy = document.getElementById('editYear').value;
+                updates.expectedGraduation = document.getElementById('editGraduation').value;
+            }
+            
+            updates.updatedAt = new Date();
+            
+            showLoading(true);
+            await updateDoc(doc(db, "users", currentUserId), updates);
+            
+            // Update local data
+            currentUser = { ...currentUser, ...updates };
+            displayUserData(currentUser);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+            modal.hide();
+            showLoading(false);
+            
+            showAlert('Profile updated successfully!', 'success');
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            showLoading(false);
+            showAlert('Error updating profile: ' + error.message, 'danger');
+        }
+    }
+
+    async function changeProfilePicture() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    showAlert('Please select an image file', 'warning');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    showAlert('Image size should be less than 5MB', 'warning');
+                    return;
+                }
+                
+                try {
+                    showLoading(true);
+                    
+                    // Use simple path format that will work with basic storage rules
+                    const timestamp = Date.now();
+                    const fileExtension = file.name.split('.').pop();
+                    
+                    // Use this simple path format
+                    const storageRef = ref(storage, `profile-pictures/${currentUserId}_${timestamp}.${fileExtension}`);
+                    
+                    console.log('Uploading to:', storageRef.fullPath);
+                    
+                    const snapshot = await uploadBytes(storageRef, file);
+                    const downloadURL = await getDownloadURL(snapshot.ref);
+                    
+                    await updateDoc(doc(db, "users", currentUserId), {
+                        profilePicture: downloadURL,
+                        updatedAt: new Date()
+                    });
+                    
+                    document.getElementById('profileImage').src = downloadURL;
+                    currentUser.profilePicture = downloadURL;
+                    showLoading(false);
+                    
+                    showAlert('Profile picture updated successfully!', 'success');
+                } catch (error) {
+                    console.error("Error uploading profile picture:", error);
+                    showLoading(false);
+                    showAlert('Error updating profile picture: ' + error.message, 'danger');
+                }
+            }
+        };
+        
+        input.click();
+    }
+
+    function createNewCampaign() {
+        window.location.href = 'campaign.html';
+    }
+
+    function viewCampaign(campaignId) {
+        window.location.href = `view-campaign.html?id=${campaignId}`;
+    }
+
+    function editCampaign(campaignId) {
+        window.location.href = `edit-campaign.html?id=${campaignId}`;
+    }
+
+    async function deleteCampaign(campaignId) {
+        if (confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
+            try {
+                showLoading(true);
+                await deleteDoc(doc(db, "campaigns", campaignId));
+                showLoading(false);
+                showAlert('Campaign deleted successfully!', 'success');
+                await loadUserCampaigns(currentUserId);
+            } catch (error) {
+                console.error("Error deleting campaign:", error);
+                showLoading(false);
+                showAlert('Error deleting campaign', 'danger');
+            }
+        }
+    }
+
+    async function logout() {
+        try {
+            await signOut(auth);
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    }
+
+    function showAlert(message, type) {
+        // Remove any existing alerts
+        const existingAlerts = document.querySelectorAll('.alert-fixed');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-fixed`;
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    function showLoading(show) {
+        const spinner = document.getElementById('loadingSpinner');
+        if (show) {
+            spinner.classList.remove('d-none');
+        } else {
+            spinner.classList.add('d-none');
+        }
+    }
+
+    // Make functions globally available
+    window.saveProfileChanges = saveProfileChanges;
+    window.logout = logout;
+    window.openEditModal = openEditModal;
+    window.changeProfilePicture = changeProfilePicture;
+    window.createNewCampaign = createNewCampaign;
+    window.viewCampaign = viewCampaign;
+    window.editCampaign = editCampaign;
+    window.deleteCampaign = deleteCampaign;
+</script>
+</body>
 </html>
