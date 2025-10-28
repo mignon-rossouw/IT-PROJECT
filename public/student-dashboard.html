@@ -6,154 +6,461 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - FundMyFuture</title>
     
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- External CSS Libraries -->
+  <!-- Bootstrap CSS for responsive layout and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-        body { overflow-x: hidden; }
-        .navbar-custom { background-color: #012A4A; height: 90px; }
-        .dashboard-header { background-color: #2A6F97; padding: 30px 0; }
-        .profile-card { background-color: #A9D6E5; }
-        .btn-primary-custom { background-color: #012A4A; color: #A9D6E5; }
-        .btn-primary-custom:hover { background-color: #2A6F97; color: #012A4A; }
-        
-        /* Edit Modal Styles */
-        .edit-modal .modal-content {
-            background-color: #A9D6E5;
-            border: 3px solid #012A4A;
-        }
-        .edit-modal .form-label {
-            color: #012A4A;
-            font-weight: bold;
-        }
-        
-        /* Campaign card styles */
-        .campaign-card {
-            transition: transform 0.2s;
-        }
-        .campaign-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-        
-        /* Alert positioning */
-        .alert-fixed {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 9999;
-            min-width: 300px;
-        }
-        
-        /* Loading spinner */
-        #loadingSpinner {
-            z-index: 9999;
-        }
-        
-        /* Profile picture upload */
-        .profile-picture-container {
-            position: relative;
-            display: inline-block;
-        }
-        .profile-picture-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-            cursor: pointer;
-        }
-        .profile-picture-container:hover .profile-picture-overlay {
-            opacity: 1;
-        }
+/* COLOUR PALLET (dark to light)
+Blue 1:   #012A4A
+Blue 2:   #013A63
+Blue 3:   #01497C
+Blue 4:   #014F86
+Blue 5:   #2A6F97
+Blue 6:   #2C7DA0
+Blue 7:   #468FAF
+Blue 8:   #61A5C2
+Blue 9:   #89C2D9
+Blue 10:  #A9D6E5
+*/
+
+/* Prevent horizontal scrolling */
+body {
+  overflow-x: hidden;
+}
+
+/* Dashboard header styling */
+.dashboard-header {
+  background-color: #2A6F97;
+  padding: 30px 0;
+  margin-bottom: 0px;
+}
+
+/* Background pattern for profile section */
+  .profile-background {
+  width: 100%;
+    background:
+      conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
+      conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
+      conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
+      conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
+      linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
+      conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
+      linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
+    background-size: 168px 194px;
+  }
+
+/* Edit Modal Styles */
+.edit-modal .modal-content {
+  background-color: #A9D6E5;
+  border: 3px solid #012A4A;
+}
+.edit-modal .form-label {
+  color: #012A4A;
+  font-weight: bold;
+}
+
+/* Card Styling */
+.card-header {
+  background-color: #012A4A;
+  color: #A9D6E5;
+}
+
+/* Edit button styling - Profile */
+.btn-edit {
+  background: none;
+  border: none;
+  color: #A9D6E5;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+  color: #ffd60a;
+  transform: scale(1.02);
+}
+
+/* Change Profile Picture Button */
+.btn-change-photo {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  transition: all 0.3s ease;
+}
+
+.btn-change-photo:hover {
+  background-color: #ffd60a;
+  color: #012A4A;
+  transform: scale(1.02);
+}
+
+/* Campaign card styles */
+.campaign-card {
+  transition: transform 0.2s;
+}
+.campaign-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* Alert positioning */
+.alert-fixed {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 9999;
+  min-width: 300px;
+}
+
+/* Loading spinner */
+#loadingSpinner {
+  z-index: 9999;
+}
+
+/* Profile picture upload */
+.profile-picture-container {
+  position: relative;
+  display: inline-block;
+}
+.profile-picture-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+.profile-picture-container:hover .profile-picture-overlay {
+  opacity: 1;
+}
+
+/* Profile icon color */
+.profile-icon {
+  color: #A9D6E5;
+}
+
+/* Custom progress bar container */
+.custom-progress {
+  height: 20px;
+  background-color: #e0af0057;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* Custom progress bar fill */
+.custom-bar {
+  background-color: #e0b000;
+  color: #012a4a;
+  font-weight: bold;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+}
+
+/* Progress section background */
+.progress-section {
+  background-color: #86a9c35e;
+  border-radius: 5px;
+}
+
+/* Share button styling */
+.btn-share {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+/* Share button hover effects */
+.btn-share:hover {
+  background-color: #ffd60a;
+  transform: scale(1.01);
+}
+
+/* View all button styling */
+.btn-view-all {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* View all button hover effects */
+.btn-view-all:hover {
+  color: #012A4A;
+  background-color: #89C2D9;
+  transform: scale(1.01);
+}
+
+/* Custom horizontal rule styling */
+.custom-hr {
+  border: none;
+  border-radius: 5px;
+  height: 2px;
+  background-color: #012a4aa7;
+}
+
+/* Spacer utility class */
+.spacer {
+  height: 20px;
+}
+
+/* Progress title styling */
+.progress-title {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Donations title styling */
+.donations-title {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Donations link color */
+.donations-link {
+  color: #A9D6E5;
+}
+
+/* About title styling */
+.about-title {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Share update title styling */
+.share-update {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Updates title styling */
+.updates {
+  background-color: #2A6F97;
+  color: #A9D6E5;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Update link color */
+.update-link {
+  color: #A9D6E5;
+}
+
+/* Post update button styling */
+.btn-post-update {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Post update button hover effects */
+.btn-post-update:hover {
+  color: #012A4A;
+  background-color: #89C2D9;
+  transform: scale(1.01);
+}
+
+/* View update button styling */
+.btn-view-update {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  font-weight: 800;
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* View update button hover effects */
+.btn-view-update:hover {
+  color: #012A4A;
+  background-color: #89C2D9;
+  transform: scale(1.01);
+}
+
+/* Edit button icon styling */
+.edit-btn i {
+  font-size: 2rem;
+  color: #A9D6E5;
+  transition: color 0.2s ease;
+}
+
+/* Edit button hover effects */
+.edit-btn:hover i {
+  color: #ffda1f;
+}
+
+/* Share update button icon styling */
+.share-update-btn i {
+  font-size: 1.2rem;
+  color: #A9D6E5;
+  transition: color 0.2s ease;
+}
+
+/* Share update button hover effects */
+.share-update-btn:hover i {
+  color: #ffd60a;
+}
     </style>
 </head>
 <body>
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
-    <div class="container-fluid">
-        <a class="navbar-brand ms-2 text-white fw-bold" href="index.html">FundMyFuture</a>
-        <div class="navbar-nav ms-auto">
-            <button class="btn login-btn fw-bolder text-white" id="logoutButton">LOGOUT</button>
-        </div>
+  <div class="container-fluid">
+    <!-- Brand/Logo linking to homepage -->
+    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+    <!-- Mobile menu toggle button -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Offcanvas navigation menu for mobile devices -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+      <div class="offcanvas-header">
+        <!-- Close button for offcanvas menu -->
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <!-- Donate button call-to-action -->
+          <li class="nav-item me-3">
+            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+          </li>
+          <!-- Student section link -->
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+          </li>
+          <!-- Funder section link -->
+          <li class="nav-item">
+            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+          </li>
+          <!-- About us informational link -->
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">ABOUT US</a>
+          </li>
+          <!-- Login/authentication button -->
+          <li class="nav-item me-2" id="login-area">
+            <button class="btn login-btn fw-bolder" onclick="logout()">LOGOUT</button>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 </nav>
+
 
 <!-- Dashboard Header -->
 <div class="container-fluid dashboard-header">
     <div class="container">
-        <h1 class="text-white fw-bold">Student Dashboard</h1>
-        <p class="text-white-50">Welcome back, <span id="welcomeName">Student</span>!</p>
+        <div class="flex-grow-1 text-start">
+          <!-- User role indicator -->
+          <h4 class="fw-bold funder-heading mb-0">Student</h4>
+          <!-- Main dashboard heading -->
+          <h2 class="fw-bold dashboard-heading">Dashboard</h2>
+        </div>
+        <p class="">Welcome back, <span id="welcomeName">Student</span>!</p>
     </div>
 </div>
 
 <!-- Main Content -->
-<div class="container my-5">
     <!-- Profile Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card profile-card shadow-lg mb-4">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>Profile Information</h4>
-                    <button class="btn btn-sm btn-light" id="editProfileButton">
-                        <i class="bi bi-pencil-square me-1"></i>Edit Profile
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 text-center mb-3">
-                            <div class="profile-picture-container">
-                                <img id="profileImage" src="./assets/profile-user.png" 
-                                     class="img-fluid rounded-circle border" 
-                                     style="width: 150px; height: 150px; object-fit: cover;" 
-                                     alt="Profile Picture">
-                                <div class="profile-picture-overlay" id="profilePictureOverlay">
-                                    <i class="bi bi-camera text-white fs-1"></i>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <button class="btn btn-sm btn-primary-custom" id="changePhotoButton">
-                                    <i class="bi bi-camera me-1"></i>Change Photo
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Full Name</label>
-                                        <p id="displayFullName" class="form-control-plaintext">Loading...</p>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Email</label>
-                                        <p id="displayEmail" class="form-control-plaintext">Loading...</p>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Phone Number</label>
-                                        <p id="displayPhone" class="form-control-plaintext">Loading...</p>
+    <div class="container-fluid profile-background py-4 px-4 mb-5">
+      <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card profile-card border-0 shadow mb-4">
+                  <div class="card-header title-container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                            <i class="bi bi-person-badge me-2 fs-3"></i> Profile Information
+                        </h5>
+                        <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
+                            <i class="bi bi-pencil me-1 fs-3"></i>
+                        </button>
+                    </div>
+                  </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center mb-3">
+                                <div class="profile-picture-container">
+                                    <img id="profileImage" src="./assets/profile-user.png" 
+                                        class="img-fluid rounded-circle border" 
+                                        style="width: 150px; height: 150px; object-fit: cover;" 
+                                        alt="Profile Picture">
+                                    <div class="profile-picture-overlay" id="profilePictureOverlay">
+                                        <i class="bi bi-camera text-white fs-1"></i>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Date of Birth</label>
-                                        <p id="displayDOB" class="form-control-plaintext">Loading...</p>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-change-photo" id="changePhotoButton">
+                                        <i class="bi bi-camera-fill me-2"></i>Change Photo
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">Full Name</label>
+                                            <p id="displayFullName" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">Email</label>
+                                            <p id="displayEmail" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">Phone Number</label>
+                                            <p id="displayPhone" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">ID Number</label>
-                                        <p id="displayID" class="form-control-plaintext">Loading...</p>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Location</label>
-                                        <p id="displayLocation" class="form-control-plaintext">Loading...</p>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">Date of Birth</label>
+                                            <p id="displayDOB" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">ID Number</label>
+                                            <p id="displayID" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold fs-5">Location</label>
+                                            <p id="displayLocation" class="form-control-plaintext text-muted">Loading...</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -163,55 +470,69 @@
             </div>
         </div>
     </div>
+
 
     <!-- Academic Information -->
-    <div class="row">
+    <div class="container">
+      <div class="row">
         <div class="col-12">
-            <div class="card profile-card shadow-lg mb-4">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0"><i class="bi bi-book me-2"></i>Academic Information</h4>
-                    <button class="btn btn-sm btn-light" id="editAcademicButton">
-                        <i class="bi bi-pencil-square me-1"></i>Edit Academic Info
+
+          <div class="card profile-card border-0 shadow mb-4">
+              <div class="card-header title-container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                        <i class="bi bi-book me-2 fs-3"></i> Academic Information
+                    </h5>
+                    <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
+                        <i class="bi bi-pencil me-1 fs-3"></i>
                     </button>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Institution</label>
-                                <p id="displayInstitution" class="form-control-plaintext">Loading...</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Course/Program</label>
-                                <p id="displayCourse" class="form-control-plaintext">Loading...</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Year of Study</label>
-                                <p id="displayYear" class="form-control-plaintext">Loading...</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Expected Graduation</label>
-                                <p id="displayGraduation" class="form-control-plaintext">Loading...</p>
-                            </div>
-                        </div>
+              </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Institution</label>
+                    <p id="displayInstitution" class="form-control-plaintext">Loading...</p>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Course/Program</label>
+                    <p id="displayCourse" class="form-control-plaintext">Loading...</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Year of Study</label>
+                        <p id="displayYear" class="form-control-plaintext">Loading...</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Expected Graduation</label>
+                        <p id="displayGraduation" class="form-control-plaintext">Loading...</p>
                     </div>
                 </div>
+              </div>
             </div>
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 
     <!-- Campaign Management -->
-    <div class="row">
+    <div class="row p-5">
         <div class="col-12">
-            <div class="card profile-card shadow-lg">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0"><i class="bi bi-flag me-2"></i>My Campaigns</h4>
-                    <button class="btn btn-sm btn-light" id="createCampaignButton">
-                        <i class="bi bi-plus-circle me-1"></i>Create Campaign
-                    </button>
-                </div>
+          <div class="card profile-card border-0 shadow mb-4">
+            <div class="card-header title-container">
+              <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                      <i class="bi bi-plus-circle me-2 fs-3"></i> Campaign Management
+                  </h5>
+                  <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
+                      <i class="bi bi-pencil me-1 fs-3"></i>
+                  </button>
+              </div>
+            </div>
                 <div class="card-body">
                     <div id="campaignsList">
                         <div class="text-center py-4">
@@ -222,12 +543,288 @@
                                 Create Your First Campaign
                             </button>
                         </div>
+
+                        <!-- =========================================== -->
+                        <!-- THIS SHOULD APPEAR WHEN THERE ARE CAMPAIGNS -->
+                        <!-- =========================================== -->
+                        
+                        <!-- 
+    MAIN DASHBOARD CONTENT CONTAINER
+    ================================
+    Purpose: Main wrapper for dashboard content with consistent spacing
+    Features:
+    - Responsive padding on all sides
+    - Centered container for optimal readability
+    - Foundation for all dashboard sections
+-->
+<div class="container py-4 px-3">
+
+<!-- 
+    CAMPAIGN AND DONATIONS SECTION
+    ==============================
+    Purpose: Display campaign progress and donor interactions
+    Layout: Two-column responsive design (stacked on mobile)
+    Sections:
+    - Left: Progress tracking, donations, sharing
+    - Right: Campaign details, updates, information
+-->
+<div class="container my-5">
+  <div class="row">
+    
+    <!-- 
+        LEFT COLUMN: PROGRESS TRACKING AND DONATIONS
+        ============================================
+        Contains: Campaign progress, donation metrics, recent donor activity
+        Purpose: Show campaign performance and donor engagement
+    -->
+    <div class="col-12 col-lg-6">
+      
+      <!-- 
+          CAMPAIGN TITLE SECTION
+          ======================
+          Purpose: Display campaign name with edit functionality
+          Features:
+          - Responsive title with edit button
+          - Flex layout for title and edit control alignment
+      -->
+      <div class="donation-target-title mt-4 d-flex align-items-center justify-content-between">
+        <h4 class="fw-bolder mb-0">Help Lawrence Study Engineering</h4>
+        <!-- Edit Campaign Name Button - Allows campaign title modification -->
+        <button class="btn btn-link p-0 text-muted edit-btn" title="Edit campaign name">
+          <i class="bi bi-pencil-square"></i>
+        </button>
+      </div>
+      
+      <!-- 
+          PROGRESS TRACKING SECTION
+          ==========================
+          Purpose: Visual representation of fundraising progress
+          Components:
+          - Current amount raised (prominent display)
+          - Campaign statistics (target, donation count)
+          - Progress bar with percentage completion
+      -->
+      <div class="mb-3 mt-4">
+        <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
+        <div class="progress-section p-3">
+          <!-- Current Amount Raised - Primary metric -->
+          <h4 class="fw-bolder mb-1">R22 153</h4>
+          <!-- Campaign Statistics - Secondary metrics -->
+          <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
+            <small class="text-muted">R30 000 target</small>
+            <small class="text-muted">⋅</small>
+            <small class="text-muted">83 donations</small>
+          </div>
+          <!-- Progress Bar - Visual completion indicator -->
+          <div class="progress custom-progress" style="height: 30px;">
+            <div class="progress-bar custom-bar" style="width: 36%;">36%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 
+          ACTION BUTTONS SECTION
+          ======================
+          Purpose: Primary call-to-action buttons for campaign engagement
+          Buttons:
+          - Share: Social media and link sharing
+          - Layout: Full-width responsive buttons
+      -->
+      <div class="row g-2">
+        <div class="col-12">
+          <!-- Share Campaign Button - Social sharing functionality -->
+          <button class="btn btn-share w-100">
+            <i class="bi bi-share-fill me-2"></i>Share
+          </button>
+        </div>
+      </div>
+
+      <!-- Visual spacer for content separation -->
+      <div class="spacer"></div>
+
+      <!-- 
+          RECENT DONATIONS SECTION
+          =========================
+          Purpose: Display recent donor activity and engagement
+          Features:
+          - List of recent donations with donor names
+          - Badge system for donation types (Recent, Top, First)
+          - View all donations expansion capability
+      -->
+      <div class="my-5">
+        <h5 class="donations-title mb-3 fw-bold"> <i class="bi bi-hearts me-2"></i>Donations <a href="#" class="donations-link ms-2">(67)</a></h5>
+        <!-- Donations List - Recent donor activity -->
+        <ul class="list-group mb-3">
+          <!-- Recent Donation - Most recent contribution -->
+          <li class="list-group-item">
+            <div class="d-flex flex-column">
+              <span class="fw-bold mb-2">Rachael Fox</span>
+              <div class="d-flex align-items-center gap-2">
+                <small class="text-muted">R40</small>
+                <small class="text-muted">⋅</small>
+                <small class="badge bg-secondary rounded-pill">Recent</small>
+              </div>
+            </div>
+          </li>
+          <!-- Top Donation - Largest single contribution -->
+          <li class="list-group-item">
+            <div class="d-flex flex-column">
+              <span class="fw-bold mb-2">Megan Daniels</span>
+              <div class="d-flex align-items-center gap-2">
+                <small class="text-muted">R500</small>
+                <small class="text-muted">⋅</small>
+                <small class="badge bg-success rounded-pill">Top</small>
+              </div>
+            </div>
+          </li>
+          <!-- First Donation - Initial campaign supporter -->
+          <li class="list-group-item">
+            <div class="d-flex flex-column">
+              <span class="fw-bold mb-2">Jeffery Marsh</span>
+              <div class="d-flex align-items-center gap-2">
+                <small class="text-muted">R100</small>
+                <small class="text-muted">⋅</small>
+                <small class="badge bg-primary rounded-pill">First</small>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <!-- View All Donations Button - Expands to full donation history -->
+        <div class="d-flex flex-column gap-2 mb-4">
+          <button class="btn btn-view-all">View All</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+        RIGHT COLUMN: CAMPAIGN UPDATES AND INFORMATION
+        ==============================================
+        Contains: Campaign visuals, description, updates, and communication
+        Purpose: Provide campaign context and ongoing communication
+    -->
+    <div class="col-12 col-lg-6">
+      
+      <!-- 
+          CAMPAIGN VISUAL SECTION
+          =======================
+          Purpose: Display campaign image for visual engagement
+          Features:
+          - Responsive image with fixed aspect ratio
+          - Rounded corners with subtle shadow
+          - Centered alignment
+      -->
+      <div class="mb-4 mt-4 text-center">
+        <img src="./assets/pexels-kaiariel-3563697.jpg" alt="Campaign Image" class="img-fluid w-100 rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
+      </div>
+
+      <!-- 
+          CAMPAIGN DESCRIPTION SECTION
+          =============================
+          Purpose: Provide detailed campaign context and story
+          Features:
+          - Editable campaign description
+          - Informative text about campaign purpose
+          - Edit functionality for campaign owners
+      -->
+      <div class="mb-4">
+        <div class="about-title fw-bold mt-4 d-flex align-items-center justify-content-between">
+          <h5 class="fw-bolder mb-0"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
+          <!-- Edit Campaign Description Button - Content management -->
+          <button class="btn btn-link p-0 text-muted share-update-btn" title="Edit campaign name">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+        </div>
+        <!-- Campaign Description Text - Narrative content -->
+        <p class="text-muted">
+          Lawrence is pursuing a degree in engineering and needs support to cover tuition, materials, and living expenses. Every contribution helps him get closer to his dream.
+        </p>
+      </div>
+
+      <!-- 
+          UPDATE CREATION SECTION
+          ========================
+          Purpose: Allow campaign owners to post updates to donors
+          Features:
+          - Text area for update content
+          - Submission form for new updates
+          - Real-time update posting capability
+      -->
+      <div class="mb-4">
+        <h5 class="share-update fw-bold"><i class="bi bi-chat-left-heart-fill me-2"></i>Share an Update</h5>
+        <!-- Update Form - Content creation interface -->
+        <form>
+          <div class="mb-3">
+            <textarea class="form-control" rows="4" placeholder="Write your update here..."></textarea>
+          </div>
+          <!-- Post Update Button - Form submission -->
+          <button type="submit" class="btn btn-post-update w-100 mb-4">Post Update</button>
+        </form>
+      </div>
+
+      <!-- 
+          PREVIOUS UPDATES SECTION
+          ==========================
+          Purpose: Display historical campaign updates and communications
+          Features:
+          - Chronological update cards
+          - Author and timestamp information
+          - Expandable view for all updates
+      -->
+      <div>
+        <h5 class="updates fw-bold mb-3">Updates <a href="#" class="update-link ms-2">(4)</a></h5>
+
+        <!-- 
+            UPDATE CARD TEMPLATE
+            ====================
+            Structure: Date, author, and content
+            Purpose: Individual update display unit
+        -->
+        
+        <!-- Update Card 1 - Most recent update -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
+            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
+          </div>
+        </div>
+
+        <!-- Update Card 2 - Previous update -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
+            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
+          </div>
+        </div>
+
+        <!-- Update Card 3 - Earlier update -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
+            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
+            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
+          </div>
+        </div>
+
+        <!-- View All Updates Button - Expands update history -->
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-view-update">View All Updates</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- END OF MAIN DASHBOARD CONTENT CONTAINER -->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- Edit Profile Modal -->
 <div class="modal fade edit-modal" id="editProfileModal" tabindex="-1">

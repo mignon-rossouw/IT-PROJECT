@@ -11,251 +11,126 @@
     <script type="module" src="/src/campaign-service.js"></script>
     <script type="module" src="/src/app.js"></script>
 
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+   <!-- External CSS Libraries -->
+  <!-- Bootstrap CSS for responsive layout and components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons for additional icon set -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom global stylesheet -->
+  <link rel="stylesheet" href="./css/styles.css">
     <style>
-    /* Navbar CSS */
-    .navbar-custom {
-      background-color: #012A4A; 
-      height: 90px;
-    }
 
-    .navbar-brand {
-      font-weight: bold;
-      color: #A9D6E5;
-    }
+.profile-image { 
+  width: 20%; 
+}
 
-    .navbar-brand:hover {
-      color: #0077b6;
-    }
+.badge-card { 
+  border: none; 
+  background-color: #A9D6E5; 
+}
 
-    .nav-link {
-      color: #CAF0F8 !important;
-      font-weight: 600;
-      margin-right: 15px;
-    }
+.about-card { 
+  border: none; 
+  background-color: #A9D6E5; 
+}
 
-    .nav-link:hover {
-      color: #0077b6 !important;
-    }
+.profile-info { 
+  border: none; 
+  background-color: #A9D6E5; 
+}
 
-    /* navbar menu collapse for smaller screens */
-    .navbar-toggler {
-      border-color: #A9D6E5;
-      background-color: #A9D6E5;
-      transition: all 0.3s ease;
-    }
+.funder-stats h5 { 
+  color: #A9D6E5; 
+  background-color: #012A4A; 
+  padding: 10px; 
+  border-radius: 5px; 
+}
 
-    .navbar-toggler:hover {
-      border-color: #ffd60a;
-      background-color: #ffd60a;
-      transform: scale(1.02);
-    }
-    /* --------------- */
+.stats { 
+  border: 1px solid #012a4a12; 
+  background-color: #012a4a12; 
+}
 
-    .donate-btn {
-      background-color: #00b4d8;
-      color: white;
-      font-weight: bold;
-    }
+.stats h6 { 
+  color: #012A4A; 
+  font-size: 0.9rem; 
+}
 
-    .donate-btn:hover {
-      background-color: #0077b6;
-      color: #FEFAE0;
-    }
+.stats p { 
+  color: #012A4A; 
+}
 
-    .login-btn {
-      color: #ffd60a;
-    }
+.btn-view-campaign { 
+  background-color: #012A4A; 
+  color: #A9D6E5; 
+  font-weight: 800; 
+  font-size: small; 
+  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2); 
+  transition: all 0.3s ease; 
+}
 
-    /* footer css */
-    .footer {
-      margin-top: 100px;
-      background-color: #468FAF;
-      color: #012A4A;
-    }
+.btn-view-campaign:hover { 
+  color: #012A4A; 
+  background-color: #ffd60a; 
+  transform: scale(1.02); 
+}
 
-    .footer a {
-      text-decoration: none;
-      color: inherit;
-    }
+.bg-amount { 
+  background-color: #ffc300; 
+  color: #012A4A; 
+}
 
-    .footer a:hover {
-      text-decoration: underline;
-    }
+.hover-opacity i{ 
+  transition: transform 0.3s ease, color 0.3s ease; 
+  cursor: pointer; 
+}
 
-    .footer li {
-      margin-bottom: 15px;
-    }
+.hover-opacity i:hover{ 
+  color: #01497c; 
+  cursor: pointer; 
+}
 
-    .footer-bottom {
-      background-color: #34637a;
-      color: white;
-      font-size: 0.9rem;
-    }
+.hover-opacity:hover { 
+  transform: scale(1.2); 
+}
 
-    .form-control::placeholder {
-      color: #6c757d;
-      opacity: 1;
-    }
+.titles {
+  background-color: #012A4A;
+  color: #A9D6E5;
+  padding: 5px;
+  border-radius: 5px;
+}
 
-    .icon-input-group {
-      position: relative;
-    }
+/* Profile picture styles */
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #012A4A;
+}
 
-    .icon-input-group .fa-envelope {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #6c757d;
-    }
+/* Personal details styles */
+.profile-detail-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
 
-    .icon-input-group input {
-      padding-left: 2rem;
-    }
+.detail-label {
+  font-weight: bold;
+  color: #012A4A;
+  font-size: 0.9rem;
+}
 
-    .social-icons i {
-      font-size: 2rem;
-      margin-right: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .social-icons i:hover {
-      color: #A9D6E5;
-    }
-
-    .follow-us {
-      font-size: 1.5rem;
-      margin-right: 20px;
-      margin-bottom: 50px;
-    }
-
-    .sign-up-btn {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      border: none;
-      width: 150px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .sign-up-btn:hover {
-      background-color: #A9D6E5;
-      color: #012A4A;
-      border: none;
-    }
-
-    .profile-image { 
-      width: 20%; 
-    }
-
-    .badge-card { 
-      border: none; 
-      background-color: #A9D6E5; 
-    }
-
-    .about-card { 
-      border: none; 
-      background-color: #A9D6E5; 
-    }
-
-    .profile-info { 
-      border: none; 
-      background-color: #A9D6E5; 
-    }
-
-    .funder-stats h5 { 
-      color: #A9D6E5; 
-      background-color: #012A4A; 
-      padding: 10px; 
-      border-radius: 5px; 
-    }
-
-    .stats { 
-      border: 1px solid #012a4a12; 
-      background-color: #012a4a12; 
-    }
-
-    .stats h6 { 
-      color: #012A4A; 
-      font-size: 0.9rem; 
-    }
-
-    .stats p { 
-      color: #012A4A; 
-    }
-
-    .btn-view-campaign { 
-      background-color: #012A4A; 
-      color: #A9D6E5; 
-      font-weight: 800; 
-      font-size: small; 
-      box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2); 
-      transition: all 0.3s ease; 
-    }
-
-    .btn-view-campaign:hover { 
-      color: #012A4A; 
-      background-color: #ffd60a; 
-      transform: scale(1.02); 
-    }
-
-    .bg-amount { 
-      background-color: #ffc300; 
-      color: #012A4A; 
-    }
-
-    .hover-opacity i{ 
-      transition: transform 0.3s ease, color 0.3s ease; 
-      cursor: pointer; 
-    }
-
-    .hover-opacity i:hover{ 
-      color: #01497c; 
-      cursor: pointer; 
-    }
-
-    .hover-opacity:hover { 
-      transform: scale(1.2); 
-    }
-
-    .titles {
-      background-color: #012A4A;
-      color: #A9D6E5;
-      padding: 5px;
-      border-radius: 5px;
-    }
-
-    /* Profile picture styles */
-    .profile-picture {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #012A4A;
-    }
-
-    /* Personal details styles */
-    .profile-detail-item {
-      margin-bottom: 10px;
-      padding: 8px;
-      background-color: rgba(255, 255, 255, 0.3);
-      border-radius: 5px;
-    }
-
-    .detail-label {
-      font-weight: bold;
-      color: #012A4A;
-      font-size: 0.9rem;
-    }
-
-    .detail-value {
-      color: #2A6F97;
-      font-size: 0.95rem;
-    }
+.detail-value {
+  color: #2A6F97;
+  font-size: 0.95rem;
+}
     </style>
 </head>
 
@@ -305,9 +180,6 @@
   </div>
 </nav>
 
-<!-- Bootstrap Icons for additional icon options -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<!-- Bootstrap JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- ===== MAIN PROFILE CONTENT ===== -->
@@ -315,35 +187,58 @@
 <!-- Profile Header Section -->
   <div class="profile-info card mb-4">
     <div class="card-body d-flex align-items-start justify-content-between">
-      <!-- Left: Profile Image and Basic Information -->
-      <div class="d-flex align-items-center">
-        <img id="funderProfilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
-        <div>
-          <h2 class="card-title fw-bold fs-1" id="funderName">Loading...</h2>
-          <p class="card-text text-muted small mb-2" id="funderTagline">
-            <i class="bi bi-envelope-fill me-1"></i> <span id="funderEmail">Loading...</span>
-          </p>
-          <p class="card-text text-muted small mb-2" id="funderContact">
-            <i class="bi bi-telephone-fill me-1"></i> <span id="contactNumber">Loading...</span>
-          </p>
-        </div>
-      </div>
+        <!-- Left: Profile Image and Basic Information -->
+        <div class="d-flex align-items-center">
+            <!-- Profile picture with circular styling -->
+            <img id="funderProfilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
+            <div>
+                <!-- Funder name with emphasis -->
+                <h2 class="card-title fw-bold fs-1" id="funderName">Loading...</h2>
+                
+                <!-- Funder tagline, interests, and location -->
+                <p class="card-text text-muted small">Education Advocate | STEM Enthusiast | Cape Town, South Africa</p>
 
-      <!-- Right: Social Media Links -->
-      <div class="d-flex flex-column align-items-end gap-2">
-        <a href="#" class="text-dark hover-opacity" id="emailLink" target="_blank">
-          <i class="bi bi-envelope-fill fs-5"></i>
-        </a>
-        <a href="#" class="text-dark hover-opacity" id="linkedinLink" target="_blank">
-          <i class="bi bi-linkedin fs-5"></i>
-        </a>
-        <a href="#" class="text-dark hover-opacity" id="twitterLink" target="_blank">
-          <i class="bi bi-twitter-x fs-5"></i>
-        </a>
-      </div>
+                <!-- This should not be here 
+                <p class="card-text text-muted small mb-2" id="funderTagline">
+                    <i class="bi bi-envelope-fill me-1"></i> <span id="funderEmail">Loading...</span>
+                </p>
+                <p class="card-text text-muted small mb-2" id="funderContact">
+                    <i class="bi bi-telephone-fill me-1"></i> <span id="contactNumber">Loading...</span>
+                </p>
+                -->
+            </div>
+        </div>
+
+        <!-- Right: Social Media Links -->
+        <div class="d-flex flex-column align-items-end gap-2">
+            <a href="#" class="text-dark hover-opacity" id="emailLink" target="_blank">
+                <i class="bi bi-envelope-fill fs-5"></i>
+            </a>
+            <a href="#" class="text-dark hover-opacity" id="linkedinLink" target="_blank">
+                <i class="bi bi-linkedin fs-5"></i>
+            </a>
+        </div>
     </div>
 
+    <!-- Badges Section -->
+    <!-- Achievement badges showing funder status, recognition, and participation level -->
+    <div class="card-body pt-0">
+        <div class="badge-card">
+            <div class="card-body py-3">
+                <!-- Top Funder badge for high-contribution donors -->
+                <span class="badge bg-success me-2">Top Funder</span>
+                <!-- Education Advocate badge for specific focus area -->
+                <span class="badge bg-primary me-2">Education Advocate</span>
+                <!-- Early Supporter badge for long-term platform supporters -->
+                <span class="badge bg-warning text-dark">Early Supporter</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- This should not be here, this information should not be visible because this is the page users will view -->
     <!-- Personal Details Section -->
+
+    <!-- 
     <div class="card-body pt-0">
       <h5 class="titles fw-bold mb-3">
         <i class="bi bi-person-badge-fill me-2"></i> Personal Details
@@ -371,14 +266,12 @@
         </div>
       </div>
     </div>
+    -->
 
     <!-- About Section -->
     <!-- Personal description and funding philosophy/mission statement -->
     <div class="about-card card mb-1">
       <div class="card-body">
-        <h5 class="titles fw-bold mb-3">
-          <i class="bi bi-person-lines-fill me-2"></i> About Me
-        </h5>
         <p id="funderBio">I'm passionate about supporting education and helping students achieve their dreams. Every contribution makes a difference in someone's educational journey.</p>
       </div>
     </div>
@@ -423,21 +316,40 @@
       </div>
     </div>
 
-    <!-- Funded Campaigns -->
+    <!-- Funded Campaigns Column -->
+     <!-- Showcases specific campaigns the funder has supported with donation amounts -->
     <div class="col-md-8">
         <div class="card border-0 h-100 mt-2">
           <div class="card-body funded-campaigns-body">
-            <h5 class="titles fw-bold mb-4 fs-4">
-              <i class="bi bi-heart-fill me-2"></i> Funded Campaigns
-            </h5>
             <div id="noCampaignsMessage" class="text-center py-5">
-              <p class="text-muted mb-3">You haven't funded any campaigns yet.</p>
+              <p class="text-muted mb-3">No campaigns funded yet</p>
+              
               <a href="campaign.html" class="btn btn-view-campaign">
                 <i class="bi bi-search me-2"></i>Browse Campaigns
               </a>
             </div>
             <div class="row row-cols-1 row-cols-md-2 g-4" id="fundedCampaignsContainer">
               <!-- Campaign cards will be loaded here dynamically -->
+
+              <!-- Basic Layout of the campaign card -->
+              <!--
+              
+                <div class="col">
+                  <div class="card h-100">
+                    <div class="card-body">
+    
+                      <h5 class="card-title fw-bold mb-1">Girls in STEM - Kenya</h5>
+
+                      <p class="badge bg-amount small fw-light">R2 000</p>
+
+                      <p class="card-text text-muted small mb-4">Providing laptops and coding workshops for 50 girls in Nairobi.</p>
+
+                      <a href="#" class="btn btn-view-campaign float-end">View Campaign</a>
+                </div>
+              </div>
+            </div>
+
+              -->
             </div>
           </div>
         </div>

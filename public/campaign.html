@@ -236,22 +236,19 @@
 <link rel="stylesheet" href="./css/styles.css">
 
 <style>
-.navbar-custom { background-color: #012A4A; height: 90px; }
-.navbar-brand { font-weight: bold; color: #A9D6E5; }
-.navbar-brand:hover { color: #0077b6; }
-.nav-link { color: #CAF0F8 !important; font-weight: 600; margin-right: 15px; }
-.nav-link:hover { color: #0077b6 !important; }
-.navbar-toggler { border-color: #A9D6E5; background-color: #A9D6E5; }
-.navbar-toggler:hover { border-color: #ffd60a; background-color: #ffd60a; transform: scale(1.02); }
-.donate-btn { background-color: #00b4d8; color: white; font-weight: bold; }
-.donate-btn:hover { background-color: #0077b6; color: #FEFAE0; }
-.login-btn { color: #ffd60a; }
+.profile-card{ 
+  background:#A9D6E5; 
+  text-align:center; 
+  color:#012A4A; 
+}
 
-.dashboard-container{ max-width:1100px; margin:60px auto; background:#ffffff; border-radius:10px; padding:40px; box-shadow:0 4px 15px rgba(0,0,0,0.1); }
-.section-title{ font-weight:700; color:#012A4A; margin-bottom:30px; border-bottom:2px solid #A9D6E5; padding-bottom:10px; }
-
-.profile-card{ background:#A9D6E5; border-radius:10px; padding:30px; text-align:center; color:#012A4A; }
-.profile-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; }
+.profile-card img { 
+  width: 120px; 
+  height: 120px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin-bottom: 20px; 
+}
 
 /* Action button styling for profile actions */
 .action-btn {
@@ -266,15 +263,30 @@
   margin-bottom: 10px;
   width: 100%;
 }
+
 .action-btn:hover {
   color: #012A4A;
   background-color: #ffd60a;
-  transform: scale(1.02); /* Slight scale effect on hover */
+  transform: scale(1.02);
 }
 
-.campaign-card{ background:#468FAF; border-radius:10px; padding:30px; color:#012A4A; }
-.campaign-card label{ font-weight:600; color:#012A4A; display: block; margin-bottom: 5px; }
-.campaign-card .form-control, .campaign-card .form-select{ border-radius:8px; margin-bottom:15px; border: 1px solid #012A4A; }
+.campaign-card{ 
+  background:#468FAF; 
+  color:#012A4A; 
+}
+
+.campaign-card label{ 
+  font-weight:600; 
+  color:#012A4A; 
+  display: block; 
+  margin-bottom: 5px; 
+}
+
+.campaign-card .form-control, .campaign-card .form-select { 
+  border-radius:8px; 
+  margin-bottom:15px; 
+  border: 1px solid #012A4A; 
+}
 
 /* Launch campaign button styling */
 .launch-btn{
@@ -288,23 +300,26 @@
   transition: all 0.3s ease;
   width: 100%;
 }
+
 .launch-btn:hover{
   color: #012A4A;
   background-color: #ffd60a;
   transform: scale(1.02);
 }
-.launch-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.footer { margin-top: 100px; background-color: #468FAF; color: #012A4A; }
-.footer a { text-decoration: none; color: inherit; }
-.footer a:hover { text-decoration: underline; }
-.footer-bottom { background-color: #34637a; color: white; font-size: 0.9rem; }
-
-#imagePreview { border: 2px dashed #012A4A; padding: 20px; text-align: center; border-radius: 8px; }
-
-@media (max-width: 768px) {
-  .dashboard-container { margin: 30px 15px; padding: 20px; }
+.launch-btn:disabled { 
+  opacity: 0.6; 
+  cursor: not-allowed; 
 }
+
+#imagePreview { 
+  border: 2px dashed #012A4A; 
+  padding: 20px; 
+  text-align: center; 
+  border-radius: 8px; 
+}
+
+
 </style>
 </head>
 <body>
@@ -312,19 +327,24 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
-    <!-- Brand/Logo -->
+    <!-- Brand/Logo linking to homepage -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+
+    <!-- Mobile menu toggle button -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Offcanvas navigation menu for mobile devices -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title">FundMyFuture</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        <h5 class="offcanvas-title">Menu</h5>
+        <!-- Close button for offcanvas menu -->
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav ms-auto align-items-center">
-          <!-- Donate button -->
+          <!-- Donate button call-to-action -->
           <li class="nav-item me-3">
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
@@ -336,11 +356,11 @@
           <li class="nav-item">
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
-          <!-- About us link -->
+          <!-- About us informational link -->
           <li class="nav-item">
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
-          <!-- Login button -->
+          <!-- Login/authentication button -->
           <li class="nav-item me-2" id="login-area">
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
@@ -351,46 +371,70 @@
 </nav>
 
 <!-- Main Content -->
-<div class="dashboard-container">
+
+<!-- Main Dashboard Container: Provides overall layout container with responsive padding -->
+<div class="dashboard-container container-fluid p-4">
+  <!-- Responsive Grid Row: Uses Bootstrap grid with consistent gutter spacing between columns -->
   <div class="row g-4">
-    <!-- Left Profile -->
-    <div class="col-md-4">
-      <div class="profile-card">
+    
+    <!-- PROFILE SIDEBAR SECTION -->
+    <!-- Left-aligned on desktop, full width on mobile. Order ensures proper responsive layout -->
+    <div class="col-md-4 order-md-1 order-1">
+      <!-- Profile Card: Container for user profile information and navigation actions -->
+      <div class="profile-card p-4 rounded">
+        <!-- User Profile Image: Default placeholder image until user uploads their own -->
         <img src="assets/profile-user.png" class="rounded-circle" alt="Profile Picture">
+        
+        <!-- User Name Display: Dynamically populated with user's actual name -->
         <h4 class="fw-bold">Loading...</h4>
+        
+        <!-- User Information Container: Flex container for additional user details -->
         <div class="user-info d-flex flex-column align-items-center text-center mb-4">
+          <!-- Loading State: Placeholder text while user data is being fetched -->
           <div class="text-muted">Loading user data...</div>
         </div>
+        
+        <!-- Navigation Action Buttons: Quick links to different sections of the application -->
         <button class="action-btn" onclick="window.location.href='student-dashboard.html'">My Dashboard</button>
         <button class="action-btn" onclick="window.location.href='student-dashboard.html'">My Campaigns</button>
         <button class="action-btn" onclick="window.location.href='donate.html'">Browse Campaigns</button>
       </div>
     </div>
 
-    <!-- Right Campaign Form -->
-    <div class="col-md-8">
-      <div class="campaign-card">
-        <!-- Form Title -->
-        <h3 class="section-title text-center fw-bold">Create New Campaign</h3>
+    <!-- CAMPAIGN FORM SECTION -->
+    <!-- Right-aligned on desktop, full width on mobile. Takes majority of screen space -->
+    <div class="col-md-8 order-md-2 order-2">
+      <!-- Campaign Form Card: Container for the campaign creation form with consistent padding -->
+      <div class="campaign-card p-4 rounded">
+        <!-- Form Header: Clear title indicating the purpose of this section -->
+        <h3 class="section-title text-center fw-bold mb-4 fs-2">Create New Campaign</h3>
+        
+        <!-- Campaign Creation Form: Main form for submitting new campaign details -->
         <form id="campaignForm">
-          <label for="campaignTitle" class="mb-2">Campaign Title *</label>
-          <input type="text" id="campaignTitle" class="form-control" placeholder="Enter a catchy title for your campaign" required minlength="5">
+          
+          <!-- Campaign Title Field: Required field for campaign name with length validation -->
+          <label for="campaignTitle" class="mb-2 fw-bold">Campaign Title *</label>
+          <input type="text" id="campaignTitle" class="form-control mb-0 border-0" placeholder="Enter a catchy title for your campaign" required minlength="5">
           <small class="text-muted">Minimum 5 characters</small>
 
-          <label for="campaignDescription" class="mb-2 mt-3">Short Description *</label>
-          <input type="text" id="campaignDescription" class="form-control" placeholder="Brief summary of your campaign" required minlength="10">
+          <!-- Campaign Description Field: Brief summary with character length requirement -->
+          <label for="campaignDescription" class="mb-2 mt-3 fw-bold">Short Description *</label>
+          <input type="text" id="campaignDescription" class="form-control mb-0 border-0" placeholder="Brief summary of your campaign" required minlength="10">
           <small class="text-muted">Minimum 10 characters</small>
 
-          <label for="fundingGoal" class="mb-2 mt-3">Funding Goal (ZAR) *</label>
-          <input type="number" id="fundingGoal" class="form-control" placeholder="e.g. 5000" min="100" step="100" required>
+          <!-- Funding Goal Field: Monetary target in South African Rand with minimum amount -->
+          <label for="fundingGoal" class="mb-2 mt-3 fw-bold">Funding Goal (ZAR) *</label>
+          <input type="number" id="fundingGoal" class="form-control mb-0 border-0" placeholder="e.g. 5000" min="100" step="100" required>
           <small class="text-muted">Minimum R100</small>
 
-          <label for="endDate" class="mb-2 mt-3">Campaign End Date *</label>
-          <input type="date" id="endDate" class="form-control" min="" required>
+          <!-- Campaign End Date: Date picker restricted to future dates only -->
+          <label for="endDate" class="mb-2 mt-3 fw-bold">Campaign End Date *</label>
+          <input type="date" id="endDate" class="form-control mb-0 border-0" min="" required>
           <small class="text-muted">Select a future date</small>
 
-          <label for="category" class="mb-2 mt-3">Category *</label>
-          <select id="category" class="form-select" required>
+          <!-- Category Selection: Dropdown for campaign categorization -->
+          <label for="category" class="mb-2 mt-3 fw-bold">Category *</label>
+          <select id="category" class="form-select mb-0 border-0" required>
             <option value="">Select a category</option>
             <option value="Tuition">Tuition Fees</option>
             <option value="Books & Supplies">Books & Supplies</option>
@@ -399,16 +443,20 @@
             <option value="Other">Other Educational Needs</option>
           </select>
 
-          <label for="story" class="mb-2 mt-3">Your Story *</label>
-          <textarea id="story" class="form-control" rows="6" placeholder="Share your educational journey, challenges, and how this funding will help you achieve your goals..." required minlength="50"></textarea>
+          <!-- Story Field: Detailed description area for campaign narrative -->
+          <label for="story" class="mb-2 mt-3 fw-bold">Your Story *</label>
+          <textarea id="story" class="form-control mb-0 border-0" rows="6" placeholder="Share your educational journey, challenges, and how this funding will help you achieve your goals..." required minlength="50"></textarea>
           <small class="text-muted">Minimum 50 characters. Be authentic and compelling!</small>
 
-          <label for="coverImage" class="mb-2 mt-3">Upload Cover Image</label>
-          <input type="file" id="coverImage" class="form-control" accept="image/*">
+          <!-- Cover Image Upload: Optional file upload for campaign visual representation -->
+          <label for="coverImage" class="mb-2 mt-3 fw-bold">Upload Cover Image</label>
+          <input type="file" id="coverImage" class="form-control mb-0 border-0" accept="image/*">
           <small class="text-muted">Optional. JPG, PNG up to 5MB</small>
 
+          <!-- Image Preview Area: Hidden container that displays when an image is selected -->
           <div id="imagePreview" class="d-none mt-3"></div>
 
+          <!-- Form Submission: Primary action button to create and launch the campaign -->
           <button type="submit" class="launch-btn mt-4">Launch Campaign</button>
         </form>
       </div>
@@ -423,44 +471,58 @@
   <div class="container pb-4">
     
     <div class="row">
+      
+      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <form class="d-flex">
-          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
-          <button type="submit" class="btn sign-up-btn">SIGN UP</button>
+        <form class="d-flex icon-input-group">
+          <!-- Envelope icon inside input field for visual context -->
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+          <!-- Email input field for newsletter subscription -->
+          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . ." aria-label="Email address">
+          <!-- Submit button for newsletter signup -->
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
         </form>
       </div>
+
+      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
           <!-- Instagram social media link -->
-          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-instagram"></i>
+          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none" aria-label="Instagram">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
           </a>
           <!-- Facebook social media link -->
-          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-facebook"></i>
+          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none" aria-label="Facebook">
+            <i class="fab fa-facebook" aria-hidden="true"></i>
           </a>
           <!-- LinkedIn social media link -->
-          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-linkedin"></i>
+          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none" aria-label="LinkedIn">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
           </a>
         </div>
       </div>
 
     </div>
-    <hr>
+
+    <hr> <!-- Horizontal separator line between sections -->
+
     <div class="row text-start text-md-start">
+
+      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
           <li><a href="index.html">Home</a></li>
           <li><a href="donate.html">Donate</a></li>
-          <li><a href="campaign.html">Campaigns</a></li>
+          <li><a href="story.html">Stories</a></li>
           <li><a href="about.html">About</a></li>
         </ul>
       </div>
+
+      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
@@ -468,23 +530,38 @@
           <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
+
+      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <p class="mb-1">5th floor 112 Long St, Cape Town, 8000</p>
-        <p class="mb-1">Western Cape</p>
-        <p class="mb-1">+27 21 831 0700</p>
-        <p class="mb-0">fundmyfuture@gmail.com</p>
+        <!-- Address with clickable Google Maps link for easy directions -->
+        <p class="mb-1">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+            5th floor 112 Long St <br> 
+            Cape Town <br> 
+            8000 <br> 
+            Western Cape
+          </a>
+        </p>
+        <!-- Phone number link for direct calling capability -->
+        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+        <!-- Email link for direct communication -->
+        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
       </div>
 
     </div>
-  </div>
+  </div> <!-- End container -->
+
+  <!-- Footer Bottom Bar -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
       
-      <!-- Legal & policy links -->
+      <!-- Legal & policy links for compliance and user information -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
 
       <!-- Copyright notice -->
