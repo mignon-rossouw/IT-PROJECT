@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Contact Us </title>
-        
-    <!-- Firebase modules-->
-<script type="module" src="/src/firebase-config.js"></script>
-<script type="module" src="/src/auth-service.js"></script>
-<script type="module" src="/src/campaign-service.js"></script>
-<script type="module" src="/src/app.js"></script>
 
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -175,7 +169,7 @@
             <i class="bi bi-envelope-fill me-2"></i> Email
           </h5>
           <!-- Email link -->
-          <p class="mb-4"><a href="mailto:fundmyfuture@gmail.com" class="text-muted text-decoration-none small">fundmyfuture@gmail.com</a></p>
+          <p class="mb-4"><a href="mailto:fundmyfuture7@gmail.com" class="text-muted text-decoration-none small">fundmyfuture7@gmail.com</a></p>
 
           <!-- Phone Information -->
           <h5 class="fw-bold">
@@ -190,26 +184,26 @@
       <!-- Right Column: Contact Form -->
       <div class="col-md-7">
         <div class="contact-form">
-          <!-- Contact Form -->
-          <form>
-            <!-- Name Input Field -->
-            <div class="mb-3">
-              <label for="name" class="form-label">Your Name</label>
-              <input type="text" class="form-control" id="name" required />
-            </div>
-            <!-- Email Input Field -->
-            <div class="mb-3">
-              <label for="email" class="form-label">Your Email</label>
-              <input type="email" class="form-control" id="email" required />
-            </div>
-            <!-- Message Textarea -->
-            <div class="mb-3">
-              <label for="message" class="form-label">Your Message</label>
-              <textarea class="form-control" id="message" rows="5" required></textarea>
-            </div>
-            <!-- Form Submission Button -->
-            <button type="submit" class="btn btn-send-message float-end">Send Message</button>
-          </form>
+            <form>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" required />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" class="form-control" id="email" required />
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your Message</label>
+                    <textarea class="form-control" id="message" rows="5" required></textarea>
+                </div>
+                
+
+                <div id="contactMessage" class="mb-3"></div>
+                
+                <button type="submit" class="btn btn-send-message float-end">Send Message</button>
+            </form>
         </div>
       </div>
     </div>
@@ -349,6 +343,41 @@
 
 <!-- Bootstrap + Font Awesome JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+<script type="module" src="/src/firebase-config.js"></script>
+<script type="module" src="/src/auth-service.js"></script>
+<script type="module" src="/src/campaign-service.js"></script>
+<script type="module" src="/src/app.js"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+<!-- Firebase Configuration -->
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+    authDomain: "fund-my-future-47844.firebaseapp.com",
+    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+    projectId: "fund-my-future-47844",
+    storageBucket: "fund-my-future-47844.firebasestorage.app",
+    messagingSenderId: "581912293895",
+    appId: "1:581912293895:web:03468061fae2124ac770a2",
+    measurementId: "G-LFC0R1GBE1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+</script>
+
+<!-- Newsletter Script -->
+<script src="./js/newsletter.js"></script>
+
+<!-- Contact Form Logic -->
+<script src="./js/contact.js"></script>
+
+
 </body>
 </html>
