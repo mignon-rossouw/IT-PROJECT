@@ -11,7 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-  <!-- Your Firebase configuration -->
+  <!-- Firebase configuration -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
@@ -32,11 +32,13 @@
     const auth = firebase.auth();
   </script>
 
-  <!-- Firebase modules (loaded after SDK) -->
-  <script type="module" src="/src/firebase-config.js"></script>
-  <script type="module" src="/src/auth-service.js"></script>
-  <script type="module" src="/src/campaign-service.js"></script>
-  <script type="module" src="/src/app.js"></script>
+  <!-- Newsletter Script  -->
+  <script src="./js/newsletter.js"></script>
+
+  <script type="module" src="./src/firebase-config.js"></script>
+  <script type="module" src="./src/auth-service.js"></script>
+  <script type="module" src="./src/campaign-service.js"></script>
+  <script type="module" src="./src/app.js"></script>
 
   <!-- External CSS Libraries -->
   <!-- Bootstrap CSS for responsive layout and components -->
@@ -705,14 +707,21 @@
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <form class="d-flex icon-input-group">
+        <!-- Newsletter Form -->
+        <form id="newsletterForm" class="d-flex icon-input-group">
           <!-- Envelope icon inside input field for visual context -->
           <i class="fa-regular fa-envelope"></i>
           <!-- Email input field for newsletter subscription -->
-          <input type="email" class="form-control me-2 rounded-3" placeholder="Enter email . . .">
+          <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
           <!-- Submit button for newsletter signup -->
-          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn">SIGN UP</button>
+          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
+            SIGN UP
+          </button>
         </form>
+
+        <!-- Message display area -->
+        <div id="newsletterMessage" class="mt-2"></div>
+
       </div>
 
       <!-- Social Media Column -->
@@ -775,7 +784,7 @@
         <!-- Phone number link for direct calling capability -->
         <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
         <!-- Email link for direct communication -->
-        <p class="mb-0"><a href="mailto:fundmyfuture@gmail.com">fundmyfuture@gmail.com</a></p>
+        <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
       </div>
 
     </div>
