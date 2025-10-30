@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - FundMyFuture</title>
+
+
+    
+   <!-- Global Auth Manager as Module -->
+<script type="module" src="./js/auth-manager.js"></script>
     
   <!-- External CSS Libraries -->
   <!-- Bootstrap CSS for responsive layout and components -->
@@ -41,6 +46,7 @@ body {
   background-color: #2A6F97;
   padding: 30px 0;
   margin-bottom: 0px;
+  color: white;
 }
 
 /* Background pattern for profile section */
@@ -335,6 +341,55 @@ body {
 .share-update-btn:hover i {
   color: #ffd60a;
 }
+
+/* Primary button styling */
+.btn-primary-custom {
+  background-color: #2A6F97;
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: #468FAF;
+  color: white;
+  transform: scale(1.02);
+}
+
+/* Navbar styling */
+.navbar-custom {
+  background-color: #012A4A;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+  color: #A9D6E5 !important;
+}
+
+.donate-btn, .login-btn {
+  background-color: #2A6F97;
+  color: white;
+  border: none;
+}
+
+.donate-btn:hover, .login-btn:hover {
+  background-color: #468FAF;
+  color: white;
+}
+
+/* Profile card styling */
+.profile-card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.title-container {
+  background-color: #2A6F97 !important;
+}
+
+.title-profile {
+  color: #A9D6E5;
+}
     </style>
 </head>
 <body>
@@ -375,7 +430,7 @@ body {
           </li>
           <!-- Login/authentication button -->
           <li class="nav-item me-2" id="login-area">
-            <button class="btn login-btn fw-bolder" onclick="logout()">LOGOUT</button>
+            <button class="btn login-btn fw-bolder" id="logoutButton">LOGOUT</button>
           </li>
         </ul>
       </div>
@@ -409,7 +464,7 @@ body {
                         <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
                             <i class="bi bi-person-badge me-2 fs-3"></i> Profile Information
                         </h5>
-                        <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
+                        <button class="btn btn-edit d-flex align-items-center" id="editProfileButton">
                             <i class="bi bi-pencil me-1 fs-3"></i>
                         </button>
                     </div>
@@ -483,7 +538,7 @@ body {
                     <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
                         <i class="bi bi-book me-2 fs-3"></i> Academic Information
                     </h5>
-                    <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
+                    <button class="btn btn-edit d-flex align-items-center" id="editAcademicButton">
                         <i class="bi bi-pencil me-1 fs-3"></i>
                     </button>
                 </div>
@@ -528,8 +583,8 @@ body {
                   <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
                       <i class="bi bi-plus-circle me-2 fs-3"></i> Campaign Management
                   </h5>
-                  <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
-                      <i class="bi bi-pencil me-1 fs-3"></i>
+                  <button class="btn btn-edit d-flex align-items-center" id="createCampaignButton">
+                      <i class="bi bi-plus-lg me-1 fs-3"></i>
                   </button>
               </div>
             </div>
@@ -543,283 +598,6 @@ body {
                                 Create Your First Campaign
                             </button>
                         </div>
-
-                        <!-- =========================================== -->
-                        <!-- THIS SHOULD APPEAR WHEN THERE ARE CAMPAIGNS -->
-                        <!-- =========================================== -->
-                        
-                        <!-- 
-    MAIN DASHBOARD CONTENT CONTAINER
-    ================================
-    Purpose: Main wrapper for dashboard content with consistent spacing
-    Features:
-    - Responsive padding on all sides
-    - Centered container for optimal readability
-    - Foundation for all dashboard sections
--->
-<div class="container py-4 px-3">
-
-<!-- 
-    CAMPAIGN AND DONATIONS SECTION
-    ==============================
-    Purpose: Display campaign progress and donor interactions
-    Layout: Two-column responsive design (stacked on mobile)
-    Sections:
-    - Left: Progress tracking, donations, sharing
-    - Right: Campaign details, updates, information
--->
-<div class="container my-5">
-  <div class="row">
-    
-    <!-- 
-        LEFT COLUMN: PROGRESS TRACKING AND DONATIONS
-        ============================================
-        Contains: Campaign progress, donation metrics, recent donor activity
-        Purpose: Show campaign performance and donor engagement
-    -->
-    <div class="col-12 col-lg-6">
-      
-      <!-- 
-          CAMPAIGN TITLE SECTION
-          ======================
-          Purpose: Display campaign name with edit functionality
-          Features:
-          - Responsive title with edit button
-          - Flex layout for title and edit control alignment
-      -->
-      <div class="donation-target-title mt-4 d-flex align-items-center justify-content-between">
-        <h4 class="fw-bolder mb-0">Help Lawrence Study Engineering</h4>
-        <!-- Edit Campaign Name Button - Allows campaign title modification -->
-        <button class="btn btn-link p-0 text-muted edit-btn" title="Edit campaign name">
-          <i class="bi bi-pencil-square"></i>
-        </button>
-      </div>
-      
-      <!-- 
-          PROGRESS TRACKING SECTION
-          ==========================
-          Purpose: Visual representation of fundraising progress
-          Components:
-          - Current amount raised (prominent display)
-          - Campaign statistics (target, donation count)
-          - Progress bar with percentage completion
-      -->
-      <div class="mb-3 mt-4">
-        <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
-        <div class="progress-section p-3">
-          <!-- Current Amount Raised - Primary metric -->
-          <h4 class="fw-bolder mb-1">R22 153</h4>
-          <!-- Campaign Statistics - Secondary metrics -->
-          <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
-            <small class="text-muted">R30 000 target</small>
-            <small class="text-muted">⋅</small>
-            <small class="text-muted">83 donations</small>
-          </div>
-          <!-- Progress Bar - Visual completion indicator -->
-          <div class="progress custom-progress" style="height: 30px;">
-            <div class="progress-bar custom-bar" style="width: 36%;">36%</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 
-          ACTION BUTTONS SECTION
-          ======================
-          Purpose: Primary call-to-action buttons for campaign engagement
-          Buttons:
-          - Share: Social media and link sharing
-          - Layout: Full-width responsive buttons
-      -->
-      <div class="row g-2">
-        <div class="col-12">
-          <!-- Share Campaign Button - Social sharing functionality -->
-          <button class="btn btn-share w-100">
-            <i class="bi bi-share-fill me-2"></i>Share
-          </button>
-        </div>
-      </div>
-
-      <!-- Visual spacer for content separation -->
-      <div class="spacer"></div>
-
-      <!-- 
-          RECENT DONATIONS SECTION
-          =========================
-          Purpose: Display recent donor activity and engagement
-          Features:
-          - List of recent donations with donor names
-          - Badge system for donation types (Recent, Top, First)
-          - View all donations expansion capability
-      -->
-      <div class="my-5">
-        <h5 class="donations-title mb-3 fw-bold"> <i class="bi bi-hearts me-2"></i>Donations <a href="#" class="donations-link ms-2">(67)</a></h5>
-        <!-- Donations List - Recent donor activity -->
-        <ul class="list-group mb-3">
-          <!-- Recent Donation - Most recent contribution -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Rachael Fox</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R40</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-secondary rounded-pill">Recent</small>
-              </div>
-            </div>
-          </li>
-          <!-- Top Donation - Largest single contribution -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Megan Daniels</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R500</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-success rounded-pill">Top</small>
-              </div>
-            </div>
-          </li>
-          <!-- First Donation - Initial campaign supporter -->
-          <li class="list-group-item">
-            <div class="d-flex flex-column">
-              <span class="fw-bold mb-2">Jeffery Marsh</span>
-              <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">R100</small>
-                <small class="text-muted">⋅</small>
-                <small class="badge bg-primary rounded-pill">First</small>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <!-- View All Donations Button - Expands to full donation history -->
-        <div class="d-flex flex-column gap-2 mb-4">
-          <button class="btn btn-view-all">View All</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 
-        RIGHT COLUMN: CAMPAIGN UPDATES AND INFORMATION
-        ==============================================
-        Contains: Campaign visuals, description, updates, and communication
-        Purpose: Provide campaign context and ongoing communication
-    -->
-    <div class="col-12 col-lg-6">
-      
-      <!-- 
-          CAMPAIGN VISUAL SECTION
-          =======================
-          Purpose: Display campaign image for visual engagement
-          Features:
-          - Responsive image with fixed aspect ratio
-          - Rounded corners with subtle shadow
-          - Centered alignment
-      -->
-      <div class="mb-4 mt-4 text-center">
-        <img src="./assets/pexels-kaiariel-3563697.jpg" alt="Campaign Image" class="img-fluid w-100 rounded shadow-sm" style="max-height: 300px; object-fit: cover;">
-      </div>
-
-      <!-- 
-          CAMPAIGN DESCRIPTION SECTION
-          =============================
-          Purpose: Provide detailed campaign context and story
-          Features:
-          - Editable campaign description
-          - Informative text about campaign purpose
-          - Edit functionality for campaign owners
-      -->
-      <div class="mb-4">
-        <div class="about-title fw-bold mt-4 d-flex align-items-center justify-content-between">
-          <h5 class="fw-bolder mb-0"><i class="bi bi-info-circle me-2"></i>About the Campaign</h5>
-          <!-- Edit Campaign Description Button - Content management -->
-          <button class="btn btn-link p-0 text-muted share-update-btn" title="Edit campaign name">
-            <i class="bi bi-pencil-square"></i>
-          </button>
-        </div>
-        <!-- Campaign Description Text - Narrative content -->
-        <p class="text-muted">
-          Lawrence is pursuing a degree in engineering and needs support to cover tuition, materials, and living expenses. Every contribution helps him get closer to his dream.
-        </p>
-      </div>
-
-      <!-- 
-          UPDATE CREATION SECTION
-          ========================
-          Purpose: Allow campaign owners to post updates to donors
-          Features:
-          - Text area for update content
-          - Submission form for new updates
-          - Real-time update posting capability
-      -->
-      <div class="mb-4">
-        <h5 class="share-update fw-bold"><i class="bi bi-chat-left-heart-fill me-2"></i>Share an Update</h5>
-        <!-- Update Form - Content creation interface -->
-        <form>
-          <div class="mb-3">
-            <textarea class="form-control" rows="4" placeholder="Write your update here..."></textarea>
-          </div>
-          <!-- Post Update Button - Form submission -->
-          <button type="submit" class="btn btn-post-update w-100 mb-4">Post Update</button>
-        </form>
-      </div>
-
-      <!-- 
-          PREVIOUS UPDATES SECTION
-          ==========================
-          Purpose: Display historical campaign updates and communications
-          Features:
-          - Chronological update cards
-          - Author and timestamp information
-          - Expandable view for all updates
-      -->
-      <div>
-        <h5 class="updates fw-bold mb-3">Updates <a href="#" class="update-link ms-2">(4)</a></h5>
-
-        <!-- 
-            UPDATE CARD TEMPLATE
-            ====================
-            Structure: Date, author, and content
-            Purpose: Individual update display unit
-        -->
-        
-        <!-- Update Card 1 - Most recent update -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- Update Card 2 - Previous update -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- Update Card 3 - Earlier update -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <h6 class="card-title fw-bold mb-0">20 August 2025</h6>
-            <small class="fw-lighter text-muted mb-0">by Lawrence</small>
-            <p class="card-text mt-4">Thank you to everyone who donated! I've just registered for my first semester and bought my textbooks.</p>
-          </div>
-        </div>
-
-        <!-- View All Updates Button - Expands update history -->
-        <div class="d-flex justify-content-end mt-3">
-          <button class="btn btn-view-update">View All Updates</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
-<!-- END OF MAIN DASHBOARD CONTENT CONTAINER -->
-
                     </div>
                 </div>
             </div>
@@ -895,14 +673,41 @@ body {
     async function initializeDashboard() {
         console.log('Initializing dashboard...');
         
-        // Add event listeners
-        document.getElementById('logoutButton').addEventListener('click', logout);
-        document.getElementById('editProfileButton').addEventListener('click', () => openEditModal('profile'));
-        document.getElementById('editAcademicButton').addEventListener('click', () => openEditModal('academic'));
-        document.getElementById('changePhotoButton').addEventListener('click', changeProfilePicture);
-        document.getElementById('profilePictureOverlay').addEventListener('click', changeProfilePicture);
-        document.getElementById('createCampaignButton').addEventListener('click', createNewCampaign);
-        document.getElementById('createFirstCampaignButton').addEventListener('click', createNewCampaign);
+        // Add event listeners with null checks
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', logout);
+        }
+
+        const editProfileButton = document.getElementById('editProfileButton');
+        if (editProfileButton) {
+            editProfileButton.addEventListener('click', () => openEditModal('profile'));
+        }
+
+        const editAcademicButton = document.getElementById('editAcademicButton');
+        if (editAcademicButton) {
+            editAcademicButton.addEventListener('click', () => openEditModal('academic'));
+        }
+
+        const changePhotoButton = document.getElementById('changePhotoButton');
+        if (changePhotoButton) {
+            changePhotoButton.addEventListener('click', changeProfilePicture);
+        }
+
+        const profilePictureOverlay = document.getElementById('profilePictureOverlay');
+        if (profilePictureOverlay) {
+            profilePictureOverlay.addEventListener('click', changeProfilePicture);
+        }
+
+        const createCampaignButton = document.getElementById('createCampaignButton');
+        if (createCampaignButton) {
+            createCampaignButton.addEventListener('click', createNewCampaign);
+        }
+
+        const createFirstCampaignButton = document.getElementById('createFirstCampaignButton');
+        if (createFirstCampaignButton) {
+            createFirstCampaignButton.addEventListener('click', createNewCampaign);
+        }
         
         // Save button event listener - with null check and retry
         const saveButton = document.getElementById('saveProfileChangesButton');
@@ -1374,5 +1179,9 @@ body {
     window.editCampaign = editCampaign;
     window.deleteCampaign = deleteCampaign;
 </script>
+
+
+    <!--Dynamic navbar script-->
+    <script src="./js/navbar-auth.js"></script>
 </body>
 </html>

@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Start a Campaign - FundMyFuture</title>
+
+<!-- Newsletter Script  -->
+  <script src="./js/newsletter.js"></script>
+
     
+   <!-- Global Auth Manager as Module -->
+<script type="module" src="./js/auth-manager.js"></script>
+
 <!-- Firebase modules -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -587,5 +594,8 @@
     document.getElementById('endDate').min = today;
   });
 </script>
+
+    <!--Dynamic navbar script-->
+    <script src="./js/navbar-auth.js"></script>
 </body>
 </html>

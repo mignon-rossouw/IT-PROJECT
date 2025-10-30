@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FundMyFuture</title>
 
-  <title> FundMyFuture </title>
-    
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -26,33 +25,17 @@
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    
-    // Initialize Firestore
-    const db = firebase.firestore();
-    const auth = firebase.auth();
   </script>
 
-  <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-
-  <script type="module" src="./src/firebase-config.js"></script>
-  <script type="module" src="./src/auth-service.js"></script>
-  <script type="module" src="./src/campaign-service.js"></script>
-  <script type="module" src="./src/app.js"></script>
-
-  <!-- External CSS Libraries -->
-  <!-- Bootstrap CSS for responsive layout and components -->
+  <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+  
   <!-- Custom global stylesheet -->
-<link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/styles.css">
 
 <style>
-
     /* ===== COLOR PALETTE DOCUMENTATION ===== */
     /* Blue color palette from dark to light for consistent branding */
     /*
@@ -300,7 +283,7 @@
     height: 250px;
   }
 }
-  </style>
+</style>
 
 </head>
 <body>
@@ -349,11 +332,6 @@
     </div>
   </div>
 </nav>
-
-<!-- Bootstrap Icons for additional icon options -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<!-- Bootstrap JavaScript for interactive components -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- ===== HERO CAROUSEL SECTION ===== -->
 <!-- Image carousel for visual appeal and brand storytelling -->
@@ -633,11 +611,11 @@
         <div class="card-body">
           <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Amy Daniels</h5>
           <p class="card-text text-secondary small mb-3">
-            Amy, a creative from Port Elizabeth, wanted to become a <strong>UX/UI designer</strong> but couldn’t afford design software or equipment. 
+            Amy, a creative from Port Elizabeth, wanted to become a <strong>UX/UI designer</strong> but couldn't afford design software or equipment. 
             Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R22,000</strong>, funding her tools and studies. She now mentors other design students.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “Every donation was like a vote of confidence in my creativity — I’ll never forget that.”
+            "Every donation was like a vote of confidence in my creativity — I'll never forget that."
           </blockquote>
         </div>
       </div>
@@ -656,7 +634,7 @@
             Through <span class="text-success fw-semibold">FundMyFuture</span>, she raised <strong>R48,500</strong> to cover her first-semester fees and now works on 3D-printed prosthetic limbs for children.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “FundMyFuture didn’t just fund my studies—it restored my belief that people care about my dream.”
+            "FundMyFuture didn't just fund my studies—it restored my belief that people care about my dream."
           </blockquote>
         </div>
       </div>
@@ -675,24 +653,22 @@
             Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R64,000</strong> in 12 days, allowing her to continue her MBChB studies at Stellenbosch University.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “Because of FundMyFuture, I didn’t just stay in school — I found a whole community that believes in my purpose.”
+            "Because of FundMyFuture, I didn't just stay in school — I found a whole community that believes in my purpose."
           </blockquote>
         </div>
       </div>
     </div>
-
-
     </div>
   </div>
 
   <!-- View More Success Stories Button -->
   <div class="text-end mt-3">
-          <a href="story.html" style="float: right;">
-          <button type="button" class="btn btn-view-more">
-          FIND OUT MORE
-          </button>
-        </a>
-        </div>
+    <a href="story.html" style="float: right;">
+      <button type="button" class="btn btn-view-more">
+        FIND OUT MORE
+      </button>
+    </a>
+  </div>
 </div>
 
 <!-- Footer Section -->
@@ -811,6 +787,15 @@
 
 <!-- Bootstrap + Font Awesome JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Newsletter Script -->
+<script src="./js/newsletter.js"></script>
+
+<!-- Global Auth Manager (NO module type) -->
+<script src="./js/auth-manager.js"></script>
+
+    <!--Dynamic navbar script-->
+    <script src="./js/navbar-auth.js"></script>
 
 </body>
 </html>

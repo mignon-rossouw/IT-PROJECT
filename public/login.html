@@ -5,16 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login - FundMyFuture</title>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase configuration -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+      authDomain: "fund-my-future-47844.firebaseapp.com",
+      databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+      projectId: "fund-my-future-47844",
+      storageBucket: "fund-my-future-47844.firebasestorage.app",
+      messagingSenderId: "581912293895",
+      appId: "1:581912293895:web:03468061fae2124ac770a2",
+      measurementId: "G-LFC0R1GBE1"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
   <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom global stylesheet -->
+  
+  <!-- Custom global stylesheet -->
   <link rel="stylesheet" href="./css/styles.css">
 
-
 <style>
-
 @keyframes move {
     100% {
         transform: translate3d(0, 0, 1px) rotate(360deg);
@@ -196,11 +217,6 @@
 .forgot {
   color: #012A4A;
   text-decoration: none;
-}
-
-.forgot:hover {
-  text-decoration: underline;
-  color: #01497C;
 }
 
 .forgot:hover {
@@ -561,7 +577,7 @@
         <h6 class="fw-bold">Contact</h6>
         <!-- Address with clickable Google Maps link for easy directions -->
         <p class="mb-1">
-          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi.4wIKXMDSoASAFQAw%3D%3D" target="_blank">
             5th floor 112 Long St <br> 
             Cape Town <br> 
             8000 <br> 
@@ -599,285 +615,239 @@
 <!-- Bootstrap + Font Awesome JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Newsletter Script -->
+<script src="./js/newsletter.js"></script>
+
 <!-- Firebase Login Authentication -->
-<script type="module">
-  // Import Firebase modules with correct paths
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script>
+// Firebase Login Authentication
+document.addEventListener('DOMContentLoaded', function() {
+    // Get Firebase services
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-  // Firebase configuration 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
-    authDomain: "fund-my-future-47844.firebaseapp.com",
-    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
-    projectId: "fund-my-future-47844",
-    storageBucket: "fund-my-future-47844.firebasestorage.app",
-    messagingSenderId: "581912293895",
-    appId: "1:581912293895:web:03468061fae2124ac770a2",
-    measurementId: "G-LFC0R1GBE1"
-  };
+    // Form elements
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginSpinner = document.getElementById("loginSpinner");
+    const loginText = document.getElementById("loginText");
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    // Validate email
+    function validateEmail(email){
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+    }
 
-  // Check authentication state - FIXED VERSION
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      console.log("User is logged in:", user.uid);
-      
-      // Check if this is a fresh page load or a login
-      const isFreshLoad = !sessionStorage.getItem('loginProcessed');
-      
-      if (isFreshLoad) {
-        // User was already logged in when page loaded
-        try {
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            console.log("User already logged in, redirecting to:", userData.userType);
-            
-            // Show a brief message then redirect
-            showAlert(`Welcome back! Redirecting to your dashboard...`, 'info');
-            
-            setTimeout(() => {
-              redirectBasedOnUserType(userData.userType);
-            }, 1500);
-          }
-        } catch (error) {
-          console.error("Error checking user data:", error);
-          // If there's an error, let the user manually login
+    // Form validation
+    function validateForm(){
+        let valid = true;
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        
+        // Clear previous validation states
+        email.classList.remove('is-valid','is-invalid');
+        password.classList.remove('is-valid','is-invalid');
+        clearCredentialErrors();
+        hideFormFeedback();
+
+        if(!email.value || !validateEmail(email.value)){
+            email.classList.add('is-invalid'); 
+            valid = false;
+        } else { 
+            email.classList.add('is-valid'); 
         }
-      } else {
-        // This was a fresh login, clear the flag
-        sessionStorage.removeItem('loginProcessed');
-      }
-    } else {
-      console.log("No user is logged in");
-      // User is not logged in, this is normal behavior
-    }
-  });
 
-  function redirectBasedOnUserType(userType) {
-    switch(userType){
-      case 'student': 
-        window.location.href = 'student-dashboard.html'; 
-        break;
-      case 'funder': 
-        window.location.href = 'funder-dashboard.html'; 
-        break;
-      case 'admin': 
-        window.location.href = 'admin-dashboard.html'; 
-        break;
-      default: 
-        window.location.href = 'index.html';
-    }
-  }
+        if(!password.value || password.value.length<6){
+            password.classList.add('is-invalid'); 
+            valid = false;
+        } else { 
+            password.classList.add('is-valid'); 
+        }
 
-  // Form elements
-  const loginForm = document.getElementById("loginForm");
-  const loginButton = document.getElementById("loginButton");
-  const loginSpinner = document.getElementById("loginSpinner");
-  const loginText = document.getElementById("loginText");
-
-  // Validate email
-  function validateEmail(email){
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
-  }
-
-  // Form validation
-  function validateForm(){
-    let valid = true;
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    
-    // Clear previous validation states
-    email.classList.remove('is-valid','is-invalid');
-    password.classList.remove('is-valid','is-invalid');
-    clearCredentialErrors();
-    hideFormFeedback();
-
-    if(!email.value || !validateEmail(email.value)){
-      email.classList.add('is-invalid'); 
-      valid = false;
-    } else { 
-      email.classList.add('is-valid'); 
+        return valid;
     }
 
-    if(!password.value || password.value.length<6){
-      password.classList.add('is-invalid'); 
-      valid = false;
-    } else { 
-      password.classList.add('is-valid'); 
+    // Reset login button
+    function resetLoginButton(){
+        loginButton.disabled=false;
+        loginSpinner.style.display='none';
+        loginText.style.display='inline';
     }
 
-    return valid;
-  }
-
-  // Reset login button
-  function resetLoginButton(){
-    loginButton.disabled=false;
-    loginSpinner.style.display='none';
-    loginText.style.display='inline';
-  }
-
-  // Clear credential errors
-  function clearCredentialErrors() {
-    const emailError = document.getElementById('emailCredentialsError');
-    const passwordError = document.getElementById('passwordCredentialsError');
-    if (emailError) emailError.classList.remove('show');
-    if (passwordError) passwordError.classList.remove('show');
-  }
-
-  // Hide form feedback
-  function hideFormFeedback() {
-    const feedback = document.getElementById('formFeedback');
-    if (feedback) feedback.classList.remove('show');
-  }
-
-  // Handle login
-  async function handleLogin(){
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    try {
-      loginButton.disabled=true;
-      loginSpinner.style.display='inline';
-      loginText.style.display='none';
-      clearCredentialErrors();
-      hideFormFeedback();
-
-      console.log("Attempting login for:", email);
-      
-      // Set flag to indicate we're processing a login
-      sessionStorage.setItem('loginProcessed', 'true');
-      
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log("Login successful, user ID:", user.uid);
-
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      if(userDoc.exists()){
-        const userData = userDoc.data();
-        console.log("User data retrieved:", userData);
-        
-        showAlert('Login successful! Redirecting...', 'success');
-        
-        setTimeout(() => redirectBasedOnUserType(userData.userType), 1500);
-      } else {
-        console.log("User document not found in Firestore");
-        showAlert('User data not found. Please contact support.', 'error');
-        resetLoginButton();
-        sessionStorage.removeItem('loginProcessed');
-      }
-    } catch(error){
-      console.error("Login error:", error);
-      resetLoginButton();
-      sessionStorage.removeItem('loginProcessed');
-      
-      let message = 'Login failed. Please try again.';
-      let showEmailError = false;
-      let showPasswordError = false;
-      
-      switch(error.code){
-        case 'auth/invalid-email': 
-          message = 'Invalid email address. Please check your email format.';
-          showEmailError = true;
-          break;
-        case 'auth/user-disabled': 
-          message = 'This account has been disabled. Please contact support.';
-          break;
-        case 'auth/user-not-found': 
-          message = 'No account found with this email address.';
-          showEmailError = true;
-          break;
-        case 'auth/wrong-password': 
-          message = 'Incorrect password. Please try again.';
-          showPasswordError = true;
-          break;
-        case 'auth/too-many-requests': 
-          message = 'Too many login attempts. Please try again later.';
-          break;
-        case 'auth/network-request-failed': 
-          message = 'Network error. Please check your connection and try again.';
-          break;
-        default:
-          message = 'An unexpected error occurred. Please try again.';
-      }
-      
-      // Show specific field errors
-      if (showEmailError) {
+    // Clear credential errors
+    function clearCredentialErrors() {
         const emailError = document.getElementById('emailCredentialsError');
-        if (emailError) emailError.classList.add('show');
-      }
-      if (showPasswordError) {
         const passwordError = document.getElementById('passwordCredentialsError');
-        if (passwordError) passwordError.classList.add('show');
-      }
-      
-      // Show the main error message
-      showAlert(message, 'error');
+        if (emailError) emailError.classList.remove('show');
+        if (passwordError) passwordError.classList.remove('show');
     }
-  }
 
-  // Real-time validation
-  document.getElementById('email').addEventListener('input', function(){
-    if(this.value) {
-      this.classList.toggle('is-valid', validateEmail(this.value));
-      this.classList.toggle('is-invalid', !validateEmail(this.value));
+    // Hide form feedback
+    function hideFormFeedback() {
+        const feedback = document.getElementById('formFeedback');
+        if (feedback) feedback.classList.remove('show');
     }
-    // Clear credential errors when user starts typing
-    const emailError = document.getElementById('emailCredentialsError');
-    if (emailError) emailError.classList.remove('show');
-    hideFormFeedback();
-  });
 
-  document.getElementById('password').addEventListener('input', function(){
-    if(this.value) {
-      this.classList.toggle('is-valid', this.value.length>=6);
-      this.classList.toggle('is-invalid', this.value.length<6);
+    // Redirect based on user type
+    function redirectBasedOnUserType(userType) {
+        switch(userType){
+            case 'student': 
+                window.location.href = 'student-dashboard.html'; 
+                break;
+            case 'funder': 
+                window.location.href = 'funder-dashboard.html'; 
+                break;
+            case 'admin': 
+                window.location.href = 'admin-dashboard.html'; 
+                break;
+            default: 
+                window.location.href = 'index.html';
+        }
     }
-    // Clear credential errors when user starts typing
-    const passwordError = document.getElementById('passwordCredentialsError');
-    if (passwordError) passwordError.classList.remove('show');
-    hideFormFeedback();
-  });
 
-  // Submit event
-  loginForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    console.log("Form submitted");
-    
-    if(!validateForm()){
-      showAlert('Please fill in all required fields correctly.', 'error');
-      return;
+    // Handle login
+    async function handleLogin(){
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            loginButton.disabled=true;
+            loginSpinner.style.display='inline';
+            loginText.style.display='none';
+            clearCredentialErrors();
+            hideFormFeedback();
+
+            console.log("Attempting login for:", email);
+            
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            console.log("Login successful, user ID:", user.uid);
+
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if(userDoc.exists){
+                const userData = userDoc.data();
+                console.log("User data retrieved:", userData);
+                
+                showAlert('Login successful! Redirecting...', 'success');
+                
+               // Send users to homepage
+setTimeout(() => {
+  localStorage.setItem('userType', userData.userType);
+  localStorage.setItem('userName', userData.fullName || userData.name || 'User');
+  window.location.href = 'index.html';
+}, 1500);
+
+
+            } else {
+                console.log("User document not found in Firestore");
+                showAlert('User data not found. Please contact support.', 'error');
+                resetLoginButton();
+            }
+        } catch(error){
+            console.error("Login error:", error);
+            resetLoginButton();
+            
+            let message = 'Login failed. Please try again.';
+            let showEmailError = false;
+            let showPasswordError = false;
+            
+            switch(error.code){
+                case 'auth/invalid-email': 
+                    message = 'Invalid email address. Please check your email format.';
+                    showEmailError = true;
+                    break;
+                case 'auth/user-disabled': 
+                    message = 'This account has been disabled. Please contact support.';
+                    break;
+                case 'auth/user-not-found': 
+                    message = 'No account found with this email address.';
+                    showEmailError = true;
+                    break;
+                case 'auth/wrong-password': 
+                    message = 'Incorrect password. Please try again.';
+                    showPasswordError = true;
+                    break;
+                case 'auth/too-many-requests': 
+                    message = 'Too many login attempts. Please try again later.';
+                    break;
+                case 'auth/network-request-failed': 
+                    message = 'Network error. Please check your connection and try again.';
+                    break;
+                default:
+                    message = 'An unexpected error occurred. Please try again.';
+            }
+            
+            // Show specific field errors
+            if (showEmailError) {
+                const emailError = document.getElementById('emailCredentialsError');
+                if (emailError) emailError.classList.add('show');
+            }
+            if (showPasswordError) {
+                const passwordError = document.getElementById('passwordCredentialsError');
+                if (passwordError) passwordError.classList.add('show');
+            }
+            
+            // Show the main error message
+            showAlert(message, 'error');
+        }
     }
-    
-    console.log("Form validated, attempting login...");
-    await handleLogin();
-  });
 
-  function showAlert(message, type) {
-    const alertContainer = document.getElementById('alertContainer');
-    const alertId = 'alert-' + Date.now();
-    const alertDiv = document.createElement('div');
-    alertDiv.id = alertId;
-    alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show form-alert`;
-    alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => { 
-      if (document.getElementById(alertId)) {
-        alertDiv.remove();
-      }
-    }, type === 'danger' || type === 'error' ? 8000 : 5000);
-  }
+    // Real-time validation
+    document.getElementById('email').addEventListener('input', function(){
+        if(this.value) {
+            this.classList.toggle('is-valid', validateEmail(this.value));
+            this.classList.toggle('is-invalid', !validateEmail(this.value));
+        }
+        // Clear credential errors when user starts typing
+        const emailError = document.getElementById('emailCredentialsError');
+        if (emailError) emailError.classList.remove('show');
+        hideFormFeedback();
+    });
 
-  // Debug: Check if Firebase is initialized
-  console.log("Firebase initialized:", app.name);
-  console.log("Login page loaded successfully");
+    document.getElementById('password').addEventListener('input', function(){
+        if(this.value) {
+            this.classList.toggle('is-valid', this.value.length>=6);
+            this.classList.toggle('is-invalid', this.value.length<6);
+        }
+        // Clear credential errors when user starts typing
+        const passwordError = document.getElementById('passwordCredentialsError');
+        if (passwordError) passwordError.classList.remove('show');
+        hideFormFeedback();
+    });
+
+    // Submit event
+    loginForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        console.log("Form submitted");
+        
+        if(!validateForm()){
+            showAlert('Please fill in all required fields correctly.', 'error');
+            return;
+        }
+        
+        console.log("Form validated, attempting login...");
+        await handleLogin();
+    });
+
+    function showAlert(message, type) {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertId = 'alert-' + Date.now();
+        const alertDiv = document.createElement('div');
+        alertDiv.id = alertId;
+        alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show form-alert`;
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        alertContainer.appendChild(alertDiv);
+        setTimeout(() => { 
+            if (document.getElementById(alertId)) {
+                alertDiv.remove();
+            }
+        }, type === 'danger' || type === 'error' ? 8000 : 5000);
+    }
+
+    console.log("Login page Firebase initialized successfully");
+});
 </script>
+    <!--Dynamic navbar script-->
+    <script src="./js/navbar-auth.js"></script>
 </body>
 </html>
