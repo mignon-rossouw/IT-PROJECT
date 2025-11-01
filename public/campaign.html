@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Start a Campaign - FundMyFuture</title>
 
-  <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-    
 <!-- Firebase modules -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -36,6 +33,13 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     initializeCampaignPage();
+    
+    // Set minimum date for end date field
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const minDate = tomorrow.toISOString().split('T')[0];
+    document.getElementById('endDate').min = minDate;
   });
 
   async function initializeCampaignPage() {
@@ -62,6 +66,9 @@
       if (userDoc.exists()) {
         currentUser = { id: userDoc.id, ...userDoc.data() };
         displayUserData(currentUser);
+      } else {
+        console.error("User document not found");
+        showAlert('Error: User profile not found. Please complete your profile first.', 'danger');
       }
     } catch (error) {
       console.error("Error loading user data:", error);
@@ -75,7 +82,7 @@
       profileImage.src = userData.profilePicture;
     }
     
-    document.querySelector('.profile-card h4').textContent = `${userData.firstName || ''} ${userData.surname || ''}`;
+    document.querySelector('.profile-card h4').textContent = `${userData.firstName || ''} ${userData.surname || ''}`.trim() || 'User';
     
     const userInfoDiv = document.querySelector('.user-info');
     userInfoDiv.innerHTML = `
@@ -90,6 +97,20 @@
     const preview = document.getElementById('imagePreview');
     
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        showAlert('Please select a valid image file (JPG, PNG, etc.)', 'warning');
+        event.target.value = '';
+        return;
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        showAlert('Image size should be less than 5MB', 'warning');
+        event.target.value = '';
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = function(e) {
         preview.innerHTML = `
@@ -123,32 +144,50 @@
     // Validation
     if (!title || title.length < 5) {
       showAlert('Campaign title must be at least 5 characters', 'warning');
+      document.getElementById('campaignTitle').focus();
       return;
     }
     
     if (!description || description.length < 10) {
       showAlert('Description must be at least 10 characters', 'warning');
+      document.getElementById('campaignDescription').focus();
       return;
     }
     
     if (!goal || goal < 100) {
       showAlert('Funding goal must be at least R100', 'warning');
+      document.getElementById('fundingGoal').focus();
+      return;
+    }
+    
+    if (!endDate) {
+      showAlert('Please select an end date for your campaign', 'warning');
+      document.getElementById('endDate').focus();
       return;
     }
     
     const today = new Date().toISOString().split('T')[0];
     if (endDate <= today) {
       showAlert('Please select a future date for campaign end', 'warning');
+      document.getElementById('endDate').focus();
+      return;
+    }
+    
+    if (!category) {
+      showAlert('Please select a category for your campaign', 'warning');
+      document.getElementById('category').focus();
       return;
     }
     
     if (!story || story.length < 50) {
       showAlert('Your story should be at least 50 characters to be compelling', 'warning');
+      document.getElementById('story').focus();
       return;
     }
     
     try {
       const submitBtn = document.querySelector('.launch-btn');
+      const originalBtnText = submitBtn.innerHTML;
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Creating Campaign...';
       
@@ -168,23 +207,30 @@
         imageUrl = await getDownloadURL(storageRef);
       }
       
+      // Calculate days remaining
+      const endDateTime = new Date(endDate).getTime();
+      const todayTime = new Date().getTime();
+      const daysRemaining = Math.ceil((endDateTime - todayTime) / (1000 * 60 * 60 * 24));
+      
       // Create campaign document
       const campaignData = {
         title: title,
         description: description,
         goalAmount: goal,
         currentAmount: 0,
-        endDate: new Date(endDate),
+        endDate: endDate,
         category: category,
         story: story,
         coverImage: imageUrl,
         studentId: currentUserId,
+        studentName: currentUser ? `${currentUser.firstName || ''} ${currentUser.surname || ''}`.trim() : 'Anonymous',
+        institution: currentUser?.institution || '',
+        course: currentUser?.course || '',
         status: 'active',
         createdAt: new Date(),
         updatedAt: new Date(),
         donorCount: 0,
-        // Additional fields for better display
-        daysRemaining: Math.ceil((new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24))
+        daysRemaining: daysRemaining
       };
       
       const docRef = await addDoc(collection(db, "campaigns"), campaignData);
@@ -202,7 +248,7 @@
       
       const submitBtn = document.querySelector('.launch-btn');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Launch Campaign';
+      submitBtn.innerHTML = originalBtnText;
     }
   }
 
@@ -243,6 +289,8 @@
   background:#A9D6E5; 
   text-align:center; 
   color:#012A4A; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .profile-card img { 
@@ -251,6 +299,7 @@
   border-radius: 50%; 
   object-fit: cover; 
   margin-bottom: 20px; 
+  border: 3px solid #012A4A;
 }
 
 /* Action button styling for profile actions */
@@ -276,6 +325,8 @@
 .campaign-card{ 
   background:#468FAF; 
   color:#012A4A; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .campaign-card label{ 
@@ -289,6 +340,12 @@
   border-radius:8px; 
   margin-bottom:15px; 
   border: 1px solid #012A4A; 
+  padding: 10px;
+}
+
+.campaign-card .form-control:focus, .campaign-card .form-select:focus {
+  border-color: #012A4A;
+  box-shadow: 0 0 0 0.2rem rgba(1, 42, 74, 0.25);
 }
 
 /* Launch campaign button styling */
@@ -313,6 +370,7 @@
 .launch-btn:disabled { 
   opacity: 0.6; 
   cursor: not-allowed; 
+  transform: none;
 }
 
 #imagePreview { 
@@ -320,9 +378,29 @@
   padding: 20px; 
   text-align: center; 
   border-radius: 8px; 
+  background-color: rgba(255,255,255,0.5);
 }
 
+.section-title {
+  color: #012A4A;
+  border-bottom: 2px solid #012A4A;
+  padding-bottom: 10px;
+}
 
+.dashboard-container {
+  min-height: calc(100vh - 200px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px !important;
+  }
+  
+  .profile-card, .campaign-card {
+    margin-bottom: 20px;
+  }
+}
 </style>
 </head>
 <body>
@@ -583,12 +661,11 @@
 
 <!-- Bootstrap JavaScript for interactive components -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Set minimum date for end date field
-  document.addEventListener('DOMContentLoaded', function() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('endDate').min = today;
-  });
-</script>
+
+<!-- Newsletter Script  -->
+<script src="./js/newsletter.js"></script>
+
+<!-- Dynamic navbar -->
+<script src="./js/navbar-auth.js"></script>
 </body>
 </html>

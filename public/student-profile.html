@@ -223,6 +223,13 @@
     color: #2A6F97;
     font-size: 0.95rem;
   }
+  
+  /* Loading indicator */
+  .loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
     </style>
 </head>
 
@@ -264,7 +271,8 @@
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
           <li class="nav-item me-2" id="login-area">
-            <button class="btn login-btn fw-bolder" onclick="logout()">LOGOUT</button>
+            <!-- Login button (not logout since this is a public view) -->
+            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
         </ul>
       </div>
@@ -277,13 +285,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <div class="container mt-5">
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-indicator">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading student profile...</span>
+      </div>
+      <p class="mt-2">Loading student profile...</p>
+    </div>
+    
     <!-- Profile Header Section -->
     <div class="card profile-info mb-4">
       <div class="card-body d-flex align-items-start justify-content-between">
               <!-- Left: Profile Image and Basic Information -->
               <div class="d-flex align-items-center">
                   <!-- Profile picture with circular styling -->
-                  <img id="funderProfilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
+                  <img id="profilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
                   <div>
                     <!-- Student name with emphasis -->
                     <h2 class="card-title fw-bold fs-1" id="profileName">Loading...</h2>
@@ -295,6 +311,10 @@
                     <!-- University -->
                     <p class="text-muted small mb-1" id="profileUniversity">
                         <i class="bi bi-mortarboard-fill me-1"></i> <span id="universityText">Loading...</span>
+                    </p>
+                    <!-- Course -->
+                    <p class="text-muted small mb-1" id="profileCourse">
+                        <i class="bi bi-book-fill me-1"></i> <span id="courseText">Loading...</span>
                     </p>
                   </div>
               </div>
@@ -310,56 +330,25 @@
               </div>
           </div>
 
-      <!-- Personal Details Section -->
-      <!-- This should not be here -->
-      <!-- 
-      <div class="card-body pt-0">
-        <h5 class="titles fw-bold mb-3">
-          <i class="bi bi-person-badge-fill me-2"></i> Personal Details
-        </h5>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="profile-detail-item">
-              <div class="detail-label">ID/Passport Number</div>
-              <div class="detail-value" id="idNumber">Loading...</div>
-            </div>
-            <div class="profile-detail-item">
-              <div class="detail-label">Date of Birth</div>
-              <div class="detail-value" id="dateOfBirth">Loading...</div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="profile-detail-item">
-              <div class="detail-label">Country of Citizenship</div>
-              <div class="detail-value" id="citizenship">Loading...</div>
-            </div>
-            <div class="profile-detail-item">
-              <div class="detail-label">Country of Birth</div>
-              <div class="detail-value" id="countryOfBirth">Loading...</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
-
       <!-- About Section -->
       <div class="card-body">
+        <h5 class="titles fw-bold mb-3">
+          <i class="bi bi-person-circle me-2"></i> About
+        </h5>
         <p id="profileBio">
-          I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.
+          Loading student information...
         </p>
       </div>
 
       <!-- Badges Section -->
-    <!-- Achievement badges showing funder status, recognition, and participation level -->
+    <!-- Achievement badges showing student status, recognition, and participation level -->
     <div class="card-body pt-0">
         <div class="badge-card">
             <div class="card-body py-3">
-                <!-- Top Funder badge for high-contribution donors -->
-                <span class="badge bg-success me-2">First-Generation Student </span>
-                <!-- Education Advocate badge for specific focus area -->
-                <span class="badge bg-primary me-2">STEM Scholar</span>
-                <!-- Early Supporter badge for long-term platform supporters -->
-                <span class="badge bg-warning text-dark">Needs-based</span>
+                <!-- Loading badges dynamically -->
+                <div id="badgesContainer">
+                  <span class="badge bg-secondary me-2">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
@@ -406,7 +395,7 @@
         <div class="card h-100 border-0">
           <div class="card-body">
             <h5 class="titles fw-bold mb-4 fs-4">
-              <i class="bi bi-flag-fill me-2"></i> My Campaigns
+              <i class="bi bi-flag-fill me-2"></i> Student Campaigns
             </h5>
 
             <!-- Active Campaign -->
@@ -436,12 +425,9 @@
                     </div>
                   </div>
 
-                  <!-- Create Campaign Button (shown when no active campaigns) -->
+                  <!-- No Campaign Message (shown when no active campaigns) -->
                   <div id="noCampaignMessage" class="text-center py-4">
-                    <p class="text-muted mb-3">You haven't created any campaigns yet.</p>
-                    <a href="create-campaign.html" class="btn btn-view-campaign">
-                      <i class="bi bi-plus-circle me-2"></i>Create Your First Campaign
-                    </a>
+                    <p class="text-muted mb-3">This student hasn't created any campaigns yet.</p>
                   </div>
 
                   <!-- Share & Donate Buttons (shown when active campaign exists) -->
@@ -450,7 +436,7 @@
                       <button class="btn btn-share w-100" id="shareButton"> <i class="bi bi-share-fill me-2"></i>Share</button>
                     </div>
                     <div class="col-12 col-md-6">
-                      <button class="btn btn-donate-now w-100" id="donateButton"> <i class="bi bi-gift me-2"></i>Donate now</button>
+                      <a href="#" class="btn btn-donate-now w-100" id="donateButton"> <i class="bi bi-gift me-2"></i>Donate now</a>
                     </div>
                   </div>
                 </div>
@@ -496,7 +482,7 @@
             <ul class="list-unstyled" id="supporterMessages">
                 <li class="mb-3">
                   <div class="p-3 rounded border-start border-3 border-support shadow">
-                    <p class="mb-0 text-muted small">No supporter messages yet. Create a campaign and share it to receive encouraging messages from supporters!</p>
+                    <p class="mb-0 text-muted small">No supporter messages yet.</p>
                   </div>
                 </li>
             </ul>
@@ -621,79 +607,137 @@
 <!-- Firebase script for Student Profile Page -->
 <script type="module">
   import { auth, db } from './firebase-config.js';
-  import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  let currentUserId = null;
+  let currentStudentId = null;
   let currentCampaignId = null;
 
-  // Check if user is logged in and load profile data
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentUserId = user.uid;
-      console.log("Student logged in:", user.uid);
-      await loadStudentProfile(user.uid);
-      await loadStudentCampaigns(user.uid);
-      await loadDonations(user.uid);
-    } else {
-      console.log("No user logged in");
-      window.location.href = "login.html";
+  // Show loading indicator
+  function showLoading(show = true) {
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    loadingIndicator.style.display = show ? 'block' : 'none';
+  }
+
+  // Get student ID from URL parameters
+  function getStudentIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
+  }
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', async function() {
+    showLoading(true);
+    
+    // Get student ID from URL
+    currentStudentId = getStudentIdFromURL();
+    
+    if (!currentStudentId) {
+      showErrorMessage("No student ID provided in URL");
+      showLoading(false);
+      return;
     }
+    
+    // Load student profile
+    await loadStudentProfile(currentStudentId);
+    await loadStudentCampaigns(currentStudentId);
+    await loadDonations(currentStudentId);
+    
+    showLoading(false);
   });
 
-  async function loadStudentProfile(userId) {
+  async function loadStudentProfile(studentId) {
     try {
-      const userDoc = await getDoc(doc(db, "users", userId));
+      const userDoc = await getDoc(doc(db, "users", studentId));
       
       if (userDoc.exists()) {
         const userData = userDoc.data();
         console.log("Student profile data:", userData);
         
         // Update profile information
-        document.getElementById('profileName').textContent = `${userData.firstName} ${userData.surname}`;
-        document.getElementById('locationText').textContent = userData.countryOfResidence || 'Location not specified';
-        document.getElementById('contactText').textContent = userData.contactNumber || 'Contact not provided';
-        document.getElementById('emailText').textContent = userData.email || 'Email not provided';
+        document.getElementById('profileName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`.trim() || 'Student';
         
-        // Update personal details
-        document.getElementById('idNumber').textContent = userData.idOrPassportNumber || 'Not provided';
+        // Update location
+        const location = userData.countryOfResidence || userData.city || userData.province || 'Location not specified';
+        document.getElementById('locationText').textContent = location;
         
-        if (userData.dateOfBirth) {
-          const dob = userData.dateOfBirth.toDate ? userData.dateOfBirth.toDate() : new Date(userData.dateOfBirth);
-          document.getElementById('dateOfBirth').textContent = dob.toLocaleDateString('en-US', {
-            year: 'numeric', month: 'long', day: 'numeric'
-          });
-        } else {
-          document.getElementById('dateOfBirth').textContent = 'Not provided';
-        }
+        // Update university
+        const university = userData.institution || 'University not specified';
+        document.getElementById('universityText').textContent = university;
         
-        document.getElementById('citizenship').textContent = userData.countryOfCitizenship || 'Not provided';
-        document.getElementById('countryOfBirth').textContent = userData.countryOfBirth || 'Not provided';
+        // Update course
+        const course = userData.course || userData.fieldOfStudy || 'Course not specified';
+        document.getElementById('courseText').textContent = course;
         
         // Update profile picture if available
         if (userData.profilePicture) {
           document.getElementById('profilePicture').src = userData.profilePicture;
         }
         
+        // Update bio
+        const bio = userData.bio || userData.about || "I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.";
+        document.getElementById('profileBio').textContent = bio;
+        
         // Update email link
         const emailLink = document.getElementById('emailLink');
-        emailLink.href = `mailto:${userData.email}`;
+        if (userData.email) {
+          emailLink.href = `mailto:${userData.email}`;
+        } else {
+          emailLink.style.display = 'none';
+        }
+        
+        // Update badges
+        updateBadges(userData);
         
       } else {
         console.log("No student data found");
-        showErrorMessage("No profile data found. Please complete your profile setup.");
+        showErrorMessage("Student profile not found");
       }
     } catch (error) {
       console.error("Error loading student profile:", error);
-      showErrorMessage("Error loading profile data. Please try refreshing the page.");
+      showErrorMessage("Error loading student profile");
     }
   }
 
-  async function loadStudentCampaigns(userId) {
+  function updateBadges(userData) {
+    const badgesContainer = document.getElementById('badgesContainer');
+    badgesContainer.innerHTML = '';
+    
+    const badges = [];
+    
+    // Add badges based on user data
+    if (userData.verified) {
+      badges.push('<span class="badge bg-success me-2">Verified Student</span>');
+    }
+    
+    if (userData.firstGenerationStudent) {
+      badges.push('<span class="badge bg-primary me-2">First-Generation Student</span>');
+    }
+    
+    if (userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('engineering') || 
+        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('science') ||
+        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('technology') ||
+        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('math')) {
+      badges.push('<span class="badge bg-info me-2">STEM Scholar</span>');
+    }
+    
+    if (userData.needsBased) {
+      badges.push('<span class="badge bg-warning text-dark me-2">Needs-based</span>');
+    }
+    
+    // If no specific badges, show a generic one
+    if (badges.length === 0) {
+      badges.push('<span class="badge bg-secondary me-2">FundMyFuture Student</span>');
+    }
+    
+    badgesContainer.innerHTML = badges.join('');
+  }
+
+  async function loadStudentCampaigns(studentId) {
     try {
       const campaignsQuery = query(
         collection(db, "campaigns"),
-        where("studentId", "==", userId),
+        where("studentId", "==", studentId),
         orderBy("createdAt", "desc")
       );
       
@@ -772,8 +816,13 @@
     
     // Update donate button
     const donateButton = document.getElementById('donateButton');
-    donateButton.onclick = () => {
-      window.location.href = `donate.html?campaignId=${campaignId}`;
+    donateButton.href = `donate.html?campaignId=${campaignId}`;
+    
+    // Update share icon button
+    const shareIconBtn = document.getElementById('shareCampaignBtn');
+    shareIconBtn.onclick = (e) => {
+      e.preventDefault();
+      shareCampaign(campaignId, campaign.title);
     };
   }
 
@@ -807,12 +856,12 @@
     container.innerHTML += '</div>';
   }
 
-  async function loadDonations(userId) {
+  async function loadDonations(studentId) {
     try {
       // Get all campaigns by this student
       const campaignsQuery = query(
         collection(db, "campaigns"),
-        where("studentId", "==", userId)
+        where("studentId", "==", studentId)
       );
       
       const campaignsSnapshot = await getDocs(campaignsQuery);
@@ -885,7 +934,7 @@
   }
 
   function shareCampaign(campaignId, campaignTitle) {
-    const shareUrl = `${window.location.origin}/campaign.html?id=${campaignId}`;
+    const shareUrl = `${window.location.origin}/view-campaign.html?id=${campaignId}`;
     const shareText = `Support ${campaignTitle} on FundMyFuture`;
     
     if (navigator.share) {
@@ -913,32 +962,9 @@
     
     document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
   }
-
-  // Set up event listeners when page loads
-  document.addEventListener('DOMContentLoaded', function() {
-    // Share campaign icon button
-    const shareIconBtn = document.getElementById('shareCampaignBtn');
-    if (shareIconBtn) {
-      shareIconBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (currentCampaignId) {
-          const campaignTitle = document.getElementById('activeCampaignTitle').textContent;
-          shareCampaign(currentCampaignId, campaignTitle);
-        }
-      });
-    }
-  });
-
-  // Logout function
-  window.logout = async function() {
-    try {
-      await signOut(auth);
-      window.location.href = "login.html";
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
 </script>
 
+<!-- Dynamic navbar -->
+<script src="./js/navbar-auth.js"></script>
 </body>
 </html>

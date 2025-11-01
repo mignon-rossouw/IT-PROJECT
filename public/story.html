@@ -4,468 +4,458 @@
     <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Success Stories </title>
-
-     <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-    
-        
-    <!-- Firebase modules-->
-<script type="module" src="./src/firebase-config.js"></script>
-<script type="module" src="./src/auth-service.js"></script>
-<script type="module" src="./src/campaign-service.js"></script>
-<script type="module" src="./src/app.js"></script>
+    <title>Success Stories</title>
 
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
- <!--CSS standard styling-->
-
- <link href="css/styles.css" rel="stylesheet">
- 
+    <!--CSS standard styling-->
+    <link href="css/styles.css" rel="stylesheet">
+    
     <!-- Page-specific inline styles for Stories page -->
     <style>
-/* Story title styling with hover effects */
-.story-title {
-  color: #012A4A;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  display: inline-block;
-}
+        /* Story title styling with hover effects */
+        .story-title {
+            color: #012A4A;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+        }
 
-/* Hover effects for story titles */
-.story-title:hover {
-  color: #468FAF;
-  text-decoration: none;
-  transform: scale(1.01);
-}
+        /* Hover effects for story titles */
+        .story-title:hover {
+            color: #468FAF;
+            text-decoration: none;
+            transform: scale(1.01);
+        }
 
-/* Main heading styling with brand colors */
-.sucess-heading {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  padding: 5px;
-  border-radius: 5px;
-}
+        /* Main heading styling with brand colors */
+        .sucess-heading {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            padding: 5px;
+            border-radius: 5px;
+        }
 
-/* Call-to-action section background */
-.bg-cta {
-  background-color: #012A4A;
-}
+        /* Call-to-action section background */
+        .bg-cta {
+            background-color: #012A4A;
+        }
 
-/* Call-to-action title color */
-.cta-title {
-  color: #A9D6E5;
-}
+        /* Call-to-action title color */
+        .cta-title {
+            color: #A9D6E5;
+        }
 
-/* Call-to-action button styling */
-.btn-cta {
-  background-color: #A9D6E5;
-  color: #012A4A;
-  font-weight: 800;
-  font-size: x-large;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* Call-to-action button styling */
+        .btn-cta {
+            background-color: #A9D6E5;
+            color: #012A4A;
+            font-weight: 800;
+            font-size: x-large;
+            box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
 
-/* CTA button hover effects */
-.btn-cta:hover {
-  color: #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.03);
-}
+        /* CTA button hover effects */
+        .btn-cta:hover {
+            color: #012A4A;
+            background-color: #ffd60a;
+            transform: scale(1.03);
+        }
 
-.footer {
-  padding-top: 0;
-}
+        .footer {
+            padding-top: 0;
+        }
 
-/* Circular image container for success story photos */
-.image-circle {
-  width: 180px;
-  height: 180px;
-  margin: 1rem auto 0;
-  overflow: hidden;
-  border-radius: 50%;
-}
+        /* Circular image container for success story photos */
+        .image-circle {
+            width: 180px;
+            height: 180px;
+            margin: 1rem auto 0;
+            overflow: hidden;
+            border-radius: 50%;
+        }
 
-/* Success story image styling */
-.image-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+        /* Success story image styling */
+        .image-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <!-- Brand/logo linking to homepage -->
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+    <div class="container-fluid">
+        <!-- Brand/logo linking to homepage -->
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Mobile menu toggle button that triggers offcanvas -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Mobile menu toggle button that triggers offcanvas -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Offcanvas menu for mobile navigation -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <!-- Close button for offcanvas -->
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <!-- Navigation links -->
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item me-3">
-            <!-- Donate button -->
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <li class="nav-item">
-            <!-- Students section link -->
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <li class="nav-item">
-            <!-- Funders section link -->
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <li class="nav-item">
-            <!-- About us page link -->
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <li class="nav-item me-2" id="login-area">
-            <!-- Login button -->
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
-          </li>
-        </ul>
-      </div>
+        <!-- Offcanvas menu for mobile navigation -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+            <div class="offcanvas-header">
+                <!-- Close button for offcanvas -->
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <!-- Navigation links -->
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-3">
+                        <!-- Donate button -->
+                        <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Students section link -->
+                        <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Funders section link -->
+                        <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- About us page link -->
+                        <a class="nav-link" href="about.html">ABOUT US</a>
+                    </li>
+                    <li class="nav-item me-2" id="login-area">
+                        <!-- Login button -->
+                        <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
 
 <main class="flex-grow-1">
-<!-- Hero Section for Stories Page -->
-<section class="text-center py-5">
-  <div class="container">
-    <!-- Main page heading -->
-    <h1 class="sucess-heading display-4 fw-bold">Success Stories</h1>
-    <!-- Subtitle describing the purpose of the page -->
-    <p class="mt-4 text-muted fs-5 fw-light">See how your support is changing lives across South Africa</p>
-  </div>
-</section>
-
-<div class="container py-5">
-  <div class="row">
-
-      <!-- 1. Thandi Maseko -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-bule-2127348686-34377373.jpg" class="card-img-top" alt="Thandi Maseko">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Thandi Maseko</h5>
-            <p class="card-text text-secondary small mb-3">
-              Thandi grew up in a small village outside Tzaneen with a dream of studying <strong>Mechatronic Engineering</strong> at the University of Pretoria. 
-              Through <span class="text-success fw-semibold">FundMyFuture</span>, she raised <strong>R48,500</strong> to cover her first-semester fees and now works on 3D-printed prosthetic limbs for children.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “FundMyFuture didn’t just fund my studies—it restored my belief that people care about my dream.”
-            </blockquote>
-          </div>
+    <!-- Hero Section for Stories Page -->
+    <section class="text-center py-5">
+        <div class="container">
+            <!-- Main page heading -->
+            <h1 class="sucess-heading display-4 fw-bold">Success Stories</h1>
+            <!-- Subtitle describing the purpose of the page -->
+            <p class="mt-4 text-muted fs-5 fw-light">See how your support is changing lives across South Africa</p>
         </div>
-      </div>
+    </section>
 
-      <!-- 2. Aiden Naidoo -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-timothypictures-2826131.jpg" class="card-img-top" alt="Aiden Naidoo">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Aiden Naidoo</h5>
-            <p class="card-text text-secondary small mb-3">
-              Aiden, a passionate coder from Durban, almost deferred his studies after his father lost his job. 
-              With the help of <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R36,000</strong> to continue his <strong>Computer Science</strong> degree and now tutors coding at a local NGO.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “I used to think crowdfunding was just for startups — but it gave me my start.”
-            </blockquote>
-          </div>
+    <div class="container py-5">
+        <div class="row">
+            <!-- 1. Thandi Maseko -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-bule-2127348686-34377373.jpg" class="card-img-top" alt="Thandi Maseko">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Thandi Maseko</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Thandi grew up in a small village outside Tzaneen with a dream of studying <strong>Mechatronic Engineering</strong> at the University of Pretoria. 
+                            Through <span class="text-success fw-semibold">FundMyFuture</span>, she raised <strong>R48,500</strong> to cover her first-semester fees and now works on 3D-printed prosthetic limbs for children.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "FundMyFuture didn't just fund my studies—it restored my belief that people care about my dream."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Aiden Naidoo -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-timothypictures-2826131.jpg" class="card-img-top" alt="Aiden Naidoo">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Aiden Naidoo</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Aiden, a passionate coder from Durban, almost deferred his studies after his father lost his job. 
+                            With the help of <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R36,000</strong> to continue his <strong>Computer Science</strong> degree and now tutors coding at a local NGO.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "I used to think crowdfunding was just for startups — but it gave me my start."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Nomvelo Khumalo -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-olly-3768911.jpg" class="card-img-top" alt="Nomvelo Khumalo">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Nomvelo Khumalo</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Nomvelo, a <strong>Pharmacy student</strong> from Pietermaritzburg, faced exclusion when her funding was delayed. 
+                            Her <span class="text-success fw-semibold">FundMyFuture</span> campaign went viral, raising <strong>R52,000</strong> in 10 days and allowing her to graduate on time.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "Every donation felt like a hand pulling me forward when I was ready to stop trying."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Liam Jacobs -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-marta-klement-636760-1438081.jpg" class="card-img-top" alt="Liam Jacobs">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Liam Jacobs</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Liam, a <strong>Fine Arts</strong> student at Stellenbosch University, couldn't afford materials for his final exhibition. 
+                            Thanks to <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R18,000</strong> in two weeks and went on to win the Dean's Award.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "The platform didn't just help me finish my degree—it helped me believe that creativity has real value."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Zanele Dlamini -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-divinetechygirl-1181672.jpg" class="card-img-top" alt="Zanele Dlamini">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Zanele Dlamini</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Zanele, a <strong>Biotechnology student</strong> at UKZN, was researching eco-friendly water filters but lacked lab funds. 
+                            Her <span class="text-success fw-semibold">FundMyFuture</span> campaign exceeded its target, raising <strong>R57,000</strong>, and later won a provincial science award.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "My project was small, but FundMyFuture turned it into something that could help communities across South Africa."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Amy Daniels -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-anastasiya-gepp-654466-1462630.jpg" class="card-img-top" alt="Amy Daniels">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Amy Daniels</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Amy, a creative from Port Elizabeth, wanted to become a <strong>UX/UI designer</strong> but couldn't afford design software or equipment. 
+                            Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R22,000</strong>, funding her tools and studies. She now mentors other design students.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "Every donation was like a vote of confidence in my creativity — I'll never forget that."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Sasha Petersen -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="image-circle">
+                        <img src="./assets/pexels-cristian-rojas-10041267.jpg" class="card-img-top" alt="Sasha Petersen">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Sasha Petersen</h5>
+                        <p class="card-text text-secondary small mb-3">
+                            Sasha grew up in Mitchells Plain with a lifelong goal to become a <strong>doctor</strong> serving underprivileged communities. 
+                            Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R64,000</strong> in 12 days, allowing her to continue her MBChB studies at Stellenbosch University.
+                        </p>
+                        <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
+                            "Because of FundMyFuture, I didn't just stay in school — I found a whole community that believes in my purpose."
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <!-- 3. Nomvelo Khumalo -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-olly-3768911.jpg" class="card-img-top" alt="Nomvelo Khumalo">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Nomvelo Khumalo</h5>
-            <p class="card-text text-secondary small mb-3">
-              Nomvelo, a <strong>Pharmacy student</strong> from Pietermaritzburg, faced exclusion when her funding was delayed. 
-              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign went viral, raising <strong>R52,000</strong> in 10 days and allowing her to graduate on time.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “Every donation felt like a hand pulling me forward when I was ready to stop trying.”
-            </blockquote>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. Liam Jacobs -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-marta-klement-636760-1438081.jpg" class="card-img-top" alt="Liam Jacobs">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Liam Jacobs</h5>
-            <p class="card-text text-secondary small mb-3">
-              Liam, a <strong>Fine Arts</strong> student at Stellenbosch University, couldn’t afford materials for his final exhibition. 
-              Thanks to <span class="text-success fw-semibold">FundMyFuture</span>, he raised <strong>R18,000</strong> in two weeks and went on to win the Dean’s Award.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “The platform didn’t just help me finish my degree—it helped me believe that creativity has real value.”
-            </blockquote>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. Zanele Dlamini -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-divinetechygirl-1181672.jpg" class="card-img-top" alt="Zanele Dlamini">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Zanele Dlamini</h5>
-            <p class="card-text text-secondary small mb-3">
-              Zanele, a <strong>Biotechnology student</strong> at UKZN, was researching eco-friendly water filters but lacked lab funds. 
-              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign exceeded its target, raising <strong>R57,000</strong>, and later won a provincial science award.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “My project was small, but FundMyFuture turned it into something that could help communities across South Africa.”
-            </blockquote>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. Amy Daniels -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-anastasiya-gepp-654466-1462630.jpg" class="card-img-top" alt="Amy Daniels">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Amy Daniels</h5>
-            <p class="card-text text-secondary small mb-3">
-              Amy, a creative from Port Elizabeth, wanted to become a <strong>UX/UI designer</strong> but couldn’t afford design software or equipment. 
-              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R22,000</strong>, funding her tools and studies. She now mentors other design students.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “Every donation was like a vote of confidence in my creativity — I’ll never forget that.”
-            </blockquote>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7. Sasha Petersen -->
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0">
-          <div class="image-circle">
-            <img src="./assets/pexels-cristian-rojas-10041267.jpg" class="card-img-top" alt="Sasha Petersen">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title text-center fw-bold mb-4 fs-4" style="letter-spacing: 1px;">Sasha Petersen</h5>
-            <p class="card-text text-secondary small mb-3">
-              Sasha grew up in Mitchells Plain with a lifelong goal to become a <strong>doctor</strong> serving underprivileged communities. 
-              Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R64,000</strong> in 12 days, allowing her to continue her MBChB studies at Stellenbosch University.
-            </p>
-            <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-              “Because of FundMyFuture, I didn’t just stay in school — I found a whole community that believes in my purpose.”
-            </blockquote>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
 
-
-<!-- Testimonial Carousel Section (words from our community) -->
-<section class="bg-light py-5">
-  <div class="container text-center">
-    <!-- Section heading -->
-    <h2 class="mb-4 fw-bold">Words from Our Community</h2>
-    <!-- Bootstrap carousel for testimonials -->
-    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-
-        <!-- First testimonial (active) -->
-        <div class="carousel-item active">
-          <blockquote class="blockquote">
-            <p class="fs-5 fw-light mb-4">"FundMyFuture's gave me the chance to dream again. I'm now a teacher inspiring the next generation."</p>
-            <footer class="blockquote-footer small fw-lighter text-muted">Naledi, Eastern Cape</footer>
-          </blockquote>
+    <!-- Testimonial Carousel Section (words from our community) -->
+    <section class="bg-light py-5">
+        <div class="container text-center">
+            <!-- Section heading -->
+            <h2 class="mb-4 fw-bold">Words from Our Community</h2>
+            <!-- Bootstrap carousel for testimonials -->
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- First testimonial (active) -->
+                    <div class="carousel-item active">
+                        <blockquote class="blockquote">
+                            <p class="fs-5 fw-light mb-4">"FundMyFuture's gave me the chance to dream again. I'm now a teacher inspiring the next generation."</p>
+                            <footer class="blockquote-footer small fw-lighter text-muted">Naledi, Eastern Cape</footer>
+                        </blockquote>
+                    </div>
+                    <!-- Second testimonial -->
+                    <div class="carousel-item">
+                        <blockquote class="blockquote">
+                            <p class="fs-5 fw-light mb-4">"Supporting students through FundMyFuture's has been the most rewarding experience of my life."</p>
+                            <footer class="blockquote-footer small fw-lighter text-muted">Sipho, Donor from Johannesburg</footer>
+                        </blockquote>
+                    </div>
+                </div>
+                <!-- Carousel navigation controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
         </div>
-
-        <!-- Second testimonial -->
-        <div class="carousel-item">
-          <blockquote class="blockquote">
-            <p class="fs-5 fw-light mb-4">"Supporting students through FundMyFuture's has been the most rewarding experience of my life."</p>
-            <footer class="blockquote-footer small fw-lighter text-muted">Sipho, Donor from Johannesburg</footer>
-          </blockquote>
-        </div>
-
-      </div>
-      <!-- Carousel navigation controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </div>
-</section>
-
+    </section>
 </main>
 
 <!-- Call-to-Action Section -->
 <section class="text-center bg-cta text-white mb-0">
-  <div class="container py-4">
-    <h1 class="cta-title mb-3 fw-bold">Be the Change</h1>
-    <p class="mb-5 fw-lighter">Your donation can help another student write their success story.</p>
-    <a href="donate.html" class="btn btn-cta mb-2">Donate Now</a>
-  </div>
+    <div class="container py-4">
+        <h1 class="cta-title mb-3 fw-bold">Be the Change</h1>
+        <p class="mb-5 fw-lighter">Your donation can help another student write their success story.</p>
+        <a href="donate.html" class="btn btn-cta mb-2">Donate Now</a>
+    </div>
 </section>
 
 <!-- Footer Section -->
 <footer class="footer pt-5 mt-0">
+    <!-- Main container for footer content -->
+    <div class="container pb-4">
+        <div class="row">
+            <!-- Newsletter Signup Column -->
+            <div class="col-md-6 mb-4">
+                <h5 class="fw-bold">Stay Connected</h5>
+                <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+                <!-- Newsletter Form -->
+                <form id="newsletterForm" class="d-flex icon-input-group">
+                    <!-- Envelope icon inside input field for visual context -->
+                    <i class="fa-regular fa-envelope"></i>
+                    <!-- Email input field for newsletter subscription -->
+                    <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
+                    <!-- Submit button for newsletter signup -->
+                    <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
+                        SIGN UP
+                    </button>
+                </form>
+                <!-- Message display area -->
+                <div id="newsletterMessage" class="mt-2"></div>
+            </div>
 
-  <!-- Main container for footer content -->
-  <div class="container pb-4">
-    
-    <div class="row">
-      
-      <!-- Newsletter Signup Column -->
-      <div class="col-md-6 mb-4">
-        <h5 class="fw-bold">Stay Connected</h5>
-        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <!-- Newsletter Form -->
-        <form id="newsletterForm" class="d-flex icon-input-group">
-          <!-- Envelope icon inside input field for visual context -->
-          <i class="fa-regular fa-envelope"></i>
-          <!-- Email input field for newsletter subscription -->
-          <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
-          <!-- Submit button for newsletter signup -->
-          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
-            SIGN UP
-          </button>
-        </form>
-
-        <!-- Message display area -->
-        <div id="newsletterMessage" class="mt-2"></div>
-
-      </div>
-
-      <!-- Social Media Column -->
-      <div class="col-md-6 mb-4 text-md-end">
-        <h5 class="fw-bold follow-us">Follow us</h5>
-        <div class="social-icons mt-2">
-          <!-- Instagram social media link -->
-          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <!-- Facebook social media link -->
-          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-facebook"></i>
-          </a>
-          <!-- LinkedIn social media link -->
-          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-linkedin"></i>
-          </a>
+            <!-- Social Media Column -->
+            <div class="col-md-6 mb-4 text-md-end">
+                <h5 class="fw-bold follow-us">Follow us</h5>
+                <div class="social-icons mt-2">
+                    <!-- Instagram social media link -->
+                    <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <!-- Facebook social media link -->
+                    <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <!-- LinkedIn social media link -->
+                    <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
 
+        <hr> <!-- Horizontal separator line -->
+
+        <div class="row text-start text-md-start">
+            <!-- Navigate Links Column -->
+            <div class="col-6 col-md-3 mb-4">
+                <h6 class="fw-bold">Navigate</h6>
+                <ul class="list-unstyled">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="story.html">Stories</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+
+            <!-- Company Links Column -->
+            <div class="col-6 col-md-3 mb-4">
+                <h6 class="fw-bold">Company</h6>
+                <ul class="list-unstyled">
+                    <li><a href="contact.html">Contact us</a></li>
+                    <li><a href="faq.html">FAQ's</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Column -->
+            <div class="col-md-6 mb-4">
+                <h6 class="fw-bold">Contact</h6>
+                <!-- Address with clickable Google Maps link -->
+                <p class="mb-1">
+                    <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+                        5th floor 112 Long St <br> 
+                        Cape Town <br> 
+                        8000 <br> 
+                        Western Cape
+                    </a>
+                </p>
+                <!-- Phone number link -->
+                <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+                <!-- Email link -->
+                <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
+            </div>
+        </div>
+    </div> <!-- End container -->
+
+    <!-- Footer Bottom Bar -->
+    <div class="footer-bottom py-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <!-- Legal & policy links section -->
+            <div class="mb-2 mb-md-0">
+                <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+                <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+                <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+                <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+            </div>
+            <!-- Copyright information -->
+            <div class="text-white">&copy;2025 FundMyFuture</div>
+        </div>
     </div>
-
-    <hr> <!-- Horizontal separator line -->
-
-    <div class="row text-start text-md-start">
-
-      <!-- Navigate Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Navigate</h6>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="donate.html">Donate</a></li>
-          <li><a href="story.html">Stories</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-      </div>
-
-      <!-- Company Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Company</h6>
-        <ul class="list-unstyled">
-          <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ's</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Info Column -->
-      <div class="col-md-6 mb-4">
-        <h6 class="fw-bold">Contact</h6>
-        <!-- Address with clickable Google Maps link -->
-        <p class="mb-1">
-          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
-            5th floor 112 Long St <br> 
-            Cape Town <br> 
-            8000 <br> 
-            Western Cape
-          </a>
-        </p>
-        <!-- Phone number link -->
-        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
-        <!-- Email link -->
-        <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
-      </div>
-
-    </div>
-  </div> <!-- End container -->
-
-  <!-- Footer Bottom Bar -->
-  <div class="footer-bottom py-3">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      
-      <!-- Legal & policy links section -->
-      <div class="mb-2 mb-md-0">
-        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
-        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
-        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
-        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
-      </div>
-
-      <!-- Copyright information -->
-      <div class="text-white">&copy;2025 FundMyFuture</div>
-    </div>
-  </div>
-
 </footer>
 
-<!-- Bootstrap + Font Awesome JS -->
+<!-- Bootstrap JavaScript bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap Icons (duplicate - already loaded in head) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<!-- Bootstrap JavaScript bundle with Popper (duplicate) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+<!-- Newsletter functionality (if the file exists) -->
+<script>
+// Simple newsletter form handler as fallback
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterMessage = document.getElementById('newsletterMessage');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            
+            // Simple validation
+            if (email && email.includes('@')) {
+                newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing!</div>';
+                newsletterForm.reset();
+            } else {
+                newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+            }
+        });
+    }
+});
+</script>
+
 </body>
 </html>

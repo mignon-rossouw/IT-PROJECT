@@ -3,625 +3,861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Donate Now </title>
+    <title>Donate Now - FundMyFuture</title>
 
-     <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-        
-    <!-- Firebase modules-->
-<script type="module" src="./src/firebase-config.js"></script>
-<script type="module" src="./src/auth-service.js"></script>
-<script type="module" src="./src/campaign-service.js"></script>
-<script type="module" src="./src/app.js"></script>
-
-    <!-- BOOTSTRAP -->
+    <!-- BOOTSTRAP & ICONS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons for additional icon set -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <!-- Custom global stylesheet -->
     <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-/* ===== CAROUSEL CONTROL STYLING ===== */
-/* Custom styling for carousel navigation arrows */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: #012A4A;
-  border-radius: 50%;
-}
+        /* ===== CAROUSEL CONTROL STYLING ===== */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #012A4A;
+            border-radius: 50%;
+        }
 
-/* Card title sizing */
-.card h5 {
-  font-size: 1rem;
-}
+        /* Card title sizing */
+        .card h5 {
+            font-size: 1rem;
+        }
 
-/* Progress bar height */
-.progress {
-  height: 20px;
-}
+        /* Progress bar height */
+        .progress {
+            height: 20px;
+        }
 
-/* ===== CAMPAIGN TITLE STYLING ===== */
-/* Interactive campaign title with hover effects */
-.campaign-title {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        /* ===== CAMPAIGN TITLE STYLING ===== */
+        .campaign-title {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-/* Hover effects for campaign titles */
-.campaign-title:hover {
-  color: #468FAF;
-  text-decoration: none;
-  transform: scale(1.02);
-}
+        .campaign-title:hover {
+            color: #468FAF;
+            text-decoration: none;
+            transform: scale(1.02);
+        }
+/* ===== CREATE A CAMPAIGN BUTTON ===== */
+       .btn-success {
+       background-color: #012A4A;
+       color: #A9D6E5;            
+  }
 
-/* ===== SECTION TITLE STYLING ===== */
-/* Styling for campaign section headers with brand colors */
-.campaign-section-title {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-}
 
-/* ===== BUTTON STYLING ===== */
-/* Carousel action button styling */
-.btn-carousel {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  font-size: small;
-  box-shadow: 0 8px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* ===== SECTION TITLE STYLING ===== */
+        .campaign-section-title {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
-/* Carousel button hover effects */
-.btn-carousel:hover {
-  color: #012A4A;
-  border: 1px solid #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
+        /* ===== BUTTON STYLING ===== */
+        .btn-carousel {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            font-size: small;
+            box-shadow: 0 8px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
 
-/* Badge styling for funding amounts */
-.badge {
-  background-color: #ffd60a;
-}
+        .btn-carousel:hover {
+            color: #012A4A;
+            border: 1px solid #012A4A;
+            background-color: #ffd60a;
+            transform: scale(1.02);
+        }
 
-/* ===== PROGRESS BAR STYLING ===== */
-/* Progress bar container styling */
-.progress {
-  background-color: #012a4a28;
-}
+        /* Badge styling for funding amounts */
+        .badge {
+            background-color: #ffd60a;
+        }
 
-/* Progress bar fill styling */
-.progress-bar {
-  background-color: #012A4A;
-}
+        /* ===== PROGRESS BAR STYLING ===== */
+        .progress {
+            background-color: #012a4a28;
+        }
 
-/* ===== FILTER PANEL STYLING ===== */
-/* Sidebar filter panel styling */
-.filter-panel {
-  background-color: #f9f9f9;
-  border-right: 1px solid #dee2e6;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-}
+        .progress-bar {
+            background-color: #012A4A;
+        }
 
-/* Filter apply button styling */
-.btn-apply-filter {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  font-size: small;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* ===== FILTER PANEL STYLING ===== */
+        .filter-panel {
+            background-color: #f9f9f9;
+            border-right: 1px solid #dee2e6;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
 
-/* Filter button hover effects */
-.btn-apply-filter:hover {
-  color: #012A4A;
-  background-color: #ffd60a;
-  transform: scale(1.02);
-}
+        .btn-apply-filter {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            font-size: small;
+            box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-apply-filter:hover {
+            color: #012A4A;
+            background-color: #ffd60a;
+            transform: scale(1.02);
+        }
+
+        /* Responsive filter panel */
+        @media (max-width: 991.98px) {
+            .filter-panel {
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* ===== ADDED STYLES FOR CLICKABLE CARDS ===== */
+        .campaign-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .campaign-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .campaign-link:hover {
+            color: inherit;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Alert styling */
+        .alert {
+            margin-top: 15px;
+        }
+
+        /* Campaign image styling */
+        .campaign-image {
+            height: 180px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        /* Verified badge */
+        .verified-badge {
+            color: #468FAF;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <!-- Brand/Logo -->
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+    <div class="container-fluid">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Mobile menu toggle button -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Mobile menu toggle button -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Offcanvas navigation menu for mobile -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <!-- Close button for offcanvas -->
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <!-- Donate button (current page) -->
-          <li class="nav-item me-3">
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <!-- Student section link -->
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <!-- Funder section link -->
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <!-- About us link -->
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <!-- Login button -->
-          <li class="nav-item me-2" id="login-area">
-            <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
-          </li>
-        </ul>
-      </div>
+        <!-- Offcanvas navigation menu for mobile -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+            <div class="offcanvas-header">
+                <!-- Close button for offcanvas -->
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Donate button (current page) -->
+                    <li class="nav-item me-3">
+                        <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+                    </li>
+                    <!-- Student section link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+                    </li>
+                    <!-- Funder section link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+                    </li>
+                    <!-- About us link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">ABOUT US</a>
+                    </li>
+                    <!-- Login button -->
+                    <li class="nav-item me-2" id="login-area">
+                        <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
 
-<!-- Bootstrap Icons (duplicate - consider removing one) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<!-- Bootstrap JavaScript for interactive components -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <!-- ===== MAIN DONATION PAGE CONTENT ===== -->
-<div class="container-fluid mt-5">
-  <div class="d-flex flex-column flex-lg-row">
-    
-<!-- ===== FILTER SIDEBAR ===== -->
-<!-- Left sidebar for filtering campaigns by category and institution -->
-<div class="filter-panel mb-4 mb-lg-0 flex-shrink-0 w-lg-25">
-
-  <!-- Category Filter -->
-  <div class="mb-3">
-    <label class="form-label">Category</label>
-    <select class="form-select">
-      <option selected>All</option>
-      <option>Tuition</option>
-      <option>Books & Materials</option>
-      <option>Living Expenses</option>
-    </select>
-  </div>
-
-  <!-- Institution Filter -->
-  <div class="mb-3">
-    <label class="form-label">Institution</label>
-    <select class="form-select">
-      <option selected>All</option>
-      <option>UCT</option>
-      <option>Stellenbosch</option>
-      <option>Wits</option>
-      <option>UNISA</option>
-    </select>
-  </div>
-
-  <!-- Apply Filters Button -->
-  <button class="btn btn-apply-filter w-100">Apply Filters</button>
-</div>
-
-<!-- ===== CAMPAIGN CONTENT AREA ===== -->
-<!-- Main content area displaying campaign cards in carousels -->
-<div class="flex-grow-1 p-4">
-   
-   <!-- ===== TOP CAMPAIGNS SECTION ===== -->
-   <!-- Section showcasing the most popular or successful campaigns -->
-   <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-graph-up-arrow me-3"></i>Top Campaigns</h2>
-      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-        View Top Campaigns <i class="bi bi-arrow-right"></i>
-      </a>   
-      <div id="topCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-
-          <!-- Slide 1 - First set of top campaigns -->
-          <div class="carousel-item active">
-            <div class="row g-4">
-              <!-- Campaign Card 1 -->
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Jane Doe – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+<main class="flex-grow-1">
+    <div class="container-fluid mt-5">
+        <!-- Alert container for messages -->
+        <div id="alertContainer"></div>
+        
+        <div class="d-flex flex-column flex-lg-row">
+            
+            <!-- ===== FILTER SIDEBAR ===== -->
+            <div class="filter-panel mb-4 mb-lg-0 flex-shrink-0 w-lg-25">
+                <!-- Category Filter -->
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="categoryFilter">
+                        <option value="all" selected>All</option>
+                        <option value="tuition">Tuition</option>
+                        <option value="books">Books & Materials</option>
+                        <option value="living">Living Expenses</option>
+                    </select>
                 </div>
-              </div>
-              <!-- Campaign Card 2 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Lebo M. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+
+                <!-- Institution Filter -->
+                <div class="mb-3">
+                    <label class="form-label">Institution</label>
+                    <select class="form-select" id="institutionFilter">
+                        <option value="all" selected>All</option>
+                        <option value="uct">UCT</option>
+                        <option value="stellenbosch">Stellenbosch</option>
+                        <option value="wits">Wits</option>
+                        <option value="unisa">UNISA</option>
+                    </select>
                 </div>
-              </div>
-              <!-- Campaign Card 3 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Ayesha K. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+
+                <!-- Apply Filters Button -->
+                <button class="btn btn-apply-filter w-100" id="applyFilters">Apply Filters</button>
+                <button class="btn btn-outline-secondary w-100 mt-2" id="resetFilters">Reset Filters</button>
+                
+                <!-- Create Campaign Button -->
+                <div class="mt-4 pt-3 border-top">
+                    <a href="campaign.html" class="btn btn-success w-100">Create  a New Campaign</a>
                 </div>
-              </div>
             </div>
-          </div>
 
-          <!-- Slide 2 - Second set of top campaigns -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Sipho M. – Books & Materials</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+            <!-- ===== CAMPAIGN CONTENT AREA ===== -->
+            <div class="flex-grow-1 p-4">
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading campaigns...</span>
+                    </div>
+                    <p class="mt-2">Loading campaigns...</p>
                 </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Zanele D. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+                
+                <!-- ===== TOP CAMPAIGNS SECTION ===== -->
+                <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-graph-up-arrow me-3"></i>Top Campaigns</h2>
+                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+                    View Top Campaigns <i class="bi bi-arrow-right"></i>
+                </a>   
+                <div id="topCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="topCampaignsContainer">
+                        <!-- Campaigns will be loaded here dynamically -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Daniel K. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
+
+                <!-- ===== NEW CAMPAIGNS SECTION ===== -->
+                <h2 class="campaign-section-title fw-bold fs-3 mb-3 mt-4"><i class="bi bi-graph-up-arrow me-3"></i>New Campaigns</h2>
+                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+                    View New Campaigns <i class="bi bi-arrow-right"></i>
+                </a>
+                <div id="newCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="newCampaignsContainer">
+                        <!-- Campaigns will be loaded here dynamically -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-              </div>
+
+                <!-- ===== ALL CAMPAIGNS SECTION ===== -->
+                <h2 class="campaign-section-title fw-bold mb-3 mt-4"><i class="bi bi-columns-gap me-3"></i>All Campaigns</h2>
+                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
+                    View All Campaigns <i class="bi bi-arrow-right"></i>
+                </a>
+                <div id="allCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="allCampaignsContainer">
+                        <!-- Campaigns will be loaded here dynamically -->
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-
-<!-- ===== NEW CAMPAIGNS SECTION ===== -->
-<!-- Section showcasing recently created campaigns -->
-      <h2 class="campaign-section-title fw-bold fs-3 mb-3 mt-4"><i class="bi bi-graph-up-arrow me-3"></i>New Campaigns</h2>
-      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-        View New Campaigns <i class="bi bi-arrow-right"></i>
-      </a>
-      <div id="newCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-
-          <!-- Slide 1 - First set of new campaigns -->
-          <div class="carousel-item active">
-            <div class="row g-4">
-              <!-- Campaign Card 1 -->
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Jane Doe – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Campaign Card 2 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Lebo M. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Campaign Card 3 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Ayesha K. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Slide 2 - Second set of new campaigns -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Sipho M. – Books & Materials</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Zanele D. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Daniel K. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== ALL CAMPAIGNS SECTION ===== -->
-      <!-- Section displaying comprehensive list of all available campaigns -->
-      <h2 class="campaign-section-title fw-bold mb-3 mt-4"><i class="bi bi-columns-gap me-3"></i>All Campaigns</h2>
-      <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-        View All Campaigns <i class="bi bi-arrow-right"></i>
-      </a>
-      <div id="allCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-
-          <!-- Slide 1 - First set of all campaigns -->
-          <div class="carousel-item active">
-            <div class="row g-4">
-              <!-- Campaign Card 1 -->
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Jane Doe – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Campaign Card 2 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Lebo M. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Campaign Card 3 (hidden on mobile) -->
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Ayesha K. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Slide 2 - Second set of all campaigns -->
-          <div class="carousel-item">
-            <div class="row g-4">
-              <div class="col-12 col-lg-4">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Sipho M. – Books & Materials</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Zanele D. – Tuition</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg-4 d-none d-lg-block">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="fw-bold campaign-title fs-5 mb-0">Daniel K. – Living Expenses</h5>
-                    <p class="text-muted small">Stellenbosch | Engineering</p>
-                    <p class="badge text-dark fw-light mb-4">R5 000 Needed</p>
-                    <div class="progress mb-0"><div class="progress-bar" style="width: 64%;">64%</div></div>
-                    <p class="small text-muted float-end">Raised: R3 200</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
-
-<!-- Bootstrap JavaScript for carousel functionality -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
+</main>
 
 <!-- Footer -->
-<footer class="footer pt-5">
+<footer class="footer pt-5 mt-auto">
+    <div class="container pb-4">
+        <div class="row">
+            <!-- Newsletter Signup Column -->
+            <div class="col-md-6 mb-4">
+                <h5 class="fw-bold">Stay Connected</h5>
+                <p class="mb-3">Sign up for our newsletter to stay informed.</p>
+                <!-- Newsletter Form -->
+                <form id="newsletterForm" class="d-flex icon-input-group">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
+                    <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
+                        SIGN UP
+                    </button>
+                </form>
+                <div id="newsletterMessage" class="mt-2"></div>
+            </div>
 
-  <!-- Main container for footer content -->
-  <div class="container pb-4">
-    
-    <div class="row">
-      
-      <!-- Newsletter Signup Column -->
-      <div class="col-md-6 mb-4">
-        <h5 class="fw-bold">Stay Connected</h5>
-        <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <!-- Newsletter Form -->
-        <form id="newsletterForm" class="d-flex icon-input-group">
-          <!-- Envelope icon inside input field for visual context -->
-          <i class="fa-regular fa-envelope"></i>
-          <!-- Email input field for newsletter subscription -->
-          <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
-          <!-- Submit button for newsletter signup -->
-          <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
-            SIGN UP
-          </button>
-        </form>
-
-        <!-- Message display area -->
-        <div id="newsletterMessage" class="mt-2"></div>
-
-      </div>
-
-      <!-- Social Media Column -->
-      <div class="col-md-6 mb-4 text-md-end">
-        <h5 class="fw-bold follow-us">Follow us</h5>
-        <div class="social-icons mt-2">
-          <!-- Instagram social media link -->
-          <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <!-- Facebook social media link -->
-          <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-facebook"></i>
-          </a>
-          <!-- LinkedIn social media link -->
-          <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-            <i class="fab fa-linkedin"></i>
-          </a>
+            <!-- Social Media Column -->
+            <div class="col-md-6 mb-4 text-md-end">
+                <h5 class="fw-bold follow-us">Follow us</h5>
+                <div class="social-icons mt-2">
+                    <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
 
+        <hr>
+
+        <div class="row text-start text-md-start">
+            <!-- Navigate Links Column -->
+            <div class="col-6 col-md-3 mb-4">
+                <h6 class="fw-bold">Navigate</h6>
+                <ul class="list-unstyled">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="story.html">Stories</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+
+            <!-- Company Links Column -->
+            <div class="col-6 col-md-3 mb-4">
+                <h6 class="fw-bold">Company</h6>
+                <ul class="list-unstyled">
+                    <li><a href="contact.html">Contact us</a></li>
+                    <li><a href="faq.html">FAQ's</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Column -->
+            <div class="col-md-6 mb-4">
+                <h6 class="fw-bold">Contact</h6>
+                <p class="mb-1">
+                    <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+                        5th floor 112 Long St <br> 
+                        Cape Town <br> 
+                        8000 <br> 
+                        Western Cape
+                    </a>
+                </p>
+                <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
+                <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
+            </div>
+        </div>
     </div>
 
-    <hr> <!-- Horizontal separator line -->
-
-    <div class="row text-start text-md-start">
-
-      <!-- Navigate Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Navigate</h6>
-        <ul class="list-unstyled">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="donate.html">Donate</a></li>
-          <li><a href="story.html">Stories</a></li>
-          <li><a href="about.html">About</a></li>
-        </ul>
-      </div>
-
-      <!-- Company Links Column -->
-      <div class="col-6 col-md-3 mb-4">
-        <h6 class="fw-bold">Company</h6>
-        <ul class="list-unstyled">
-          <li><a href="contact.html">Contact us</a></li>
-          <li><a href="faq.html">FAQ's</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact Info Column -->
-      <div class="col-md-6 mb-4">
-        <h6 class="fw-bold">Contact</h6>
-        <!-- Address with clickable Google Maps link -->
-        <p class="mb-1">
-          <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
-            5th floor 112 Long St <br> 
-            Cape Town <br> 
-            8000 <br> 
-            Western Cape
-          </a>
-        </p>
-        <!-- Phone number link -->
-        <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
-        <!-- Email link -->
-        <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
-      </div>
-
+    <!-- Footer Bottom Bar -->
+    <div class="footer-bottom py-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <!-- Legal & policy links -->
+            <div class="mb-2 mb-md-0">
+                <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
+                <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
+                <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
+                <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
+            </div>
+            <!-- Copyright notice -->
+            <div class="text-white">&copy;2025 FundMyFuture</div>
+        </div>
     </div>
-  </div> <!-- End container -->
-
-  <!-- Footer Bottom Bar -->
-  <div class="footer-bottom py-3">
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      
-      <!-- Legal & policy links -->
-      <div class="mb-2 mb-md-0">
-        <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
-        <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
-        <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
-        <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
-      </div>
-
-      <!-- Copyright notice -->
-      <div class="text-white">&copy;2025 FundMyFuture</div>
-    </div>
-  </div>
-
 </footer>
 
-<!-- Bootstrap + Font Awesome JS -->
+<!-- JavaScript Files -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./js/navbar-auth.js"></script>
 
+<!-- Firebase Campaign Management Script -->
+<script>
+// ===== FIREBASE CONFIGURATION =====
+// Replace with your Firebase project configuration
+const firebaseConfig = {
+    apiKey: "your-api-key",
+    authDomain: "your-project-id.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project-id.appspot.com",
+    messagingSenderId: "your-sender-id",
+    appId: "your-app-id"
+};
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-    </body>
+// Initialize Firebase services
+const db = firebase.firestore();
+const auth = firebase.auth();
+const storage = firebase.storage();
+
+// ===== UTILITY FUNCTIONS =====
+function showAlert(message, type = 'info') {
+    const alertContainer = document.getElementById('alertContainer');
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type} alert-dismissible fade show`;
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    alertContainer.appendChild(alert);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alert.parentNode) {
+            alert.remove();
+        }
+    }, 5000);
+}
+
+function showLoading(show = true) {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.style.display = show ? 'block' : 'none';
+}
+
+// ===== FIREBASE CAMPAIGN MANAGEMENT =====
+class FirebaseCampaignManager {
+    constructor() {
+        this.campaigns = [];
+        this.filteredCampaigns = [];
+        this.unsubscribe = null;
+    }
+
+    // Listen for real-time campaign updates
+    subscribeToCampaigns() {
+        this.unsubscribe = db.collection('campaigns')
+            .where('status', '==', 'active') // Only show active campaigns
+            .onSnapshot((snapshot) => {
+                this.campaigns = [];
+                snapshot.forEach((doc) => {
+                    this.campaigns.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Apply current filters and refresh UI
+                this.applyCurrentFilters();
+                this.refreshUI();
+                
+                showLoading(false);
+            }, (error) => {
+                console.error('Error fetching campaigns:', error);
+                showAlert('Failed to load campaigns. Please try again later.', 'danger');
+                showLoading(false);
+            });
+    }
+
+    // Unsubscribe from real-time updates
+    unsubscribeFromCampaigns() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
+    // Create a new campaign
+    async createCampaign(campaignData, imageFile = null) {
+        try {
+            // Get current user
+            const user = auth.currentUser;
+            if (!user) {
+                throw new Error('You must be logged in to create a campaign');
+            }
+
+            // Prepare campaign data
+            const newCampaign = {
+                ...campaignData,
+                student_id: user.uid,
+                student_name: campaignData.student_name || user.displayName || 'Anonymous Student',
+                raised_amount: 0,
+                status: 'active',
+                created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                updated_at: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            // Upload image if provided
+            if (imageFile) {
+                const imageUrl = await this.uploadCampaignImage(imageFile);
+                newCampaign.image_url = imageUrl;
+            }
+
+            // Add to Firestore
+            const docRef = await db.collection('campaigns').add(newCampaign);
+            
+            showAlert('Campaign created successfully!', 'success');
+            return docRef.id;
+        } catch (error) {
+            console.error('Error creating campaign:', error);
+            showAlert(`Failed to create campaign: ${error.message}`, 'danger');
+            throw error;
+        }
+    }
+
+    // Upload campaign image
+    async uploadCampaignImage(file) {
+        return new Promise((resolve, reject) => {
+            const storageRef = storage.ref();
+            const imageRef = storageRef.child(`campaigns/${Date.now()}_${file.name}`);
+            
+            const uploadTask = imageRef.put(file);
+            
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Progress tracking (optional)
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                },
+                (error) => {
+                    reject(error);
+                },
+                async () => {
+                    // Upload completed successfully
+                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                    resolve(downloadURL);
+                }
+            );
+        });
+    }
+
+    // Update a campaign
+    async updateCampaign(campaignId, updates) {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                throw new Error('You must be logged in to update a campaign');
+            }
+
+            // Add update timestamp
+            updates.updated_at = firebase.firestore.FieldValue.serverTimestamp();
+
+            await db.collection('campaigns').doc(campaignId).update(updates);
+            showAlert('Campaign updated successfully!', 'success');
+        } catch (error) {
+            console.error('Error updating campaign:', error);
+            showAlert(`Failed to update campaign: ${error.message}`, 'danger');
+            throw error;
+        }
+    }
+
+    // Delete a campaign (soft delete by updating status)
+    async deleteCampaign(campaignId) {
+        try {
+            const user = auth.currentUser;
+            if (!user) {
+                throw new Error('You must be logged in to delete a campaign');
+            }
+
+            await db.collection('campaigns').doc(campaignId).update({
+                status: 'deleted',
+                updated_at: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            showAlert('Campaign deleted successfully!', 'success');
+        } catch (error) {
+            console.error('Error deleting campaign:', error);
+            showAlert(`Failed to delete campaign: ${error.message}`, 'danger');
+            throw error;
+        }
+    }
+
+    // Filter campaigns based on selected criteria
+    applyCurrentFilters() {
+        const selectedCategory = document.getElementById('categoryFilter').value;
+        const selectedInstitution = document.getElementById('institutionFilter').value;
+        
+        this.filteredCampaigns = this.campaigns.filter(campaign => {
+            const categoryMatch = selectedCategory === 'all' || campaign.category === selectedCategory;
+            const institutionMatch = selectedInstitution === 'all' || campaign.institution === selectedInstitution;
+            return categoryMatch && institutionMatch;
+        });
+    }
+
+    // Get top campaigns (highest percentage funded)
+    getTopCampaigns(limit = 6) {
+        return [...this.filteredCampaigns]
+            .sort((a, b) => {
+                const aPercentage = (a.raised_amount / a.goal_amount) * 100;
+                const bPercentage = (b.raised_amount / b.goal_amount) * 100;
+                return bPercentage - aPercentage;
+            })
+            .slice(0, limit);
+    }
+
+    // Get newest campaigns
+    getNewCampaigns(limit = 6) {
+        return [...this.filteredCampaigns]
+            .sort((a, b) => {
+                // Handle timestamp comparison safely
+                const aTime = a.created_at ? a.created_at.toDate().getTime() : 0;
+                const bTime = b.created_at ? b.created_at.toDate().getTime() : 0;
+                return bTime - aTime;
+            })
+            .slice(0, limit);
+    }
+
+    // Get all campaigns (for the all campaigns section)
+    getAllCampaigns(limit = 6) {
+        return this.filteredCampaigns.slice(0, limit);
+    }
+
+    // Refresh the UI with current data
+    refreshUI() {
+        renderCampaignSection('topCampaignsContainer', this.getTopCampaigns());
+        renderCampaignSection('newCampaignsContainer', this.getNewCampaigns());
+        renderCampaignSection('allCampaignsContainer', this.getAllCampaigns());
+        initializeCarousels();
+    }
+}
+
+// ===== UI RENDERING FUNCTIONS =====
+function renderCampaignCard(campaign) {
+    const percentage = Math.round((campaign.raised_amount / campaign.goal_amount) * 100);
+    const defaultImage = './images/default-campaign.jpg'; // Add a default campaign image
+    
+    return `
+        <div class="col-12 col-lg-4">
+            <a href="student-profile.html?id=${campaign.id}" class="campaign-link">
+                <div class="card h-100 campaign-card" data-category="${campaign.category}" data-institution="${campaign.institution}">
+                    ${campaign.image_url ? 
+                        `<img src="${campaign.image_url}" class="card-img-top campaign-image" alt="${campaign.student_name} campaign">` :
+                        `<img src="${defaultImage}" class="card-img-top campaign-image" alt="Default campaign image">`
+                    }
+                    <div class="card-body">
+                        <h5 class="fw-bold campaign-title fs-5 mb-0">
+                            ${campaign.student_name} – ${getCategoryDisplayName(campaign.category)}
+                            ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
+                        </h5>
+                        <p class="text-muted small">${getInstitutionDisplayName(campaign.institution)} | ${campaign.field_of_study}</p>
+                        <p class="badge text-dark fw-light mb-2">R${campaign.goal_amount.toLocaleString()} Needed</p>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" style="width: ${percentage}%;">${percentage}%</div>
+                        </div>
+                        <p class="small text-muted float-end mb-0">Raised: R${campaign.raised_amount.toLocaleString()}</p>
+                        ${campaign.days_remaining ? 
+                            `<p class="small text-muted mt-1">${campaign.days_remaining} days remaining</p>` : 
+                            ''
+                        }
+                    </div>
+                </div>
+            </a>
+        </div>
+    `;
+}
+
+function renderCampaignSection(containerId, campaigns, itemsPerSlide = 3) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    
+    if (campaigns.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center py-4"><p>No campaigns found matching your criteria.</p></div>';
+        return;
+    }
+    
+    // Split campaigns into slides
+    const slides = [];
+    for (let i = 0; i < campaigns.length; i += itemsPerSlide) {
+        slides.push(campaigns.slice(i, i + itemsPerSlide));
+    }
+    
+    // Render slides
+    slides.forEach((slideCampaigns, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const slideHtml = `
+            <div class="carousel-item ${isActive}">
+                <div class="row g-4">
+                    ${slideCampaigns.map(campaign => renderCampaignCard(campaign)).join('')}
+                </div>
+            </div>
+        `;
+        container.innerHTML += slideHtml;
+    });
+}
+
+function getCategoryDisplayName(category) {
+    const categories = {
+        'tuition': 'Tuition',
+        'books': 'Books & Materials',
+        'living': 'Living Expenses'
+    };
+    return categories[category] || category;
+}
+
+function getInstitutionDisplayName(institution) {
+    const institutions = {
+        'uct': 'UCT',
+        'stellenbosch': 'Stellenbosch',
+        'wits': 'Wits',
+        'unisa': 'UNISA'
+    };
+    return institutions[institution] || institution;
+}
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+    const campaignManager = new FirebaseCampaignManager();
+    
+    // DOM Elements
+    const categoryFilter = document.getElementById('categoryFilter');
+    const institutionFilter = document.getElementById('institutionFilter');
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    const resetFiltersBtn = document.getElementById('resetFilters');
+    
+    // Initialize the page
+    function initializePage() {
+        showLoading(true);
+        campaignManager.subscribeToCampaigns();
+    }
+    
+    // Apply filters function
+    function applyFilters() {
+        campaignManager.applyCurrentFilters();
+        campaignManager.refreshUI();
+    }
+    
+    // Reset filters function
+    function resetFilters() {
+        categoryFilter.value = 'all';
+        institutionFilter.value = 'all';
+        applyFilters();
+    }
+    
+    // Initialize Bootstrap carousels
+    function initializeCarousels() {
+        const carousels = document.querySelectorAll('.carousel');
+        carousels.forEach(carousel => {
+            // Dispose of existing instance if any
+            const existingInstance = bootstrap.Carousel.getInstance(carousel);
+            if (existingInstance) {
+                existingInstance.dispose();
+            }
+            
+            // Initialize new instance
+            new bootstrap.Carousel(carousel, {
+                interval: 5000,
+                wrap: true
+            });
+        });
+    }
+    
+    // Event listeners
+    applyFiltersBtn.addEventListener('click', applyFilters);
+    resetFiltersBtn.addEventListener('click', resetFilters);
+    
+    // Newsletter functionality
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterMessage = document.getElementById('newsletterMessage');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            
+            if (email && email.includes('@')) {
+                newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
+                newsletterForm.reset();
+            } else {
+                newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+            }
+        });
+    }
+    
+    // Clean up on page unload
+    window.addEventListener('beforeunload', () => {
+        campaignManager.unsubscribeFromCampaigns();
+    });
+    
+    // Start the application
+    initializePage();
+});
+
+// ===== EXAMPLE: HOW TO CREATE A NEW CAMPAIGN FROM campaign.html =====
+// This would typically be in your campaign.html page
+async function createNewCampaign(campaignData, imageFile = null) {
+    const campaignManager = new FirebaseCampaignManager();
+    try {
+        const campaignId = await campaignManager.createCampaign(campaignData, imageFile);
+        console.log('New campaign created with ID:', campaignId);
+        
+        // Redirect to the campaign page or donate page
+        window.location.href = `view-campaign.html?id=${campaignId}`;
+    } catch (error) {
+        console.error('Failed to create campaign:', error);
+    }
+}
+
+// Example campaign data structure for creating a new campaign
+const exampleCampaignData = {
+    student_name: "John Smith",
+    category: "tuition",
+    institution: "uct",
+    field_of_study: "Computer Science",
+    goal_amount: 7500,
+    description: "Need help with tuition fees for my final year",
+    story: "I come from a disadvantaged background and have been working part-time to fund my studies...",
+    verified: true,
+    deadline: new Date('2024-12-31') // Optional campaign deadline
+};
+</script>
+
+</body>
 </html>
