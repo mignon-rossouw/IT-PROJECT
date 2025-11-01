@@ -1,235 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags for character encoding and responsive viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profile - FundMyFuture</title>
 
-     <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-    
-    <!-- Firebase modules-->
-    <script type="module" src="./src/firebase-config.js"></script>
-    <script type="module" src="./src/auth-service.js"></script>
-    <script type="module" src="./src/campaign-service.js"></script>
-    <script type="module" src="./src/app.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <!-- BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-      <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
-
+    <!-- Custom global stylesheet -->
+    <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-   
-
-  /* Page specific styling */
-  .profile-image { 
-    width: 20%; 
-  }
-
-  .badge-card { 
-    border: none; 
-    background-color: #A9D6E5; 
-  }
-
-  .about-card { 
-    border: none; 
-    background-color: #A9D6E5; 
-  }
-
-  .profile-info { 
-    border: none; 
-    background-color: #A9D6E5; 
-  }
-
-  .student-progress { 
-    border: none; 
-  }
-
-  .student-progress h5 { 
-    color: #A9D6E5; 
-    background-color: #012A4A; 
-    padding: 10px; 
-    border-radius: 5px; 
-  }
-
-  .stats { 
-    border: 1px solid #012a4a12; 
-    background-color: #012a4a12; 
-  }
-
-  .stats h6 { 
-    color: #012A4A; 
-    font-size: 0.9rem; 
-  }
-
-  .active-campaign { 
-    border: none; 
-  }
-
-  .badge-needed { 
-    background-color: #ffd60a; 
-    color: #012A4A; 
-  }
-
-  .custom-progress { 
-    height: 20px; 
-    background-color: #e0af0057; 
-    border-radius: 5px; 
-    overflow: hidden; 
-  }
-
-  .custom-bar { 
-    background-color: #e0b000; 
-    color: #012a4a; 
-    font-weight: bold; 
-    text-align: center; 
-    line-height: 30px; 
-    border-radius: 5px; 
-    transition: width 0.6s ease; 
-  }
-
-  .btn-view-campaign { 
-    background-color: #012A4A; 
-    color: #A9D6E5; 
-    font-weight: 800; 
-    font-size: small; 
-    box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2); 
-    transition: all 0.3s ease; 
-  }
-
-  .btn-view-campaign:hover { 
-    color: #012A4A; 
-    background-color: #ffd60a; 
-    transform: scale(1.02); 
-  }
-
-  .btn-share { 
-    background-color: #012A4A; 
-    color: #A9D6E5; 
-    font-weight: 800; 
-    transition: all 0.3s ease; 
-  }
-
-  .btn-share:hover { 
-    background-color: #ffd60a; 
-    transform: scale(1.01); 
-  }
-
-  .btn-donate-now { 
-    background-color: #012A4A; 
-    color: #A9D6E5; 
-    font-weight: 800; 
-    transition: all 0.3s ease; 
-  }
-
-  .btn-donate-now:hover { 
-    background-color: #ffd60a; 
-    transform: scale(1.01); 
-  }
-
-  .custom-accordion-btn { 
-    background-color: #012a4a36; 
-    color: #012A4A; 
-    font-weight: 800; 
-    transition: background-color 0.3s ease; 
-  }
-
-  .custom-accordion-btn:hover { 
-    background-color: #468FAF; 
-    color: #012A4A; 
-  }
-
-  .campaign-title { 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-  }
-
-  .campaign-title:hover { 
-    color: #468FAF; 
-    text-decoration: none; 
-    transform: scale(1.02); 
-  }
-
-  .border-support { 
-    border-left-color: #468FAF !important; 
-    background-color: #012a4a1b; 
-  }
-
-  .hover-opacity i{ 
-    transition: transform 0.3s ease, color 0.3s ease; 
-    cursor: pointer; 
-  }
-
-  .hover-opacity i:hover{ 
-    color: #01497c; 
-    cursor: pointer; 
-  }
-
-  .hover-opacity:hover { 
-    transform: scale(1.2); 
-  }
-
-  .titles { 
-    background-color: #012A4A; 
-    color: #A9D6E5; 
-    padding: 5px; 
-    border-radius: 5px; 
-  }
-
-  .progress-section { 
-    background-color: #86a9c35e; 
-    border-radius: 5px; 
-  }
-
-  .progress-title { 
-    background-color: #2A6F97; 
-    color: #A9D6E5; 
-    padding: 10px; 
-    border-radius: 5px; 
-    font-weight: 800; 
-    letter-spacing: 1px; 
-  }
-
-  /* Profile picture styles */
-  .profile-picture {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #012A4A;
-  }
-
-  /* Personal details styles */
-  .profile-detail-item {
-    margin-bottom: 10px;
-    padding: 8px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-  }
-
-  .detail-label {
-    font-weight: bold;
-    color: #012A4A;
-    font-size: 0.9rem;
-  }
-
-  .detail-value {
-    color: #2A6F97;
-    font-size: 0.95rem;
-  }
-  
-  /* Loading indicator */
-  .loading-indicator {
-    display: none;
-    text-align: center;
-    padding: 20px;
-  }
+        .profile-image { width: 20%; }
+        .badge-card { border: none; background-color: #A9D6E5; }
+        .about-card { border: none; background-color: #A9D6E5; }
+        .profile-info { border: none; background-color: #A9D6E5; }
+        .student-progress { border: none; }
+        .student-progress h5 { color: #A9D6E5; background-color: #012A4A; padding: 10px; border-radius: 5px; }
+        .stats { border: 1px solid #012a4a12; background-color: #012a4a12; }
+        .stats h6 { color: #012A4A; font-size: 0.9rem; }
+        .active-campaign { border: none; }
+        .badge-needed { background-color: #ffd60a; color: #012A4A; }
+        .custom-progress { height: 20px; background-color: #e0af0057; border-radius: 5px; overflow: hidden; }
+        .custom-bar { background-color: #e0b000; color: #012a4a; font-weight: bold; text-align: center; line-height: 30px; border-radius: 5px; transition: width 0.6s ease; }
+        .btn-view-campaign { background-color: #012A4A; color: #A9D6E5; font-weight: 800; font-size: small; box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2); transition: all 0.3s ease; }
+        .btn-view-campaign:hover { color: #012A4A; background-color: #ffd60a; transform: scale(1.02); }
+        .btn-share { background-color: #012A4A; color: #A9D6E5; font-weight: 800; transition: all 0.3s ease; }
+        .btn-share:hover { background-color: #ffd60a; transform: scale(1.01); }
+        .btn-donate-now { background-color: #012A4A; color: #A9D6E5; font-weight: 800; transition: all 0.3s ease; }
+        .btn-donate-now:hover { background-color: #ffd60a; transform: scale(1.01); }
+        .custom-accordion-btn { background-color: #012a4a36; color: #012A4A; font-weight: 800; transition: background-color 0.3s ease; }
+        .custom-accordion-btn:hover { background-color: #468FAF; color: #012A4A; }
+        .campaign-title { cursor: pointer; transition: all 0.3s ease; }
+        .campaign-title:hover { color: #468FAF; text-decoration: none; transform: scale(1.02); }
+        .border-support { border-left-color: #468FAF !important; background-color: #012a4a1b; }
+        .hover-opacity i{ transition: transform 0.3s ease, color 0.3s ease; cursor: pointer; }
+        .hover-opacity i:hover{ color: #01497c; cursor: pointer; }
+        .hover-opacity:hover { transform: scale(1.2); }
+        .titles { background-color: #012A4A; color: #A9D6E5; padding: 5px; border-radius: 5px; }
+        .progress-section { background-color: #86a9c35e; border-radius: 5px; }
+        .progress-title { background-color: #2A6F97; color: #A9D6E5; padding: 10px; border-radius: 5px; font-weight: 800; letter-spacing: 1px; }
+        .profile-picture { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #012A4A; }
+        .profile-detail-item { margin-bottom: 10px; padding: 8px; background-color: rgba(255, 255, 255, 0.3); border-radius: 5px; }
+        .detail-label { font-weight: bold; color: #012A4A; font-size: 0.9rem; }
+        .detail-value { color: #2A6F97; font-size: 0.95rem; }
+        .loading-indicator { display: none; text-align: center; padding: 20px; }
+        
+        /* Campaign grid styles */
+        .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .campaign-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .campaign-image {
+            height: 160px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .profile-icon-placeholder {
+            height: 160px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 3rem;
+        }
+        .verified-badge {
+            color: #468FAF;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 
@@ -237,41 +97,29 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
-    <!-- Brand/logo linking to homepage -->
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
-
-    <!-- Mobile menu toggle button that triggers offcanvas -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Offcanvas menu for mobile navigation -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
-        <!-- Close button for offcanvas -->
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
       </div>
       <div class="offcanvas-body">
-        <!-- Navigation links -->
         <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item me-3">
-            <!-- Donate button -->
             <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
           </li>
           <li class="nav-item">
-            <!-- Students section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
           </li>
           <li class="nav-item">
-            <!-- Funders section link -->
             <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
           </li>
           <li class="nav-item">
-            <!-- About us page link -->
             <a class="nav-link" href="about.html">ABOUT US</a>
           </li>
           <li class="nav-item me-2" id="login-area">
-            <!-- Login button (not logout since this is a public view) -->
             <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
           </li>
         </ul>
@@ -284,7 +132,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  <div class="container mt-5">
+<div class="container mt-5">
     <!-- Loading Indicator -->
     <div id="loadingIndicator" class="loading-indicator">
       <div class="spinner-border text-primary" role="status">
@@ -296,39 +144,33 @@
     <!-- Profile Header Section -->
     <div class="card profile-info mb-4">
       <div class="card-body d-flex align-items-start justify-content-between">
-              <!-- Left: Profile Image and Basic Information -->
-              <div class="d-flex align-items-center">
-                  <!-- Profile picture with circular styling -->
-                  <img id="profilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
-                  <div>
-                    <!-- Student name with emphasis -->
-                    <h2 class="card-title fw-bold fs-1" id="profileName">Loading...</h2>
-                      
-                    <!-- Location -->
-                    <p class="text-muted small mb-1" id="profileLocation">
-                      <i class="bi bi-geo-alt-fill me-1"></i> <span id="locationText">Loading...</span>
-                    </p>
-                    <!-- University -->
-                    <p class="text-muted small mb-1" id="profileUniversity">
-                        <i class="bi bi-mortarboard-fill me-1"></i> <span id="universityText">Loading...</span>
-                    </p>
-                    <!-- Course -->
-                    <p class="text-muted small mb-1" id="profileCourse">
-                        <i class="bi bi-book-fill me-1"></i> <span id="courseText">Loading...</span>
-                    </p>
-                  </div>
-              </div>
-
-              <!-- Right: Social Media Links -->
-              <div class="d-flex flex-column align-items-end gap-2">
-                  <a href="#" class="text-dark hover-opacity" id="emailLink" target="_blank">
-                      <i class="bi bi-envelope-fill fs-5"></i>
-                  </a>
-                  <a href="#" class="text-dark hover-opacity" id="linkedinLink" target="_blank">
-                      <i class="bi bi-linkedin fs-5"></i>
-                  </a>
-              </div>
+        <!-- Left: Profile Image and Basic Information -->
+        <div class="d-flex align-items-center">
+          <img id="profilePicture" src="./assets/profile-user.png" class="profile-picture me-4" alt="Profile Picture">
+          <div>
+            <h2 class="card-title fw-bold fs-1" id="profileName">Loading...</h2>
+            <p class="text-muted small mb-1" id="profileLocation">
+              <i class="bi bi-geo-alt-fill me-1"></i> <span id="locationText">Loading...</span>
+            </p>
+            <p class="text-muted small mb-1" id="profileUniversity">
+              <i class="bi bi-mortarboard-fill me-1"></i> <span id="universityText">Loading...</span>
+            </p>
+            <p class="text-muted small mb-1" id="profileCourse">
+              <i class="bi bi-book-fill me-1"></i> <span id="courseText">Loading...</span>
+            </p>
           </div>
+        </div>
+
+        <!-- Right: Social Media Links -->
+        <div class="d-flex flex-column align-items-end gap-2">
+          <a href="#" class="text-dark hover-opacity" id="emailLink" target="_blank">
+            <i class="bi bi-envelope-fill fs-5"></i>
+          </a>
+          <a href="#" class="text-dark hover-opacity" id="linkedinLink" target="_blank">
+            <i class="bi bi-linkedin fs-5"></i>
+          </a>
+        </div>
+      </div>
 
       <!-- About Section -->
       <div class="card-body">
@@ -341,18 +183,15 @@
       </div>
 
       <!-- Badges Section -->
-    <!-- Achievement badges showing student status, recognition, and participation level -->
-    <div class="card-body pt-0">
+      <div class="card-body pt-0">
         <div class="badge-card">
-            <div class="card-body py-3">
-                <!-- Loading badges dynamically -->
-                <div id="badgesContainer">
-                  <span class="badge bg-secondary me-2">Loading...</span>
-                </div>
+          <div class="card-body py-3">
+            <div id="badgesContainer">
+              <span class="badge bg-secondary me-2">Loading...</span>
             </div>
+          </div>
         </div>
-    </div>
-
+      </div>
     </div>
 
     <!-- Student Progress & Campaigns Section -->
@@ -361,29 +200,23 @@
       <div class="col-md-4">
         <div class="card h-100 student-progress">
           <div class="card-body">
-            <!-- Progress Section Title -->
             <h5 class="card-title student-progress-title fw-bolder fs-4 mb-4">Student Progress</h5>
-            <!-- Statistics Grid -->
             <div class="d-grid gap-3">
-              <!-- Funding Goal Stat -->
               <div class="stats py-2 px-3 rounded">
-                <h6 class="mb-1">Funding Goal</h6>
+                <h6 class="mb-1">Total Funding Goal</h6>
                 <p class="fw-bolder mb-0 fs-4" id="totalGoal">R0</p>
               </div>
-              <!-- Amount Raised Stat -->
               <div class="stats py-2 px-3 rounded">
-                <h6 class="mb-1">Amount Raised</h6>
+                <h6 class="mb-1">Total Amount Raised</h6>
                 <p class="fw-bolder mb-0 fs-4" id="totalRaised">R0</p>
               </div>
-              <!-- Supporters Count -->
               <div class="stats py-2 px-3 rounded">
-                <h6 class="mb-1">Supporters</h6>
+                <h6 class="mb-1">Total Supporters</h6>
                 <p class="fw-bolder mb-0 fs-4" id="totalSupporters">0</p>
               </div>
-              <!-- Active Campaigns Count -->
               <div class="stats py-2 px-3 rounded">
-                <h6 class="mb-1">Campaigns Active</h6>
-                <p class="fw-bolder mb-0 fs-4" id="activeCampaigns">0</p>
+                <h6 class="mb-1">Total Campaigns</h6>
+                <p class="fw-bolder mb-0 fs-4" id="totalCampaigns">0</p>
               </div>
             </div>
           </div>
@@ -395,77 +228,16 @@
         <div class="card h-100 border-0">
           <div class="card-body">
             <h5 class="titles fw-bold mb-4 fs-4">
-              <i class="bi bi-flag-fill me-2"></i> Student Campaigns
+              <i class="bi bi-flag-fill me-2"></i> All Student Campaigns
             </h5>
 
-            <!-- Active Campaign -->
-            <div id="activeCampaignSection">
-              <div class="card mb-3 active-campaign">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                      <h6 class="fw-bold fs-3 mb-0" id="activeCampaignTitle">No Active Campaigns</h6>
-                      <a href="#" class="btn btn-sm" id="shareCampaignBtn" style="display: none;">
-                          <i class="bi bi-share-fill me-1 fs-4"></i>
-                      </a>
-                  </div>
-                  
-                  <!-- Progress Section -->
-                  <div class="mb-3 mt-4" id="progressSection" style="display: none;">
-                    <h5 class="progress-title mb-3 fw-bold"> <i class="bi bi-bar-chart-fill me-2"></i>Progress</h5>
-                    <div class="progress-section p-3">
-                      <h4 class="fw-bolder mb-1" id="campaignRaised">R0</h4>
-                      <div class="d-flex flex-wrap gap-3 align-items-center mb-2">
-                        <small class="text-muted" id="campaignGoal">R0 target</small>
-                        <small class="text-muted">⋅</small>
-                        <small class="text-muted" id="campaignDonations">0 donations</small>
-                      </div>
-                      <div class="progress custom-progress" style="height: 30px;">
-                        <div class="progress-bar custom-bar" id="campaignProgressBar" style="width: 0%;">0%</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- No Campaign Message (shown when no active campaigns) -->
-                  <div id="noCampaignMessage" class="text-center py-4">
-                    <p class="text-muted mb-3">This student hasn't created any campaigns yet.</p>
-                  </div>
-
-                  <!-- Share & Donate Buttons (shown when active campaign exists) -->
-                  <div class="row g-2" id="campaignButtons" style="display: none;">
-                    <div class="col-12 col-md-6">
-                      <button class="btn btn-share w-100" id="shareButton"> <i class="bi bi-share-fill me-2"></i>Share</button>
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <a href="#" class="btn btn-donate-now w-100" id="donateButton"> <i class="bi bi-gift me-2"></i>Donate now</a>
-                    </div>
-                  </div>
-                </div>
+            <!-- Campaigns Grid -->
+            <div id="campaignsContainer">
+              <div class="text-center py-4" id="noCampaignsMessage">
+                <i class="bi bi-inbox display-4 text-muted"></i>
+                <p class="text-muted mb-3 mt-3">This student hasn't created any campaigns yet.</p>
               </div>
-            </div>
-
-            <!-- Previous Campaigns Accordion -->
-            <div class="accordion" id="previousCampaigns">
-              <div class="accordion-item border-0">
-                <div class="px-3 py-2 rounded">
-                    <!-- Accordion Header -->
-                    <h2 class="accordion-header" id="headingPrev">
-                        <button class="accordion-button collapsed custom-accordion-btn" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#collapsePrev"
-                        aria-expanded="false" aria-controls="collapsePrev">
-                        View Previous Campaigns
-                        </button>
-                    </h2>
-                </div>
-
-                <!-- Accordion Content (Collapsed by default) -->
-                <div id="collapsePrev" class="accordion-collapse collapse" aria-labelledby="headingPrev" data-bs-parent="#previousCampaigns">
-                  <div class="accordion-body" id="previousCampaignsContainer">
-                    <div class="text-center py-3">
-                      <p class="text-muted">No previous campaigns found.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="campaigns-grid" id="campaignsGrid" style="display: none;"></div>
             </div>
           </div>
         </div>
@@ -474,77 +246,54 @@
 
     <!-- Supporter Messages Section -->
     <div class="card mt-4 bg-light border-0 shadow-sm">
-        <div class="card-body">
-            <!-- Section Title -->
-            <h5 class="titles fw-bold mb-4 fs-3">
-                <i class="bi bi-chat-dots-fill me-2"></i> Supporter Messages
-            </h5>
-            <ul class="list-unstyled" id="supporterMessages">
-                <li class="mb-3">
-                  <div class="p-3 rounded border-start border-3 border-support shadow">
-                    <p class="mb-0 text-muted small">No supporter messages yet.</p>
-                  </div>
-                </li>
-            </ul>
-        </div>
+      <div class="card-body">
+        <h5 class="titles fw-bold mb-4 fs-3">
+          <i class="bi bi-chat-dots-fill me-2"></i> Supporter Messages
+        </h5>
+        <ul class="list-unstyled" id="supporterMessages">
+          <li class="mb-3">
+            <div class="p-3 rounded border-start border-3 border-support shadow">
+              <p class="mb-0 text-muted small">No supporter messages yet.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
 <!-- Footer -->
 <footer class="footer pt-5">
-
-  <!-- Main container for footer content -->
   <div class="container pb-4">
-    
     <div class="row">
-      
-      <!-- Newsletter Signup Column -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
-        <!-- Newsletter Form -->
         <form id="newsletterForm" class="d-flex icon-input-group">
-          <!-- Envelope icon inside input field for visual context -->
           <i class="fa-regular fa-envelope"></i>
-          <!-- Email input field for newsletter subscription -->
           <input type="email" id="newsletterEmail" class="form-control me-2 rounded-3" placeholder="Enter email . . ." required>
-          <!-- Submit button for newsletter signup -->
           <button type="submit" class="btn btn-outline-primary px-3 sign-up-btn" id="subscribeBtn">
             SIGN UP
           </button>
         </form>
-
-        <!-- Message display area -->
         <div id="newsletterMessage" class="mt-2"></div>
-
       </div>
-
-      <!-- Social Media Column -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
-          <!-- Instagram social media link -->
           <a href="https://www.instagram.com/thisisrichfield/?hl=en" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
             <i class="fab fa-instagram"></i>
           </a>
-          <!-- Facebook social media link -->
           <a href="https://www.facebook.com/thisisrichfield/" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
             <i class="fab fa-facebook"></i>
           </a>
-          <!-- LinkedIn social media link -->
           <a href="https://www.linkedin.com/school/richfieldeducation/posts/?feedView=all" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
             <i class="fab fa-linkedin"></i>
           </a>
         </div>
       </div>
-
     </div>
-
-    <hr> <!-- Horizontal separator line -->
-
+    <hr>
     <div class="row text-start text-md-start">
-
-      <!-- Navigate Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
@@ -554,414 +303,476 @@
           <li><a href="about.html">About</a></li>
         </ul>
       </div>
-
-      <!-- Company Links Column -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
-           <li><a href="contact.html">Contact us</a></li>
+          <li><a href="contact.html">Contact us</a></li>
           <li><a href="faq.html">FAQ's</a></li>
         </ul>
       </div>
-
-      <!-- Contact Info Column -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
-        <!-- Address with clickable Google Maps link -->
         <p class="mb-1">
           <a href="https://www.google.com/maps/place/Richfield+Cape+Town+Campus/@-33.9229995,18.4134391,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc6763f48a57fd:0x167125f9a04d06ff!8m2!3d-33.923004!4d18.41831!16s%2Fg%2F1hhh2yjf_?entry=ttu&g_ep=EgoyMDI1MTAyMi4wIKXMDSoASAFQAw%3D%3D" target="_blank">
-            5th floor 112 Long St <br> 
-            Cape Town <br> 
-            8000 <br> 
-            Western Cape
+            5th floor 112 Long St <br> Cape Town <br> 8000 <br> Western Cape
           </a>
         </p>
-        <!-- Phone number link -->
         <p class="mb-1"><a href="tel:+27218310700">+27 21 831 0700</a></p>
-        <!-- Email link -->
         <p class="mb-0"><a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
       </div>
-
     </div>
-  </div> <!-- End container -->
-
-  <!-- Footer Bottom Bar -->
+  </div>
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-      
-      <!-- Legal & policy links section -->
       <div class="mb-2 mb-md-0">
         <a href="terms.html" class="me-3 text-white">Terms & Conditions</a>
         <a href="privacy.html" class="me-3 text-white">Privacy Policy</a>
         <a href="cookies.html" class="me-3 text-white">Cookies Policy</a>
         <a href="cookies_settings.html" class="text-white">Cookies Settings</a>
       </div>
-
-      <!-- Copyright information -->
       <div class="text-white">&copy;2025 FundMyFuture</div>
     </div>
   </div>
-
 </footer>
 
-<!-- Firebase script for Student Profile Page -->
-<script type="module">
-  import { auth, db } from './firebase-config.js';
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { doc, getDoc, collection, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- Firebase Script for Student Profile Page -->
+<script>
+// ===== FIREBASE CONFIGURATION =====
+const firebaseConfig = {
+    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+    authDomain: "fund-my-future-47844.firebaseapp.com",
+    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+    projectId: "fund-my-future-47844",
+    storageBucket: "fund-my-future-47844.firebasestorage.app",
+    messagingSenderId: "581912293895",
+    appId: "1:581912293895:web:03468061fae2124ac770a2",
+    measurementId: "G-LFC0R1GBE1"
+};
 
-  let currentStudentId = null;
-  let currentCampaignId = null;
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-  // Show loading indicator
-  function showLoading(show = true) {
-    const loadingIndicator = document.getElementById('loadingIndicator');
-    loadingIndicator.style.display = show ? 'block' : 'none';
+// Initialize Firebase services
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let currentStudentId = null;
+
+// Show loading indicator
+function showLoading(show = true) {
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  loadingIndicator.style.display = show ? 'block' : 'none';
+}
+
+// Get student ID from URL parameters
+function getStudentIdFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('id');
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async function() {
+  showLoading(true);
+  
+  // Get student ID from URL
+  currentStudentId = getStudentIdFromURL();
+  
+  if (!currentStudentId) {
+    showErrorMessage("No student ID provided in URL");
+    showLoading(false);
+    return;
   }
+  
+  // Load student profile and campaigns
+  await loadStudentProfile(currentStudentId);
+  await loadStudentCampaigns(currentStudentId);
+  
+  showLoading(false);
+});
 
-  // Get student ID from URL parameters
-  function getStudentIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
+async function loadStudentProfile(studentId) {
+  try {
+    const userDoc = await db.collection("users").doc(studentId).get();
+    
+    if (userDoc.exists) {
+      const userData = userDoc.data();
+      console.log("Student profile data:", userData);
+      
+      // Update profile information
+      document.getElementById('profileName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`.trim() || 'Student';
+      
+      // Update location
+      const location = userData.countryOfResidence || userData.city || userData.province || 'Location not specified';
+      document.getElementById('locationText').textContent = location;
+      
+      // Update university
+      const university = userData.institution || 'University not specified';
+      document.getElementById('universityText').textContent = university;
+      
+      // Update course
+      const course = userData.course || userData.fieldOfStudy || 'Course not specified';
+      document.getElementById('courseText').textContent = course;
+      
+      // Update profile picture if available
+      if (userData.profilePicture) {
+        document.getElementById('profilePicture').src = userData.profilePicture;
+      }
+      
+      // Update bio
+      const bio = userData.bio || userData.about || "I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.";
+      document.getElementById('profileBio').textContent = bio;
+      
+      // Update email link
+      const emailLink = document.getElementById('emailLink');
+      if (userData.email) {
+        emailLink.href = `mailto:${userData.email}`;
+      } else {
+        emailLink.style.display = 'none';
+      }
+      
+      // Update badges
+      updateBadges(userData);
+      
+    } else {
+      console.log("No student data found");
+      showErrorMessage("Student profile not found");
+    }
+  } catch (error) {
+    console.error("Error loading student profile:", error);
+    showErrorMessage("Error loading student profile");
   }
+}
 
-  // Initialize the page
-  document.addEventListener('DOMContentLoaded', async function() {
-    showLoading(true);
+function updateBadges(userData) {
+  const badgesContainer = document.getElementById('badgesContainer');
+  badgesContainer.innerHTML = '';
+  
+  const badges = [];
+  
+  // Add badges based on user data
+  if (userData.verified) {
+    badges.push('<span class="badge bg-success me-2">Verified Student</span>');
+  }
+  
+  if (userData.firstGenerationStudent) {
+    badges.push('<span class="badge bg-primary me-2">First-Generation Student</span>');
+  }
+  
+  if (userData.fieldOfStudy && (userData.fieldOfStudy.toLowerCase().includes('engineering') || 
+      userData.fieldOfStudy.toLowerCase().includes('science') ||
+      userData.fieldOfStudy.toLowerCase().includes('technology') ||
+      userData.fieldOfStudy.toLowerCase().includes('math'))) {
+    badges.push('<span class="badge bg-info me-2">STEM Scholar</span>');
+  }
+  
+  if (userData.needsBased) {
+    badges.push('<span class="badge bg-warning text-dark me-2">Needs-based</span>');
+  }
+  
+  // If no specific badges, show a generic one
+  if (badges.length === 0) {
+    badges.push('<span class="badge bg-secondary me-2">FundMyFuture Student</span>');
+  }
+  
+  badgesContainer.innerHTML = badges.join('');
+}
+
+async function loadStudentCampaigns(studentId) {
+  try {
+    // Try multiple field names for student ID compatibility
+    const campaignsQuery1 = db.collection("campaigns").where("studentId", "==", studentId);
+    const campaignsQuery2 = db.collection("campaigns").where("student_id", "==", studentId);
     
-    // Get student ID from URL
-    currentStudentId = getStudentIdFromURL();
+    const [snapshot1, snapshot2] = await Promise.all([
+      campaignsQuery1.get(),
+      campaignsQuery2.get()
+    ]);
     
-    if (!currentStudentId) {
-      showErrorMessage("No student ID provided in URL");
-      showLoading(false);
+    let allCampaigns = [];
+    
+    // Process first query results
+    snapshot1.forEach((doc) => {
+      allCampaigns.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Process second query results (avoid duplicates)
+    snapshot2.forEach((doc) => {
+      const existing = allCampaigns.find(campaign => campaign.id === doc.id);
+      if (!existing) {
+        allCampaigns.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    
+    // Sort campaigns by creation date (newest first)
+    allCampaigns.sort((a, b) => {
+      const aTime = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
+      const bTime = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
+      return bTime - aTime;
+    });
+    
+    console.log(`Found ${allCampaigns.length} campaigns for student ${studentId}`);
+    
+    if (allCampaigns.length === 0) {
+      // No campaigns found
+      document.getElementById('noCampaignsMessage').style.display = 'block';
+      document.getElementById('campaignsGrid').style.display = 'none';
+      
+      // Update progress stats with zeros
+      updateProgressStats([], 0);
       return;
     }
     
-    // Load student profile
-    await loadStudentProfile(currentStudentId);
-    await loadStudentCampaigns(currentStudentId);
-    await loadDonations(currentStudentId);
+    // Hide no campaigns message and show campaigns grid
+    document.getElementById('noCampaignsMessage').style.display = 'none';
+    document.getElementById('campaignsGrid').style.display = 'grid';
     
-    showLoading(false);
+    // Render all campaigns
+    renderCampaigns(allCampaigns);
+    
+    // Calculate and update progress stats
+    await updateProgressStats(allCampaigns, studentId);
+    
+  } catch (error) {
+    console.error("Error loading campaigns:", error);
+    document.getElementById('noCampaignsMessage').style.display = 'block';
+    document.getElementById('campaignsGrid').style.display = 'none';
+  }
+}
+
+function renderCampaigns(campaigns) {
+  const container = document.getElementById('campaignsGrid');
+  container.innerHTML = '';
+  
+  campaigns.forEach(campaign => {
+    const campaignCard = createCampaignCard(campaign);
+    container.appendChild(campaignCard);
   });
+}
 
-  async function loadStudentProfile(studentId) {
+function createCampaignCard(campaign) {
+  // Safe data access with fallbacks
+  const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
+  const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
+  const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
+  
+  // Calculate days remaining
+  const getDaysRemaining = (endDate) => {
+    if (!endDate) return null;
     try {
-      const userDoc = await getDoc(doc(db, "users", studentId));
-      
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        console.log("Student profile data:", userData);
-        
-        // Update profile information
-        document.getElementById('profileName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`.trim() || 'Student';
-        
-        // Update location
-        const location = userData.countryOfResidence || userData.city || userData.province || 'Location not specified';
-        document.getElementById('locationText').textContent = location;
-        
-        // Update university
-        const university = userData.institution || 'University not specified';
-        document.getElementById('universityText').textContent = university;
-        
-        // Update course
-        const course = userData.course || userData.fieldOfStudy || 'Course not specified';
-        document.getElementById('courseText').textContent = course;
-        
-        // Update profile picture if available
-        if (userData.profilePicture) {
-          document.getElementById('profilePicture').src = userData.profilePicture;
-        }
-        
-        // Update bio
-        const bio = userData.bio || userData.about || "I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.";
-        document.getElementById('profileBio').textContent = bio;
-        
-        // Update email link
-        const emailLink = document.getElementById('emailLink');
-        if (userData.email) {
-          emailLink.href = `mailto:${userData.email}`;
-        } else {
-          emailLink.style.display = 'none';
-        }
-        
-        // Update badges
-        updateBadges(userData);
-        
-      } else {
-        console.log("No student data found");
-        showErrorMessage("Student profile not found");
-      }
-    } catch (error) {
-      console.error("Error loading student profile:", error);
-      showErrorMessage("Error loading student profile");
+      const end = typeof endDate === 'string' ? new Date(endDate) : (endDate.toDate ? endDate.toDate() : new Date(endDate));
+      const now = new Date();
+      const diffTime = end - now;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays > 0 ? diffDays : 0;
+    } catch (e) {
+      return null;
     }
-  }
+  };
 
-  function updateBadges(userData) {
-    const badgesContainer = document.getElementById('badgesContainer');
-    badgesContainer.innerHTML = '';
-    
-    const badges = [];
-    
-    // Add badges based on user data
-    if (userData.verified) {
-      badges.push('<span class="badge bg-success me-2">Verified Student</span>');
-    }
-    
-    if (userData.firstGenerationStudent) {
-      badges.push('<span class="badge bg-primary me-2">First-Generation Student</span>');
-    }
-    
-    if (userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('engineering') || 
-        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('science') ||
-        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('technology') ||
-        userData.fieldOfStudy && userData.fieldOfStudy.toLowerCase().includes('math')) {
-      badges.push('<span class="badge bg-info me-2">STEM Scholar</span>');
-    }
-    
-    if (userData.needsBased) {
-      badges.push('<span class="badge bg-warning text-dark me-2">Needs-based</span>');
-    }
-    
-    // If no specific badges, show a generic one
-    if (badges.length === 0) {
-      badges.push('<span class="badge bg-secondary me-2">FundMyFuture Student</span>');
-    }
-    
-    badgesContainer.innerHTML = badges.join('');
-  }
-
-  async function loadStudentCampaigns(studentId) {
-    try {
-      const campaignsQuery = query(
-        collection(db, "campaigns"),
-        where("studentId", "==", studentId),
-        orderBy("createdAt", "desc")
-      );
-      
-      const querySnapshot = await getDocs(campaignsQuery);
-      let totalRaised = 0;
-      let totalGoal = 0;
-      let activeCampaigns = 0;
-      let previousCampaigns = [];
-      
-      if (querySnapshot.empty) {
-        // No campaigns found
-        document.getElementById('noCampaignMessage').style.display = 'block';
-        document.getElementById('progressSection').style.display = 'none';
-        document.getElementById('campaignButtons').style.display = 'none';
-        document.getElementById('shareCampaignBtn').style.display = 'none';
-        return;
-      }
-      
-      querySnapshot.forEach((doc) => {
-        const campaign = { id: doc.id, ...doc.data() };
-        totalRaised += campaign.currentAmount || 0;
-        totalGoal += campaign.goalAmount || 0;
-        
-        if (campaign.status === "active") {
-          activeCampaigns++;
-          // Set the first active campaign as the main displayed campaign
-          if (!currentCampaignId) {
-            currentCampaignId = doc.id;
-            updateActiveCampaign(campaign, doc.id);
-          }
-        } else {
-          previousCampaigns.push({ id: doc.id, ...campaign });
-        }
-      });
-      
-      // Update progress stats
-      document.getElementById('totalGoal').textContent = `R${totalGoal.toLocaleString()}`;
-      document.getElementById('totalRaised').textContent = `R${totalRaised.toLocaleString()}`;
-      document.getElementById('activeCampaigns').textContent = activeCampaigns.toString();
-      
-      // Load previous campaigns
-      if (previousCampaigns.length > 0) {
-        updatePreviousCampaigns(previousCampaigns);
-      }
-      
-    } catch (error) {
-      console.error("Error loading campaigns:", error);
-      document.getElementById('noCampaignMessage').style.display = 'block';
-    }
-  }
-
-  function updateActiveCampaign(campaign, campaignId) {
-    // Hide no campaign message and show campaign content
-    document.getElementById('noCampaignMessage').style.display = 'none';
-    document.getElementById('progressSection').style.display = 'block';
-    document.getElementById('campaignButtons').style.display = 'flex';
-    document.getElementById('shareCampaignBtn').style.display = 'block';
-    
-    // Update active campaign section
-    document.getElementById('activeCampaignTitle').textContent = campaign.title;
-    
-    const progressPercentage = campaign.goalAmount > 0 
-      ? Math.min(100, ((campaign.currentAmount / campaign.goalAmount) * 100)).toFixed(1)
-      : 0;
-      
-    document.getElementById('campaignRaised').textContent = `R${(campaign.currentAmount || 0).toLocaleString()}`;
-    document.getElementById('campaignGoal').textContent = `R${(campaign.goalAmount || 0).toLocaleString()} target`;
-    document.getElementById('campaignProgressBar').style.width = `${progressPercentage}%`;
-    document.getElementById('campaignProgressBar').textContent = `${progressPercentage}%`;
-    
-    // Update share button
-    const shareButton = document.getElementById('shareButton');
-    shareButton.onclick = () => {
-      shareCampaign(campaignId, campaign.title);
-    };
-    
-    // Update donate button
-    const donateButton = document.getElementById('donateButton');
-    donateButton.href = `donate.html?campaignId=${campaignId}`;
-    
-    // Update share icon button
-    const shareIconBtn = document.getElementById('shareCampaignBtn');
-    shareIconBtn.onclick = (e) => {
-      e.preventDefault();
-      shareCampaign(campaignId, campaign.title);
-    };
-  }
-
-  function updatePreviousCampaigns(previousCampaigns) {
-    const container = document.getElementById('previousCampaignsContainer');
-    container.innerHTML = '<div class="row row-cols-1 row-cols-md-2 g-3">';
-    
-    previousCampaigns.forEach(campaign => {
-      const progressPercentage = campaign.goalAmount > 0 
-        ? Math.min(100, ((campaign.currentAmount / campaign.goalAmount) * 100)).toFixed(1)
-        : 0;
-        
-      const campaignElement = `
-        <div class="col">
-          <div class="card h-100">
-            <div class="card-body">
-              <h6 class="fw-bold campaign-title">${campaign.title}</h6>
-              <div class="mb-2">
-                <span class="badge bg-success me-2">R${(campaign.currentAmount || 0).toLocaleString()} Raised</span>
-                <span class="badge bg-secondary">${progressPercentage}%</span>
-              </div>
-              <p class="text-muted small">${campaign.description || 'No description available.'}</p>
-              <small class="text-muted">Status: ${campaign.status}</small>
-            </div>
-          </div>
-        </div>
-      `;
-      container.querySelector('.row').innerHTML += campaignElement;
-    });
-    
-    container.innerHTML += '</div>';
-  }
-
-  async function loadDonations(studentId) {
-    try {
-      // Get all campaigns by this student
-      const campaignsQuery = query(
-        collection(db, "campaigns"),
-        where("studentId", "==", studentId)
-      );
-      
-      const campaignsSnapshot = await getDocs(campaignsQuery);
-      let campaignIds = [];
-      campaignsSnapshot.forEach(doc => {
-        campaignIds.push(doc.id);
-      });
-      
-      if (campaignIds.length > 0) {
-        // Get donations for these campaigns
-        const donationsQuery = query(
-          collection(db, "donations"),
-          where("campaignId", "in", campaignIds),
-          where("paymentStatus", "==", "completed"),
-          orderBy("createdAt", "desc"),
-          limit(10)
-        );
-        
-        const donationsSnapshot = await getDocs(donationsQuery);
-        let supporterCount = new Set();
-        let donationsList = [];
-        
-        donationsSnapshot.forEach(doc => {
-          const donation = doc.data();
-          if (donation.funderId) {
-            supporterCount.add(donation.funderId);
-          } else if (donation.funderName) {
-            supporterCount.add(donation.funderName);
-          }
-          donationsList.push(donation);
-        });
-        
-        // Update supporter count
-        document.getElementById('totalSupporters').textContent = supporterCount.size.toString();
-        
-        // Update supporter messages (show latest 3 with messages)
-        updateSupporterMessages(donationsList.slice(0, 3));
-      }
-      
-    } catch (error) {
-      console.error("Error loading donations:", error);
-    }
-  }
-
-  function updateSupporterMessages(donations) {
-    const messagesContainer = document.getElementById('supporterMessages');
-    
-    let messagesAdded = false;
-    let messagesHTML = '';
-    
-    donations.forEach(donation => {
-      if (donation.message && donation.message.trim() !== '') {
-        messagesAdded = true;
-        messagesHTML += `
-          <li class="mb-3">
-            <div class="p-3 rounded border-start border-3 border-support shadow">
-              <p class="mb-1 fw-bold"><strong>${donation.anonymous ? 'Anonymous' : (donation.funderName || 'Supporter')}</strong></p>
-              <p class="mb-0 text-muted small">"${donation.message}"</p>
-              <small class="text-muted mt-1">${donation.createdAt?.toDate?.().toLocaleDateString() || ''}</small>
-            </div>
-          </li>
-        `;
-      }
-    });
-    
-    if (messagesAdded) {
-      messagesContainer.innerHTML = messagesHTML;
-    }
-    // If no messages, the default message remains
-  }
-
-  function shareCampaign(campaignId, campaignTitle) {
-    const shareUrl = `${window.location.origin}/view-campaign.html?id=${campaignId}`;
-    const shareText = `Support ${campaignTitle} on FundMyFuture`;
-    
-    if (navigator.share) {
-      navigator.share({
-        title: campaignTitle,
-        text: shareText,
-        url: shareUrl,
-      });
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        alert('Campaign link copied to clipboard!');
-      });
-    }
-  }
-
-  function showErrorMessage(message) {
-    // Create a simple alert for errors
-    const alertDiv = document.createElement('div');
-    alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
-    alertDiv.innerHTML = `
-      ${message}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  const daysRemaining = getDaysRemaining(campaign.end_date || campaign.endDate);
+  const title = campaign.title || 'Education Campaign';
+  const description = campaign.description || 'Help support this student\'s educational journey';
+  const status = campaign.status || 'active';
+  
+  // Determine image HTML - use profile icon if no image
+  let imageHtml = '';
+  if (campaign.image_url || campaign.coverImage) {
+    const imageUrl = campaign.image_url || campaign.coverImage;
+    imageHtml = `
+      <img src="${imageUrl}" 
+           class="card-img-top campaign-image" 
+           alt="${title}"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="profile-icon-placeholder" style="display: none;">
+        <i class="fas fa-user-graduate"></i>
+      </div>
     `;
-    
-    document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
+  } else {
+    imageHtml = `
+      <div class="profile-icon-placeholder">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+    `;
   }
+  
+  const card = document.createElement('div');
+  card.className = 'card campaign-card';
+  card.onclick = () => {
+    window.location.href = `view-campaign.html?id=${campaign.id}`;
+  };
+  
+  card.innerHTML = `
+    ${imageHtml}
+    <div class="card-body d-flex flex-column">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h6 class="fw-bold campaign-title mb-0">${title}</h6>
+        <span class="badge ${status === 'active' ? 'bg-success' : 'bg-secondary'}">${status}</span>
+      </div>
+      <p class="text-muted small mb-2 flex-grow-1">${description.length > 80 ? description.substring(0, 80) + '...' : description}</p>
+      <div class="progress mb-2">
+        <div class="progress-bar" role="progressbar" 
+             style="width: ${percentage}%;" 
+             aria-valuenow="${percentage}" 
+             aria-valuemin="0" 
+             aria-valuemax="100">
+          ${percentage}%
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted">Raised</small>
+          <div class="fw-bold">R${raisedAmount.toLocaleString()}</div>
+        </div>
+        <div class="text-end">
+          <small class="text-muted">Goal</small>
+          <div class="fw-bold">R${goalAmount.toLocaleString()}</div>
+        </div>
+      </div>
+      ${daysRemaining !== null ? `
+        <div class="mt-2 text-center">
+          <small class="text-muted">${daysRemaining} days remaining</small>
+        </div>
+      ` : ''}
+    </div>
+  `;
+  
+  return card;
+}
+
+async function updateProgressStats(campaigns, studentId) {
+  try {
+    let totalGoal = 0;
+    let totalRaised = 0;
+    let totalCampaigns = campaigns.length;
+    
+    // Calculate totals from campaigns
+    campaigns.forEach(campaign => {
+      totalGoal += campaign.goal_amount || campaign.goalAmount || 0;
+      totalRaised += campaign.raised_amount || campaign.currentAmount || 0;
+    });
+    
+    // Update the progress stats
+    document.getElementById('totalGoal').textContent = `R${totalGoal.toLocaleString()}`;
+    document.getElementById('totalRaised').textContent = `R${totalRaised.toLocaleString()}`;
+    document.getElementById('totalCampaigns').textContent = totalCampaigns.toString();
+    
+    // Load supporter count from donations
+    await updateSupporterCount(studentId, campaigns);
+    
+  } catch (error) {
+    console.error("Error updating progress stats:", error);
+  }
+}
+
+async function updateSupporterCount(studentId, campaigns) {
+  try {
+    let campaignIds = campaigns.map(campaign => campaign.id);
+    
+    if (campaignIds.length === 0) {
+      document.getElementById('totalSupporters').textContent = '0';
+      return;
+    }
+    
+    // Get donations for these campaigns
+    const donationsQuery = db.collection("donations")
+      .where("campaignId", "in", campaignIds)
+      .where("paymentStatus", "==", "completed");
+    
+    const donationsSnapshot = await donationsQuery.get();
+    let supporterIds = new Set();
+    let donationsList = [];
+    
+    donationsSnapshot.forEach(doc => {
+      const donation = doc.data();
+      donationsList.push(donation);
+      if (donation.funderId) {
+        supporterIds.add(donation.funderId);
+      }
+    });
+    
+    // Update supporter count
+    document.getElementById('totalSupporters').textContent = supporterIds.size.toString();
+    
+    // Update supporter messages with the latest donations
+    updateSupporterMessages(donationsList.slice(0, 5));
+    
+  } catch (error) {
+    console.error("Error loading supporter count:", error);
+    document.getElementById('totalSupporters').textContent = '0';
+  }
+}
+
+function updateSupporterMessages(donations) {
+  const messagesContainer = document.getElementById('supporterMessages');
+  
+  let messagesAdded = false;
+  let messagesHTML = '';
+  
+  donations.forEach(donation => {
+    if (donation.message && donation.message.trim() !== '') {
+      messagesAdded = true;
+      const donationDate = donation.createdAt ? 
+        (donation.createdAt.toDate ? donation.createdAt.toDate() : new Date(donation.createdAt)) : 
+        new Date();
+      
+      messagesHTML += `
+        <li class="mb-3">
+          <div class="p-3 rounded border-start border-3 border-support shadow">
+            <p class="mb-1 fw-bold"><strong>${donation.anonymous ? 'Anonymous' : (donation.funderName || 'Supporter')}</strong></p>
+            <p class="mb-0 text-muted small">"${donation.message}"</p>
+            <small class="text-muted mt-1">${donationDate.toLocaleDateString()}</small>
+          </div>
+        </li>
+      `;
+    }
+  });
+  
+  if (messagesAdded) {
+    messagesContainer.innerHTML = messagesHTML;
+  }
+  // If no messages, the default message remains
+}
+
+function showErrorMessage(message) {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+  alertDiv.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
+}
+
+// Newsletter functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const newsletterForm = document.getElementById('newsletterForm');
+  const newsletterMessage = document.getElementById('newsletterMessage');
+  
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletterEmail').value;
+      
+      if (email && email.includes('@')) {
+        try {
+          // Store in Firestore
+          await db.collection('newsletterSubscriptions').doc(email).set({
+            email: email,
+            subscribedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          
+          newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
+          newsletterForm.reset();
+        } catch (error) {
+          newsletterMessage.innerHTML = '<div class="alert alert-danger">Failed to subscribe. Please try again.</div>';
+        }
+      } else {
+        newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+      }
+    });
+  }
+});
 </script>
 
 <!-- Dynamic navbar -->

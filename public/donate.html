@@ -48,12 +48,18 @@
             text-decoration: none;
             transform: scale(1.02);
         }
-/* ===== CREATE A CAMPAIGN BUTTON ===== */
-       .btn-success {
-       background-color: #012A4A;
-       color: #A9D6E5;            
-  }
 
+        /* ===== CREATE A CAMPAIGN BUTTON ===== */
+        .btn-success {
+            background-color: #012A4A;
+            color: #A9D6E5;            
+        }
+         .btn-success:hover {
+            color: #012A4A;
+            border: 1px solid #012A4A;
+            background-color: #ffd60a;
+            transform: scale(1.02);
+        }
 
         /* ===== SECTION TITLE STYLING ===== */
         .campaign-section-title {
@@ -166,10 +172,28 @@
             width: 100%;
         }
 
+        /* Profile icon placeholder styling */
+        .profile-icon-placeholder {
+            height: 180px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 4rem;
+        }
+
         /* Verified badge */
         .verified-badge {
             color: #468FAF;
             font-size: 0.8rem;
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -238,6 +262,8 @@
                         <option value="tuition">Tuition</option>
                         <option value="books">Books & Materials</option>
                         <option value="living">Living Expenses</option>
+                        <option value="technology">Technology & Equipment</option>
+                        <option value="other">Other Educational Needs</option>
                     </select>
                 </div>
 
@@ -259,7 +285,7 @@
                 
                 <!-- Create Campaign Button -->
                 <div class="mt-4 pt-3 border-top">
-                    <a href="campaign.html" class="btn btn-success w-100">Create  a New Campaign</a>
+                    <a href="campaign.html" class="btn btn-success w-100">Create a New Campaign</a>
                 </div>
             </div>
 
@@ -281,6 +307,13 @@
                 <div id="topCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" id="topCampaignsContainer">
                         <!-- Campaigns will be loaded here dynamically -->
+                        <div class="carousel-item active">
+                            <div class="row g-4">
+                                <div class="col-12 text-center py-4">
+                                    <p>Loading top campaigns...</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -300,6 +333,13 @@
                 <div id="newCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" id="newCampaignsContainer">
                         <!-- Campaigns will be loaded here dynamically -->
+                        <div class="carousel-item active">
+                            <div class="row g-4">
+                                <div class="col-12 text-center py-4">
+                                    <p>Loading new campaigns...</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -319,6 +359,13 @@
                 <div id="allCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner" id="allCampaignsContainer">
                         <!-- Campaigns will be loaded here dynamically -->
+                        <div class="carousel-item active">
+                            <div class="row g-4">
+                                <div class="col-12 text-center py-4">
+                                    <p>Loading all campaigns...</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -433,14 +480,15 @@
 <!-- Firebase Campaign Management Script -->
 <script>
 // ===== FIREBASE CONFIGURATION =====
-// Replace with your Firebase project configuration
 const firebaseConfig = {
-    apiKey: "your-api-key",
-    authDomain: "your-project-id.firebaseapp.com",
-    projectId: "your-project-id",
-    storageBucket: "your-project-id.appspot.com",
-    messagingSenderId: "your-sender-id",
-    appId: "your-app-id"
+    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+    authDomain: "fund-my-future-47844.firebaseapp.com",
+    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+    projectId: "fund-my-future-47844",
+    storageBucket: "fund-my-future-47844.firebasestorage.app",
+    messagingSenderId: "581912293895",
+    appId: "1:581912293895:web:03468061fae2124ac770a2",
+    measurementId: "G-LFC0R1GBE1"
 };
 
 // Initialize Firebase
@@ -475,169 +523,178 @@ function showLoading(show = true) {
     spinner.style.display = show ? 'block' : 'none';
 }
 
-// ===== FIREBASE CAMPAIGN MANAGEMENT =====
-class FirebaseCampaignManager {
+// ===== CAMPAIGN MANAGEMENT =====
+class CampaignManager {
     constructor() {
         this.campaigns = [];
         this.filteredCampaigns = [];
         this.unsubscribe = null;
+        this.currentFilters = {
+            category: 'all',
+            institution: 'all'
+        };
     }
 
-    // Listen for real-time campaign updates
-    subscribeToCampaigns() {
-        this.unsubscribe = db.collection('campaigns')
-            .where('status', '==', 'active') // Only show active campaigns
-            .onSnapshot((snapshot) => {
-                this.campaigns = [];
-                snapshot.forEach((doc) => {
-                    this.campaigns.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                
-                // Apply current filters and refresh UI
-                this.applyCurrentFilters();
-                this.refreshUI();
-                
-                showLoading(false);
-            }, (error) => {
-                console.error('Error fetching campaigns:', error);
-                showAlert('Failed to load campaigns. Please try again later.', 'danger');
-                showLoading(false);
-            });
-    }
-
-    // Unsubscribe from real-time updates
-    unsubscribeFromCampaigns() {
-        if (this.unsubscribe) {
-            this.unsubscribe();
-        }
-    }
-
-    // Create a new campaign
-    async createCampaign(campaignData, imageFile = null) {
+    // Initialize the campaign manager
+    async initialize() {
+        showLoading(true);
+        
         try {
-            // Get current user
-            const user = auth.currentUser;
-            if (!user) {
-                throw new Error('You must be logged in to create a campaign');
-            }
-
-            // Prepare campaign data
-            const newCampaign = {
-                ...campaignData,
-                student_id: user.uid,
-                student_name: campaignData.student_name || user.displayName || 'Anonymous Student',
-                raised_amount: 0,
-                status: 'active',
-                created_at: firebase.firestore.FieldValue.serverTimestamp(),
-                updated_at: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            // Upload image if provided
-            if (imageFile) {
-                const imageUrl = await this.uploadCampaignImage(imageFile);
-                newCampaign.image_url = imageUrl;
-            }
-
-            // Add to Firestore
-            const docRef = await db.collection('campaigns').add(newCampaign);
-            
-            showAlert('Campaign created successfully!', 'success');
-            return docRef.id;
+            // Load campaigns without requiring authentication
+            await this.subscribeToCampaigns();
+            this.setupEventListeners();
         } catch (error) {
-            console.error('Error creating campaign:', error);
-            showAlert(`Failed to create campaign: ${error.message}`, 'danger');
-            throw error;
+            console.error('Error initializing campaigns:', error);
+            this.handleAuthError(error);
         }
     }
 
-    // Upload campaign image
-    async uploadCampaignImage(file) {
-        return new Promise((resolve, reject) => {
-            const storageRef = storage.ref();
-            const imageRef = storageRef.child(`campaigns/${Date.now()}_${file.name}`);
+    // Subscribe to real-time campaign updates
+    async subscribeToCampaigns() {
+        try {
+            this.unsubscribe = db.collection('campaigns')
+                .where('status', '==', 'active')
+                .onSnapshot((snapshot) => {
+                    this.campaigns = [];
+                    snapshot.forEach((doc) => {
+                        const campaignData = doc.data();
+                        this.campaigns.push({
+                            id: doc.id,
+                            ...campaignData
+                        });
+                    });
+                    
+                    console.log(`Loaded ${this.campaigns.length} campaigns`);
+                    this.applyFilters();
+                    this.refreshUI();
+                    showLoading(false);
+                    
+                    // Check for new campaign parameter
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const newCampaignId = urlParams.get('new_campaign');
+                    if (newCampaignId) {
+                        showAlert('Your campaign has been created successfully! It should appear below.', 'success');
+                        // Clean URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }, (error) => {
+                    console.error('Error fetching campaigns:', error);
+                    this.handleAuthError(error);
+                    showLoading(false);
+                });
+        } catch (error) {
+            console.error('Error setting up campaign listener:', error);
+            this.handleAuthError(error);
+            showLoading(false);
+        }
+    }
+
+    // Handle authentication errors gracefully
+    handleAuthError(error) {
+        if (error.code === 'permission-denied' || error.code === 'missing-or-insufficient-permissions') {
+            showAlert('Unable to load campaigns due to security restrictions. Please contact the administrator.', 'warning');
             
-            const uploadTask = imageRef.put(file);
-            
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    // Progress tracking (optional)
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
-                },
-                (error) => {
-                    reject(error);
-                },
-                async () => {
-                    // Upload completed successfully
-                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                    resolve(downloadURL);
-                }
-            );
+            // Show sample data when real data can't be loaded
+            this.showSampleData();
+        } else {
+            showAlert('Failed to load campaigns. Please check your connection and try again.', 'danger');
+        }
+    }
+
+    // Show sample data when real data can't be loaded
+    showSampleData() {
+        const sampleCampaigns = [
+            {
+                id: 'sample-1',
+                title: 'Tuition Assistance for Final Year',
+                description: 'Help me complete my final year of engineering studies at UCT.',
+                category: 'tuition',
+                goal_amount: 50000,
+                raised_amount: 25000,
+                student_name: 'Sarah Johnson',
+                institution: 'UCT',
+                image_url: null,
+                verified: true,
+                created_at: new Date(),
+                end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                status: 'active'
+            },
+            {
+                id: 'sample-2',
+                title: 'Textbooks and Study Materials',
+                description: 'Funding for essential textbooks and laboratory materials.',
+                category: 'books',
+                goal_amount: 10000,
+                raised_amount: 7500,
+                student_name: 'David Smith',
+                institution: 'Stellenbosch',
+                image_url: null,
+                verified: false,
+                created_at: new Date(),
+                end_date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+                status: 'active'
+            }
+        ];
+
+        this.campaigns = sampleCampaigns;
+        this.filteredCampaigns = sampleCampaigns;
+        this.refreshUI();
+        showLoading(false);
+    }
+
+    // Setup event listeners for filters
+    setupEventListeners() {
+        // Filter event listeners
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            this.applyFilters();
+        });
+
+        document.getElementById('resetFilters').addEventListener('click', () => {
+            this.resetFilters();
+        });
+
+        // Filter change listeners for real-time updates
+        document.getElementById('categoryFilter').addEventListener('change', (e) => {
+            this.currentFilters.category = e.target.value;
+            this.applyFilters();
+        });
+
+        document.getElementById('institutionFilter').addEventListener('change', (e) => {
+            this.currentFilters.institution = e.target.value;
+            this.applyFilters();
         });
     }
 
-    // Update a campaign
-    async updateCampaign(campaignId, updates) {
-        try {
-            const user = auth.currentUser;
-            if (!user) {
-                throw new Error('You must be logged in to update a campaign');
-            }
-
-            // Add update timestamp
-            updates.updated_at = firebase.firestore.FieldValue.serverTimestamp();
-
-            await db.collection('campaigns').doc(campaignId).update(updates);
-            showAlert('Campaign updated successfully!', 'success');
-        } catch (error) {
-            console.error('Error updating campaign:', error);
-            showAlert(`Failed to update campaign: ${error.message}`, 'danger');
-            throw error;
-        }
-    }
-
-    // Delete a campaign (soft delete by updating status)
-    async deleteCampaign(campaignId) {
-        try {
-            const user = auth.currentUser;
-            if (!user) {
-                throw new Error('You must be logged in to delete a campaign');
-            }
-
-            await db.collection('campaigns').doc(campaignId).update({
-                status: 'deleted',
-                updated_at: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            showAlert('Campaign deleted successfully!', 'success');
-        } catch (error) {
-            console.error('Error deleting campaign:', error);
-            showAlert(`Failed to delete campaign: ${error.message}`, 'danger');
-            throw error;
-        }
-    }
-
-    // Filter campaigns based on selected criteria
-    applyCurrentFilters() {
-        const selectedCategory = document.getElementById('categoryFilter').value;
-        const selectedInstitution = document.getElementById('institutionFilter').value;
+    // Apply current filters
+    applyFilters() {
+        const categoryFilter = document.getElementById('categoryFilter').value;
+        const institutionFilter = document.getElementById('institutionFilter').value;
         
         this.filteredCampaigns = this.campaigns.filter(campaign => {
-            const categoryMatch = selectedCategory === 'all' || campaign.category === selectedCategory;
-            const institutionMatch = selectedInstitution === 'all' || campaign.institution === selectedInstitution;
+            const categoryMatch = categoryFilter === 'all' || campaign.category === categoryFilter;
+            const institutionMatch = institutionFilter === 'all' || 
+                                   (campaign.institution && campaign.institution.toLowerCase().includes(institutionFilter.toLowerCase()));
             return categoryMatch && institutionMatch;
         });
+
+        console.log(`Filtered to ${this.filteredCampaigns.length} campaigns`);
+        this.refreshUI();
     }
 
-    // Get top campaigns (highest percentage funded)
+    // Reset all filters
+    resetFilters() {
+        document.getElementById('categoryFilter').value = 'all';
+        document.getElementById('institutionFilter').value = 'all';
+        this.currentFilters = { category: 'all', institution: 'all' };
+        this.applyFilters();
+    }
+
+    // Get top campaigns (by funding percentage)
     getTopCampaigns(limit = 6) {
         return [...this.filteredCampaigns]
             .sort((a, b) => {
-                const aPercentage = (a.raised_amount / a.goal_amount) * 100;
-                const bPercentage = (b.raised_amount / b.goal_amount) * 100;
+                const aPercentage = (a.raised_amount || 0) / (a.goal_amount || 1);
+                const bPercentage = (b.raised_amount || 0) / (b.goal_amount || 1);
                 return bPercentage - aPercentage;
             })
             .slice(0, limit);
@@ -648,141 +705,190 @@ class FirebaseCampaignManager {
         return [...this.filteredCampaigns]
             .sort((a, b) => {
                 // Handle timestamp comparison safely
-                const aTime = a.created_at ? a.created_at.toDate().getTime() : 0;
-                const bTime = b.created_at ? b.created_at.toDate().getTime() : 0;
+                const aTime = a.created_at ? (a.created_at.toDate ? a.created_at.toDate().getTime() : new Date(a.created_at).getTime()) : 0;
+                const bTime = b.created_at ? (b.created_at.toDate ? b.created_at.toDate().getTime() : new Date(b.created_at).getTime()) : 0;
                 return bTime - aTime;
             })
             .slice(0, limit);
     }
 
     // Get all campaigns (for the all campaigns section)
-    getAllCampaigns(limit = 6) {
+    getAllCampaigns(limit = 12) {
         return this.filteredCampaigns.slice(0, limit);
     }
 
     // Refresh the UI with current data
     refreshUI() {
-        renderCampaignSection('topCampaignsContainer', this.getTopCampaigns());
-        renderCampaignSection('newCampaignsContainer', this.getNewCampaigns());
-        renderCampaignSection('allCampaignsContainer', this.getAllCampaigns());
-        initializeCarousels();
+        this.renderCampaignSection('topCampaignsContainer', this.getTopCampaigns());
+        this.renderCampaignSection('newCampaignsContainer', this.getNewCampaigns());
+        this.renderCampaignSection('allCampaignsContainer', this.getAllCampaigns());
+        this.initializeCarousels();
     }
-}
 
-// ===== UI RENDERING FUNCTIONS =====
-function renderCampaignCard(campaign) {
-    const percentage = Math.round((campaign.raised_amount / campaign.goal_amount) * 100);
-    const defaultImage = './images/default-campaign.jpg'; // Add a default campaign image
-    
-    return `
-        <div class="col-12 col-lg-4">
-            <a href="student-profile.html?id=${campaign.id}" class="campaign-link">
-                <div class="card h-100 campaign-card" data-category="${campaign.category}" data-institution="${campaign.institution}">
-                    ${campaign.image_url ? 
-                        `<img src="${campaign.image_url}" class="card-img-top campaign-image" alt="${campaign.student_name} campaign">` :
-                        `<img src="${defaultImage}" class="card-img-top campaign-image" alt="Default campaign image">`
-                    }
-                    <div class="card-body">
-                        <h5 class="fw-bold campaign-title fs-5 mb-0">
-                            ${campaign.student_name} – ${getCategoryDisplayName(campaign.category)}
-                            ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
-                        </h5>
-                        <p class="text-muted small">${getInstitutionDisplayName(campaign.institution)} | ${campaign.field_of_study}</p>
-                        <p class="badge text-dark fw-light mb-2">R${campaign.goal_amount.toLocaleString()} Needed</p>
-                        <div class="progress mb-2">
-                            <div class="progress-bar" style="width: ${percentage}%;">${percentage}%</div>
+    // Render a campaign section
+    renderCampaignSection(containerId, campaigns, itemsPerSlide = 3) {
+        const container = document.getElementById(containerId);
+        
+        if (!campaigns || campaigns.length === 0) {
+            container.innerHTML = `
+                <div class="carousel-item active">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="empty-state">
+                                <i class="bi bi-inbox display-4"></i>
+                                <p class="mt-3">No campaigns found matching your criteria.</p>
+                            </div>
                         </div>
-                        <p class="small text-muted float-end mb-0">Raised: R${campaign.raised_amount.toLocaleString()}</p>
-                        ${campaign.days_remaining ? 
-                            `<p class="small text-muted mt-1">${campaign.days_remaining} days remaining</p>` : 
-                            ''
-                        }
                     </div>
                 </div>
-            </a>
+            `;
+            return;
+        }
+        
+        // Split campaigns into slides
+        const slides = [];
+        for (let i = 0; i < campaigns.length; i += itemsPerSlide) {
+            slides.push(campaigns.slice(i, i + itemsPerSlide));
+        }
+        
+        // Render slides
+        container.innerHTML = slides.map((slideCampaigns, index) => {
+            const isActive = index === 0 ? 'active' : '';
+            return `
+                <div class="carousel-item ${isActive}">
+                    <div class="row g-4">
+                        ${slideCampaigns.map(campaign => this.renderCampaignCard(campaign)).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+   // Render individual campaign card
+renderCampaignCard(campaign) {
+    // Safe data access with fallbacks
+    const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
+    const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
+    const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
+    
+    // Get student ID - try both student_id and studentId fields for compatibility
+    const studentId = campaign.student_id || campaign.studentId;
+    
+    // Format dates safely
+    const formatDate = (date) => {
+        if (!date) return '';
+        try {
+            const dateObj = date.toDate ? date.toDate() : new Date(date);
+            return dateObj.toLocaleDateString();
+        } catch (e) {
+            return '';
+        }
+    };
+
+    // Calculate days remaining
+    const getDaysRemaining = (endDate) => {
+        if (!endDate) return null;
+        try {
+            const end = typeof endDate === 'string' ? new Date(endDate) : (endDate.toDate ? endDate.toDate() : new Date(endDate));
+            const now = new Date();
+            const diffTime = end - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        } catch (e) {
+            return null;
+        }
+    };
+
+    const daysRemaining = getDaysRemaining(campaign.end_date || campaign.endDate);
+    const studentName = campaign.student_name || 'Anonymous Student';
+    const title = campaign.title || 'Education Campaign';
+    const description = campaign.description || 'Help support this student\'s educational journey';
+    
+    // Determine image HTML - use profile icon if no image
+    let imageHtml = '';
+    if (campaign.image_url || campaign.coverImage) {
+        const imageUrl = campaign.image_url || campaign.coverImage;
+        imageHtml = `
+            <img src="${imageUrl}" 
+                 class="card-img-top campaign-image" 
+                 alt="${title}"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="profile-icon-placeholder" style="display: none;">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+        `;
+    } else {
+        imageHtml = `
+            <div class="profile-icon-placeholder">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+        `;
+    }
+    
+    return `
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 campaign-card" onclick="window.location.href='student-profile.html?id=${studentId}'">
+                ${imageHtml}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="fw-bold campaign-title mb-2">
+                        ${this.truncateText(title, 40)}
+                        ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
+                    </h5>
+                    <p class="text-muted small mb-2">${this.truncateText(description, 60)}</p>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-primary">${this.getCategoryDisplayName(campaign.category)}</span>
+                        <small class="text-muted">${studentName}</small>
+                    </div>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: ${percentage}%;" 
+                             aria-valuenow="${percentage}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                            ${percentage}%
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <div>
+                            <small class="text-muted">Raised</small>
+                            <div class="fw-bold">R${raisedAmount.toLocaleString()}</div>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Goal</small>
+                            <div class="fw-bold">R${goalAmount.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    ${daysRemaining !== null ? `
+                        <div class="mt-2 text-center">
+                            <small class="text-muted">${daysRemaining} days remaining</small>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
         </div>
     `;
 }
 
-function renderCampaignSection(containerId, campaigns, itemsPerSlide = 3) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    
-    if (campaigns.length === 0) {
-        container.innerHTML = '<div class="col-12 text-center py-4"><p>No campaigns found matching your criteria.</p></div>';
-        return;
+    // Utility function to truncate text
+    truncateText(text, maxLength = 50) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     }
-    
-    // Split campaigns into slides
-    const slides = [];
-    for (let i = 0; i < campaigns.length; i += itemsPerSlide) {
-        slides.push(campaigns.slice(i, i + itemsPerSlide));
-    }
-    
-    // Render slides
-    slides.forEach((slideCampaigns, index) => {
-        const isActive = index === 0 ? 'active' : '';
-        const slideHtml = `
-            <div class="carousel-item ${isActive}">
-                <div class="row g-4">
-                    ${slideCampaigns.map(campaign => renderCampaignCard(campaign)).join('')}
-                </div>
-            </div>
-        `;
-        container.innerHTML += slideHtml;
-    });
-}
 
-function getCategoryDisplayName(category) {
-    const categories = {
-        'tuition': 'Tuition',
-        'books': 'Books & Materials',
-        'living': 'Living Expenses'
-    };
-    return categories[category] || category;
-}
+    // Get category display name
+    getCategoryDisplayName(category) {
+        const categories = {
+            'tuition': 'Tuition',
+            'books': 'Books & Materials',
+            'living': 'Living Expenses',
+            'technology': 'Technology',
+            'other': 'Other'
+        };
+        return categories[category] || category || 'Education';
+    }
 
-function getInstitutionDisplayName(institution) {
-    const institutions = {
-        'uct': 'UCT',
-        'stellenbosch': 'Stellenbosch',
-        'wits': 'Wits',
-        'unisa': 'UNISA'
-    };
-    return institutions[institution] || institution;
-}
-
-// ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', function() {
-    const campaignManager = new FirebaseCampaignManager();
-    
-    // DOM Elements
-    const categoryFilter = document.getElementById('categoryFilter');
-    const institutionFilter = document.getElementById('institutionFilter');
-    const applyFiltersBtn = document.getElementById('applyFilters');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-    
-    // Initialize the page
-    function initializePage() {
-        showLoading(true);
-        campaignManager.subscribeToCampaigns();
-    }
-    
-    // Apply filters function
-    function applyFilters() {
-        campaignManager.applyCurrentFilters();
-        campaignManager.refreshUI();
-    }
-    
-    // Reset filters function
-    function resetFilters() {
-        categoryFilter.value = 'all';
-        institutionFilter.value = 'all';
-        applyFilters();
-    }
-    
     // Initialize Bootstrap carousels
-    function initializeCarousels() {
+    initializeCarousels() {
         const carousels = document.querySelectorAll('.carousel');
         carousels.forEach(carousel => {
             // Dispose of existing instance if any
@@ -791,72 +897,85 @@ document.addEventListener('DOMContentLoaded', function() {
                 existingInstance.dispose();
             }
             
-            // Initialize new instance
-            new bootstrap.Carousel(carousel, {
-                interval: 5000,
-                wrap: true
-            });
-        });
-    }
-    
-    // Event listeners
-    applyFiltersBtn.addEventListener('click', applyFilters);
-    resetFiltersBtn.addEventListener('click', resetFilters);
-    
-    // Newsletter functionality
-    const newsletterForm = document.getElementById('newsletterForm');
-    const newsletterMessage = document.getElementById('newsletterMessage');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('newsletterEmail').value;
-            
-            if (email && email.includes('@')) {
-                newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
-                newsletterForm.reset();
-            } else {
-                newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+            // Only initialize if there are multiple slides
+            const items = carousel.querySelectorAll('.carousel-item');
+            if (items.length > 1) {
+                new bootstrap.Carousel(carousel, {
+                    interval: 5000,
+                    wrap: true
+                });
             }
         });
     }
-    
-    // Clean up on page unload
-    window.addEventListener('beforeunload', () => {
-        campaignManager.unsubscribeFromCampaigns();
-    });
-    
-    // Start the application
-    initializePage();
-});
 
-// ===== EXAMPLE: HOW TO CREATE A NEW CAMPAIGN FROM campaign.html =====
-// This would typically be in your campaign.html page
-async function createNewCampaign(campaignData, imageFile = null) {
-    const campaignManager = new FirebaseCampaignManager();
-    try {
-        const campaignId = await campaignManager.createCampaign(campaignData, imageFile);
-        console.log('New campaign created with ID:', campaignId);
-        
-        // Redirect to the campaign page or donate page
-        window.location.href = `view-campaign.html?id=${campaignId}`;
-    } catch (error) {
-        console.error('Failed to create campaign:', error);
+    // Clean up
+    destroy() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 }
 
-// Example campaign data structure for creating a new campaign
-const exampleCampaignData = {
-    student_name: "John Smith",
-    category: "tuition",
-    institution: "uct",
-    field_of_study: "Computer Science",
-    goal_amount: 7500,
-    description: "Need help with tuition fees for my final year",
-    story: "I come from a disadvantaged background and have been working part-time to fund my studies...",
-    verified: true,
-    deadline: new Date('2024-12-31') // Optional campaign deadline
-};
+// ===== PAGE INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+    let campaignManager;
+
+    // Initialize the application
+    async function initializeApp() {
+        try {
+            campaignManager = new CampaignManager();
+            await campaignManager.initialize();
+            
+            // Setup newsletter form
+            setupNewsletterForm();
+            
+        } catch (error) {
+            console.error('Failed to initialize application:', error);
+            showAlert('Failed to initialize the application. Please refresh the page.', 'danger');
+            showLoading(false);
+        }
+    }
+
+    // Setup newsletter functionality
+    function setupNewsletterForm() {
+        const newsletterForm = document.getElementById('newsletterForm');
+        const newsletterMessage = document.getElementById('newsletterMessage');
+        
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('newsletterEmail').value;
+                
+                if (email && email.includes('@')) {
+                    try {
+                        // Store in Firestore
+                        await db.collection('newsletterSubscriptions').doc(email).set({
+                            email: email,
+                            subscribedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        
+                        newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
+                        newsletterForm.reset();
+                    } catch (error) {
+                        newsletterMessage.innerHTML = '<div class="alert alert-danger">Failed to subscribe. Please try again.</div>';
+                    }
+                } else {
+                    newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+                }
+            });
+        }
+    }
+
+    // Initialize the application
+    initializeApp();
+
+    // Clean up when page unloads
+    window.addEventListener('beforeunload', () => {
+        if (campaignManager) {
+            campaignManager.destroy();
+        }
+    });
+});
 </script>
 
 </body>

@@ -1,4 +1,4 @@
-// Contact form handler - Sends confirmation to the user
+// Contact form handler - OPTIMIZED FOR TRIGGER EMAIL EXTENSION
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Contact form script loaded - DOM ready');
     
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('📧 Contact form submission started');
             
             const name = document.getElementById('name').value;
-            const userEmail = document.getElementById('email').value; // User's email
+            const userEmail = document.getElementById('email').value;
             const message = document.getElementById('message').value;
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const messageDiv = document.getElementById('contactMessage');
@@ -38,11 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
             messageDiv.innerHTML = '';
             
             try {
-                console.log('🚀 Attempting Firestore write...');
+                console.log('🚀 Attempting Firestore write to mail collection...');
                 
-                // Send confirmation email TO the user FROM your SendGrid account
+                // ✅ CORRECTED: Proper structure for Trigger Email extension
                 const docRef = await firebase.firestore().collection('mail').add({
-                    to: userEmail, // Send to the user who filled the form
+                    to: userEmail,
                     message: {
                         subject: `Thank you for contacting FundMyFuture!`,
                         html: `
@@ -135,18 +135,23 @@ Phone: +27 21 831 0700
 
 FundMyFuture
 5th floor 112 Long St, Cape Town, 8000`
-                    },
-                    contact_data: {
-                        name: name,
-                        email: userEmail,
-                        message: message,
-                        timestamp: new Date(),
-                        source: 'website_contact'
-                    },
-                    type: 'contact_form_confirmation'
+                    }
                 });
                 
-                console.log('✅ Contact confirmation sent with ID:', docRef.id);
+                console.log('✅ Contact confirmation queued with ID:', docRef.id);
+                
+                // ✅ ALSO save to contactSubmissions for your records
+                await firebase.firestore().collection('contactSubmissions').add({
+                    name: name,
+                    email: userEmail,
+                    message: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'new',
+                    emailSent: true,
+                    mailDocId: docRef.id
+                });
+                
+                console.log('✅ Contact submission saved to database');
                 
                 // Success message
                 messageDiv.innerHTML = '<div class="alert alert-success">Thank you for your message! We have sent a confirmation email to your inbox.</div>';
