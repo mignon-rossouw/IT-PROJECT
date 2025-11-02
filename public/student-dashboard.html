@@ -6,470 +6,585 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - FundMyFuture</title>
 
- <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
-    
-    <!-- Global Auth Manager -->
-<script src="./js/auth-manager.js"></script>
-    
-  <!-- External CSS Libraries -->
-  <!-- Bootstrap CSS for responsive layout and components -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons for additional icon set -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
-  <!-- Custom global stylesheet -->
-  <link rel="stylesheet" href="./css/styles.css">
+    <!-- Firebase configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+            authDomain: "fund-my-future-47844.firebaseapp.com",
+            databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+            projectId: "fund-my-future-47844",
+            storageBucket: "fund-my-future-47844.firebasestorage.app",
+            messagingSenderId: "581912293895",
+            appId: "1:581912293895:web:03468061fae2124ac770a2",
+            measurementId: "G-LFC0R1GBE1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- External CSS Libraries -->
+    <!-- Bootstrap CSS for responsive layout and components -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons for additional icon set -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom global stylesheet -->
+    <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-/* COLOUR PALLET (dark to light)
-Blue 1:   #012A4A
-Blue 2:   #013A63
-Blue 3:   #01497C
-Blue 4:   #014F86
-Blue 5:   #2A6F97
-Blue 6:   #2C7DA0
-Blue 7:   #468FAF
-Blue 8:   #61A5C2
-Blue 9:   #89C2D9
-Blue 10:  #A9D6E5
-*/
+        /* COLOUR PALLET (dark to light)
+        Blue 1:   #012A4A
+        Blue 2:   #013A63
+        Blue 3:   #01497C
+        Blue 4:   #014F86
+        Blue 5:   #2A6F97
+        Blue 6:   #2C7DA0
+        Blue 7:   #468FAF
+        Blue 8:   #61A5C2
+        Blue 9:   #89C2D9
+        Blue 10:  #A9D6E5
+        */
 
-/* Prevent horizontal scrolling */
-body {
-  overflow-x: hidden;
-}
+        /* Prevent horizontal scrolling */
+        body {
+            overflow-x: hidden;
+        }
 
-/* Dashboard header styling */
-.dashboard-header {
-  background-color: #2A6F97;
-  padding: 30px 0;
-  margin-bottom: 0px;
-  color: white;
-}
+        /* Dashboard header styling */
+        .dashboard-header {
+            background-color: #2A6F97;
+            padding: 30px 0;
+            margin-bottom: 0px;
+            color: white;
+        }
 
-/* Background pattern for profile section */
-  .profile-background {
-  width: 100%;
-    background:
-      conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
-      conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
-      conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
-      conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
-      linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
-      conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
-      linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
-    background-size: 168px 194px;
-  }
+        /* Background pattern for profile section */
+        .profile-background {
+            width: 100%;
+            background:
+                conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0),
+                conic-gradient(from 120deg at 50% 87.5%, #a9d6e5 120deg, #0000 0) 0 97px,
+                conic-gradient(from 180deg at 75%, #61A5C2 60deg, #0000 0),
+                conic-gradient(from 60deg at 75% 75%, #a9d6e5 0 60deg, #0000 0),
+                linear-gradient(150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) 0 97px,
+                conic-gradient(at 25% 25%, #0000 50%, #61A5C2 0 240deg, #a9d6e5 0 300deg, #61A5C2 0),
+                linear-gradient(-150deg, #0000 8.33%, #a9d6e5 0 25%, #0000 0) #012a4a;
+            background-size: 168px 194px;
+        }
 
-/* Edit Modal Styles */
-.edit-modal .modal-content {
-  background-color: #A9D6E5;
-  border: 3px solid #012A4A;
-}
-.edit-modal .form-label {
-  color: #012A4A;
-  font-weight: bold;
-}
+        /* Edit Modal Styles */
+        .edit-modal .modal-content {
+            background-color: #A9D6E5;
+            border: 3px solid #012A4A;
+        }
+        .edit-modal .form-label {
+            color: #012A4A;
+            font-weight: bold;
+        }
 
-/* Card Styling */
-.card-header {
-  background-color: #012A4A;
-  color: #A9D6E5;
-}
+        /* Card Styling */
+        .card-header {
+            background-color: #012A4A;
+            color: #A9D6E5;
+        }
 
-/* Edit button styling - Profile */
-.btn-edit {
-  background: none;
-  border: none;
-  color: #A9D6E5;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        /* Edit button styling - Profile */
+        .btn-edit {
+            background: none;
+            border: none;
+            color: #A9D6E5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.btn-edit:hover {
-  color: #ffd60a;
-  transform: scale(1.02);
-}
+        .btn-edit:hover {
+            color: #ffd60a;
+            transform: scale(1.02);
+        }
 
-/* Change Profile Picture Button */
-.btn-change-photo {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  transition: all 0.3s ease;
-}
+        /* Change Profile Picture Button */
+        .btn-change-photo {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            transition: all 0.3s ease;
+        }
 
-.btn-change-photo:hover {
-  background-color: #ffd60a;
-  color: #012A4A;
-  transform: scale(1.02);
-}
+        .btn-change-photo:hover {
+            background-color: #ffd60a;
+            color: #012A4A;
+            transform: scale(1.02);
+        }
 
-/* Campaign card styles */
-.campaign-card {
-  transition: transform 0.2s;
-}
-.campaign-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
+        /* Campaign card styles */
+        .campaign-card {
+            transition: transform 0.2s;
+        }
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
 
-/* Alert positioning */
-.alert-fixed {
-  position: fixed;
-  top: 100px;
-  right: 20px;
-  z-index: 9999;
-  min-width: 300px;
-}
+        /* Alert positioning */
+        .alert-fixed {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
 
-/* Loading spinner */
-#loadingSpinner {
-  z-index: 9999;
-}
+        /* Loading spinner */
+        #loadingSpinner {
+            z-index: 9999;
+        }
 
-/* Profile picture upload */
-.profile-picture-container {
-  position: relative;
-  display: inline-block;
-}
-.profile-picture-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s;
-  cursor: pointer;
-}
-.profile-picture-container:hover .profile-picture-overlay {
-  opacity: 1;
-}
+        /* Profile picture upload */
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+        }
+        .profile-picture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+        .profile-picture-container:hover .profile-picture-overlay {
+            opacity: 1;
+        }
 
-/* Profile icon color */
-.profile-icon {
-  color: #A9D6E5;
-}
+        /* Profile icon color */
+        .profile-icon {
+            color: #A9D6E5;
+        }
 
-/* Custom progress bar container */
-.custom-progress {
-  height: 20px;
-  background-color: #e0af0057;
-  border-radius: 5px;
-  overflow: hidden;
-}
+        /* Custom progress bar container */
+        .custom-progress {
+            height: 20px;
+            background-color: #e0af0057;
+            border-radius: 5px;
+            overflow: hidden;
+        }
 
-/* Custom progress bar fill */
-.custom-bar {
-  background-color: #e0b000;
-  color: #012a4a;
-  font-weight: bold;
-  text-align: center;
-  line-height: 30px;
-  border-radius: 5px;
-  transition: width 0.6s ease;
-}
+        /* Custom progress bar fill */
+        .custom-bar {
+            background-color: #e0b000;
+            color: #012a4a;
+            font-weight: bold;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 5px;
+            transition: width 0.6s ease;
+        }
 
-/* Progress section background */
-.progress-section {
-  background-color: #86a9c35e;
-  border-radius: 5px;
-}
+        /* Progress section background */
+        .progress-section {
+            background-color: #86a9c35e;
+            border-radius: 5px;
+        }
 
-/* Share button styling */
-.btn-share {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  transition: all 0.3s ease;
-}
+        /* Share button styling */
+        .btn-share {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            transition: all 0.3s ease;
+        }
 
-/* Share button hover effects */
-.btn-share:hover {
-  background-color: #ffd60a;
-  transform: scale(1.01);
-}
+        /* Share button hover effects */
+        .btn-share:hover {
+            background-color: #ffd60a;
+            transform: scale(1.01);
+        }
 
-/* View all button styling */
-.btn-view-all {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* View all button styling */
+        .btn-view-all {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
 
-/* View all button hover effects */
-.btn-view-all:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
+        /* View all button hover effects */
+        .btn-view-all:hover {
+            color: #012A4A;
+            background-color: #89C2D9;
+            transform: scale(1.01);
+        }
 
-/* Custom horizontal rule styling */
-.custom-hr {
-  border: none;
-  border-radius: 5px;
-  height: 2px;
-  background-color: #012a4aa7;
-}
+        /* Custom horizontal rule styling */
+        .custom-hr {
+            border: none;
+            border-radius: 5px;
+            height: 2px;
+            background-color: #012a4aa7;
+        }
 
-/* Spacer utility class */
-.spacer {
-  height: 20px;
-}
+        /* Spacer utility class */
+        .spacer {
+            height: 20px;
+        }
 
-/* Progress title styling */
-.progress-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+        /* Progress title styling */
+        .progress-title {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-/* Donations title styling */
-.donations-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+        /* Donations title styling */
+        .donations-title {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-/* Donations link color */
-.donations-link {
-  color: #A9D6E5;
-}
+        /* Donations link color */
+        .donations-link {
+            color: #A9D6E5;
+        }
 
-/* About title styling */
-.about-title {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+        /* About title styling */
+        .about-title {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-/* Share update title styling */
-.share-update {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+        /* Share update title styling */
+        .share-update {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-/* Updates title styling */
-.updates {
-  background-color: #2A6F97;
-  color: #A9D6E5;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+        /* Updates title styling */
+        .updates {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-/* Update link color */
-.update-link {
-  color: #A9D6E5;
-}
+        /* Update link color */
+        .update-link {
+            color: #A9D6E5;
+        }
 
-/* Post update button styling */
-.btn-post-update {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* Post update button styling */
+        .btn-post-update {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
 
-/* Post update button hover effects */
-.btn-post-update:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
+        /* Post update button hover effects */
+        .btn-post-update:hover {
+            color: #012A4A;
+            background-color: #89C2D9;
+            transform: scale(1.01);
+        }
 
-/* View update button styling */
-.btn-view-update {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 800;
-  box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
-  transition: all 0.3s ease;
-}
+        /* View update button styling */
+        .btn-view-update {
+            background-color: #012A4A;
+            color: #A9D6E5;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(55, 44, 161, 0.2);
+            transition: all 0.3s ease;
+        }
 
-/* View update button hover effects */
-.btn-view-update:hover {
-  color: #012A4A;
-  background-color: #89C2D9;
-  transform: scale(1.01);
-}
+        /* View update button hover effects */
+        .btn-view-update:hover {
+            color: #012A4A;
+            background-color: #89C2D9;
+            transform: scale(1.01);
+        }
 
-/* Edit button icon styling */
-.edit-btn i {
-  font-size: 2rem;
-  color: #A9D6E5;
-  transition: color 0.2s ease;
-}
+        /* Edit button icon styling */
+        .edit-btn i {
+            font-size: 2rem;
+            color: #A9D6E5;
+            transition: color 0.2s ease;
+        }
 
-/* Edit button hover effects */
-.edit-btn:hover i {
-  color: #ffda1f;
-}
+        /* Edit button hover effects */
+        .edit-btn:hover i {
+            color: #ffda1f;
+        }
 
-/* Share update button icon styling */
-.share-update-btn i {
-  font-size: 1.2rem;
-  color: #A9D6E5;
-  transition: color 0.2s ease;
-}
+        /* Share update button icon styling */
+        .share-update-btn i {
+            font-size: 1.2rem;
+            color: #A9D6E5;
+            transition: color 0.2s ease;
+        }
 
-/* Share update button hover effects */
-.share-update-btn:hover i {
-  color: #ffd60a;
-}
+        /* Share update button hover effects */
+        .share-update-btn:hover i {
+            color: #ffd60a;
+        }
 
-/* Primary button styling */
-.btn-primary-custom {
-  background-color: #2A6F97;
-  color: white;
-  border: none;
-  transition: all 0.3s ease;
-}
+        /* Primary button styling */
+        .btn-primary-custom {
+            background-color: #2A6F97;
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-.btn-primary-custom:hover {
-  background-color: #468FAF;
-  color: white;
-  transform: scale(1.02);
-}
+        .btn-primary-custom:hover {
+            background-color: #468FAF;
+            color: white;
+            transform: scale(1.02);
+        }
 
-/* Navbar styling */
-.navbar-custom {
-  background-color: #012A4A;
-}
+        /* Navbar styling */
+        .navbar-custom {
+            background-color: #012A4A;
+        }
 
-.navbar-custom .navbar-brand,
-.navbar-custom .nav-link {
-  color: #A9D6E5 !important;
-}
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: #A9D6E5 !important;
+        }
 
-.donate-btn, .login-btn {
-  background-color: #2A6F97;
-  color: white;
-  border: none;
-}
+        .donate-btn, .login-btn {
+            background-color: #2A6F97;
+            color: white;
+            border: none;
+        }
 
-.donate-btn:hover, .login-btn:hover {
-  background-color: #468FAF;
-  color: white;
-}
+        .donate-btn:hover, .login-btn:hover {
+            background-color: #468FAF;
+            color: white;
+        }
 
-/* Profile card styling */
-.profile-card {
-  border-radius: 10px;
-  overflow: hidden;
-}
+        /* Profile card styling */
+        .profile-card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-.title-container {
-  background-color: #2A6F97 !important;
-}
+        .title-container {
+            background-color: #2A6F97 !important;
+        }
 
-.title-profile {
-  color: #A9D6E5;
-}
+        .title-profile {
+            color: #A9D6E5;
+        }
+
+        /* Verification Status Styles */
+        .verification-badge {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .verification-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .verification-verified {
+            background-color: #d1edff;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .verification-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .document-status {
+            font-size: 0.85rem;
+        }
+
+        .document-complete {
+            color: #198754;
+        }
+
+        .document-missing {
+            color: #dc3545;
+        }
+
+        /* Document Upload Styles */
+        .upload-area {
+            border: 2px dashed #89C2D9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: rgba(169, 214, 229, 0.1);
+        }
+
+        .upload-area:hover {
+            border-color: #2A6F97;
+            background-color: rgba(169, 214, 229, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 2.5rem;
+            color: #2A6F97;
+            margin-bottom: 10px;
+        }
+
+        .document-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .document-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .upload-progress {
+            margin-top: 10px;
+        }
+
+        /* Document Upload Modal Styles */
+        .upload-modal .modal-content {
+            background-color: #A9D6E5;
+            border: 3px solid #012A4A;
+        }
+
+        .upload-modal .modal-header {
+            background-color: #2A6F97;
+            color: #A9D6E5;
+        }
+
+        .document-type-title {
+            color: #012A4A;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .file-icon {
+            font-size: 4rem;
+            color: #2A6F97;
+            margin-bottom: 10px;
+        }
+
+        /* Document action buttons */
+        .document-actions-container {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-view-document {
+            background-color: #198754;
+            color: white;
+            border: none;
+        }
+
+        .btn-view-document:hover {
+            background-color: #157347;
+            color: white;
+        }
     </style>
 </head>
 <body>
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
-  <div class="container-fluid">
-    <!-- Brand/Logo linking to homepage -->
-    <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+    <div class="container-fluid">
+        <!-- Brand/Logo linking to homepage -->
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Mobile menu toggle button -->
-    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Mobile menu toggle button -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Offcanvas navigation menu for mobile devices -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
-      <div class="offcanvas-header">
-        <!-- Close button for offcanvas menu -->
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <!-- Donate button call-to-action -->
-          <li class="nav-item me-3">
-            <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
-          </li>
-          <!-- Student section link -->
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
-          </li>
-          <!-- Funder section link -->
-          <li class="nav-item">
-            <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
-          </li>
-          <!-- About us informational link -->
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">ABOUT US</a>
-          </li>
-          <!-- Login/authentication button -->
-          <li class="nav-item me-2" id="login-area">
-            <button class="btn login-btn fw-bolder" id="logoutButton">LOGOUT</button>
-          </li>
-        </ul>
-      </div>
+        <!-- Offcanvas navigation menu for mobile devices -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+            <div class="offcanvas-header">
+                <!-- Close button for offcanvas menu -->
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav ms-auto align-items-center" id="navList">
+                    <!-- Navigation items will be populated by JavaScript -->
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
-
 
 <!-- Dashboard Header -->
 <div class="container-fluid dashboard-header">
     <div class="container">
         <div class="flex-grow-1 text-start">
-          <!-- User role indicator -->
-          <h4 class="fw-bold funder-heading mb-0">Student</h4>
-          <!-- Main dashboard heading -->
-          <h2 class="fw-bold dashboard-heading">Dashboard</h2>
+            <!-- User role indicator -->
+            <h4 class="fw-bold funder-heading mb-0">Student</h4>
+            <!-- Main dashboard heading -->
+            <h2 class="fw-bold dashboard-heading">Dashboard</h2>
         </div>
         <p class="">Welcome back, <span id="welcomeName">Student</span>!</p>
     </div>
 </div>
 
 <!-- Main Content -->
-    <!-- Profile Section -->
-    <div class="container-fluid profile-background py-4 px-4 mb-5">
-      <div class="container">
+<!-- Profile Section -->
+<div class="container-fluid profile-background py-4 px-4 mb-5">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="card profile-card border-0 shadow mb-4">
-                  <div class="card-header title-container">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
-                            <i class="bi bi-person-badge me-2 fs-3"></i> Profile Information
-                        </h5>
-                        <button class="btn btn-edit d-flex align-items-center" id="editProfileButton">
-                            <i class="bi bi-pencil me-1 fs-3"></i>
-                        </button>
+                    <div class="card-header title-container">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                                <i class="bi bi-person-badge me-2 fs-3"></i> Profile Information
+                            </h5>
+                            <button class="btn btn-edit d-flex align-items-center" id="editProfileButton">
+                                <i class="bi bi-pencil me-1 fs-3"></i>
+                            </button>
+                        </div>
                     </div>
-                  </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3 text-center mb-3">
@@ -486,6 +601,12 @@ body {
                                     <button class="btn btn-sm btn-change-photo" id="changePhotoButton">
                                         <i class="bi bi-camera-fill me-2"></i>Change Photo
                                     </button>
+                                </div>
+                                <!-- Verification Status -->
+                                <div class="mt-3">
+                                    <span id="verificationStatusBadge" class="badge verification-badge verification-pending">
+                                        <i class="bi bi-clock-history me-1"></i>Verification Pending
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-9">
@@ -519,6 +640,44 @@ body {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Document Status -->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <h6 class="fw-bold">Document Status:</h6>
+                                        <div class="d-flex flex-column gap-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span id="idDocumentStatus" class="document-status document-missing">
+                                                    <i class="bi bi-file-earmark me-1"></i>ID Document: Missing
+                                                </span>
+                                                <div class="document-actions-container" id="idDocumentActions">
+                                                    <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('idDocument')">
+                                                        <i class="bi bi-upload me-1"></i>Upload
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span id="proofDocumentStatus" class="document-status document-missing">
+                                                    <i class="bi bi-file-earmark me-1"></i>Proof of Registration: Missing
+                                                </span>
+                                                <div class="document-actions-container" id="proofDocumentActions">
+                                                    <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('proofOfRegistration')">
+                                                        <i class="bi bi-upload me-1"></i>Upload
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span id="feeDocumentStatus" class="document-status document-missing">
+                                                    <i class="bi bi-file-earmark me-1"></i>Fee Statement: Missing
+                                                </span>
+                                                <div class="document-actions-container" id="feeDocumentActions">
+                                                    <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('feeStatement')">
+                                                        <i class="bi bi-upload me-1"></i>Upload
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -526,70 +685,72 @@ body {
             </div>
         </div>
     </div>
+</div>
 
-
-    <!-- Academic Information -->
-    <div class="container">
-      <div class="row">
+<!-- Academic Information -->
+<div class="container">
+    <div class="row">
         <div class="col-12">
-
-          <div class="card profile-card border-0 shadow mb-4">
-              <div class="card-header title-container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
-                        <i class="bi bi-book me-2 fs-3"></i> Academic Information
-                    </h5>
-                    <button class="btn btn-edit d-flex align-items-center" id="editAcademicButton">
-                        <i class="bi bi-pencil me-1 fs-3"></i>
-                    </button>
-                </div>
-              </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label fw-bold">Institution</label>
-                    <p id="displayInstitution" class="form-control-plaintext">Loading...</p>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label fw-bold">Course/Program</label>
-                    <p id="displayCourse" class="form-control-plaintext">Loading...</p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Year of Study</label>
-                        <p id="displayYear" class="form-control-plaintext">Loading...</p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Expected Graduation</label>
-                        <p id="displayGraduation" class="form-control-plaintext">Loading...</p>
+            <div class="card profile-card border-0 shadow mb-4">
+                <div class="card-header title-container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                            <i class="bi bi-book me-2 fs-3"></i> Academic Information
+                        </h5>
+                        <button class="btn btn-edit d-flex align-items-center" id="editAcademicButton">
+                            <i class="bi bi-pencil me-1 fs-3"></i>
+                        </button>
                     </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- Campaign Management -->
-    <div class="row p-5">
-        <div class="col-12">
-          <div class="card profile-card border-0 shadow mb-4">
-            <div class="card-header title-container">
-              <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
-                      <i class="bi bi-plus-circle me-2 fs-3"></i> Campaign Management
-                  </h5>
-                  <button class="btn btn-edit d-flex align-items-center" id="createCampaignButton">
-                      <i class="bi bi-plus-lg me-1 fs-3"></i>
-                  </button>
-              </div>
-            </div>
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Institution</label>
+                                <p id="displayInstitution" class="form-control-plaintext">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Course/Program</label>
+                                <p id="displayCourse" class="form-control-plaintext">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Year of Study</label>
+                                <p id="displayYear" class="form-control-plaintext">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Expected Graduation</label>
+                                <p id="displayGraduation" class="form-control-plaintext">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Campaign Management -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card profile-card border-0 shadow mb-4">
+                <div class="card-header title-container">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
+                            <i class="bi bi-plus-circle me-2 fs-3"></i> Campaign Management
+                        </h5>
+                        <button class="btn btn-edit d-flex align-items-center" id="createCampaignButton">
+                            <i class="bi bi-plus-lg me-1 fs-3"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="campaignCreationMessage" class="alert alert-info d-none mb-3">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <span id="campaignMessageText"></span>
+                    </div>
                     <div id="campaignsList">
                         <div class="text-center py-4">
                             <i class="bi bi-flag display-1 text-muted"></i>
@@ -604,6 +765,7 @@ body {
             </div>
         </div>
     </div>
+</div>
 
 <!-- Edit Profile Modal -->
 <div class="modal fade edit-modal" id="editProfileModal" tabindex="-1">
@@ -628,6 +790,44 @@ body {
     </div>
 </div>
 
+<!-- Document Upload Modal -->
+<div class="modal fade upload-modal" id="uploadDocumentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalTitle">Upload Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6 class="document-type-title" id="documentTypeTitle">ID Document</h6>
+                <div class="upload-area" id="uploadArea">
+                    <i class="bi bi-cloud-upload upload-icon"></i>
+                    <p class="mb-2">Click to upload or drag and drop</p>
+                    <p class="small text-muted">PDF, JPG, or PNG (Max 5MB)</p>
+                    <input type="file" id="documentFileInput" accept=".pdf,.jpg,.jpeg,.png" class="d-none">
+                    <div id="documentPreview" class="d-none text-center">
+                        <div id="fileIcon" class="file-icon">
+                            <i class="bi bi-file-earmark"></i>
+                        </div>
+                        <img id="previewImage" class="document-preview d-none" alt="Document Preview">
+                        <div id="previewFileName" class="mt-2 fw-bold"></div>
+                    </div>
+                    <div class="upload-progress d-none" id="uploadProgress">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar">0%</div>
+                        </div>
+                        <p class="small mt-1 mb-0" id="progressText">Uploading...</p>
+                    </div>
+                </div>
+                <div class="document-actions mt-3" id="documentActions">
+                    <button type="button" class="btn btn-secondary" id="cancelUploadButton">Cancel</button>
+                    <button type="button" class="btn btn-primary-custom" id="submitDocumentButton" disabled>Submit Document</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Loading Spinner -->
 <div id="loadingSpinner" class="d-none position-fixed top-50 start-50 translate-middle" style="z-index: 9999;">
     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -638,95 +838,136 @@ body {
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Firebase Integration -->
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
-        authDomain: "fund-my-future-47844.firebaseapp.com",
-        databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
-        projectId: "fund-my-future-47844",
-        storageBucket: "fund-my-future-47844.firebasestorage.app",
-        messagingSenderId: "581912293895",
-        appId: "1:581912293895:web:03468061fae2124ac770a2",
-        measurementId: "G-LFC0R1GBE1"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+<!-- Student Dashboard Script -->
+<script>
+    // Firebase services
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
 
     let currentUser = null;
     let currentUserId = null;
     let editMode = null;
+    let currentDocumentType = null;
+    let selectedFile = null;
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', function() {
         initializeDashboard();
+        initializeNavbar();
     });
+
+    // Initialize navbar based on authentication state
+    function initializeNavbar() {
+        auth.onAuthStateChanged(user => {
+            const navList = document.getElementById('navList');
+            if (!navList) return;
+
+            if (user) {
+                // User is logged in
+                const userName = localStorage.getItem('userName') || 'User';
+                const userType = localStorage.getItem('userType') || 'student';
+                
+                let dashboardLink = '';
+                if (userType === 'student') {
+                    dashboardLink = '<li class="nav-item"><a class="nav-link" href="student-dashboard.html">DASHBOARD</a></li>';
+                } else if (userType === 'funder') {
+                    dashboardLink = '<li class="nav-item"><a class="nav-link" href="funder-dashboard.html">DASHBOARD</a></li>';
+                } else if (userType === 'admin') {
+                    dashboardLink = '<li class="nav-item"><a class="nav-link" href="admin-dashboard.html">DASHBOARD</a></li>';
+                }
+
+                navList.innerHTML = `
+                    <li class="nav-item me-3">
+                        <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+                    </li>
+                    ${dashboardLink}
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">ABOUT US</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link fw-bold">Welcome, ${userName}</span>
+                    </li>
+                    <li class="nav-item me-2">
+                        <button class="btn btn-outline-light ms-2" id="logoutBtnNav">LOGOUT</button>
+                    </li>
+                `;
+
+                // Add logout event listener
+                document.getElementById('logoutBtnNav').addEventListener('click', logout);
+            } else {
+                // User is logged out
+                navList.innerHTML = `
+                    <li class="nav-item me-3">
+                        <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">ABOUT US</a>
+                    </li>
+                    <li class="nav-item me-2" id="login-area">
+                        <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+                    </li>
+                `;
+            }
+        });
+    }
 
     async function initializeDashboard() {
         console.log('Initializing dashboard...');
         
-        // Add event listeners with null checks
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', logout);
-        }
+        // Add event listeners
+        document.getElementById('editProfileButton')?.addEventListener('click', () => openEditModal('profile'));
+        document.getElementById('editAcademicButton')?.addEventListener('click', () => openEditModal('academic'));
+        document.getElementById('changePhotoButton')?.addEventListener('click', changeProfilePicture);
+        document.getElementById('profilePictureOverlay')?.addEventListener('click', changeProfilePicture);
+        document.getElementById('createCampaignButton')?.addEventListener('click', createNewCampaign);
+        document.getElementById('createFirstCampaignButton')?.addEventListener('click', createNewCampaign);
+        document.getElementById('saveProfileChangesButton')?.addEventListener('click', saveProfileChanges);
 
-        const editProfileButton = document.getElementById('editProfileButton');
-        if (editProfileButton) {
-            editProfileButton.addEventListener('click', () => openEditModal('profile'));
-        }
+        // Document upload event listeners
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('documentFileInput').click();
+        });
+        document.getElementById('documentFileInput').addEventListener('change', handleFileSelect);
+        document.getElementById('cancelUploadButton').addEventListener('click', cancelUpload);
+        document.getElementById('submitDocumentButton').addEventListener('click', submitDocument);
 
-        const editAcademicButton = document.getElementById('editAcademicButton');
-        if (editAcademicButton) {
-            editAcademicButton.addEventListener('click', () => openEditModal('academic'));
-        }
-
-        const changePhotoButton = document.getElementById('changePhotoButton');
-        if (changePhotoButton) {
-            changePhotoButton.addEventListener('click', changeProfilePicture);
-        }
-
-        const profilePictureOverlay = document.getElementById('profilePictureOverlay');
-        if (profilePictureOverlay) {
-            profilePictureOverlay.addEventListener('click', changeProfilePicture);
-        }
-
-        const createCampaignButton = document.getElementById('createCampaignButton');
-        if (createCampaignButton) {
-            createCampaignButton.addEventListener('click', createNewCampaign);
-        }
-
-        const createFirstCampaignButton = document.getElementById('createFirstCampaignButton');
-        if (createFirstCampaignButton) {
-            createFirstCampaignButton.addEventListener('click', createNewCampaign);
-        }
-        
-        // Save button event listener - with null check and retry
-        const saveButton = document.getElementById('saveProfileChangesButton');
-        if (saveButton) {
-            saveButton.addEventListener('click', saveProfileChanges);
-            console.log('Save button event listener registered');
-        } else {
-            console.error('Save button not found!');
-        }
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#2A6F97';
+            uploadArea.style.backgroundColor = 'rgba(169, 214, 229, 0.3)';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#89C2D9';
+            uploadArea.style.backgroundColor = 'rgba(169, 214, 229, 0.1)';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#89C2D9';
+            uploadArea.style.backgroundColor = 'rgba(169, 214, 229, 0.1)';
+            
+            if (e.dataTransfer.files.length) {
+                handleFileSelect({ target: { files: e.dataTransfer.files } });
+            }
+        });
 
         // Check authentication and load data
-        onAuthStateChanged(auth, async (user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUserId = user.uid;
                 showLoading(true);
                 await loadUserData(user.uid);
                 showLoading(false);
             } else {
+                // Redirect to login if not authenticated
                 window.location.href = 'login.html';
             }
         });
@@ -734,8 +975,8 @@ body {
 
     async function loadUserData(userId) {
         try {
-            const userDoc = await getDoc(doc(db, "users", userId));
-            if (userDoc.exists()) {
+            const userDoc = await db.collection("users").doc(userId).get();
+            if (userDoc.exists) {
                 currentUser = { id: userDoc.id, ...userDoc.data() };
                 displayUserData(currentUser);
                 await loadUserCampaigns(userId);
@@ -756,7 +997,7 @@ body {
         document.getElementById('displayEmail').textContent = userData.email || 'Not provided';
         document.getElementById('displayPhone').textContent = userData.phoneNumber || 'Not provided';
         
-        // Date of Birth - Handle both Firestore Timestamp and Date objects
+        // Date of Birth
         if (userData.dateOfBirth) {
             let dobDate;
             if (userData.dateOfBirth.toDate) {
@@ -780,21 +1021,185 @@ body {
         document.getElementById('displayYear').textContent = userData.yearOfStudy || 'Not provided';
         document.getElementById('displayGraduation').textContent = userData.expectedGraduation || 'Not provided';
 
-        // Profile Picture - Ensure profile picture is displayed
+        // Profile Picture
         if (userData.profilePicture) {
             document.getElementById('profileImage').src = userData.profilePicture;
         } else {
             document.getElementById('profileImage').src = './assets/profile-user.png';
         }
+
+        // Verification Status
+        updateVerificationStatus(userData);
+
+        // Document Status
+        updateDocumentStatus(userData);
+
+        // Campaign Creation Eligibility
+        updateCampaignCreationEligibility(userData);
+    }
+
+    function updateVerificationStatus(userData) {
+        const verificationStatus = userData.verificationStatus || 'pending';
+        const badge = document.getElementById('verificationStatusBadge');
+        
+        badge.className = 'badge verification-badge ';
+        
+        switch(verificationStatus) {
+            case 'verified':
+                badge.classList.add('verification-verified');
+                badge.innerHTML = '<i class="bi bi-check-circle me-1"></i>Verified';
+                break;
+            case 'rejected':
+                badge.classList.add('verification-rejected');
+                badge.innerHTML = '<i class="bi bi-x-circle me-1"></i>Rejected';
+                if (userData.rejectionReason) {
+                    badge.title = `Reason: ${userData.rejectionReason}`;
+                }
+                break;
+            default:
+                badge.classList.add('verification-pending');
+                badge.innerHTML = '<i class="bi bi-clock-history me-1"></i>Verification Pending';
+        }
+    }
+
+    function updateDocumentStatus(userData) {
+        const documents = userData.documents || {};
+        
+        // ID Document
+        const idStatus = document.getElementById('idDocumentStatus');
+        const idActions = document.getElementById('idDocumentActions');
+        if (documents.idDocument && documents.idDocument.url) {
+            idStatus.className = 'document-status document-complete';
+            idStatus.innerHTML = '<i class="bi bi-check-circle me-1"></i>ID Document: Complete';
+            
+            // Add view button alongside upload button
+            idActions.innerHTML = `
+                <button class="btn btn-sm btn-view-document" onclick="viewDocument('idDocument')">
+                    <i class="bi bi-eye me-1"></i>View
+                </button>
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('idDocument')">
+                    <i class="bi bi-upload me-1"></i>Upload New
+                </button>
+            `;
+        } else {
+            idStatus.className = 'document-status document-missing';
+            idStatus.innerHTML = '<i class="bi bi-x-circle me-1"></i>ID Document: Missing';
+            idActions.innerHTML = `
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('idDocument')">
+                    <i class="bi bi-upload me-1"></i>Upload
+                </button>
+            `;
+        }
+
+        // Proof of Registration
+        const proofStatus = document.getElementById('proofDocumentStatus');
+        const proofActions = document.getElementById('proofDocumentActions');
+        if (documents.proofOfRegistration && documents.proofOfRegistration.url) {
+            proofStatus.className = 'document-status document-complete';
+            proofStatus.innerHTML = '<i class="bi bi-check-circle me-1"></i>Proof of Registration: Complete';
+            
+            proofActions.innerHTML = `
+                <button class="btn btn-sm btn-view-document" onclick="viewDocument('proofOfRegistration')">
+                    <i class="bi bi-eye me-1"></i>View
+                </button>
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('proofOfRegistration')">
+                    <i class="bi bi-upload me-1"></i>Upload New
+                </button>
+            `;
+        } else {
+            proofStatus.className = 'document-status document-missing';
+            proofStatus.innerHTML = '<i class="bi bi-x-circle me-1"></i>Proof of Registration: Missing';
+            proofActions.innerHTML = `
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('proofOfRegistration')">
+                    <i class="bi bi-upload me-1"></i>Upload
+                </button>
+            `;
+        }
+
+        // Fee Statement
+        const feeStatus = document.getElementById('feeDocumentStatus');
+        const feeActions = document.getElementById('feeDocumentActions');
+        if (documents.feeStatement && documents.feeStatement.url) {
+            feeStatus.className = 'document-status document-complete';
+            feeStatus.innerHTML = '<i class="bi bi-check-circle me-1"></i>Fee Statement: Complete';
+            
+            feeActions.innerHTML = `
+                <button class="btn btn-sm btn-view-document" onclick="viewDocument('feeStatement')">
+                    <i class="bi bi-eye me-1"></i>View
+                </button>
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('feeStatement')">
+                    <i class="bi bi-upload me-1"></i>Upload New
+                </button>
+            `;
+        } else {
+            feeStatus.className = 'document-status document-missing';
+            feeStatus.innerHTML = '<i class="bi bi-x-circle me-1"></i>Fee Statement: Missing';
+            feeActions.innerHTML = `
+                <button class="btn btn-sm btn-primary-custom" onclick="openUploadModal('feeStatement')">
+                    <i class="bi bi-upload me-1"></i>Upload
+                </button>
+            `;
+        }
+    }
+
+    // NEW FUNCTION: View uploaded document
+    function viewDocument(documentType) {
+        if (!currentUser || !currentUser.documents || !currentUser.documents[documentType]) {
+            showAlert('Document not found', 'warning');
+            return;
+        }
+        
+        const documentUrl = currentUser.documents[documentType].url;
+        if (documentUrl) {
+            // Open the document in a new tab
+            window.open(documentUrl, '_blank');
+        } else {
+            showAlert('Document URL not available', 'warning');
+        }
+    }
+
+    function updateCampaignCreationEligibility(userData) {
+        const messageDiv = document.getElementById('campaignCreationMessage');
+        const messageText = document.getElementById('campaignMessageText');
+        const createButtons = [
+            document.getElementById('createCampaignButton'),
+            document.getElementById('createFirstCampaignButton')
+        ];
+
+        const documents = userData.documents || {};
+        const hasAllDocuments = documents.idDocument && documents.idDocument.url &&
+                               documents.proofOfRegistration && documents.proofOfRegistration.url &&
+                               documents.feeStatement && documents.feeStatement.url;
+
+        const isVerified = userData.verificationStatus === 'verified';
+
+        if (!hasAllDocuments) {
+            messageText.textContent = 'Please upload all required documents (ID, Proof of Registration, Fee Statement) before creating a campaign.';
+            messageDiv.className = 'alert alert-warning mb-3';
+            createButtons.forEach(btn => {
+                if (btn) btn.disabled = true;
+            });
+        } else if (!isVerified) {
+            messageText.textContent = 'Your documents are under review. Please wait for admin verification before creating a campaign.';
+            messageDiv.className = 'alert alert-info mb-3';
+            createButtons.forEach(btn => {
+                if (btn) btn.disabled = true;
+            });
+        } else {
+            messageText.textContent = 'You can now create campaigns! All documents are verified.';
+            messageDiv.className = 'alert alert-success mb-3';
+            createButtons.forEach(btn => {
+                if (btn) btn.disabled = false;
+            });
+        }
+
+        messageDiv.classList.remove('d-none');
     }
 
     async function loadUserCampaigns(userId) {
         try {
-            const campaignsQuery = query(
-                collection(db, "campaigns"),
-                where("studentId", "==", userId)
-            );
-            const querySnapshot = await getDocs(campaignsQuery);
+            const campaignsQuery = db.collection("campaigns").where("studentId", "==", userId);
+            const querySnapshot = await campaignsQuery.get();
             
             const campaignsList = document.getElementById('campaignsList');
             
@@ -809,8 +1214,7 @@ body {
                         </button>
                     </div>
                 `;
-                // Add event listener to the new button
-                document.getElementById('createFirstCampaignButton2').addEventListener('click', createNewCampaign);
+                document.getElementById('createFirstCampaignButton2')?.addEventListener('click', createNewCampaign);
                 return;
             }
 
@@ -898,7 +1302,6 @@ body {
         let formFields = '';
         
         if (mode === 'profile') {
-            // Handle date format properly
             let dobValue = '';
             if (currentUser.dateOfBirth) {
                 let dobDate;
@@ -1029,7 +1432,7 @@ body {
             updates.updatedAt = new Date();
             
             showLoading(true);
-            await updateDoc(doc(db, "users", currentUserId), updates);
+            await db.collection("users").doc(currentUserId).update(updates);
             
             // Update local data
             currentUser = { ...currentUser, ...updates };
@@ -1069,19 +1472,16 @@ body {
                 try {
                     showLoading(true);
                     
-                    // Use simple path format that will work with basic storage rules
                     const timestamp = Date.now();
                     const fileExtension = file.name.split('.').pop();
-                    
-                    // Use this simple path format
-                    const storageRef = ref(storage, `profile-pictures/${currentUserId}_${timestamp}.${fileExtension}`);
+                    const storageRef = storage.ref(`profile-pictures/${currentUserId}_${timestamp}.${fileExtension}`);
                     
                     console.log('Uploading to:', storageRef.fullPath);
                     
-                    const snapshot = await uploadBytes(storageRef, file);
-                    const downloadURL = await getDownloadURL(snapshot.ref);
+                    const snapshot = await storageRef.put(file);
+                    const downloadURL = await snapshot.ref.getDownloadURL();
                     
-                    await updateDoc(doc(db, "users", currentUserId), {
+                    await db.collection("users").doc(currentUserId).update({
                         profilePicture: downloadURL,
                         updatedAt: new Date()
                     });
@@ -1103,6 +1503,24 @@ body {
     }
 
     function createNewCampaign() {
+        // Check if user is verified and has all documents
+        const documents = currentUser.documents || {};
+        const hasAllDocuments = documents.idDocument && documents.idDocument.url &&
+                               documents.proofOfRegistration && documents.proofOfRegistration.url &&
+                               documents.feeStatement && documents.feeStatement.url;
+
+        const isVerified = currentUser.verificationStatus === 'verified';
+
+        if (!hasAllDocuments) {
+            showAlert('Please upload all required documents before creating a campaign.', 'warning');
+            return;
+        }
+
+        if (!isVerified) {
+            showAlert('Your account needs to be verified by an admin before you can create campaigns.', 'warning');
+            return;
+        }
+
         window.location.href = 'campaign.html';
     }
 
@@ -1118,7 +1536,7 @@ body {
         if (confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
             try {
                 showLoading(true);
-                await deleteDoc(doc(db, "campaigns", campaignId));
+                await db.collection("campaigns").doc(campaignId).delete();
                 showLoading(false);
                 showAlert('Campaign deleted successfully!', 'success');
                 await loadUserCampaigns(currentUserId);
@@ -1130,11 +1548,204 @@ body {
         }
     }
 
+    // Document Upload Functions
+    function openUploadModal(documentType) {
+        currentDocumentType = documentType;
+        const modal = new bootstrap.Modal(document.getElementById('uploadDocumentModal'));
+        
+        // Set modal title based on document type
+        let documentTitle = '';
+        switch(documentType) {
+            case 'idDocument':
+                documentTitle = 'ID Document';
+                break;
+            case 'proofOfRegistration':
+                documentTitle = 'Proof of Registration';
+                break;
+            case 'feeStatement':
+                documentTitle = 'Fee Statement';
+                break;
+        }
+        
+        document.getElementById('uploadModalTitle').textContent = `Upload ${documentTitle}`;
+        document.getElementById('documentTypeTitle').textContent = documentTitle;
+        
+        // Reset the upload area
+        resetUploadArea();
+        
+        modal.show();
+    }
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        // Validate file type
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+            showAlert('Please select a PDF, JPG, or PNG file.', 'warning');
+            return;
+        }
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            showAlert('File size should be less than 5MB.', 'warning');
+            return;
+        }
+        
+        selectedFile = file;
+        
+        // Show preview
+        const previewDiv = document.getElementById('documentPreview');
+        const fileNameDiv = document.getElementById('previewFileName');
+        const previewImage = document.getElementById('previewImage');
+        const fileIcon = document.getElementById('fileIcon');
+        
+        if (file.type.startsWith('image/')) {
+            // For images, show the image preview
+            fileIcon.classList.add('d-none');
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // For PDFs, show a PDF icon
+            previewImage.classList.add('d-none');
+            fileIcon.classList.remove('d-none');
+            fileIcon.innerHTML = '<i class="bi bi-file-earmark-pdf text-danger"></i>';
+        }
+        
+        fileNameDiv.textContent = file.name;
+        previewDiv.classList.remove('d-none');
+        
+        // Enable submit button
+        document.getElementById('submitDocumentButton').disabled = false;
+    }
+
+    function cancelUpload() {
+        resetUploadArea();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadDocumentModal'));
+        modal.hide();
+    }
+
+    function resetUploadArea() {
+        document.getElementById('documentFileInput').value = '';
+        document.getElementById('documentPreview').classList.add('d-none');
+        document.getElementById('uploadProgress').classList.add('d-none');
+        document.getElementById('submitDocumentButton').disabled = true;
+        selectedFile = null;
+    }
+
+    async function submitDocument() {
+        if (!selectedFile || !currentDocumentType) return;
+        
+        try {
+            // Show progress
+            document.getElementById('uploadProgress').classList.remove('d-none');
+            document.getElementById('submitDocumentButton').disabled = true;
+            
+            // Upload file to Firebase Storage with proper permissions
+            const timestamp = Date.now();
+            const fileExtension = selectedFile.name.split('.').pop();
+            const fileName = `${currentDocumentType}_${timestamp}.${fileExtension}`;
+            const storageRef = storage.ref(`documents/${currentUserId}/${fileName}`);
+            
+            // Set metadata for the upload
+            const metadata = {
+                contentType: selectedFile.type,
+                customMetadata: {
+                    'uploadedBy': currentUserId,
+                    'documentType': currentDocumentType,
+                    'uploadedAt': timestamp.toString()
+                }
+            };
+            
+            const uploadTask = storageRef.put(selectedFile, metadata);
+            
+            // Track upload progress
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    document.getElementById('progressBar').textContent = Math.round(progress) + '%';
+                    document.getElementById('progressText').textContent = `Uploading: ${Math.round(progress)}%`;
+                },
+                (error) => {
+                    console.error("Upload error:", error);
+                    document.getElementById('uploadProgress').classList.add('d-none');
+                    document.getElementById('submitDocumentButton').disabled = false;
+                    
+                    if (error.code === 'storage/unauthorized') {
+                        showAlert('Upload failed: You do not have permission to upload files. Please contact support.', 'danger');
+                    } else {
+                        showAlert('Error uploading document: ' + error.message, 'danger');
+                    }
+                },
+                async () => {
+                    // Upload completed successfully
+                    try {
+                        const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                        
+                        // Update Firestore with document info
+                        const documentData = {
+                            url: downloadURL,
+                            fileName: selectedFile.name,
+                            uploadedAt: new Date(),
+                            status: 'pending',
+                            storagePath: `documents/${currentUserId}/${fileName}`
+                        };
+                        
+                        const updateData = {};
+                        updateData[`documents.${currentDocumentType}`] = documentData;
+                        updateData.verificationStatus = 'pending'; // Reset verification status when new document is uploaded
+                        updateData.updatedAt = new Date();
+                        
+                        await db.collection("users").doc(currentUserId).update(updateData);
+                        
+                        // Update local user data
+                        if (!currentUser.documents) {
+                            currentUser.documents = {};
+                        }
+                        currentUser.documents[currentDocumentType] = documentData;
+                        currentUser.verificationStatus = 'pending';
+                        
+                        // Update UI
+                        updateDocumentStatus(currentUser);
+                        updateVerificationStatus(currentUser);
+                        updateCampaignCreationEligibility(currentUser);
+                        
+                        // Close modal and show success message
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('uploadDocumentModal'));
+                        modal.hide();
+                        
+                        showAlert('Document uploaded successfully! Waiting for admin verification.', 'success');
+                    } catch (error) {
+                        console.error("Error updating user document:", error);
+                        showAlert('Error saving document information: ' + error.message, 'danger');
+                    }
+                }
+            );
+            
+        } catch (error) {
+            console.error("Error uploading document:", error);
+            document.getElementById('uploadProgress').classList.add('d-none');
+            document.getElementById('submitDocumentButton').disabled = false;
+            showAlert('Error uploading document: ' + error.message, 'danger');
+        }
+    }
+
     async function logout() {
         try {
-            await signOut(auth);
-            sessionStorage.removeItem('currentUser');
-            window.location.href = 'login.html';
+            await auth.signOut();
+            localStorage.removeItem('userType');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userUID');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('verificationStatus');
+            localStorage.removeItem('hasAllDocuments');
+            window.location.href = 'index.html'; // Redirect to homepage after logout
         } catch (error) {
             console.error("Error signing out:", error);
         }
@@ -1169,18 +1780,6 @@ body {
             spinner.classList.add('d-none');
         }
     }
-
-    // Make functions globally available
-    window.saveProfileChanges = saveProfileChanges;
-    window.logout = logout;
-    window.openEditModal = openEditModal;
-    window.changeProfilePicture = changeProfilePicture;
-    window.createNewCampaign = createNewCampaign;
-    window.viewCampaign = viewCampaign;
-    window.editCampaign = editCampaign;
-    window.deleteCampaign = deleteCampaign;
 </script>
-<!-- Dynamic navbar -->
-<script src="./js/navbar-auth.js"></script>
 </body>
 </html>

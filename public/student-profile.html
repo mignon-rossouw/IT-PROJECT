@@ -351,8 +351,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Initialize Firebase services
 const db = firebase.firestore();
 const auth = firebase.auth();
 
@@ -361,65 +359,75 @@ let currentStudentId = null;
 // Show loading indicator
 function showLoading(show = true) {
   const loadingIndicator = document.getElementById('loadingIndicator');
-  loadingIndicator.style.display = show ? 'block' : 'none';
+  if (loadingIndicator) {
+    loadingIndicator.style.display = show ? 'block' : 'none';
+  }
+}
+
+// Show error message
+function showErrorMessage(message, type = 'danger') {
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+  alertDiv.innerHTML = `
+    <strong>Error:</strong> ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  const container = document.querySelector('.container');
+  if (container) {
+    container.insertBefore(alertDiv, container.firstChild);
+  }
 }
 
 // Get student ID from URL parameters
 function getStudentIdFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('id');
+  const id = urlParams.get('id');
+  console.log('Student ID from URL:', id);
+  return id;
 }
 
-// Initialize the page
-document.addEventListener('DOMContentLoaded', async function() {
-  showLoading(true);
+// ===== FIXED STUDENT PROFILE LOADING =====
+async function loadStudentProfile(studentId) {
+  console.log('Loading profile for student:', studentId);
   
-  // Get student ID from URL
-  currentStudentId = getStudentIdFromURL();
-  
-  if (!currentStudentId) {
-    showErrorMessage("No student ID provided in URL");
+  if (!studentId || studentId === 'unknown') {
+    showErrorMessage('Invalid student ID provided');
     showLoading(false);
     return;
   }
-  
-  // Load student profile and campaigns
-  await loadStudentProfile(currentStudentId);
-  await loadStudentCampaigns(currentStudentId);
-  
-  showLoading(false);
-});
 
-async function loadStudentProfile(studentId) {
   try {
     const userDoc = await db.collection("users").doc(studentId).get();
     
     if (userDoc.exists) {
       const userData = userDoc.data();
-      console.log("Student profile data:", userData);
+      console.log("Student profile data loaded:", userData);
       
-      // Update profile information
-      document.getElementById('profileName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`.trim() || 'Student';
+      // Update profile information with fallbacks
+      document.getElementById('profileName').textContent = 
+        `${userData.firstName || userData.firstname || ''} ${userData.surname || userData.lastName || ''}`.trim() || 'Student';
       
-      // Update location
-      const location = userData.countryOfResidence || userData.city || userData.province || 'Location not specified';
+      // Update location with fallbacks
+      const location = userData.countryOfResidence || userData.city || userData.province || userData.location || 'Location not specified';
       document.getElementById('locationText').textContent = location;
       
       // Update university
-      const university = userData.institution || 'University not specified';
+      const university = userData.institution || userData.university || userData.school || 'University not specified';
       document.getElementById('universityText').textContent = university;
       
       // Update course
-      const course = userData.course || userData.fieldOfStudy || 'Course not specified';
+      const course = userData.course || userData.fieldOfStudy || userData.program || 'Course not specified';
       document.getElementById('courseText').textContent = course;
       
       // Update profile picture if available
-      if (userData.profilePicture) {
-        document.getElementById('profilePicture').src = userData.profilePicture;
+      if (userData.profilePicture || userData.photoURL) {
+        document.getElementById('profilePicture').src = userData.profilePicture || userData.photoURL;
       }
       
       // Update bio
-      const bio = userData.bio || userData.about || "I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.";
+      const bio = userData.bio || userData.about || userData.description || 
+                 "I'm a passionate student dedicated to achieving my educational goals. Your support helps me focus on my studies and build a better future through education.";
       document.getElementById('profileBio').textContent = bio;
       
       // Update email link
@@ -430,16 +438,24 @@ async function loadStudentProfile(studentId) {
         emailLink.style.display = 'none';
       }
       
+      // Update LinkedIn link
+      const linkedinLink = document.getElementById('linkedinLink');
+      if (userData.linkedin || userData.socialLinks) {
+        linkedinLink.href = userData.linkedin || userData.socialLinks.linkedin || '#';
+      } else {
+        linkedinLink.style.display = 'none';
+      }
+      
       // Update badges
       updateBadges(userData);
       
     } else {
-      console.log("No student data found");
-      showErrorMessage("Student profile not found");
+      console.log("No student data found for ID:", studentId);
+      showErrorMessage("Student profile not found. The student may have deleted their account or the ID is incorrect.");
     }
   } catch (error) {
     console.error("Error loading student profile:", error);
-    showErrorMessage("Error loading student profile");
+    showErrorMessage(`Error loading student profile: ${error.message}`);
   }
 }
 
@@ -450,75 +466,74 @@ function updateBadges(userData) {
   const badges = [];
   
   // Add badges based on user data
-  if (userData.verified) {
-    badges.push('<span class="badge bg-success me-2">Verified Student</span>');
+  if (userData.verified || userData.verificationStatus === 'verified') {
+    badges.push('<span class="badge bg-success me-2 mb-2">Verified Student</span>');
   }
   
   if (userData.firstGenerationStudent) {
-    badges.push('<span class="badge bg-primary me-2">First-Generation Student</span>');
+    badges.push('<span class="badge bg-primary me-2 mb-2">First-Generation Student</span>');
   }
   
-  if (userData.fieldOfStudy && (userData.fieldOfStudy.toLowerCase().includes('engineering') || 
-      userData.fieldOfStudy.toLowerCase().includes('science') ||
-      userData.fieldOfStudy.toLowerCase().includes('technology') ||
-      userData.fieldOfStudy.toLowerCase().includes('math'))) {
-    badges.push('<span class="badge bg-info me-2">STEM Scholar</span>');
+  const fieldOfStudy = userData.fieldOfStudy || userData.course || '';
+  if (fieldOfStudy.toLowerCase().includes('engineering') || 
+      fieldOfStudy.toLowerCase().includes('science') ||
+      fieldOfStudy.toLowerCase().includes('technology') ||
+      fieldOfStudy.toLowerCase().includes('math')) {
+    badges.push('<span class="badge bg-info me-2 mb-2">STEM Scholar</span>');
   }
   
-  if (userData.needsBased) {
-    badges.push('<span class="badge bg-warning text-dark me-2">Needs-based</span>');
+  if (userData.needsBased || userData.financialNeed) {
+    badges.push('<span class="badge bg-warning text-dark me-2 mb-2">Needs-based</span>');
   }
   
   // If no specific badges, show a generic one
   if (badges.length === 0) {
-    badges.push('<span class="badge bg-secondary me-2">FundMyFuture Student</span>');
+    badges.push('<span class="badge bg-secondary me-2 mb-2">FundMyFuture Student</span>');
   }
   
   badgesContainer.innerHTML = badges.join('');
 }
 
+// ===== FIXED CAMPAIGN LOADING =====
 async function loadStudentCampaigns(studentId) {
+  console.log('Loading campaigns for student:', studentId);
+  
   try {
-    // Try multiple field names for student ID compatibility
-    const campaignsQuery1 = db.collection("campaigns").where("studentId", "==", studentId);
-    const campaignsQuery2 = db.collection("campaigns").where("student_id", "==", studentId);
-    
-    const [snapshot1, snapshot2] = await Promise.all([
-      campaignsQuery1.get(),
-      campaignsQuery2.get()
-    ]);
-    
+    // Try multiple field names for student ID
+    const possibleFields = ['studentId', 'student_id', 'createdBy', 'userId', 'creatorId'];
     let allCampaigns = [];
     
-    // Process first query results
-    snapshot1.forEach((doc) => {
-      allCampaigns.push({ id: doc.id, ...doc.data() });
-    });
-    
-    // Process second query results (avoid duplicates)
-    snapshot2.forEach((doc) => {
-      const existing = allCampaigns.find(campaign => campaign.id === doc.id);
-      if (!existing) {
-        allCampaigns.push({ id: doc.id, ...doc.data() });
+    // Query campaigns using different field names
+    for (const field of possibleFields) {
+      try {
+        const querySnapshot = await db.collection("campaigns")
+          .where(field, "==", studentId)
+          .where("status", "in", ["active", "published", "live"])
+          .get();
+        
+        querySnapshot.forEach((doc) => {
+          const campaignData = doc.data();
+          // Avoid duplicates
+          if (!allCampaigns.find(c => c.id === doc.id)) {
+            allCampaigns.push({
+              id: doc.id,
+              ...campaignData,
+              // Ensure studentId is set for consistency
+              studentId: studentId
+            });
+          }
+        });
+      } catch (error) {
+        console.log(`Query with field ${field} failed:`, error.message);
       }
-    });
-    
-    // Sort campaigns by creation date (newest first)
-    allCampaigns.sort((a, b) => {
-      const aTime = a.createdAt ? (a.createdAt.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt).getTime()) : 0;
-      const bTime = b.createdAt ? (b.createdAt.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt).getTime()) : 0;
-      return bTime - aTime;
-    });
+    }
     
     console.log(`Found ${allCampaigns.length} campaigns for student ${studentId}`);
     
     if (allCampaigns.length === 0) {
-      // No campaigns found
       document.getElementById('noCampaignsMessage').style.display = 'block';
       document.getElementById('campaignsGrid').style.display = 'none';
-      
-      // Update progress stats with zeros
-      updateProgressStats([], 0);
+      updateProgressStats([], studentId);
       return;
     }
     
@@ -536,6 +551,7 @@ async function loadStudentCampaigns(studentId) {
     console.error("Error loading campaigns:", error);
     document.getElementById('noCampaignsMessage').style.display = 'block';
     document.getElementById('campaignsGrid').style.display = 'none';
+    showErrorMessage("Error loading student campaigns");
   }
 }
 
@@ -600,6 +616,7 @@ function createCampaignCard(campaign) {
   card.onclick = () => {
     window.location.href = `view-campaign.html?id=${campaign.id}`;
   };
+  card.style.cursor = 'pointer';
   
   card.innerHTML = `
     ${imageHtml}
@@ -673,18 +690,24 @@ async function updateSupporterCount(studentId, campaigns) {
       return;
     }
     
-    // Get donations for these campaigns
-    const donationsQuery = db.collection("donations")
-      .where("campaignId", "in", campaignIds)
-      .where("paymentStatus", "==", "completed");
+    // Get donations for these campaigns (in batches if more than 10)
+    let allDonations = [];
+    const batchSize = 10;
     
-    const donationsSnapshot = await donationsQuery.get();
+    for (let i = 0; i < campaignIds.length; i += batchSize) {
+      const batch = campaignIds.slice(i, i + batchSize);
+      const donationsQuery = db.collection("donations")
+        .where("campaignId", "in", batch)
+        .where("paymentStatus", "==", "completed");
+      
+      const donationsSnapshot = await donationsQuery.get();
+      donationsSnapshot.forEach(doc => {
+        allDonations.push(doc.data());
+      });
+    }
+    
     let supporterIds = new Set();
-    let donationsList = [];
-    
-    donationsSnapshot.forEach(doc => {
-      const donation = doc.data();
-      donationsList.push(donation);
+    allDonations.forEach(donation => {
       if (donation.funderId) {
         supporterIds.add(donation.funderId);
       }
@@ -694,7 +717,7 @@ async function updateSupporterCount(studentId, campaigns) {
     document.getElementById('totalSupporters').textContent = supporterIds.size.toString();
     
     // Update supporter messages with the latest donations
-    updateSupporterMessages(donationsList.slice(0, 5));
+    updateSupporterMessages(allDonations.slice(0, 5));
     
   } catch (error) {
     console.error("Error loading supporter count:", error);
@@ -733,16 +756,32 @@ function updateSupporterMessages(donations) {
   // If no messages, the default message remains
 }
 
-function showErrorMessage(message) {
-  const alertDiv = document.createElement('div');
-  alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
-  alertDiv.innerHTML = `
-    ${message}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  `;
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async function() {
+  showLoading(true);
   
-  document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
-}
+  // Get student ID from URL
+  currentStudentId = getStudentIdFromURL();
+  
+  if (!currentStudentId) {
+    showErrorMessage("No student ID provided in URL");
+    showLoading(false);
+    return;
+  }
+  
+  try {
+    // Load student profile and campaigns in parallel
+    await Promise.all([
+      loadStudentProfile(currentStudentId),
+      loadStudentCampaigns(currentStudentId)
+    ]);
+  } catch (error) {
+    console.error("Error initializing page:", error);
+    showErrorMessage("Failed to load student data");
+  }
+  
+  showLoading(false);
+});
 
 // Newsletter functionality
 document.addEventListener('DOMContentLoaded', function() {

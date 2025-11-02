@@ -1,17 +1,27 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Simple rule - allow all authenticated users to read/write profile pictures
-    match /profile-pictures/{allPaths=**} {
-      allow read, write: if request.auth != null;
+    // Profile pictures - users can only access their own
+    match /profile-pictures/{fileName} {
+      allow read, write: if 
+        request.auth != null && 
+        fileName.split('_')[0] == request.auth.uid;
     }
-    
-    // Allow authenticated users to read/write campaign images
-    match /campaign-images/{allPaths=**} {
-      allow read, write: if request.auth != null;
+
+    // Documents - users can only access their own folder
+    match /documents/{userId}/{fileName} {
+      allow read, write: if 
+        request.auth != null && 
+        request.auth.uid == userId;
     }
-    
-    // Default deny all other access
+
+    // Campaign images - public read, authenticated write
+    match /campaign-images/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Default deny
     match /{allPaths=**} {
       allow read, write: if false;
     }

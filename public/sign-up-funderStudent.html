@@ -10,7 +10,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* Your existing CSS remains the same */
+    /* Your existing CSS remains exactly the same */
     .navbar-custom {
       background-color: #012A4A; 
       height: 90px;
@@ -1020,15 +1020,16 @@ async function handleSignup() {
       }
     }
 
-    // Prepare user data for Firestore
+    // Prepare user data for Firestore - UPDATED STRUCTURE FOR VERIFICATION SYSTEM
     const userData = {
+      userId: user.uid, // Add userId field
       email: email,
       userType: userType,
       createdAt: serverTimestamp(),
       profileComplete: true,
       firstName: firstName,
       surname: surName,
-      fullName: `${firstName} ${surName}`, // Store full name for reference
+      fullName: `${firstName} ${surName}`,
       idOrPassportNumber: idNumber,
       dateOfBirth: new Date(dob),
       contactNumber: contactNumber
@@ -1051,12 +1052,42 @@ async function handleSignup() {
         loadingOverlay.style.display = 'none';
         return;
       }
+
+      // STUDENT VERIFICATION FIELDS - Updated structure
+      userData.verificationStatus = "pending"; // "pending", "verified", "rejected"
+      userData.documents = {
+        idDocument: {
+          url: "", // Will be filled when student uploads documents later
+          uploadedAt: null,
+          status: "pending"
+        },
+        proofOfRegistration: {
+          url: "", // Will be filled when student uploads documents later
+          uploadedAt: null, 
+          status: "pending"
+        },
+        feeStatement: {
+          url: "", // Will be filled when student uploads documents later
+          uploadedAt: null,
+          status: "pending"
+        }
+      };
+      
+      // Admin tracking fields
+      userData.verifiedBy = null;
+      userData.verifiedAt = null;
+      userData.rejectionReason = null;
+      
     } else {
+      // Funder fields
       userData.displayName = `${firstName} ${surName}`;
       userData.totalDonated = 0;
+      
+      // Funders don't need verification
+      userData.verificationStatus = "not_required";
     }
 
-    // Save user data in Firestore
+    // Save user data in Firestore with the updated structure
     await setDoc(doc(db, "users", user.uid), userData);
 
     // SUCCESS - Show success message and redirect to home page
@@ -1071,13 +1102,17 @@ async function handleSignup() {
 
     // Store user data in localStorage for navbar
     localStorage.setItem('userType', userType);
-    localStorage.setItem('userName', firstName); // Store first name only
+    localStorage.setItem('userName', firstName);
     localStorage.setItem('userUID', user.uid);
 
     setTimeout(() => {
       loadingOverlay.style.display = 'none';
-      // Redirect to home page instead of dashboard
-      window.location.href = "index.html";
+      // Redirect based on user type
+      if (userType === 'student') {
+        window.location.href = "student-dashboard.html"; // Redirect to student dashboard
+      } else {
+        window.location.href = "index.html"; // Redirect to home for funders
+      }
     }, 2000);
     
   } catch (error) {

@@ -25,6 +25,28 @@
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+
+    // Set session persistence and clear any existing auth state
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        console.log("Session persistence enabled");
+        // Clear any existing authentication on page load for security
+        return firebase.auth().signOut();
+      })
+      .then(() => {
+        console.log("Authentication cleared on page load");
+        // Clear all localStorage items
+        const itemsToRemove = [
+          'userType', 'userName', 'userUID', 'userEmail', 
+          'verificationStatus', 'hasAllDocuments',
+          'studentDocuments', 'studentProfile', 
+          'funderDocuments', 'funderProfile'
+        ];
+        itemsToRemove.forEach(item => localStorage.removeItem(item));
+      })
+      .catch(error => {
+        console.log("Error setting persistence or signing out:", error);
+      });
   </script>
 
   <!-- BOOTSTRAP -->
@@ -353,6 +375,17 @@
   margin: 15px 0;
   font-size: 0.9em;
 }
+
+/* Security notice styling */
+.security-notice {
+  background: #d1edff;
+  border: 1px solid #bee5eb;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 0.85em;
+  text-align: center;
+}
 </style>
 </head>
 <body class="bg-light">
@@ -421,6 +454,8 @@
   <div class="login-card rounded p-4" style="width: 100%; max-width: 400px;">
       <!-- Login Title -->
       <h1 class="text-center mb-4 fw-bold">Login</h1>
+      
+     
       
       <!-- Firebase Permission Warning -->
       <div class="firebase-permission-warning d-none" id="firebasePermissionWarning">
@@ -624,11 +659,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Check if user is already logged in and redirect to appropriate dashboard
-    auth.onAuthStateChanged((user) => {
+    // Clear all localStorage items on page load for security
+    function clearLocalStorage() {
+        const itemsToRemove = [
+            'userType', 'userName', 'userUID', 'userEmail', 
+            'verificationStatus', 'hasAllDocuments',
+            'studentDocuments', 'studentProfile', 
+            'funderDocuments', 'funderProfile'
+        ];
+        itemsToRemove.forEach(item => localStorage.removeItem(item));
+        console.log("Local storage cleared for security");
+    }
+
+    // Clear storage immediately on page load
+    clearLocalStorage();
+
+    // Check if user is already logged in (only for current session)
+    auth.onAuthStateChanged(async (user) => {
         if (user) {
-            console.log("User already logged in, checking user data...");
-            checkUserDataAndRedirect(user);
+            console.log("User found in current session, checking user type...");
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const userType = userData.userType || 'student';
+                    
+                    // Store user data for current session only
+                    await storeUserData(user, userData);
+                    
+                    // Update navbar for current session
+                    updateNavbar(userData.firstName || 'User', userType);
+                    
+                    // Redirect to appropriate page based on user type
+                    redirectAfterLogin(userType);
+                }
+            } catch (error) {
+                console.error("Error checking user data:", error);
+                // If error, clear everything and show login
+                await auth.signOut();
+                clearLocalStorage();
+                showDefaultNavbar();
+            }
+        } else {
+            // No user in current session, ensure clean state
+            clearLocalStorage();
+            showDefaultNavbar();
         }
     });
 
@@ -637,6 +712,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById("loginButton");
     const loginSpinner = document.getElementById("loginSpinner");
     const loginText = document.getElementById("loginText");
+
+    // Store user data function (session only)
+    async function storeUserData(user, userData) {
+        const firstName = userData.firstName || userData.name || userData.fullName || 'User';
+        const userType = userData.userType || userData.role || 'student';
+        
+        localStorage.setItem('userType', userType);
+        localStorage.setItem('userName', firstName);
+        localStorage.setItem('userUID', user.uid);
+        localStorage.setItem('userEmail', user.email);
+        
+        // Store additional data based on user type
+        if (userType === 'student') {
+            localStorage.setItem('verificationStatus', userData.verificationStatus || 'pending');
+            localStorage.setItem('hasAllDocuments', hasAllRequiredDocuments(userData).toString());
+            
+            if (userData.documents) {
+                localStorage.setItem('studentDocuments', JSON.stringify(userData.documents));
+            }
+            if (userData.profile) {
+                localStorage.setItem('studentProfile', JSON.stringify(userData.profile));
+            }
+        }
+        
+        if (userType === 'funder') {
+            if (userData.documents) {
+                localStorage.setItem('funderDocuments', JSON.stringify(userData.documents));
+            }
+            if (userData.profile) {
+                localStorage.setItem('funderProfile', JSON.stringify(userData.profile));
+            }
+        }
+    }
 
     // Show/hide permission warning
     function showPermissionWarning() {
@@ -706,96 +814,43 @@ document.addEventListener('DOMContentLoaded', function() {
         if (feedback) feedback.classList.remove('show');
     }
 
-    // Function to check user data and redirect to appropriate dashboard
-    async function checkUserDataAndRedirect(user) {
+    // Enhanced admin validation function
+    async function validateAdminAccess(userId) {
         try {
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                console.log("User data found:", userData);
+            const adminDoc = await db.collection('users').doc(userId).get();
+            if (adminDoc.exists) {
+                const adminData = adminDoc.data();
                 
-                // Store user data in localStorage for persistence
-                const fullName = userData.fullName || userData.name || userData.firstName || 'User';
-                const firstName = fullName.split(' ')[0];
-                
-                // Handle different userType field names
-                const userType = userData.userType || userData.role || 'student';
-                
-                localStorage.setItem('userType', userType);
-                localStorage.setItem('userName', firstName);
-                localStorage.setItem('userUID', user.uid);
-                localStorage.setItem('userEmail', user.email);
-                
-                // Redirect to appropriate dashboard based on user type
-                redirectToDashboard(userType);
-            } else {
-                console.log("User document not found in Firestore");
-                // If user document doesn't exist, use default values and redirect to homepage
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-                
-                localStorage.setItem('userType', 'student');
-                localStorage.setItem('userName', firstName || 'User');
-                localStorage.setItem('userUID', user.uid);
-                localStorage.setItem('userEmail', user.email);
-                
-                showAlert('Welcome! Your basic account is set up. Please complete your profile.', 'warning');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
+                // Check multiple conditions for admin access
+                return adminData.userType === 'admin' && 
+                       adminData.hasAdminAccess === true;
             }
+            return false;
         } catch (error) {
-            console.error("Error checking user data:", error);
-            
-            // Handle Firestore permission errors gracefully
-            if (error.code === 'permission-denied') {
-                console.warn("Firestore permission denied. Using authentication only.");
-                showPermissionWarning();
-                
-                // Store basic user info from auth only
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : user.email.split('@')[0];
-                
-                localStorage.setItem('userType', 'student');
-                localStorage.setItem('userName', firstName || 'User');
-                localStorage.setItem('userUID', user.uid);
-                localStorage.setItem('userEmail', user.email);
-                
-                showAlert('Login successful! Some features may be limited due to configuration.', 'warning');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                console.error("Other error:", error);
-                showAlert('Error accessing user data: ' + error.message, 'error');
-                await auth.signOut();
-                resetLoginButton();
-            }
+            console.error('Admin validation error:', error);
+            return false;
         }
     }
 
-    // Function to redirect to appropriate dashboard
-    function redirectToDashboard(userType) {
-        let dashboardPage = 'index.html'; // Default fallback
+    // Function to check if student has all required documents uploaded
+    function hasAllRequiredDocuments(studentData) {
+        const documents = studentData.documents || {};
+        return documents.idDocument && 
+               documents.proofOfRegistration && 
+               documents.feeStatement;
+    }
+
+    // Function to redirect after login based on user type
+    function redirectAfterLogin(userType) {
+        let redirectPage = 'index.html'; // Default for students and funders
         
-        switch(userType.toLowerCase()) {
-            case 'student':
-                dashboardPage = 'student-dashboard.html';
-                break;
-            case 'funder':
-                dashboardPage = 'funder-dashboard.html';
-                break;
-            case 'admin':
-                dashboardPage = 'admin-dashboard.html';
-                break;
-            default:
-                dashboardPage = 'index.html';
+        if (userType === 'admin') {
+            redirectPage = 'admin-dashboard.html';
         }
+        // Students and funders go to homepage (index.html)
         
-        console.log("Redirecting to:", dashboardPage);
-        showAlert('Login successful! Redirecting...', 'success');
-        
-        setTimeout(() => {
-            window.location.href = dashboardPage;
-        }, 1000);
+        console.log(`Redirecting ${userType} to: ${redirectPage}`);
+        window.location.href = redirectPage;
     }
 
     // Enhanced error handling for Firebase authentication
@@ -886,7 +941,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return errorInfo;
     }
 
-    // Handle login
+    // Handle login with session persistence
     async function handleLogin(){
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -906,19 +961,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Firebase not properly initialized');
             }
 
+            // Use session persistence for security
+            await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+            
             const userCredential = await auth.signInWithEmailAndPassword(email, password);
             const user = userCredential.user;
             console.log("Login successful, user ID:", user.uid);
 
-            // Check if email is verified (optional - you can remove this if you don't require email verification)
+            // Check if email is verified
             if (user.emailVerified === false) {
                 console.warn("User email not verified");
                 showAlert('Please verify your email address for full access.', 'warning');
-                // Continue with login even if email is not verified
             }
 
-            // Get user data from Firestore and redirect to dashboard
-            await checkUserDataAndRedirect(user);
+            // Get user data from Firestore and store in localStorage for current session
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                await storeUserData(user, userData);
+                
+                console.log("Login successful! Redirecting...");
+                showAlert('Login successful! Redirecting...', 'success');
+                
+                const userType = userData.userType || 'student';
+                
+                setTimeout(() => {
+                    redirectAfterLogin(userType);
+                }, 1000);
+            } else {
+                throw new Error('User document not found');
+            }
 
         } catch(error){
             console.error("Login error:", error);
@@ -1030,10 +1102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             try {
                 await auth.signOut();
-                localStorage.removeItem('userType');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('userUID');
-                localStorage.removeItem('userEmail');
+                clearLocalStorage();
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error("Logout error:", error);
@@ -1064,13 +1133,15 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    // Authentication changes
+    // Authentication changes - only show logged in state if user exists in current session
     auth.onAuthStateChanged(user => {
         if (user) {
+            // User is logged in for current session only
             const storedName = localStorage.getItem('userName') || 'User';
             const storedType = localStorage.getItem('userType') || 'student';
             updateNavbar(storedName, storedType);
         } else {
+            // No user in current session
             showDefaultNavbar();
         }
     });

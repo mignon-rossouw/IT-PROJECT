@@ -1,8 +1,8 @@
-// Contact form handler - OPTIMIZED FOR TRIGGER EMAIL EXTENSION
+// contact.js - EMAIL SENDING with Email JS Extension
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Contact form script loaded - DOM ready');
     
-    const contactForm = document.querySelector('.contact-form form');
+    const contactForm = document.getElementById('contactForm') || document.querySelector('form');
     
     if (contactForm) {
         console.log('Contact form found');
@@ -11,163 +11,220 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             console.log('📧 Contact form submission started');
             
-            const name = document.getElementById('name').value;
-            const userEmail = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+            // Get form elements - adjust selectors based on your actual HTML
+            const name = document.getElementById('name')?.value || '';
+            const userEmail = document.getElementById('email')?.value || '';
+            const message = document.getElementById('message')?.value || '';
             const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const messageDiv = document.getElementById('contactMessage');
+            const messageDiv = document.getElementById('contactMessage') || document.getElementById('formMessage') || document.createElement('div');
             
             console.log('Form data:', { name, email: userEmail, message });
             
             // Basic validation
             if (!name || !userEmail || !message) {
-                messageDiv.innerHTML = '<div class="alert alert-danger">Please fill in all fields.</div>';
+                showMessage('Please fill in all fields.', 'danger', messageDiv);
                 return;
             }
             
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(userEmail)) {
-                messageDiv.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+                showMessage('Please enter a valid email address.', 'danger', messageDiv);
                 return;
             }
             
             // Disable button and show loading state
+            const originalBtnText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = 'SENDING...';
-            messageDiv.innerHTML = '';
+            clearMessage(messageDiv);
             
             try {
-                console.log('🚀 Attempting Firestore write to mail collection...');
+                console.log('🚀 SENDING ACTUAL EMAIL TO ADMIN...');
                 
-                // ✅ CORRECTED: Proper structure for Trigger Email extension
-                const docRef = await firebase.firestore().collection('mail').add({
+                // ✅ ACTUAL EMAIL TO ADMIN - This will trigger the Email JS extension
+                const adminEmailData = {
+                    to: 'fundmyfuture7@gmail.com',
+                    message: {
+                        subject: `New Contact Form Submission from ${name}`,
+                        html: `
+                            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                                <h2 style="color: #012A4A;">📬 New Contact Form Submission</h2>
+                                
+                                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                                    <h3 style="color: #2A6F97; margin-top: 0;">Contact Information</h3>
+                                    <p><strong>👤 Name:</strong> ${name}</p>
+                                    <p><strong>📧 Email:</strong> ${userEmail}</p>
+                                    <p><strong>📅 Date:</strong> ${new Date().toLocaleString()}</p>
+                                </div>
+                                
+                                <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2A6F97; margin-top: 0;">💬 Message</h3>
+                                    <p style="white-space: pre-line; background: white; padding: 15px; border-radius: 5px;">${message}</p>
+                                </div>
+                                
+                                <hr style="border: none; border-top: 2px solid #012A4A;">
+                                <p style="color: #666; font-size: 12px;">
+                                    This email was automatically sent from your FundMyFuture website contact form.
+                                </p>
+                            </div>
+                        `,
+                        text: `
+                            NEW CONTACT FORM SUBMISSION
+                            
+                            Contact Information:
+                            Name: ${name}
+                            Email: ${userEmail}
+                            Date: ${new Date().toLocaleString()}
+                            
+                            Message:
+                            ${message}
+                            
+                            ---
+                            Sent from FundMyFuture website
+                        `
+                    }
+                };
+                
+                await firebase.firestore().collection('mail').add(adminEmailData);
+                console.log('✅ ADMIN EMAIL QUEUED FOR SENDING');
+                
+                // ✅ CONFIRMATION EMAIL TO USER
+                const userEmailData = {
                     to: userEmail,
                     message: {
                         subject: `Thank you for contacting FundMyFuture!`,
                         html: `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You - FundMyFuture</title>
-</head>
-<body style="font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8f9fa;">
-    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 0.375rem; overflow: hidden; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);">
-        
-        <!-- Header -->
-        <div style="background: linear-gradient(135deg, #012A4A 0%, #2A6F97 100%); color: white; padding: 2rem 1rem; text-align: center;">
-            <h1 style="margin: 0; font-size: 2rem; font-weight: bold;">✅ Message Received!</h1>
-            <p style="margin: 0.5rem 0 0; opacity: 0.9; font-size: 1.1rem;">Thank you for contacting FundMyFuture</p>
-        </div>
-        
-        <!-- Content Area -->
-        <div style="padding: 2rem;">
-            <!-- Thank you message -->
-            <div style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 0.375rem; padding: 1rem; margin-bottom: 1.5rem;">
-                <p style="margin: 0; color: #0c5460;">Hello ${name}, we've received your message and will get back to you soon!</p>
-            </div>
-
-            <!-- Message Summary -->
-            <div style="background: #f8f9fa; border-left: 4px solid #2A6F97; padding: 1.5rem; border-radius: 0.375rem; margin: 1.5rem 0;">
-                <h3 style="color: #012A4A; margin-top: 0;">📋 Your Message Summary</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <p style="margin: 0.25rem 0;"><strong>Name:</strong> ${name}</p>
-                        <p style="margin: 0.25rem 0;"><strong>Email:</strong> ${userEmail}</p>
-                        <p style="margin: 0.25rem 0;"><strong>Date:</strong> ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Content -->
-            <div style="background: #e3f2fd; border: 1px solid #A9D6E5; border-radius: 0.375rem; padding: 1.5rem; margin: 1.5rem 0;">
-                <h3 style="color: #012A4A; margin-top: 0;">💬 Your Message</h3>
-                <div style="background: white; padding: 1rem; border-radius: 0.25rem; border: 1px solid #dee2e6;">
-                    ${message.replace(/\n/g, '<br>')}
-                </div>
-            </div>
-
-            <p style="margin-bottom: 1rem;">We typically respond within 24-48 hours. If you have urgent questions, feel free to call us directly.</p>
-
-            <!-- Contact Info -->
-            <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: #f8f9fa; border-radius: 0.375rem;">
-                <h4 style="color: #012A4A; margin-top: 0;">📞 Need Immediate Help?</h4>
-                <p style="margin: 0.5rem 0;">
-                    <strong>Email:</strong> <a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a><br>
-                    <strong>Phone:</strong> <a href="tel:+27218310700">+27 21 831 0700</a>
-                </p>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div style="background: #012A4A; color: white; padding: 2rem 1rem; text-align: center;">
-            <p style="margin: 0.5rem 0;">
-                <strong>FundMyFuture</strong><br>
-                5th floor 112 Long St, Cape Town, 8000, Western Cape
-            </p>
-            <p style="margin: 0.5rem 0; font-size: 0.875rem;">
-                © ${new Date().getFullYear()} FundMyFuture. All rights reserved.
-            </p>
-        </div>
-    </div>
-</body>
-</html>
+                            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                                <h2 style="color: #012A4A;">✅ Thank You, ${name}!</h2>
+                                <p>We've received your message and will get back to you within 24-48 hours.</p>
+                                
+                                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2A6F97; margin-top: 0;">📋 Your Message Summary</h3>
+                                    <p><strong>Name:</strong> ${name}</p>
+                                    <p><strong>Email:</strong> ${userEmail}</p>
+                                    <p><strong>Date:</strong> ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                </div>
+                                
+                                <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2A6F97; margin-top: 0;">💬 Your Message</h3>
+                                    <p style="white-space: pre-line; background: white; padding: 15px; border-radius: 5px;">${message}</p>
+                                </div>
+                                
+                                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                    <h3 style="color: #2A6F97; margin-top: 0;">📞 Need Immediate Help?</h3>
+                                    <p>
+                                        <strong>Email:</strong> fundmyfuture7@gmail.com<br>
+                                        <strong>Phone:</strong> +27 21 831 0700
+                                    </p>
+                                </div>
+                                
+                                <p>Best regards,<br><strong>The FundMyFuture Team</strong></p>
+                            </div>
                         `,
-                        text: `Thank you for contacting FundMyFuture!
-
-Hello ${name}, we've received your message and will get back to you soon!
-
-Your Message Summary:
-Name: ${name}
-Email: ${userEmail}
-Date: ${new Date().toLocaleDateString()}
-
-Your Message:
-${message}
-
-We typically respond within 24-48 hours.
-
-Contact Info:
-Email: fundmyfuture7@gmail.com
-Phone: +27 21 831 0700
-
-FundMyFuture
-5th floor 112 Long St, Cape Town, 8000`
+                        text: `
+                            Thank you for contacting FundMyFuture!
+                            
+                            Hello ${name},
+                            
+                            We've received your message and will get back to you within 24-48 hours.
+                            
+                            YOUR MESSAGE SUMMARY:
+                            Name: ${name}
+                            Email: ${userEmail}
+                            Date: ${new Date().toLocaleDateString()}
+                            
+                            YOUR MESSAGE:
+                            ${message}
+                            
+                            Need immediate help?
+                            Email: fundmyfuture7@gmail.com
+                            Phone: +27 21 831 0700
+                            
+                            Best regards,
+                            The FundMyFuture Team
+                        `
                     }
-                });
+                };
                 
-                console.log('✅ Contact confirmation queued with ID:', docRef.id);
+                await firebase.firestore().collection('mail').add(userEmailData);
+                console.log('✅ USER CONFIRMATION EMAIL QUEUED FOR SENDING');
                 
-                // ✅ ALSO save to contactSubmissions for your records
+                // ✅ Save to database for records
                 await firebase.firestore().collection('contactSubmissions').add({
                     name: name,
                     email: userEmail,
                     message: message,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'new',
-                    emailSent: true,
-                    mailDocId: docRef.id
+                    status: 'emails_queued',
+                    adminNotified: true,
+                    userNotified: true
                 });
                 
                 console.log('✅ Contact submission saved to database');
                 
                 // Success message
-                messageDiv.innerHTML = '<div class="alert alert-success">Thank you for your message! We have sent a confirmation email to your inbox.</div>';
+                showMessage(`
+                    <h4>✅ Message Sent Successfully!</h4>
+                    <p><strong>Thank you, ${name}!</strong></p>
+                    <p>We've received your message and sent a confirmation email to <strong>${userEmail}</strong>.</p>
+                    <p>We'll get back to you within 24-48 hours.</p>
+                `, 'success', messageDiv);
+                
                 contactForm.reset();
                 
             } catch (error) {
-                console.error('❌ Firestore error:', error);
-                console.error('Error details:', error.message);
-                messageDiv.innerHTML = '<div class="alert alert-danger">Sorry, there was an error sending your message. Please try again later.</div>';
+                console.error('❌ Email sending failed:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                // Try to save contact submission even if email fails
+                try {
+                    await firebase.firestore().collection('contactSubmissions').add({
+                        name: name,
+                        email: userEmail,
+                        message: message,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: 'submitted_no_email',
+                        adminNotified: false,
+                        userNotified: false,
+                        error: error.message
+                    });
+                    
+                    showMessage(`
+                        <h4>⚠️ Message Received (Email Queued)</h4>
+                        <p><strong>Thank you, ${name}!</strong></p>
+                        <p>We've saved your message but email delivery is temporarily delayed.</p>
+                        <p>We'll still contact you at <strong>${userEmail}</strong> within 24-48 hours.</p>
+                    `, 'warning', messageDiv);
+                    
+                    contactForm.reset();
+                    
+                } catch (fallbackError) {
+                    console.error('❌ Complete failure:', fallbackError);
+                    showMessage(`
+                        <h4>❌ Sending Failed</h4>
+                        <p>Please email us directly at: <a href="mailto:fundmyfuture7@gmail.com">fundmyfuture7@gmail.com</a></p>
+                        <p>Or call us at: <a href="tel:+27218310700">+27 21 831 0700</a></p>
+                    `, 'danger', messageDiv);
+                }
+                
             } finally {
                 // Re-enable button
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Send Message';
+                submitBtn.textContent = originalBtnText;
             }
         });
     } else {
         console.error('❌ Contact form not found!');
+    }
+    
+    // Helper functions
+    function showMessage(message, type, container) {
+        container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    }
+    
+    function clearMessage(container) {
+        container.innerHTML = '';
     }
 });
