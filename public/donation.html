@@ -261,11 +261,11 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const functions = getFunctions(app);
+       // const functions = getFunctions(app);
 
         let currentUser = null;
         let currentCampaign = null;
-        const stripe = Stripe('pk_test_your_publishable_key_here'); // Replace with your Stripe key
+        const stripe = Stripe('pk_test_51SPVY8JiL5xkeb8dDzRwiixEgVGwG8h2C01WWnnPApG9aeCwmLk5DUIoa8SXjperH0lNz4iQPf2Q9U9gCheKxxOm004hZldDmm'); // Replace with your Stripe key
 
         document.addEventListener('DOMContentLoaded', function() {
             initializeDonationPage();
@@ -363,50 +363,51 @@
                 document.getElementById('donationSummary').textContent = '';
             }
         }
+async function handleDonation(event) {
+    event.preventDefault();
+    
+    const amountInput = document.getElementById('customAmount');
+    const amount = parseFloat(amountInput.value);
+    
+    if (!amount || amount < 10) {
+        showError('Please enter a donation amount of at least R10');
+        return;
+    }
 
-        async function handleDonation(event) {
-            event.preventDefault();
-            
-            const amountInput = document.getElementById('customAmount');
-            const amount = parseFloat(amountInput.value);
-            
-            if (!amount || amount < 10) {
-                showError('Please enter a donation amount of at least R10');
-                return;
-            }
+    if (!currentCampaign) {
+        showError('Campaign information not loaded. Please refresh the page.');
+        return;
+    }
 
-            if (!currentCampaign) {
-                showError('Campaign information not loaded. Please refresh the page.');
-                return;
-            }
+    try {
+        showLoading(true, 'Processing your donation...');
+        
+        // Use the callable function (import firebase-functions if not already)
+        const { getFunctions, httpsCallable } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js");
+        const functions = getFunctions(app);
+        const createCheckoutSession = httpsCallable(functions, 'createCheckoutSession');
+        
+        const result = await createCheckoutSession({
+            campaignId: currentCampaign.id,
+            amount: amount,
+            currency: 'zar'
+        });
 
-            try {
-                showLoading(true, 'Processing your donation...');
-                
-                // Call Cloud Function to create Stripe Checkout Session
-                const createCheckoutSession = httpsCallable(functions, 'createCheckoutSession');
-                const result = await createCheckoutSession({
-                    campaignId: currentCampaign.id,
-                    amount: amount,
-                    currency: 'zar'
-                });
+        // Redirect to Stripe Checkout
+        const { error } = await stripe.redirectToCheckout({
+            sessionId: result.data.sessionId
+        });
 
-                // Redirect to Stripe Checkout
-                const { error } = await stripe.redirectToCheckout({
-                    sessionId: result.data.sessionId
-                });
-
-                if (error) {
-                    throw error;
-                }
-                
-            } catch (error) {
-                console.error('Payment error:', error);
-                showError(error.message || 'An error occurred during payment processing. Please try again.');
-                showLoading(false);
-            }
+        if (error) {
+            throw error;
         }
-
+        
+    } catch (error) {
+        console.error('Payment error:', error);
+        showError(error.message || 'An error occurred during payment processing. Please try again.');
+        showLoading(false);
+    }
+}
         function showError(message) {
             const alertDiv = document.createElement('div');
             alertDiv.className = 'alert alert-danger alert-dismissible fade show';
