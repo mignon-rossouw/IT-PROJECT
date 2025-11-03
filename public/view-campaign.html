@@ -10,368 +10,485 @@
     
     <!-- Firebase Integration -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
-            authDomain: "fund-my-future-47844.firebaseapp.com",
-            databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
-            projectId: "fund-my-future-47844",
-            storageBucket: "fund-my-future-47844.firebasestorage.app",
-            messagingSenderId: "581912293895",
-            appId: "1:581912293895:web:03468061fae2124ac770a2",
-            measurementId: "G-LFC0R1GBE1"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+        authDomain: "fund-my-future-47844.firebaseapp.com",
+        databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+        projectId: "fund-my-future-47844",
+        storageBucket: "fund-my-future-47844.firebasestorage.app",
+        messagingSenderId: "581912293895",
+        appId: "1:581912293895:web:03468061fae2124ac770a2",
+        measurementId: "G-LFC0R1GBE1"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-        let currentCampaign = null;
-        let currentUser = null;
+    let currentCampaign = null;
+    let currentUser = null;
+    let unsubscribeCampaign = null;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCampaignDetails();
-            
-            // Check if user is logged in
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    document.getElementById('loginButton').style.display = 'none';
-                    document.getElementById('dashboardButton').style.display = 'block';
-                } else {
-                    document.getElementById('loginButton').style.display = 'block';
-                    document.getElementById('dashboardButton').style.display = 'none';
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCampaignDetails();
+        
+        // Check if user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginButton').style.display = 'none';
+                document.getElementById('dashboardButton').style.display = 'block';
+            } else {
+                document.getElementById('loginButton').style.display = 'block';
+                document.getElementById('dashboardButton').style.display = 'none';
+            }
         });
+    });
 
-        async function loadCampaignDetails() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const campaignId = urlParams.get('id');
-            
-            if (!campaignId) {
-                document.getElementById('campaignDetails').innerHTML = `
-                    <div class="alert alert-danger text-center">
-                        <h4>Campaign Not Found</h4>
-                        <p>No campaign ID provided in the URL.</p>
-                        <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
-                    </div>
-                `;
-                return;
-            }
-
-            try {
-                showLoading(true);
-                const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
-                
-                if (!campaignDoc.exists()) {
-                    document.getElementById('campaignDetails').innerHTML = `
-                        <div class="alert alert-danger text-center">
-                            <h4>Campaign Not Found</h4>
-                            <p>The campaign you're looking for doesn't exist or may have been removed.</p>
-                            <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
-                        </div>
-                    `;
-                    showLoading(false);
-                    return;
-                }
-
-                currentCampaign = { id: campaignDoc.id, ...campaignDoc.data() };
-                
-                // Load student data
-                const userDoc = await getDocs(query(
-                    collection(db, "users"),
-                    where("__name__", "==", currentCampaign.studentId)
-                ));
-                
-                let userData = {};
-                if (!userDoc.empty) {
-                    userData = userDoc.docs[0].data();
-                }
-
-                displayCampaignDetails(currentCampaign, userData);
-                showLoading(false);
-                
-            } catch (error) {
-                console.error("Error loading campaign:", error);
-                document.getElementById('campaignDetails').innerHTML = `
-                    <div class="alert alert-danger text-center">
-                        <h4>Error Loading Campaign</h4>
-                        <p>There was an error loading the campaign details. Please try again.</p>
-                        <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
-                    </div>
-                `;
-                showLoading(false);
-            }
+    async function loadCampaignDetails() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const campaignId = urlParams.get('id');
+        
+        if (!campaignId) {
+            document.getElementById('campaignDetails').innerHTML = `
+                <div class="alert alert-danger text-center">
+                    <h4>Campaign Not Found</h4>
+                    <p>No campaign ID provided in the URL.</p>
+                    <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+                </div>
+            `;
+            return;
         }
 
-        function displayCampaignDetails(campaign, user) {
-            const progressPercentage = campaign.goalAmount > 0 ? 
-                Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100)) : 0;
+        try {
+            showLoading(true);
             
-            // Fixed date handling
-            let endDate;
-            if (campaign.endDate?.toDate) {
-                endDate = campaign.endDate.toDate();
-            } else if (campaign.endDate instanceof Date) {
-                endDate = campaign.endDate;
-            } else if (campaign.endDate) {
-                endDate = new Date(campaign.endDate);
-            } else {
-                // Default to 30 days from now if no end date
-                endDate = new Date();
-                endDate.setDate(endDate.getDate() + 30);
-            }
-            
-            // Ensure endDate is valid
-            if (isNaN(endDate.getTime())) {
-                endDate = new Date();
-                endDate.setDate(endDate.getDate() + 30);
-            }
-            
-            const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
-            
-            // Handle createdAt date similarly
-            let createdAt;
-            if (campaign.createdAt?.toDate) {
-                createdAt = campaign.createdAt.toDate();
-            } else if (campaign.createdAt instanceof Date) {
-                createdAt = campaign.createdAt;
-            } else if (campaign.createdAt) {
-                createdAt = new Date(campaign.createdAt);
-            } else {
-                createdAt = new Date();
-            }
-            
-            // Ensure createdAt is valid
-            if (isNaN(createdAt.getTime())) {
-                createdAt = new Date();
-            }
-            
-            const userName = user ? `${user.firstName || ''} ${user.surname || ''}`.trim() : 'Anonymous Student';
-            const institution = user?.institution || 'Unknown Institution';
-            const course = user?.course || 'Unknown Course';
-            const userLocation = user?.location || 'Location not specified';
-            const userProfilePic = user?.profilePicture || './assets/profile-user.png';
+            // Set up real-time listener for campaign updates using the correct field names
+            unsubscribeCampaign = onSnapshot(doc(db, "campaigns", campaignId), 
+                async (campaignDoc) => {
+                    if (!campaignDoc.exists()) {
+                        showCampaignNotFound();
+                        return;
+                    }
 
-            document.getElementById('campaignDetails').innerHTML = `
-                <div class="row">
-                    <!-- Campaign Header -->
-                    <div class="col-12">
-                        <nav aria-label="breadcrumb" class="mb-4">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="donate.html">All Campaigns</a></li>
-                                <li class="breadcrumb-item active">${campaign.title}</li>
-                            </ol>
-                        </nav>
+                    currentCampaign = { 
+                        id: campaignDoc.id, 
+                        ...campaignDoc.data() 
+                    };
+                    
+                    console.log('Campaign data loaded:', currentCampaign);
+                    
+                    // Load student data using student_id field (from donate.html)
+                    const studentId = currentCampaign.student_id || currentCampaign.studentId;
+                    if (studentId && !currentCampaign.studentData) {
+                        try {
+                            const userDoc = await getDocs(query(
+                                collection(db, "users"),
+                                where("__name__", "==", studentId)
+                            ));
+                            
+                            let userData = {};
+                            if (!userDoc.empty) {
+                                userData = userDoc.docs[0].data();
+                            }
+                            currentCampaign.studentData = userData;
+                        } catch (error) {
+                            console.error('Error loading student data:', error);
+                            currentCampaign.studentData = {};
+                        }
+                    }
+
+                    displayCampaignDetails(currentCampaign);
+                    showLoading(false);
+                },
+                (error) => {
+                    console.error("Error listening to campaign:", error);
+                    showLoading(false);
+                }
+            );
+            
+        } catch (error) {
+            console.error("Error loading campaign:", error);
+            showCampaignError();
+            showLoading(false);
+        }
+    }
+
+    function showCampaignNotFound() {
+        document.getElementById('campaignDetails').innerHTML = `
+            <div class="alert alert-danger text-center">
+                <h4>Campaign Not Found</h4>
+                <p>The campaign you're looking for doesn't exist or may have been removed.</p>
+                <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+            </div>
+        `;
+    }
+
+    function showCampaignError() {
+        document.getElementById('campaignDetails').innerHTML = `
+            <div class="alert alert-danger text-center">
+                <h4>Error Loading Campaign</h4>
+                <p>There was an error loading the campaign details. Please try again.</p>
+                <a href="donate.html" class="btn btn-primary mt-2">Browse Campaigns</a>
+            </div>
+        `;
+    }
+
+    function displayCampaignDetails(campaign) {
+        const progressData = calculateProgress(campaign);
+        const dateData = calculateDates(campaign);
+        const user = campaign.studentData || {};
+        
+        // Use field names that match your database (from donate.html)
+        const userName = user ? `${user.firstName || ''} ${user.surname || ''}`.trim() : 'Anonymous Student';
+        const institution = user?.institution || 'Unknown Institution';
+        const course = user?.course || 'Unknown Course';
+        const userLocation = user?.location || 'Location not specified';
+        const userProfilePic = user?.profilePicture || './assets/profile-user.png';
+
+        // Use image_url field from donate.html
+        const coverImage = campaign.image_url || campaign.coverImage;
+
+        document.getElementById('campaignDetails').innerHTML = `
+            <div class="row">
+                <!-- Campaign Header -->
+                <div class="col-12">
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="donate.html">All Campaigns</a></li>
+                            <li class="breadcrumb-item active">${escapeHtml(campaign.title)}</li>
+                        </ol>
+                    </nav>
+                    
+                    <div class="campaign-header mb-5">
+                        ${coverImage ? `
+                            <img src="${coverImage}" class="img-fluid rounded campaign-cover mb-4" alt="${escapeHtml(campaign.title)}">
+                        ` : `
+                            <div class="campaign-cover-placeholder bg-light rounded d-flex align-items-center justify-content-center mb-4">
+                                <i class="bi bi-flag display-1 text-muted"></i>
+                            </div>
+                        `}
                         
-                        <div class="campaign-header mb-5">
-                            ${campaign.coverImage ? `
-                                <img src="${campaign.coverImage}" class="img-fluid rounded campaign-cover mb-4" alt="${campaign.title}">
-                            ` : `
-                                <div class="campaign-cover-placeholder bg-light rounded d-flex align-items-center justify-content-center mb-4">
-                                    <i class="bi bi-flag display-1 text-muted"></i>
-                                </div>
-                            `}
-                            
-                            <h1 class="display-5 fw-bold text-primary mb-3">${campaign.title}</h1>
-                            <p class="lead fs-4">${campaign.description}</p>
-                            
-                            <!-- Progress Section -->
-                            <div class="progress-section bg-light rounded p-4 mb-4">
-                                <div class="progress mb-3" style="height: 30px;">
-                                    <div class="progress-bar" style="width: ${progressPercentage}%">
-                                        ${progressPercentage}% Funded
-                                    </div>
-                                </div>
-                                <div class="row text-center">
-                                    <div class="col-4">
-                                        <h3 class="text-primary fw-bold">R${campaign.currentAmount?.toLocaleString() || 0}</h3>
-                                        <small class="text-muted">Raised</small>
-                                    </div>
-                                    <div class="col-4">
-                                        <h3 class="fw-bold">R${campaign.goalAmount?.toLocaleString() || 0}</h3>
-                                        <small class="text-muted">Goal</small>
-                                    </div>
-                                    <div class="col-4">
-                                        <h3 class="fw-bold ${daysRemaining < 7 ? 'text-danger' : 'text-success'}">${daysRemaining}</h3>
-                                        <small class="text-muted">Days Left</small>
-                                    </div>
+                        <h1 class="display-5 fw-bold text-primary mb-3">${escapeHtml(campaign.title)}</h1>
+                        <p class="lead fs-4">${escapeHtml(campaign.description)}</p>
+                        
+                        <!-- Enhanced Progress Section -->
+                        <div class="progress-section bg-light rounded p-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted">${progressData.percentage}% funded</span>
+                                <span class="text-muted">${progressData.amountLeft} needed</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 30px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" 
+                                     style="width: ${progressData.percentage}%"
+                                     aria-valuenow="${progressData.percentage}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    ${progressData.percentage}% Funded
                                 </div>
                             </div>
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <h3 class="text-primary fw-bold">R${progressData.currentAmount.toLocaleString()}</h3>
+                                    <small class="text-muted">Raised</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="fw-bold">R${progressData.goalAmount.toLocaleString()}</h3>
+                                    <small class="text-muted">Goal</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="fw-bold ${dateData.daysRemaining < 7 ? 'text-danger' : dateData.daysRemaining < 30 ? 'text-warning' : 'text-success'}">
+                                        ${dateData.daysRemaining}
+                                    </h3>
+                                    <small class="text-muted">${dateData.daysRemaining === 1 ? 'Day' : 'Days'} Left</small>
+                                </div>
+                            </div>
+                            ${progressData.isOverfunded ? `
+                                <div class="alert alert-success mt-3 text-center">
+                                    <i class="bi bi-trophy-fill me-2"></i>
+                                    <strong>Campaign Overfunded!</strong> This campaign has exceeded its goal!
+                                </div>
+                            ` : ''}
+                            ${dateData.isUrgent ? `
+                                <div class="alert alert-warning mt-3 text-center">
+                                    <i class="bi bi-clock-fill me-2"></i>
+                                    <strong>Urgent!</strong> Only ${dateData.daysRemaining} days left to reach the goal!
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mt-4">
-                    <!-- Main Content -->
-                    <div class="col-lg-8">
-                        <!-- Story Section -->
-                        <div class="card mb-4 shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0"><i class="bi bi-book me-2"></i>My Story</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="campaign-story">
-                                    ${campaign.story ? campaign.story.split('\n').map(paragraph => `<p>${paragraph}</p>`).join('') : '<p class="text-muted">No story provided.</p>'}
-                                </div>
+            <div class="row mt-4">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <!-- Story Section -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="bi bi-book me-2"></i>My Story</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="campaign-story">
+                                ${campaign.story ? campaign.story.split('\n').map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('') : '<p class="text-muted">No story provided.</p>'}
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Student Information -->
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-secondary text-white">
-                                <h5 class="mb-0"><i class="bi bi-person me-2"></i>About the Student</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-3 text-center mb-3 mb-md-0">
-                                        <img src="${userProfilePic}" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;" alt="${userName}">
-                                    </div>
-                                    <div class="col-md-9">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <p><strong>Name:</strong> ${userName}</p>
-                                                <p><strong>Institution:</strong> ${institution}</p>
-                                                <p><strong>Course:</strong> ${course}</p>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <p><strong>Location:</strong> ${userLocation}</p>
-                                                <p><strong>Campaign Created:</strong> ${createdAt.toLocaleDateString()}</p>
-                                                <p><strong>Campaign Ends:</strong> ${endDate.toLocaleDateString()}</p>
-                                            </div>
+                    <!-- Student Information -->
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0"><i class="bi bi-person me-2"></i>About the Student</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 text-center mb-3 mb-md-0">
+                                    <img src="${userProfilePic}" class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;" alt="${escapeHtml(userName)}">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Name:</strong> ${escapeHtml(userName)}</p>
+                                            <p><strong>Institution:</strong> ${escapeHtml(institution)}</p>
+                                            <p><strong>Course:</strong> ${escapeHtml(course)}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Location:</strong> ${escapeHtml(userLocation)}</p>
+                                            <p><strong>Campaign Created:</strong> ${dateData.createdAt.toLocaleDateString()}</p>
+                                            <p><strong>Campaign Ends:</strong> ${dateData.endDate.toLocaleDateString()}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Sidebar -->
-                    <div class="col-lg-4">
-                        <div class="card shadow-sm sticky-top" style="top: 20px;">
-                            <div class="card-body text-center">
-                                <h4 class="text-primary mb-3">Support This Campaign</h4>
-                                <p class="text-muted mb-4">Help ${userName.split(' ')[0]} achieve their educational goals</p>
-                                
-                                <div class="d-grid gap-2 mb-4">
-                                    <button class="btn btn-primary btn-lg py-3 fw-bold" onclick="donateToCampaign('${campaign.id}')">
-                                        <i class="bi bi-heart-fill me-2"></i>Donate Now
-                                    </button>
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm sticky-top" style="top: 20px;">
+                        <div class="card-body text-center">
+                            <h4 class="text-primary mb-3">Support This Campaign</h4>
+                            <p class="text-muted mb-4">Help ${escapeHtml(userName.split(' ')[0])} achieve their educational goals</p>
+                            
+                            <div class="d-grid gap-2 mb-4">
+                                <button class="btn btn-primary btn-lg py-3 fw-bold" onclick="donateToCampaign('${campaign.id}')">
+                                    <i class="bi bi-heart-fill me-2"></i>Donate Now
+                                </button>
+                            </div>
+                            
+                            <div class="d-grid gap-2 mb-4">
+                                <button class="btn btn-outline-primary" onclick="shareCampaign('${campaign.id}', '${escapeHtml(campaign.title)}')">
+                                    <i class="bi bi-share me-2"></i>Share Campaign
+                                </button>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="campaign-meta text-muted small">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><i class="bi bi-people me-2"></i>Supporters</span>
+                                    <span class="fw-bold">${campaign.donor_count || campaign.donorCount || 0}</span>
                                 </div>
-                                
-                                <div class="d-grid gap-2 mb-4">
-                                    <button class="btn btn-outline-primary" onclick="shareCampaign('${campaign.id}', '${campaign.title}')">
-                                        <i class="bi bi-share me-2"></i>Share Campaign
-                                    </button>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><i class="bi bi-calendar me-2"></i>Created</span>
+                                    <span>${dateData.createdAt.toLocaleDateString()}</span>
                                 </div>
-                                
-                                <hr class="my-4">
-                                
-                                <div class="campaign-meta text-muted small">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-people me-2"></i>Supporters</span>
-                                        <span class="fw-bold">${campaign.donorCount || 0}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span><i class="bi bi-calendar me-2"></i>Created</span>
-                                        <span>${createdAt.toLocaleDateString()}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span><i class="bi bi-tag me-2"></i>Category</span>
-                                        <span class="badge bg-warning text-dark">${campaign.category || 'General'}</span>
-                                    </div>
+                                <div class="d-flex justify-content-between">
+                                    <span><i class="bi bi-tag me-2"></i>Category</span>
+                                    <span class="badge bg-warning text-dark">${campaign.category || 'General'}</span>
                                 </div>
-                                
-                                <hr class="my-4">
-                                
-                                <div class="trust-badges text-muted small">
-                                    <p><i class="bi bi-shield-check me-2 text-success"></i>Secure donation process</p>
-                                    <p><i class="bi bi-arrow-repeat me-2 text-success"></i>Transparent fund allocation</p>
-                                    <p><i class="bi bi-chat-dots me-2 text-success"></i>Direct student support</p>
-                                </div>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="trust-badges text-muted small">
+                                <p><i class="bi bi-shield-check me-2 text-success"></i>Secure donation process</p>
+                                <p><i class="bi bi-arrow-repeat me-2 text-success"></i>Transparent fund allocation</p>
+                                <p><i class="bi bi-chat-dots me-2 text-success"></i>Direct student support</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            `;
-        }
+            </div>
+        `;
 
-        function donateToCampaign(campaignId) {
-            if (currentUser) {
-                // User is logged in, redirect to donation page
-                window.location.href = `donation.html?campaignId=${campaignId}`;
-            } else {
-                // User is not logged in, redirect to login with return URL
-                window.location.href = `login.html?returnUrl=view-campaign.html?id=${campaignId}`;
+        // Add animation to progress bar after a short delay
+        setTimeout(() => {
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.transition = 'width 1.5s ease-in-out';
             }
-        }
+        }, 100);
+    }
 
-        function shareCampaign(campaignId, campaignTitle) {
-            const url = `${window.location.origin}${window.location.pathname}?id=${campaignId}`;
-            const text = `Support "${campaignTitle}" on FundMyFuture!`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: campaignTitle,
-                    text: text,
-                    url: url
-                }).catch(err => {
-                    console.log('Error sharing:', err);
-                    copyToClipboard(`${text} ${url}`);
-                });
-            } else {
-                copyToClipboard(`${text} ${url}`);
-            }
+    function calculateProgress(campaign) {
+        // Use field names from donate.html (snake_case) with fallbacks
+        const currentAmount = Number(campaign.raised_amount || campaign.currentAmount || 0);
+        const goalAmount = Number(campaign.goal_amount || campaign.goalAmount || 1); // Avoid division by zero
+        
+        console.log('Progress calculation:', { currentAmount, goalAmount, raised_amount: campaign.raised_amount, goal_amount: campaign.goal_amount });
+        
+        let percentage = Math.min(100, Math.round((currentAmount / goalAmount) * 100));
+        const amountLeft = Math.max(0, goalAmount - currentAmount);
+        const isOverfunded = currentAmount > goalAmount;
+        
+        // If overfunded, show 100% but indicate overfunding
+        if (isOverfunded) {
+            percentage = 100;
         }
+        
+        return {
+            percentage,
+            currentAmount,
+            goalAmount,
+            amountLeft: `R${amountLeft.toLocaleString()}`,
+            isOverfunded
+        };
+    }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showAlert('Campaign link copied to clipboard! Share it with your friends.', 'success');
+    function calculateDates(campaign) {
+        // Use field names from donate.html with fallbacks
+        let endDate;
+        const endDateValue = campaign.end_date || campaign.endDate;
+        
+        if (endDateValue?.toDate) {
+            endDate = endDateValue.toDate();
+        } else if (endDateValue instanceof Date) {
+            endDate = endDateValue;
+        } else if (endDateValue) {
+            endDate = new Date(endDateValue);
+        } else {
+            endDate = new Date();
+            endDate.setDate(endDate.getDate() + 30);
+        }
+        
+        // Ensure endDate is valid
+        if (isNaN(endDate.getTime())) {
+            endDate = new Date();
+            endDate.setDate(endDate.getDate() + 30);
+        }
+        
+        let createdAt;
+        const createdAtValue = campaign.created_at || campaign.createdAt;
+        
+        if (createdAtValue?.toDate) {
+            createdAt = createdAtValue.toDate();
+        } else if (createdAtValue instanceof Date) {
+            createdAt = createdAtValue;
+        } else if (createdAtValue) {
+            createdAt = new Date(createdAtValue);
+        } else {
+            createdAt = new Date();
+        }
+        
+        if (isNaN(createdAt.getTime())) {
+            createdAt = new Date();
+        }
+        
+        const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+        const isUrgent = daysRemaining < 7;
+        
+        return {
+            endDate,
+            createdAt,
+            daysRemaining,
+            isUrgent
+        };
+    }
+
+    function escapeHtml(unsafe) {
+        if (!unsafe) return '';
+        return unsafe
+            .toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function donateToCampaign(campaignId) {
+        if (currentUser) {
+            window.location.href = `donation.html?campaignId=${campaignId}`;
+        } else {
+            window.location.href = `login.html?returnUrl=view-campaign.html?id=${campaignId}`;
+        }
+    }
+
+    function shareCampaign(campaignId, campaignTitle) {
+        const url = `${window.location.origin}${window.location.pathname}?id=${campaignId}`;
+        const text = `Support "${campaignTitle}" on FundMyFuture!`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: campaignTitle,
+                text: text,
+                url: url
             }).catch(err => {
-                console.error('Failed to copy: ', err);
-                showAlert('Failed to copy link. Please copy the URL manually.', 'warning');
+                console.log('Error sharing:', err);
+                copyToClipboard(`${text} ${url}`);
             });
+        } else {
+            copyToClipboard(`${text} ${url}`);
         }
+    }
 
-        function showAlert(message, type) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
-            alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.remove();
-                }
-            }, 5000);
-        }
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showAlert('Campaign link copied to clipboard! Share it with your friends.', 'success');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            showAlert('Failed to copy link. Please copy the URL manually.', 'warning');
+        });
+    }
 
-        function showLoading(show) {
-            const spinner = document.getElementById('loadingSpinner');
-            const content = document.getElementById('campaignDetails');
-            
-            if (show) {
-                spinner.classList.remove('d-none');
-                content.classList.add('d-none');
-            } else {
-                spinner.classList.add('d-none');
-                content.classList.remove('d-none');
+    function showAlert(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
             }
+        }, 5000);
+    }
+
+    function showLoading(show) {
+        const spinner = document.getElementById('loadingSpinner');
+        const content = document.getElementById('campaignDetails');
+        
+        if (show) {
+            spinner.classList.remove('d-none');
+            content.classList.add('d-none');
+        } else {
+            spinner.classList.add('d-none');
+            content.classList.remove('d-none');
         }
+    }
 
-        // Make functions globally available
-        window.donateToCampaign = donateToCampaign;
-        window.shareCampaign = shareCampaign;
-    </script>
+    // Clean up real-time listener when leaving the page
+    window.addEventListener('beforeunload', () => {
+        if (unsubscribeCampaign) {
+            unsubscribeCampaign();
+        }
+    });
 
+    // Make functions globally available
+    window.donateToCampaign = donateToCampaign;
+    window.shareCampaign = shareCampaign;
+</script>
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -380,216 +497,384 @@
     <!--CSS standard styling-->
 
  <link href="css/styles.css" rel="stylesheet">
-
-    <style>
-        :root {
-            --primary-color: #012A4A;
-            --secondary-color: #2A6F97;
-            --accent-color: #A9D6E5;
-            --success-color: #198754;
-            --warning-color: #ffc107;
-
-           
-/* Page specific code*/
-
-.custom-howitworks {
-  background-color: #A9D6E5;
-  padding: 25px;
-  border-radius: 8px;
-}
-
-.custom-howitworks h2 {
-  font-size: 2rem;
-  color: #012A4A;
-  margin-bottom: 20px;
-}
-
-.custom-howitworks .step {
-  margin-bottom: 15px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.custom-howitworks .step span {
-  line-height: 1.5;
-  font-size: 20px;
-  color: #012A4A;
-}
-
-
-.custom-section {
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-  max-width: 600px;
-  margin-right: 20px;
-  background-color: #A9D6E5;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  color: #caf0f8;
-  background-color: #012A4A;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  padding: 10px;
-  top: 0;
-}
-
-.section-content {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #012A4A;
-  margin-bottom: 20px;
-  justify-content: left;
-}
-
-.section-button {
-  display: inline-block;
-  width: 200px;
-  text-align: center;
-  margin-left: auto;
-  margin-right: 0;
-  padding: 10px 20px;
-  font-weight: 500;
-  border-radius: 6px;
-  color: #012A4A;
-  border: 2px solid #012A4A;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.section-button:hover {
-  background-color: #012A4A;
-  border: 2px solid #012A4A;
-  color: #A9D6E5;
-}
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    font-weight: 600;
-    padding: 12px 24px;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.btn-outline-primary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-    font-weight: 500;
-}
-
-.btn-outline-primary:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.progress-bar {
-    background-color: var(--primary-color);
-    font-weight: 600;
-}
-
-.campaign-cover {
-    max-height: 400px;
-    width: 100%;
-    object-fit: cover;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.campaign-cover-placeholder {
-    height: 300px;
-    width: 100%;
-}
-
-.campaign-story {
-    line-height: 1.8;
-    font-size: 1.1rem;
-}
-
-.campaign-story p {
-    margin-bottom: 1.5rem;
-}
-
-.progress-section {
-    border-left: 5px solid var(--primary-color);
-}
-
-.breadcrumb {
-    background-color: transparent;
-    padding: 0;
-}
-
-.breadcrumb-item a {
-    color: var(--primary-color);
-    text-decoration: none;
-}
-
-.breadcrumb-item.active {
-    color: #6c757d;
-}
-
-.card {
-    border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.card-header {
-    border-bottom: none;
-    font-weight: 600;
-    padding: 1rem 1.5rem;
-}
-
-.trust-badges i {
-    font-size: 1.2rem;
-}
-
-.sticky-top {
-    z-index: 1020;
-}
-
-/* Loading spinner */
-#loadingSpinner {
-    z-index: 9999;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .display-5 {
-        font-size: 2rem;
+<style>
+    /* ===== CSS VARIABLES FOR CONSISTENT THEMING ===== */
+    :root {
+        --primary-color: #012A4A;
+        --secondary-color: #2A6F97;
+        --accent-color: #A9D6E5;
+        --success-color: #198754;
+        --warning-color: #ffc107;
     }
-    
-    .lead {
+
+    /* ===== HOW IT WORKS SECTION STYLING ===== */
+    .custom-howitworks {
+        background-color: #A9D6E5;
+        padding: 25px;
+        border-radius: 8px;
+    }
+
+    /* How it works heading styling */
+    .custom-howitworks h2 {
+        font-size: 2rem;
+        color: #012A4A;
+        margin-bottom: 20px;
+    }
+
+    /* Individual step container styling */
+    .custom-howitworks .step {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* Step text styling */
+    .custom-howitworks .step span {
+        line-height: 1.5;
+        font-size: 20px;
+        color: #012A4A;
+    }
+
+    /* ===== CUSTOM SECTION STYLING ===== */
+    .custom-section {
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin-right: 20px;
+        background-color: #A9D6E5;
+    }
+
+    /* Section title styling */
+    .section-title {
+        font-size: 1.8rem;
+        color: #caf0f8;
+        background-color: #012A4A;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 10px;
+        top: 0;
+    }
+
+    /* Section content text styling */
+    .section-content {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #012A4A;
+        margin-bottom: 20px;
+        justify-content: left;
+    }
+
+    /* Section button styling */
+    .section-button {
+        display: inline-block;
+        width: 200px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: 0;
+        padding: 10px 20px;
+        font-weight: 500;
+        border-radius: 6px;
+        color: #012A4A;
+        border: 2px solid #012A4A;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Section button hover effects */
+    .section-button:hover {
+        background-color: #012A4A;
+        border: 2px solid #012A4A;
+        color: #A9D6E5;
+    }
+
+    /* ===== BUTTON STYLING ===== */
+    /* Primary button base styling */
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        font-weight: 600;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+    }
+
+    /* Primary button hover state */
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Outline button base styling */
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        font-weight: 500;
+    }
+
+    /* Outline button hover state */
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    /* Progress bar color styling */
+    .progress-bar {
+        background-color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    /* ===== CAMPAIGN IMAGE STYLING ===== */
+    /* Campaign cover image styling - reduced size */
+    .campaign-cover {
+        max-height: 250px; /* Reduced height for better layout */
+        width: 100%;
+        object-fit: cover; /* Maintain aspect ratio while filling container */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+
+    /* Placeholder styling when no campaign image exists */
+    .campaign-cover-placeholder {
+        height: 200px; /* Reduced height to match image size */
+        width: 100%;
+        background-color: #f8f9fa; /* Light background color */
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Placeholder icon styling */
+    .campaign-cover-placeholder i {
+        font-size: 3rem; /* Appropriate icon size */
+        color: #6c757d; /* Muted icon color */
+    }
+
+    /* ===== CAMPAIGN STORY SECTION STYLING ===== */
+    .campaign-story {
+        line-height: 1.8; /* Improved readability with increased line height */
         font-size: 1.1rem;
     }
-    
-    .campaign-cover, .campaign-cover-placeholder {
-        height: 200px;
-    }
-    
-    .sticky-top {
-        position: static !important;
-    }
-}
 
-/* Animation for progress bar */
-.progress-bar {
-    transition: width 1s ease-in-out;
-}
-    </style>
+    /* Paragraph spacing in campaign story */
+    .campaign-story p {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Progress section visual indicator */
+    .progress-section {
+        border-left: 5px solid var(--primary-color);
+    }
+
+    /* ===== BREADCRUMB STYLING ===== */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    /* Breadcrumb link styling */
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    /* Active breadcrumb item styling */
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+
+    /* ===== CARD COMPONENT STYLING ===== */
+    .card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Card hover effects */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Card header styling */
+    .card-header {
+        border-bottom: none;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+    }
+
+    /* Trust badges icon sizing */
+    .trust-badges i {
+        font-size: 1.2rem;
+    }
+
+    /* ===== STICKY ELEMENT STYLING ===== */
+    .sticky-top {
+        z-index: 1020; /* Ensure proper stacking context */
+    }
+
+    /* ===== LOADING SPINNER STYLING ===== */
+    #loadingSpinner {
+        z-index: 9999; /* High z-index to appear above other content */
+    }
+
+    /* ===== RESPONSIVE DESIGN BREAKPOINTS ===== */
+    
+    /* Tablet and mobile devices (768px and below) */
+    @media (max-width: 768px) {
+        /* Reduce display font size on smaller screens */
+        .display-5 {
+            font-size: 2rem;
+        }
+        
+        /* Reduce lead text size on smaller screens */
+        .lead {
+            font-size: 1.1rem;
+        }
+        
+        /* Further reduce campaign image size on mobile */
+        .campaign-cover, .campaign-cover-placeholder {
+            height: 180px;
+            max-height: 180px;
+        }
+        
+        /* Disable sticky positioning on mobile for better UX */
+        .sticky-top {
+            position: static !important;
+        }
+    }
+
+    /* Small mobile devices (576px and below) */
+    @media (max-width: 576px) {
+        /* Smallest image size for very small screens */
+        .campaign-cover, .campaign-cover-placeholder {
+            height: 150px;
+            max-height: 150px;
+        }
+    }
+
+    /* ===== PROGRESS BAR ANIMATIONS ===== */
+    /* Smooth width transition for progress bars */
+    .progress-bar {
+        transition: width 1s ease-in-out;
+    }
+
+    /* ===== ENHANCED PROGRESS BAR STYLING ===== */
+    /* Striped progress bar background pattern */
+    .progress-bar-striped {
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, 
+            transparent 25%, 
+            transparent 50%, 
+            rgba(255, 255, 255, 0.15) 50%, 
+            rgba(255, 255, 255, 0.15) 75%, 
+            transparent 75%, 
+            transparent);
+        background-size: 1rem 1rem;
+    }
+
+    /* Animated stripes for progress bars */
+    .progress-bar-animated {
+        animation: progress-bar-stripes 1s linear infinite;
+    }
+
+    /* Keyframes for stripe animation */
+    @keyframes progress-bar-stripes {
+        0% {
+            background-position: 1rem 0;
+        }
+        100% {
+            background-position: 0 0;
+        }
+    }
+
+    /* ===== PROGRESS SECTION ENHANCEMENTS ===== */
+    /* Progress section container styling */
+    .progress-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Decorative top border for progress section */
+    .progress-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    /* ===== ALERT STYLING ===== */
+    /* Warning alert styling with pulse animation */
+    .alert-warning {
+        border-left: 4px solid #ffc107;
+        animation: pulse 2s infinite;
+    }
+
+    /* Success alert styling */
+    .alert-success {
+        border-left: 4px solid #198754;
+    }
+
+    /* Pulse animation for urgent alerts */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+        }
+    }
+
+    /* ===== PROGRESS BAR TRANSITIONS ===== */
+    /* Enhanced progress bar transitions */
+    .progress-bar {
+        transition: width 1.5s ease-in-out, background-color 0.3s ease;
+    }
+
+    /* ===== PROGRESS BAR COLOR VARIATIONS ===== */
+    /* 100% progress - success green */
+    .progress-bar[aria-valuenow="100"] {
+        background-color: #198754 !important;
+    }
+
+    /* 90-99% progress - darker success green */
+    .progress-bar[aria-valuenow^="9"] {
+        background-color: #157347 !important;
+    }
+
+    /* 70-89% progress - primary color */
+    .progress-bar[aria-valuenow^="7"],
+    .progress-bar[aria-valuenow^="8"] {
+        background-color: var(--primary-color) !important;
+    }
+
+    /* 50-69% progress - blue variant */
+    .progress-bar[aria-valuenow^="5"],
+    .progress-bar[aria-valuenow^="6"] {
+        background-color: #0a58ca !important;
+    }
+
+    /* 30-49% progress - secondary color */
+    .progress-bar[aria-valuenow^="3"],
+    .progress-bar[aria-valuenow^="4"] {
+        background-color: var(--secondary-color) !important;
+    }
+
+    /* 0-29% progress - muted gray */
+    .progress-bar[aria-valuenow^="0"],
+    .progress-bar[aria-valuenow^="1"],
+    .progress-bar[aria-valuenow^="2"] {
+        background-color: #6c757d !important;
+    }
+</style>
+   
 </head>
 <body>
     

@@ -850,6 +850,7 @@
     let editMode = null;
     let currentDocumentType = null;
     let selectedFile = null;
+    let unsubscribeCampaigns = null; // Real-time listener for campaigns
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', function() {
@@ -969,6 +970,13 @@
             } else {
                 // Redirect to login if not authenticated
                 window.location.href = 'login.html';
+            }
+        });
+
+        // Clean up real-time listeners when leaving the page
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribeCampaigns) {
+                unsubscribeCampaigns();
             }
         });
     }
@@ -1196,100 +1204,181 @@
         messageDiv.classList.remove('d-none');
     }
 
-    async function loadUserCampaigns(userId) {
+    // UPDATED FUNCTION: Now uses real-time listener for dynamic progress bars
+    function loadUserCampaigns(userId) {
         try {
             const campaignsQuery = db.collection("campaigns").where("studentId", "==", userId);
-            const querySnapshot = await campaignsQuery.get();
             
-            const campaignsList = document.getElementById('campaignsList');
-            
-            if (querySnapshot.empty) {
-                campaignsList.innerHTML = `
-                    <div class="text-center py-4">
-                        <i class="bi bi-flag display-1 text-muted"></i>
-                        <h5 class="mt-3">No campaigns yet</h5>
-                        <p class="text-muted">Create your first campaign to start receiving support!</p>
-                        <button class="btn btn-primary-custom" id="createFirstCampaignButton2">
-                            Create Your First Campaign
-                        </button>
-                    </div>
-                `;
-                document.getElementById('createFirstCampaignButton2')?.addEventListener('click', createNewCampaign);
-                return;
-            }
+            // Set up real-time listener for campaigns
+            unsubscribeCampaigns = campaignsQuery.onSnapshot((querySnapshot) => {
+                const campaignsList = document.getElementById('campaignsList');
+                
+                if (querySnapshot.empty) {
+                    campaignsList.innerHTML = `
+                        <div class="text-center py-4">
+                            <i class="bi bi-flag display-1 text-muted"></i>
+                            <h5 class="mt-3">No campaigns yet</h5>
+                            <p class="text-muted">Create your first campaign to start receiving support!</p>
+                            <button class="btn btn-primary-custom" id="createFirstCampaignButton2">
+                                Create Your First Campaign
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('createFirstCampaignButton2')?.addEventListener('click', createNewCampaign);
+                    return;
+                }
 
-            let campaignsHTML = '<div class="row">';
-            querySnapshot.forEach((doc) => {
-                const campaign = doc.data();
-                const progressPercentage = campaign.goalAmount > 0 ? 
-                    Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100)) : 0;
+                let campaignsHTML = '<div class="row">';
+                querySnapshot.forEach((doc) => {
+                    const campaign = doc.data();
+                    const progressData = calculateCampaignProgress(campaign);
                     
-                campaignsHTML += `
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100 campaign-card">
-                            <div class="card-body">
-                                <h5 class="card-title">${campaign.title || 'Untitled Campaign'}</h5>
-                                <p class="card-text">${campaign.description || 'No description provided'}</p>
-                                <div class="mb-2">
-                                    <span class="badge bg-${campaign.status === 'active' ? 'success' : 'secondary'}">
-                                        ${campaign.status || 'draft'}
-                                    </span>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar bg-success" role="progressbar" 
-                                         style="width: ${progressPercentage}%"
-                                         aria-valuenow="${progressPercentage}" 
-                                         aria-valuemin="0" aria-valuemax="100">
+                    campaignsHTML += `
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 campaign-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${campaign.title || 'Untitled Campaign'}</h5>
+                                    <p class="card-text">${campaign.description || 'No description provided'}</p>
+                                    <div class="mb-2">
+                                        <span class="badge bg-${campaign.status === 'active' ? 'success' : 'secondary'}">
+                                            ${campaign.status || 'draft'}
+                                        </span>
                                     </div>
-                                </div>
-                                <p class="small text-muted">
-                                    R${campaign.currentAmount || 0} raised of R${campaign.goalAmount || 0}
-                                </p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-primary flex-fill view-campaign-btn" data-campaign-id="${doc.id}">
-                                        <i class="bi bi-eye me-1"></i>View
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-secondary flex-fill edit-campaign-btn" data-campaign-id="${doc.id}">
-                                        <i class="bi bi-pencil me-1"></i>Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger flex-fill delete-campaign-btn" data-campaign-id="${doc.id}">
-                                        <i class="bi bi-trash me-1"></i>Delete
-                                    </button>
+                                    
+                                    <!-- DYNAMIC PROGRESS BAR WITH REAL-TIME UPDATES -->
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <small class="text-muted">${progressData.percentage}% funded</small>
+                                            <small class="text-muted">${progressData.daysLeft} days left</small>
+                                        </div>
+                                        <div class="progress mb-2" style="height: 20px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                                                 role="progressbar" 
+                                                 style="width: ${progressData.percentage}%"
+                                                 aria-valuenow="${progressData.percentage}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                                ${progressData.percentage}%
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="fw-bold">R${progressData.currentAmount.toLocaleString()}</small>
+                                            <small class="text-muted">of</small>
+                                            <small class="fw-bold">R${progressData.goalAmount.toLocaleString()}</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <small class="text-muted">${progressData.donors} supporters</small>
+                                            <small class="text-muted">${progressData.amountNeeded} to go</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-primary flex-fill view-campaign-btn" data-campaign-id="${doc.id}">
+                                            <i class="bi bi-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary flex-fill edit-campaign-btn" data-campaign-id="${doc.id}">
+                                            <i class="bi bi-pencil me-1"></i>Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger flex-fill delete-campaign-btn" data-campaign-id="${doc.id}">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            });
-            campaignsHTML += '</div>';
-            campaignsList.innerHTML = campaignsHTML;
-
-            // Add event listeners to campaign buttons
-            document.querySelectorAll('.view-campaign-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const campaignId = e.target.closest('.view-campaign-btn').dataset.campaignId;
-                    viewCampaign(campaignId);
+                    `;
                 });
-            });
+                campaignsHTML += '</div>';
+                campaignsList.innerHTML = campaignsHTML;
 
-            document.querySelectorAll('.edit-campaign-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const campaignId = e.target.closest('.edit-campaign-btn').dataset.campaignId;
-                    editCampaign(campaignId);
-                });
-            });
+                // Add event listeners to campaign buttons
+                attachCampaignEventListeners();
+                
+                console.log('Campaigns updated in real-time');
 
-            document.querySelectorAll('.delete-campaign-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const campaignId = e.target.closest('.delete-campaign-btn').dataset.campaignId;
-                    deleteCampaign(campaignId);
-                });
+            }, (error) => {
+                console.error("Error listening to campaigns:", error);
+                showAlert('Error loading campaigns', 'danger');
             });
 
         } catch (error) {
-            console.error("Error loading campaigns:", error);
+            console.error("Error setting up campaigns listener:", error);
             showAlert('Error loading campaigns', 'danger');
         }
+    }
+
+    // NEW FUNCTION: Calculate campaign progress with enhanced data
+    function calculateCampaignProgress(campaign) {
+        // Use field names from database (snake_case) with fallbacks
+        const goalAmount = Number(campaign.goal_amount || campaign.goalAmount || 0);
+        const currentAmount = Number(campaign.raised_amount || campaign.currentAmount || 0);
+        const donorCount = Number(campaign.donor_count || campaign.donorCount || 0);
+        
+        // Calculate percentage
+        const percentage = goalAmount > 0 ? Math.min(100, Math.round((currentAmount / goalAmount) * 100)) : 0;
+        
+        // Calculate amount needed
+        const amountNeeded = Math.max(0, goalAmount - currentAmount);
+        
+        // Calculate days remaining
+        const daysLeft = calculateDaysRemaining(campaign.end_date || campaign.endDate);
+        
+        return {
+            goalAmount,
+            currentAmount,
+            percentage,
+            amountNeeded: `R${amountNeeded.toLocaleString()}`,
+            daysLeft: daysLeft !== null ? daysLeft : 'N/A',
+            donors: donorCount
+        };
+    }
+
+    // NEW FUNCTION: Calculate days remaining for campaign
+    function calculateDaysRemaining(endDate) {
+        if (!endDate) return null;
+        
+        try {
+            let end;
+            if (endDate.toDate) {
+                end = endDate.toDate();
+            } else if (endDate instanceof Date) {
+                end = endDate;
+            } else {
+                end = new Date(endDate);
+            }
+            
+            const now = new Date();
+            const diffTime = end - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        } catch (e) {
+            console.error('Error calculating days remaining:', e);
+            return null;
+        }
+    }
+
+    // NEW FUNCTION: Attach event listeners to campaign buttons
+    function attachCampaignEventListeners() {
+        document.querySelectorAll('.view-campaign-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const campaignId = e.target.closest('.view-campaign-btn').dataset.campaignId;
+                viewCampaign(campaignId);
+            });
+        });
+
+        document.querySelectorAll('.edit-campaign-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const campaignId = e.target.closest('.edit-campaign-btn').dataset.campaignId;
+                editCampaign(campaignId);
+            });
+        });
+
+        document.querySelectorAll('.delete-campaign-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const campaignId = e.target.closest('.delete-campaign-btn').dataset.campaignId;
+                deleteCampaign(campaignId);
+            });
+        });
     }
 
     function openEditModal(mode) {
@@ -1539,7 +1628,7 @@
                 await db.collection("campaigns").doc(campaignId).delete();
                 showLoading(false);
                 showAlert('Campaign deleted successfully!', 'success');
-                await loadUserCampaigns(currentUserId);
+                // Campaigns will automatically update via real-time listener
             } catch (error) {
                 console.error("Error deleting campaign:", error);
                 showLoading(false);
@@ -1738,6 +1827,11 @@
 
     async function logout() {
         try {
+            // Clean up real-time listeners
+            if (unsubscribeCampaigns) {
+                unsubscribeCampaigns();
+            }
+            
             await auth.signOut();
             localStorage.removeItem('userType');
             localStorage.removeItem('userName');
