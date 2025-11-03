@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Campaigns - FundMyFuture</title>
+
+    <!-- BOOTSTRAP & ICONS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #012A4A;
+            --secondary-color: #2A6F97;
+            --accent-color: #A9D6E5;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+
+        .campaign-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .campaign-category {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 6px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            border-radius: 8px;
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .stats-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .campaign-meta {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .urgent-badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .days-left {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box .form-control {
+            padding-left: 40px;
+            border-radius: 20px;
+            border: 2px solid #e9ecef;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .pagination .page-link {
+            color: var(--primary-color);
+            border: 1px solid #dee2e6;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .no-campaigns {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+        }
+
+        .no-campaigns i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #dee2e6;
+        }
+
+        .view-toggle {
+            display: flex;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .view-toggle-btn {
+            background: white;
+            border: none;
+            padding: 6px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-toggle-btn:not(.active):hover {
+            background: #f8f9fa;
+        }
+
+        .campaign-row {
+            display: flex;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .campaign-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .campaign-row-content {
+            flex: 1;
+            padding: 15px;
+        }
+
+        .campaign-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .campaign-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .campaign-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 30px 0;
+            }
+            
+            .stats-number {
+                font-size: 1.75rem;
+            }
+            
+            .campaign-card {
+                margin-bottom: 15px;
+            }
+            
+            .campaign-row {
+                flex-direction: column;
+            }
+            
+            .campaign-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <div class="container-fluid">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
+
+        <!-- Mobile menu toggle button -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Offcanvas navigation menu for mobile -->
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
+            <div class="offcanvas-header">
+                <!-- Close button for offcanvas -->
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Donate button -->
+                    <li class="nav-item me-3">
+                        <a class="btn donate-btn ms-2" href="donate.html">DONATE NOW</a>
+                    </li>
+                    <!-- Student section link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">STUDENTS</a>
+                    </li>
+                    <!-- Funder section link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="sign-up-funderStudent.html">FUNDERS</a>
+                    </li>
+                    <!-- About us link -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">ABOUT US</a>
+                    </li>
+                    <!-- Login button -->
+                    <li class="nav-item me-2" id="login-area">
+                        <a class="btn login-btn fw-bolder" href="login.html">LOGIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html" class="text-white-50">Home</a></li>
+                        <li class="breadcrumb-item"><a href="donate.html" class="text-white-50">Donate</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">All Campaigns</li>
+                    </ol>
+                </nav>
+                <h1 class="display-5 fw-bold mb-3">All Campaigns</h1>
+                <p class="lead mb-0">Discover amazing students and help them achieve their educational dreams</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalCampaigns">0</div>
+                    <div class="stats-label">Active Campaigns</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container mb-5">
+    <!-- Filters and Search -->
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="filter-card">
+                <h5 class="fw-bold mb-4">Filter Campaigns</h5>
+                
+                <!-- Search -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Search</label>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search campaigns...">
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select class="form-select" id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="tuition">Tuition</option>
+                        <option value="books">Books & Materials</option>
+                        <option value="living">Living Expenses</option>
+                        <option value="medicine">Medicine</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="business">Business</option>
+                        <option value="arts">Arts & Humanities</option>
+                    </select>
+                </div>
+
+                <!-- Institution Filter -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Institution</label>
+                    <select class="form-select" id="institutionFilter">
+                        <option value="all">All Institutions</option>
+                        <option value="uct">University of Cape Town</option>
+                        <option value="stellenbosch">Stellenbosch University</option>
+                        <option value="wits">University of the Witwatersrand</option>
+                        <option value="unisa">UNISA</option>
+                        <option value="uj">University of Johannesburg</option>
+                    </select>
+                </div>
+
+                <!-- Funding Progress -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Funding Progress</label>
+                    <select class="form-select" id="progressFilter">
+                        <option value="all">All Progress</option>
+                        <option value="almost">Almost Funded (80%+)</option>
+                        <option value="half">Halfway There (40-80%)</option>
+                        <option value="starting">Just Starting (0-40%)</option>
+                    </select>
+                </div>
+
+                <!-- Sort Options -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Sort By</label>
+                    <select class="form-select" id="sortFilter">
+                        <option value="newest">Newest First</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="ending">Ending Soon</option>
+                        <option value="most-funded">Most Funded</option>
+                        <option value="urgent">Urgent Need</option>
+                    </select>
+                </div>
+
+                <!-- Reset Filters -->
+                <button class="btn btn-outline-primary w-100" onclick="resetFilters()">
+                    <i class="fas fa-refresh me-2"></i>Reset Filters
+                </button>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="filter-card">
+                <h6 class="fw-bold mb-3">Campaign Statistics</h6>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Active Campaigns:</span>
+                    <span class="fw-bold" id="statActive">0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Total Raised:</span>
+                    <span class="fw-bold" id="statRaised">R0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Students Helped:</span>
+                    <span class="fw-bold" id="statStudents">0</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted">Success Rate:</span>
+                    <span class="fw-bold" id="statSuccess">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campaigns Grid -->
+        <div class="col-lg-9">
+            <!-- Results Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold mb-0" id="resultsCount">Showing 0 Campaigns</h5>
+                    <small class="text-muted" id="resultsFilter"></small>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="view-toggle me-2">
+                        <button class="view-toggle-btn active" id="gridViewBtn" onclick="toggleView('grid')">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-toggle-btn" id="listViewBtn" onclick="toggleView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Loading campaigns...</p>
+            </div>
+
+            <!-- Campaigns Grid View -->
+            <div class="row" id="campaignsGrid">
+                <!-- Campaigns will be loaded here dynamically -->
+            </div>
+
+            <!-- Campaigns List View -->
+            <div id="campaignsList" style="display: none;">
+                <!-- Campaigns will be loaded here in list format -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-campaigns d-none" id="noCampaigns">
+                <i class="fas fa-search"></i>
+                <h4>No campaigns found</h4>
+                <p class="text-muted">Try adjusting your search filters or browse all categories.</p>
+                <button class="btn btn-outline-primary mt-3" onclick="resetFilters()">
+                    <i class="fas fa-refresh me-2"></i>Reset Filters
+                </button>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Campaign pagination" class="mt-4">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- Pagination will be generated here -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Firebase Integration -->
+<script>
+// ===== FIREBASE CONFIGURATION =====
+const firebaseConfig = {
+    apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
+    authDomain: "fund-my-future-47844.firebaseapp.com",
+    databaseURL: "https://fund-my-future-47844-default-rtdb.firebaseio.com",
+    projectId: "fund-my-future-47844",
+    storageBucket: "fund-my-future-47844.firebasestorage.app",
+    messagingSenderId: "581912293895",
+    appId: "1:581912293895:web:03468061fae2124ac770a2",
+    measurementId: "G-LFC0R1GBE1"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase services
+const db = firebase.firestore();
+const auth = firebase.auth();
+const storage = firebase.storage();
+
+let allCampaigns = [];
+let filteredCampaigns = [];
+let currentPage = 1;
+const campaignsPerPage = 12; // Increased since cards are smaller
+let isGridView = true;
+
+// Mock data for demonstration
+const mockCampaigns = [
+    {
+        id: "1",
+        title: "Medical School Tuition",
+        description: "Help me complete my final year of medical school and become a doctor.",
+        category: "medicine",
+        currentAmount: 12500,
+        goalAmount: 25000,
+        donorCount: 34,
+        studentId: "student1",
+        student: {
+            firstName: "Sarah",
+            surname: "Johnson",
+            institution: "University of Cape Town"
+        },
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000) // 10 days ago
+    },
+    {
+        id: "2",
+        title: "Engineering Textbook Fund",
+        description: "Funding for textbooks and lab materials for my engineering degree.",
+        category: "engineering",
+        currentAmount: 800,
+        goalAmount: 2000,
+        donorCount: 12,
+        studentId: "student2",
+        student: {
+            firstName: "James",
+            surname: "Williams",
+            institution: "Stellenbosch University"
+        },
+        endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // 15 days from now
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
+    },
+    {
+        id: "3",
+        title: "Business Management Course",
+        description: "Seeking support for my business management certification program.",
+        category: "business",
+        currentAmount: 3500,
+        goalAmount: 5000,
+        donorCount: 21,
+        studentId: "student3",
+        student: {
+            firstName: "Lisa",
+            surname: "Brown",
+            institution: "University of Johannesburg"
+        },
+        endDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), // 45 days from now
+        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000) // 20 days ago
+    },
+    {
+        id: "4",
+        title: "Art Supplies for Final Project",
+        description: "Need materials for my final year art exhibition project.",
+        category: "arts",
+        currentAmount: 450,
+        goalAmount: 1200,
+        donorCount: 8,
+        studentId: "student4",
+        student: {
+            firstName: "Michael",
+            surname: "Davis",
+            institution: "UNISA"
+        },
+        endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2 days ago
+    },
+    {
+        id: "5",
+        title: "Computer Science Tuition",
+        description: "Support for my computer science degree tuition fees.",
+        category: "engineering",
+        currentAmount: 15000,
+        goalAmount: 20000,
+        donorCount: 42,
+        studentId: "student5",
+        student: {
+            firstName: "David",
+            surname: "Wilson",
+            institution: "University of the Witwatersrand"
+        },
+        endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days from now
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // 30 days ago
+    },
+    {
+        id: "6",
+        title: "Living Expenses Support",
+        description: "Help with accommodation and living costs while I complete my studies.",
+        category: "living",
+        currentAmount: 3200,
+        goalAmount: 6000,
+        donorCount: 18,
+        studentId: "student6",
+        student: {
+            firstName: "Emma",
+            surname: "Taylor",
+            institution: "University of Cape Town"
+        },
+        endDate: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000), // 25 days from now
+        createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) // 8 days ago
+    }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadAllCampaigns();
+    setupEventListeners();
+    
+    // Check auth state
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log("User is logged in:", user.uid);
+        } else {
+            console.log("No user logged in");
+        }
+    });
+});
+
+function setupEventListeners() {
+    // Search input with debounce
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterCampaigns();
+        }, 300);
+    });
+
+    // Filter changes
+    document.getElementById('categoryFilter').addEventListener('change', filterCampaigns);
+    document.getElementById('institutionFilter').addEventListener('change', filterCampaigns);
+    document.getElementById('progressFilter').addEventListener('change', filterCampaigns);
+    document.getElementById('sortFilter').addEventListener('change', filterCampaigns);
+}
+
+async function loadAllCampaigns() {
+    showLoading(true);
+    try {
+        // Try to load from Firebase first
+        const campaignsQuery = db.collection("campaigns")
+            .where("status", "==", "active");
+        
+        const campaignsSnapshot = await campaignsQuery.get();
+        allCampaigns = [];
+        
+        if (campaignsSnapshot.empty) {
+            // If no campaigns in Firebase, use mock data
+            console.log("No campaigns found in Firebase, using mock data");
+            allCampaigns = mockCampaigns;
+        } else {
+            for (const doc of campaignsSnapshot.docs) {
+                const campaign = { id: doc.id, ...doc.data() };
+                // Get student information
+                if (campaign.studentId) {
+                    try {
+                        const studentDoc = await db.collection("users").doc(campaign.studentId).get();
+                        if (studentDoc.exists) {
+                            campaign.student = studentDoc.data();
+                        }
+                    } catch (error) {
+                        console.error("Error loading student data:", error);
+                    }
+                }
+                allCampaigns.push(campaign);
+            }
+        }
+
+        console.log(`Loaded ${allCampaigns.length} campaigns`);
+        updateStatistics();
+        filterCampaigns();
+        showLoading(false);
+        
+    } catch (error) {
+        console.error("Error loading campaigns:", error);
+        // Use mock data as fallback
+        console.log("Using mock data as fallback");
+        allCampaigns = mockCampaigns;
+        updateStatistics();
+        filterCampaigns();
+        showLoading(false);
+    }
+}
+
+function updateStatistics() {
+    document.getElementById('totalCampaigns').textContent = allCampaigns.length;
+    
+    const totalRaised = allCampaigns.reduce((sum, campaign) => sum + (campaign.currentAmount || 0), 0);
+    const uniqueStudents = new Set(allCampaigns.map(camp => camp.studentId)).size;
+    
+    const successfulCampaigns = allCampaigns.filter(camp => (camp.currentAmount || 0) >= (camp.goalAmount || 1)).length;
+    const successRate = allCampaigns.length > 0 ? Math.round((successfulCampaigns / allCampaigns.length) * 100) : 0;
+
+    document.getElementById('statActive').textContent = allCampaigns.length;
+    document.getElementById('statRaised').textContent = `R${totalRaised.toLocaleString()}`;
+    document.getElementById('statStudents').textContent = uniqueStudents;
+    document.getElementById('statSuccess').textContent = `${successRate}%`;
+}
+
+function filterCampaigns() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const category = document.getElementById('categoryFilter').value;
+    const institution = document.getElementById('institutionFilter').value;
+    const progress = document.getElementById('progressFilter').value;
+    const sortBy = document.getElementById('sortFilter').value;
+
+    filteredCampaigns = allCampaigns.filter(campaign => {
+        // Search filter
+        if (searchTerm) {
+            const titleMatch = campaign.title && campaign.title.toLowerCase().includes(searchTerm);
+            const descMatch = campaign.description && campaign.description.toLowerCase().includes(searchTerm);
+            const studentNameMatch = campaign.student && 
+                `${campaign.student.firstName || ''} ${campaign.student.surname || ''}`.toLowerCase().includes(searchTerm);
+            const institutionMatch = campaign.student && 
+                campaign.student.institution && campaign.student.institution.toLowerCase().includes(searchTerm);
+            
+            if (!titleMatch && !descMatch && !studentNameMatch && !institutionMatch) {
+                return false;
+            }
+        }
+
+        // Category filter
+        if (category !== 'all' && campaign.category !== category) {
+            return false;
+        }
+
+        // Institution filter
+        if (institution !== 'all') {
+            const studentInstitution = campaign.student?.institution || '';
+            if (!studentInstitution.toLowerCase().includes(institution.toLowerCase())) {
+                return false;
+            }
+        }
+
+        // Progress filter
+        if (progress !== 'all') {
+            const progressPercentage = ((campaign.currentAmount || 0) / (campaign.goalAmount || 1)) * 100;
+            
+            switch(progress) {
+                case 'almost':
+                    if (progressPercentage < 80) return false;
+                    break;
+                case 'half':
+                    if (progressPercentage < 40 || progressPercentage >= 80) return false;
+                    break;
+                case 'starting':
+                    if (progressPercentage >= 40) return false;
+                    break;
+            }
+        }
+
+        return true;
+    });
+
+    // Sort campaigns
+    sortCampaigns(filteredCampaigns, sortBy);
+
+    currentPage = 1;
+    displayCampaigns();
+    updateResultsInfo();
+}
+
+function sortCampaigns(campaigns, sortBy) {
+    switch(sortBy) {
+        case 'newest':
+            campaigns.sort((a, b) => getCreatedDate(b.createdAt) - getCreatedDate(a.createdAt));
+            break;
+        case 'popular':
+            campaigns.sort((a, b) => (b.donorCount || 0) - (a.donorCount || 0));
+            break;
+        case 'ending':
+            campaigns.sort((a, b) => getEndDate(a.endDate) - getEndDate(b.endDate));
+            break;
+        case 'most-funded':
+            campaigns.sort((a, b) => (b.currentAmount || 0) - (a.currentAmount || 0));
+            break;
+        case 'urgent':
+            campaigns.sort((a, b) => {
+                const aProgress = ((a.currentAmount || 0) / (a.goalAmount || 1));
+                const bProgress = ((b.currentAmount || 0) / (b.goalAmount || 1));
+                const aUrgency = aProgress + (1 / (getDaysRemaining(a.endDate) + 1));
+                const bUrgency = bProgress + (1 / (getDaysRemaining(b.endDate) + 1));
+                return bUrgency - aUrgency;
+            });
+            break;
+    }
+}
+
+function displayCampaigns() {
+    const gridContainer = document.getElementById('campaignsGrid');
+    const listContainer = document.getElementById('campaignsList');
+    const noCampaigns = document.getElementById('noCampaigns');
+    
+    if (filteredCampaigns.length === 0) {
+        gridContainer.innerHTML = '';
+        listContainer.innerHTML = '';
+        noCampaigns.classList.remove('d-none');
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
+
+    noCampaigns.classList.add('d-none');
+
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * campaignsPerPage;
+    const endIndex = startIndex + campaignsPerPage;
+    const paginatedCampaigns = filteredCampaigns.slice(startIndex, endIndex);
+
+    if (isGridView) {
+        gridContainer.style.display = 'flex';
+        listContainer.style.display = 'none';
+        gridContainer.innerHTML = paginatedCampaigns.map(campaign => createCampaignCard(campaign)).join('');
+    } else {
+        gridContainer.style.display = 'none';
+        listContainer.style.display = 'block';
+        listContainer.innerHTML = paginatedCampaigns.map(campaign => createCampaignRow(campaign)).join('');
+    }
+
+    generatePagination();
+}
+
+function createCampaignCard(campaign) {
+    const progressPercentage = Math.min(100, ((campaign.currentAmount || 0) / (campaign.goalAmount || 1)) * 100);
+    const endDate = getEndDate(campaign.endDate);
+    const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+    const studentName = campaign.student ? `${campaign.student.firstName} ${campaign.student.surname}` : 'Student';
+    const institution = campaign.student?.institution || 'Educational Institution';
+    const isUrgent = daysRemaining <= 3 && progressPercentage < 90;
+    
+    // Get icon based on category
+    const categoryIcon = getCategoryIcon(campaign.category);
+
+    return `
+        <div class="col-md-6 col-xl-4">
+            <div class="card campaign-card" onclick="viewCampaign('${campaign.id}')">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="campaign-icon">
+                            <i class="${categoryIcon}"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="campaign-title">${campaign.title}</div>
+                            <div class="campaign-category">${campaign.category || 'General'}</div>
+                        </div>
+                    </div>
+                    
+                    <p class="campaign-description">${campaign.description || 'Support this student\'s educational journey.'}</p>
+                    
+                    <div class="campaign-meta mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>By: ${studentName}</span>
+                            <span class="days-left ${daysRemaining < 7 ? 'text-danger' : ''}">
+                                ${daysRemaining} days left
+                            </span>
+                        </div>
+                        <div class="text-muted small">${institution}</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Raised: R${(campaign.currentAmount || 0).toLocaleString()}</small>
+                            <small class="text-muted">Goal: R${(campaign.goalAmount || 0).toLocaleString()}</small>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: ${progressPercentage}%"></div>
+                        </div>
+                        <small class="text-muted">${progressPercentage.toFixed(0)}% funded</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        ${isUrgent ? '<span class="urgent-badge">URGENT</span>' : ''}
+                        <span class="badge bg-success">${campaign.donorCount || 0} supporters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function createCampaignRow(campaign) {
+    const progressPercentage = Math.min(100, ((campaign.currentAmount || 0) / (campaign.goalAmount || 1)) * 100);
+    const endDate = getEndDate(campaign.endDate);
+    const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
+    const studentName = campaign.student ? `${campaign.student.firstName} ${campaign.student.surname}` : 'Student';
+    const institution = campaign.student?.institution || 'Educational Institution';
+    const isUrgent = daysRemaining <= 3 && progressPercentage < 90;
+    
+    // Get icon based on category
+    const categoryIcon = getCategoryIcon(campaign.category);
+
+    return `
+        <div class="campaign-row" onclick="viewCampaign('${campaign.id}')">
+            <div class="d-flex align-items-center p-3">
+                <div class="campaign-icon">
+                    <i class="${categoryIcon}"></i>
+                </div>
+                <div class="campaign-row-content">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold mb-0">${campaign.title}</h6>
+                        <span class="badge bg-primary">${campaign.category || 'General'}</span>
+                    </div>
+                    
+                    <p class="campaign-description">${campaign.description || 'Support this student\'s educational journey.'}</p>
+                    
+                    <div class="campaign-meta mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>By: ${studentName}</span>
+                            <span class="days-left ${daysRemaining < 7 ? 'text-danger' : ''}">
+                                ${daysRemaining} days left
+                            </span>
+                        </div>
+                        <div class="text-muted small">${institution}</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Raised: R${(campaign.currentAmount || 0).toLocaleString()}</small>
+                            <small class="text-muted">Goal: R${(campaign.goalAmount || 0).toLocaleString()}</small>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: ${progressPercentage}%"></div>
+                        </div>
+                        <small class="text-muted">${progressPercentage.toFixed(0)}% funded • ${campaign.donorCount || 0} supporters</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        ${isUrgent ? '<span class="urgent-badge">URGENT</span>' : '<span></span>'}
+                        <span class="badge bg-success">${campaign.donorCount || 0} supporters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getCategoryIcon(category) {
+    switch(category) {
+        case 'tuition':
+            return 'fas fa-graduation-cap';
+        case 'books':
+            return 'fas fa-book';
+        case 'living':
+            return 'fas fa-home';
+        case 'medicine':
+            return 'fas fa-heartbeat';
+        case 'engineering':
+            return 'fas fa-cogs';
+        case 'business':
+            return 'fas fa-chart-line';
+        case 'arts':
+            return 'fas fa-palette';
+        default:
+            return 'fas fa-hand-holding-heart';
+    }
+}
+
+function generatePagination() {
+    const totalPages = Math.ceil(filteredCampaigns.length / campaignsPerPage);
+    const pagination = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+
+    let paginationHTML = '';
+    
+    // Previous button
+    paginationHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>
+        </li>
+    `;
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            paginationHTML += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>
+            `;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+        }
+    }
+
+    // Next button
+    paginationHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+        </li>
+    `;
+
+    pagination.innerHTML = paginationHTML;
+}
+
+function changePage(page) {
+    currentPage = page;
+    displayCampaigns();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleView(view) {
+    isGridView = view === 'grid';
+    const gridBtn = document.getElementById('gridViewBtn');
+    const listBtn = document.getElementById('listViewBtn');
+    
+    if (isGridView) {
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+    } else {
+        gridBtn.classList.remove('active');
+        listBtn.classList.add('active');
+    }
+    
+    displayCampaigns();
+}
+
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('categoryFilter').value = 'all';
+    document.getElementById('institutionFilter').value = 'all';
+    document.getElementById('progressFilter').value = 'all';
+    document.getElementById('sortFilter').value = 'newest';
+    
+    filterCampaigns();
+}
+
+function updateResultsInfo() {
+    const resultsCount = document.getElementById('resultsCount');
+    const resultsFilter = document.getElementById('resultsFilter');
+    
+    resultsCount.textContent = `Showing ${filteredCampaigns.length} Campaign${filteredCampaigns.length !== 1 ? 's' : ''}`;
+    
+    const activeFilters = [];
+    const category = document.getElementById('categoryFilter').value;
+    const institution = document.getElementById('institutionFilter').value;
+    const progress = document.getElementById('progressFilter').value;
+    
+    if (category !== 'all') activeFilters.push(category);
+    if (institution !== 'all') activeFilters.push(institution);
+    if (progress !== 'all') activeFilters.push(progress);
+    
+    if (activeFilters.length > 0) {
+        resultsFilter.textContent = `Filtered by: ${activeFilters.join(', ')}`;
+    } else {
+        resultsFilter.textContent = 'All active campaigns';
+    }
+}
+
+function viewCampaign(campaignId) {
+    window.location.href = `view-campaign.html?id=${campaignId}`;
+}
+
+// Utility functions
+function getEndDate(endDate) {
+    if (endDate?.toDate) return endDate.toDate();
+    if (endDate instanceof Date) return endDate;
+    if (endDate) return new Date(endDate);
+    // Default to 30 days from now
+    const defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 30);
+    return defaultDate;
+}
+
+function getCreatedDate(createdAt) {
+    if (createdAt?.toDate) return createdAt.toDate();
+    if (createdAt instanceof Date) return createdAt;
+    if (createdAt) return new Date(createdAt);
+    return new Date();
+}
+
+function getDaysRemaining(endDate) {
+    const end = getEndDate(endDate);
+    return Math.max(0, Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24)));
+}
+
+function showLoading(show) {
+    document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+}
+
+function showMessage(message, type) {
+    // Create alert element
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+// Make functions globally available
+window.changePage = changePage;
+window.toggleView = toggleView;
+window.resetFilters = resetFilters;
+window.viewCampaign = viewCampaign;
+window.filterCampaigns = filterCampaigns;
+</script>
+</body>
+</html>

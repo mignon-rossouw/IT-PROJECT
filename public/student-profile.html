@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="./css/styles.css">
 
     <style>
+        /* ... (ALL YOUR EXISTING STYLES REMAIN EXACTLY THE SAME) ... */
         .profile-image { width: 20%; }
         .badge-card { border: none; background-color: #A9D6E5; }
         .about-card { border: none; background-color: #A9D6E5; }
@@ -335,7 +336,7 @@
   </div>
 </footer>
 
-<!-- Firebase Script for Student Profile Page -->
+<!-- ✅ FIXED: Firebase Script for Student Profile Page -->
 <script>
 // ===== FIREBASE CONFIGURATION =====
 const firebaseConfig = {
@@ -387,7 +388,7 @@ function getStudentIdFromURL() {
   return id;
 }
 
-// ===== FIXED STUDENT PROFILE LOADING =====
+// ✅ FIXED: Enhanced student profile loading with better error handling
 async function loadStudentProfile(studentId) {
   console.log('Loading profile for student:', studentId);
   
@@ -455,7 +456,11 @@ async function loadStudentProfile(studentId) {
     }
   } catch (error) {
     console.error("Error loading student profile:", error);
-    showErrorMessage(`Error loading student profile: ${error.message}`);
+    if (error.code === 'permission-denied' || error.code === 'missing-or-insufficient-permissions') {
+      showErrorMessage('Unable to load student profile due to security restrictions. Please make sure the student profile is publicly accessible.');
+    } else {
+      showErrorMessage(`Error loading student profile: ${error.message}`);
+    }
   }
 }
 
@@ -494,7 +499,7 @@ function updateBadges(userData) {
   badgesContainer.innerHTML = badges.join('');
 }
 
-// ===== FIXED CAMPAIGN LOADING =====
+// ✅ FIXED: Campaign loading with better error handling
 async function loadStudentCampaigns(studentId) {
   console.log('Loading campaigns for student:', studentId);
   
@@ -549,9 +554,13 @@ async function loadStudentCampaigns(studentId) {
     
   } catch (error) {
     console.error("Error loading campaigns:", error);
+    if (error.code === 'permission-denied' || error.code === 'missing-or-insufficient-permissions') {
+      showErrorMessage('Unable to load campaigns due to security restrictions. Please contact the administrator.');
+    } else {
+      showErrorMessage("Error loading student campaigns");
+    }
     document.getElementById('noCampaignsMessage').style.display = 'block';
     document.getElementById('campaignsGrid').style.display = 'none';
-    showErrorMessage("Error loading student campaigns");
   }
 }
 

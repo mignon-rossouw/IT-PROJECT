@@ -154,6 +154,29 @@
             margin: 15px 0;
             color: #721c24;
         }
+        
+        /* Image preview styling */
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        /* Aspect ratio helper */
+        .aspect-ratio-helper {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .alert-custom {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
     </style>
 </head>
 
@@ -307,6 +330,7 @@
                     <label for="coverImage" class="mb-2 mt-3 fw-bold">Upload Cover Image</label>
                     <input type="file" id="coverImage" class="form-control mb-0 border-0" accept="image/*">
                     <small class="text-muted">Optional. JPG, PNG up to 5MB</small>
+                    <div class="aspect-ratio-helper">Recommended: 16:9 aspect ratio (e.g., 800x450px)</div>
 
                     <!-- Image Preview Area: Hidden container that displays when an image is selected -->
                     <div id="imagePreview" class="d-none mt-3"></div>
@@ -465,8 +489,7 @@ function showAlert(message, type = 'info') {
     existingAlerts.forEach(alert => alert.remove());
     
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} custom-alert position-fixed`;
-    alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.className = `alert alert-${type} custom-alert alert-custom`;
     alertDiv.innerHTML = `
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -512,6 +535,153 @@ function hideFirebaseError() {
     if (errorDiv) {
         errorDiv.classList.add('d-none');
     }
+}
+
+// ===== IMAGE RESIZING FUNCTION =====
+/**
+ * Resizes an image to a consistent size for all campaigns
+ * @param {File} file - The image file to resize
+ * @param {number} maxWidth - Maximum width (default: 800px)
+ * @param {number} maxHeight - Maximum height (default: 450px)
+ * @returns {Promise<Blob>} - Promise that resolves with the resized image blob
+ */
+function resizeImage(file, maxWidth = 800, maxHeight = 450) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                // Create canvas for resizing
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // Calculate new dimensions while maintaining aspect ratio
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width = Math.round((width * maxHeight) / height);
+                        height = maxHeight;
+                    }
+                }
+                
+                // Ensure minimum dimensions
+                if (width < maxWidth && height < maxHeight) {
+                    // If image is smaller than target, use original dimensions
+                    width = img.width;
+                    height = img.height;
+                }
+                
+                // Set canvas dimensions
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and resize image
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to blob
+                canvas.toBlob(blob => {
+                    if (blob) {
+                        resolve(blob);
+                    } else {
+                        reject(new Error('Failed to resize image'));
+                    }
+                }, 'image/jpeg', 0.85); // Use JPEG with 85% quality for smaller file size
+            };
+            img.onerror = () => reject(new Error('Failed to load image'));
+            img.src = event.target.result;
+        };
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// ===== CAMPAIGN IMAGE UPLOAD =====
+async function uploadCampaignImage(file) {
+    try {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            throw new Error('User must be logged in to upload images');
+        }
+
+        const storageRef = firebase.storage().ref();
+        
+        // Create secure file name: userId_timestamp.extension
+        // Handle both File objects (with name) and Blob objects (without name)
+        let fileExtension = 'jpg'; // Default extension
+        
+        if (file.name) {
+            // If it's a File object with a name
+            const parts = file.name.split('.');
+            if (parts.length > 1) {
+                fileExtension = parts.pop();
+            }
+        } else if (file.type) {
+            // If it's a Blob, extract extension from MIME type
+            const mimeToExt = {
+                'image/jpeg': 'jpg',
+                'image/jpg': 'jpg',
+                'image/png': 'png',
+                'image/gif': 'gif',
+                'image/webp': 'webp'
+            };
+            fileExtension = mimeToExt[file.type] || 'jpg';
+        }
+        
+        const fileName = `${user.uid}_${Date.now()}.${fileExtension}`;
+        
+        const campaignRef = storageRef.child(`campaign-images/${fileName}`);
+        
+        console.log('Uploading campaign image:', fileName);
+
+        // Upload file
+        const snapshot = await campaignRef.put(file);
+        const downloadURL = await snapshot.ref.getDownloadURL();
+        
+        console.log('Campaign image uploaded successfully:', downloadURL);
+        return downloadURL;
+        
+    } catch (error) {
+        console.error('Error uploading campaign image:', error);
+        
+        // Provide user-friendly error messages
+        if (error.code === 'storage/unauthorized') {
+            throw new Error('Permission denied. Please make sure you are logged in.');
+        } else if (error.code === 'storage/canceled') {
+            throw new Error('Upload was canceled.');
+        } else if (error.code === 'storage/unknown') {
+            throw new Error('Unknown error occurred during upload.');
+        } else {
+            throw new Error('Failed to upload image: ' + error.message);
+        }
+    }
+}
+
+// ===== IMAGE VALIDATION =====
+function validateCampaignImage(file) {
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+        throw new Error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+    }
+    
+    // Check file size (5MB max)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+        throw new Error('Image size must be less than 5MB');
+    }
+    
+    // Check if file is empty
+    if (file.size === 0) {
+        throw new Error('File appears to be empty');
+    }
+    
+    return true;
 }
 
 // ===== CAMPAIGN CREATION FUNCTIONALITY =====
@@ -642,29 +812,26 @@ function handleImagePreview(event) {
     const preview = document.getElementById('imagePreview');
     
     if (file) {
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            showAlert('Please select a valid image file (JPG, PNG, etc.)', 'warning');
+        try {
+            // Validate before showing preview
+            validateCampaignImage(file);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px; width: auto;">
+                    <p class="mt-2 text-success small">✓ Image validated and ready for upload</p>
+                    <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeImage()">Remove Image</button>
+                `;
+                preview.classList.remove('d-none');
+            };
+            reader.readAsDataURL(file);
+            
+        } catch (error) {
+            showAlert(error.message, 'warning');
             event.target.value = '';
-            return;
+            preview.classList.add('d-none');
         }
-        
-        // Validate file size (5MB max)
-        if (file.size > 5 * 1024 * 1024) {
-            showAlert('Image size should be less than 5MB', 'warning');
-            event.target.value = '';
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `
-                <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px; width: auto;">
-                <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeImage()">Remove Image</button>
-            `;
-            preview.classList.remove('d-none');
-        };
-        reader.readAsDataURL(file);
     }
 }
 
@@ -742,35 +909,16 @@ async function handleCampaignSubmit(e) {
         
         // Upload cover image if provided
         if (coverImage) {
-            if (!coverImage.type.startsWith('image/')) {
-                throw new Error('Please select a valid image file');
-            }
-            if (coverImage.size > 5 * 1024 * 1024) {
-                throw new Error('Image size should be less than 5MB');
-            }
+            // Validate image first
+            validateCampaignImage(coverImage);
             
-            const storageRef = storage.ref();
-            const imageRef = storageRef.child(`campaign-images/${auth.currentUser.uid}/${Date.now()}_${coverImage.name}`);
-            const uploadTask = imageRef.put(coverImage);
+            // Resize image for consistency
+            showAlert('Resizing image for optimal display...', 'info');
+            const resizedImageBlob = await resizeImage(coverImage);
             
-            // Wait for upload to complete
-            await new Promise((resolve, reject) => {
-                uploadTask.on('state_changed',
-                    (snapshot) => {
-                        // Progress tracking (optional)
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + progress + '% done');
-                    },
-                    (error) => {
-                        reject(error);
-                    },
-                    async () => {
-                        // Upload completed successfully
-                        imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
-                        resolve();
-                    }
-                );
-            });
+            // Upload using the uploadCampaignImage function
+            showAlert('Uploading campaign image...', 'info');
+            imageUrl = await uploadCampaignImage(resizedImageBlob);
         }
         
         // Get user data for the campaign

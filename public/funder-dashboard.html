@@ -152,7 +152,44 @@ body { overflow-x: hidden; }
 .dashboard-profile-title {
   background-color: #012A4A;
 }
-  </style>
+
+/* Success animation for updated fields */
+.text-success {
+  transition: color 0.5s ease;
+}
+
+/* Form validation styles */
+.is-valid {
+  border-color: #198754;
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback,
+.form-control.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+/* Profile update success animation */
+.profile-update-success {
+  animation: highlightUpdate 2s ease;
+}
+
+@keyframes highlightUpdate {
+  0% { background-color: #d4edda; }
+  100% { background-color: transparent; }
+}
+</style>
 </head>
 
 <body>
@@ -287,11 +324,6 @@ body { overflow-x: hidden; }
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#campaigns" data-bs-toggle="tab">
-                            <i class="bi bi-search"></i> Find Campaigns
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#donations" data-bs-toggle="tab">
                             <i class="bi bi-gift"></i> My Donations
                         </a>
@@ -323,7 +355,7 @@ body { overflow-x: hidden; }
                                 </div>
 
                                 <div class="text-center mt-4">
-                                    <button class="btn btn-view-all" onclick="viewAllCampaigns()">
+                                    <button class="btn btn-view-all" onclick="browseAllCampaigns()">
                                         <i class="fas fa-search me-2"></i>Browse All Campaigns
                                     </button>
                                 </div>
@@ -350,9 +382,7 @@ body { overflow-x: hidden; }
                                 <div class="card campaign-card mb-4">
                                     <div class="card-body">
                                         <div class="d-grid gap-2">
-                                            <button class="btn btn-donate mb-2" onclick="findCampaigns()">
-                                                <i class="fas fa-search me-2"></i>Find Campaigns to Support
-                                            </button>
+                                           
                                             <button class="btn btn-view-all mb-2" onclick="viewSavedCampaigns()">
                                                 <i class="fas fa-bookmark me-2"></i>View Saved Campaigns
                                             </button>
@@ -372,55 +402,6 @@ body { overflow-x: hidden; }
                                     <!-- Updates will be loaded dynamically -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Campaigns Tab -->
-                    <div class="tab-pane fade" id="campaigns">
-                        <h4 class="mb-4">Discover Campaigns to Support</h4>
-                        
-                        <!-- Search and Filter Section -->
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search campaigns..." id="campaignSearch">
-                                            <button class="btn btn-donate" type="button" onclick="searchCampaigns()">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="categoryFilter">
-                                            <option value="">All Categories</option>
-                                            <option value="medicine">Medicine</option>
-                                            <option value="engineering">Engineering</option>
-                                            <option value="business">Business</option>
-                                            <option value="arts">Arts</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select" id="sortFilter">
-                                            <option value="newest">Newest First</option>
-                                            <option value="popular">Most Popular</option>
-                                            <option value="ending">Ending Soon</option>
-                                            <option value="most-funded">Most Funded</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Campaigns Grid -->
-                        <div class="row" id="allCampaigns">
-                            <!-- Campaigns will be loaded dynamically -->
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button class="btn btn-view-all" onclick="loadMoreCampaigns()">
-                                <i class="fas fa-plus me-2"></i>Load More Campaigns
-                            </button>
                         </div>
                     </div>
 
@@ -569,148 +550,6 @@ body { overflow-x: hidden; }
         </div>
     </div>
 </div>
-                <!-- Donation Statistics -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <div class="text-center">
-                                <div class="stat-number" id="totalDonationsCount">0</div>
-                                <div class="stat-label">Total Donations</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <div class="text-center">
-                                <div class="stat-number" id="largestDonation">R0</div>
-                                <div class="stat-label">Largest Donation</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <div class="text-center">
-                                <div class="stat-number" id="avgDonation">R0</div>
-                                <div class="stat-label">Average Donation</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <div class="text-center">
-                                <div class="stat-number" id="monthlyTotal">R0</div>
-                                <div class="stat-label">This Month</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Donations List -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">Recent Donations</h5>
-                        <div id="detailedDonationsList">
-                            <!-- Detailed donations will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Saved Campaigns Tab -->
-            <div class="tab-pane fade" id="saved">
-                <h4 class="mb-4">Your Saved Campaigns</h4>
-                <div class="row" id="savedCampaignsList">
-                    <!-- Saved campaigns will be loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- Profile Tab -->
-            <div class="tab-pane fade" id="profile">
-                <!-- Enhanced Profile Information -->
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card profile-info mb-4">
-                            <div class="card-body">
-                                <h4 class="card-title fw-bold mb-4">Profile Details</h4>
-                                
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">First Name</label>
-                                            <p id="profileFirstName" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Email</label>
-                                            <p id="profileEmail" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">ID Number</label>
-                                            <p id="profileID" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Surname</label>
-                                            <p id="profileSurname" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Phone</label>
-                                            <p id="profilePhone" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label fw-bold">Location</label>
-                                            <p id="profileLocation" class="form-control-plaintext">Loading...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <button class="btn btn-primary-custom" onclick="openEditModal('profile')">
-                                        <i class="bi bi-pencil-square me-2"></i>Edit Profile
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <img id="profileTabImage" src="./assets/profile-user.png" 
-                                     class="img-fluid rounded-circle mb-3" 
-                                     style="width: 120px; height: 120px; object-fit: cover;" 
-                                     alt="Profile Picture">
-                                <h5 id="profileTabName" class="fw-bold">Loading...</h5>
-                                <p class="text-muted">Funder</p>
-                                <button class="btn btn-sm btn-outline-primary" onclick="changeProfilePicture()">
-                                    Change Photo
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Methods Section -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i> Payment Methods</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="paymentMethodsList">
-                            <!-- Payment methods will be loaded here -->
-                        </div>
-                        <button class="btn btn-donate mt-3" onclick="addPaymentMethod()">
-                            <i class="bi bi-plus-circle me-2"></i>Add Payment Method
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        
-    </div>
-</div>
-</div>
 
 <!-- Edit Profile Modal -->
 <div class="modal fade edit-modal" id="editProfileModal" tabindex="-1">
@@ -786,7 +625,7 @@ body { overflow-x: hidden; }
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { 
         getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, 
-        addDoc, deleteDoc, orderBy, limit, serverTimestamp 
+        addDoc, deleteDoc, orderBy, limit, serverTimestamp, onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
@@ -819,12 +658,30 @@ body { overflow-x: hidden; }
             console.log("Funder logged in:", user.uid);
             showLoading(true);
             await loadFunderData(user.uid);
+            setupProfileListener(user.uid); // Add real-time listener
             showLoading(false);
         } else {
             console.log("No user logged in - redirecting to login");
             window.location.href = "login.html";
         }
     });
+
+    // Real-time listener for profile updates
+    function setupProfileListener(userId) {
+        const userDocRef = doc(db, "users", userId);
+        
+        // Set up real-time listener for profile changes
+        onSnapshot(userDocRef, (docSnapshot) => {
+            if (docSnapshot.exists()) {
+                const updatedData = docSnapshot.data();
+                currentFunder = { id: docSnapshot.id, ...updatedData };
+                refreshProfileDisplay();
+                console.log("Profile data updated in real-time");
+            }
+        }, (error) => {
+            console.error("Error in profile listener:", error);
+        });
+    }
 
     async function loadFunderData(userId) {
         try {
@@ -881,6 +738,34 @@ body { overflow-x: hidden; }
         } else {
             document.getElementById('profileImage').src = './assets/profile-user.png';
             document.getElementById('profileTabImage').src = './assets/profile-user.png';
+        }
+    }
+
+    // Function to refresh all profile displays
+    function refreshProfileDisplay() {
+        if (!currentFunder) return;
+        
+        // Update main profile card
+        document.getElementById('welcomeName').textContent = `${currentFunder.firstName} ${currentFunder.surname}`;
+        document.getElementById('displayFullName').textContent = `${currentFunder.firstName} ${currentFunder.surname}`;
+        document.getElementById('displayEmail').textContent = currentFunder.email || 'Not provided';
+        document.getElementById('displayPhone').textContent = currentFunder.phoneNumber || 'Not provided';
+        document.getElementById('displayOrganization').textContent = currentFunder.organization || 'Individual';
+        document.getElementById('displayLocation').textContent = currentFunder.location || 'Not provided';
+        
+        // Update profile tab
+        document.getElementById('profileFirstName').textContent = currentFunder.firstName || 'Not provided';
+        document.getElementById('profileSurname').textContent = currentFunder.surname || 'Not provided';
+        document.getElementById('profileEmail').textContent = currentFunder.email || 'Not provided';
+        document.getElementById('profilePhone').textContent = currentFunder.phoneNumber || 'Not provided';
+        document.getElementById('profileID').textContent = currentFunder.idNumber || 'Not provided';
+        document.getElementById('profileLocation').textContent = currentFunder.location || 'Not provided';
+        document.getElementById('profileTabName').textContent = `${currentFunder.firstName} ${currentFunder.surname}`;
+        
+        // Update profile pictures if they exist
+        if (currentFunder.profilePicture) {
+            document.getElementById('profileImage').src = currentFunder.profilePicture;
+            document.getElementById('profileTabImage').src = currentFunder.profilePicture;
         }
     }
 
@@ -1087,7 +972,7 @@ body { overflow-x: hidden; }
                 donationsContainer.innerHTML = `
                     <div class="text-center py-4">
                         <p class="text-muted">No donations yet.</p>
-                        <button class="btn btn-donate" onclick="findCampaigns()">Make Your First Donation</button>
+                        <button class="btn btn-donate" onclick="browseAllCampaigns()">Make Your First Donation</button>
                     </div>
                 `;
                 detailedContainer.innerHTML = `
@@ -1284,7 +1169,7 @@ body { overflow-x: hidden; }
                         <i class="bi bi-bookmark display-1 text-muted"></i>
                         <h5 class="mt-3">No saved campaigns</h5>
                         <p class="text-muted">Save campaigns you're interested in to find them easily later.</p>
-                        <button class="btn btn-donate" onclick="findCampaigns()">Browse Campaigns</button>
+                        <button class="btn btn-donate" onclick="browseAllCampaigns()">Browse Campaigns</button>
                     </div>
                 `;
             }
@@ -1405,13 +1290,19 @@ body { overflow-x: hidden; }
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">First Name *</label>
-                        <input type="text" class="form-control" id="editFirstName" value="${currentFunder.firstName || ''}" required>
+                        <input type="text" class="form-control" id="editFirstName" 
+                               value="${currentFunder.firstName || ''}" 
+                               required minlength="2" maxlength="50">
+                        <div class="invalid-feedback">Please enter a valid first name (2-50 characters).</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Surname *</label>
-                        <input type="text" class="form-control" id="editSurname" value="${currentFunder.surname || ''}" required>
+                        <input type="text" class="form-control" id="editSurname" 
+                               value="${currentFunder.surname || ''}" 
+                               required minlength="2" maxlength="50">
+                        <div class="invalid-feedback">Please enter a valid surname (2-50 characters).</div>
                     </div>
                 </div>
             </div>
@@ -1419,13 +1310,19 @@ body { overflow-x: hidden; }
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="editPhone" value="${currentFunder.phoneNumber || ''}">
+                        <input type="tel" class="form-control" id="editPhone" 
+                               value="${currentFunder.phoneNumber || ''}" 
+                               pattern="[0-9+\-\s()]{10,}" 
+                               placeholder="e.g., +27 12 345 6789">
+                        <div class="invalid-feedback">Please enter a valid phone number.</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Organization</label>
-                        <input type="text" class="form-control" id="editOrganization" value="${currentFunder.organization || ''}">
+                        <input type="text" class="form-control" id="editOrganization" 
+                               value="${currentFunder.organization || ''}" 
+                               maxlength="100">
                     </div>
                 </div>
             </div>
@@ -1433,19 +1330,43 @@ body { overflow-x: hidden; }
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">ID Number</label>
-                        <input type="text" class="form-control" id="editID" value="${currentFunder.idNumber || ''}">
+                        <input type="text" class="form-control" id="editID" 
+                               value="${currentFunder.idNumber || ''}" 
+                               pattern="[0-9]{13}" 
+                               placeholder="13-digit ID number">
+                        <div class="invalid-feedback">Please enter a valid 13-digit ID number.</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" class="form-control" id="editLocation" value="${currentFunder.location || ''}">
+                        <input type="text" class="form-control" id="editLocation" 
+                               value="${currentFunder.location || ''}" 
+                               maxlength="100">
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-info">
+                <small><i class="bi bi-info-circle"></i> Fields marked with * are required.</small>
             </div>
         `;
         
         document.getElementById('profileEditFields').innerHTML = formFields;
+        
+        // Add real-time validation
+        const inputs = document.querySelectorAll('#editProfileForm input');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.checkValidity()) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                } else {
+                    this.classList.remove('is-valid');
+                    this.classList.add('is-invalid');
+                }
+            });
+        });
+        
         modal.show();
     }
 
@@ -1459,6 +1380,7 @@ body { overflow-x: hidden; }
 
             const updates = {};
             
+            // Collect all form data
             updates.firstName = document.getElementById('editFirstName').value.trim();
             updates.surname = document.getElementById('editSurname').value.trim();
             updates.phoneNumber = document.getElementById('editPhone').value.trim();
@@ -1466,15 +1388,22 @@ body { overflow-x: hidden; }
             updates.idNumber = document.getElementById('editID').value.trim();
             updates.location = document.getElementById('editLocation').value.trim();
             
-            updates.updatedAt = new Date();
+            // Add timestamp
+            updates.updatedAt = serverTimestamp();
             
             showLoading(true);
-            // FIXED: Ensure update actually happens
+            
+            // Update Firestore document
             await updateDoc(doc(db, "users", currentFunderId), updates);
             
-            // Update local data
+            // Update local data immediately
             currentFunder = { ...currentFunder, ...updates };
-            displayFunderData(currentFunder);
+            
+            // Refresh all profile displays
+            refreshProfileDisplay();
+            
+            // Show success animation on updated fields
+            showProfileUpdateSuccess();
             
             // Close modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
@@ -1482,10 +1411,11 @@ body { overflow-x: hidden; }
             showLoading(false);
             
             showAlert('Profile updated successfully!', 'success');
+            
         } catch (error) {
             console.error("Error updating profile:", error);
             showLoading(false);
-            showAlert('Error updating profile: ' + error.message, 'danger');
+            handleProfileError(error, 'profile update');
         }
     }
 
@@ -1496,57 +1426,107 @@ body { overflow-x: hidden; }
         
         input.onchange = async (e) => {
             const file = e.target.files[0];
-            if (file) {
-                // Validate file type and size
-                if (!file.type.startsWith('image/')) {
-                    showAlert('Please select an image file', 'warning');
-                    return;
-                }
+            if (!file) return;
+
+            // Validate file type and size
+            if (!file.type.startsWith('image/')) {
+                showAlert('Please select an image file (JPEG, PNG, etc.)', 'warning');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showAlert('Image size should be less than 5MB', 'warning');
+                return;
+            }
+            
+            try {
+                showLoading(true);
                 
-                if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                    showAlert('Image size should be less than 5MB', 'warning');
-                    return;
-                }
-                
-                try {
-                    showLoading(true);
-                    // Delete old profile picture if exists
-                    if (currentFunder.profilePicture) {
-                        try {
-                            const oldPictureRef = ref(storage, currentFunder.profilePicture);
-                            await deleteObject(oldPictureRef);
-                        } catch (error) {
-                            console.log("No old profile picture to delete");
-                        }
+                // Delete old profile picture if it exists and is not the default
+                if (currentFunder.profilePicture && !currentFunder.profilePicture.includes('profile-user.png')) {
+                    try {
+                        const oldPictureRef = ref(storage, currentFunder.profilePicture);
+                        await deleteObject(oldPictureRef);
+                    } catch (error) {
+                        console.log("No old profile picture to delete or error deleting:", error);
                     }
-                    
-                    // Upload to Firebase Storage
-                    const storageRef = ref(storage, `profile-pictures/${currentFunderId}`);
-                    await uploadBytes(storageRef, file);
-                    const downloadURL = await getDownloadURL(storageRef);
-                    
-                    // Update user document
-                    await updateDoc(doc(db, "users", currentFunderId), {
-                        profilePicture: downloadURL,
-                        updatedAt: new Date()
-                    });
-                    
-                    // Update UI and local data
-                    document.getElementById('profileImage').src = downloadURL;
-                    document.getElementById('profileTabImage').src = downloadURL;
-                    currentFunder.profilePicture = downloadURL;
-                    showLoading(false);
-                    
-                    showAlert('Profile picture updated successfully!', 'success');
-                } catch (error) {
-                    console.error("Error uploading profile picture:", error);
-                    showLoading(false);
-                    showAlert('Error updating profile picture: ' + error.message, 'danger');
                 }
+                
+                // Upload new profile picture to Firebase Storage
+                const fileExtension = file.name.split('.').pop();
+                const storageRef = ref(storage, `profile-pictures/${currentFunderId}/profile.${fileExtension}`);
+                const uploadResult = await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(uploadResult.ref);
+                
+                // Update user document in Firestore
+                await updateDoc(doc(db, "users", currentFunderId), {
+                    profilePicture: downloadURL,
+                    updatedAt: serverTimestamp()
+                });
+                
+                // Update local data and UI immediately
+                currentFunder.profilePicture = downloadURL;
+                refreshProfileDisplay();
+                
+                showLoading(false);
+                showAlert('Profile picture updated successfully!', 'success');
+                
+            } catch (error) {
+                console.error("Error uploading profile picture:", error);
+                showLoading(false);
+                handleProfileError(error, 'profile picture update');
             }
         };
         
         input.click();
+    }
+
+    // Enhanced error handler for profile operations
+    function handleProfileError(error, operation) {
+        console.error(`Error during ${operation}:`, error);
+        
+        let userMessage = 'An error occurred';
+        
+        if (error.code === 'permission-denied') {
+            userMessage = 'You do not have permission to update this profile.';
+        } else if (error.code === 'unavailable') {
+            userMessage = 'Network error. Please check your connection and try again.';
+        } else if (error.code === 'storage/object-not-found') {
+            userMessage = 'Profile picture not found. Please upload again.';
+        } else {
+            userMessage = `Error: ${error.message}`;
+        }
+        
+        showAlert(userMessage, 'danger');
+        showLoading(false);
+    }
+
+    // Show success animation on updated fields
+    function showProfileUpdateSuccess() {
+        // Add animation class to profile card
+        const profileCard = document.querySelector('.profile-card');
+        if (profileCard) {
+            profileCard.classList.add('profile-update-success');
+            setTimeout(() => {
+                profileCard.classList.remove('profile-update-success');
+            }, 2000);
+        }
+        
+        // Highlight updated fields
+        const updatedElements = [
+            'displayFullName', 'displayPhone', 'displayOrganization', 'displayLocation',
+            'profileFirstName', 'profileSurname', 'profilePhone', 'profileLocation'
+        ];
+        
+        updatedElements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.add('text-success');
+                setTimeout(() => {
+                    element.classList.remove('text-success');
+                }, 2000);
+            }
+        });
     }
 
     async function saveCampaign(campaignId) {
@@ -1657,34 +1637,14 @@ body { overflow-x: hidden; }
         window.location.href = `donate.html?campaignId=${campaignId}`;
     }
 
-    function searchCampaigns() {
-        const searchTerm = document.getElementById('campaignSearch').value;
-        const category = document.getElementById('categoryFilter').value;
-        const sort = document.getElementById('sortFilter').value;
-        
-        // Implement search functionality
-        console.log('Searching campaigns:', { searchTerm, category, sort });
-        // This would filter and reload the campaigns grid
-    }
-
-    function loadMoreCampaigns() {
-        // Implement pagination for campaigns
-        console.log('Loading more campaigns...');
-    }
-
     // Navigation functions
-    function viewAllCampaigns() {
-        const campaignsTab = new bootstrap.Tab(document.querySelector('a[href="#campaigns"]'));
-        campaignsTab.show();
+    function browseAllCampaigns() {
+        window.location.href = 'donate.html';
     }
 
     function viewSavedCampaigns() {
         const savedTab = new bootstrap.Tab(document.querySelector('a[href="#saved"]'));
         savedTab.show();
-    }
-
-    function findCampaigns() {
-        window.location.href = 'campaign.html';
     }
 
     function updatePaymentMethod() {
@@ -1721,7 +1681,7 @@ body { overflow-x: hidden; }
         }, 5000);
     }
 
-    function showLoading(show) {
+        function showLoading(show) {
         const spinner = document.getElementById('loadingSpinner');
         if (show) {
             spinner.classList.remove('d-none');
@@ -1733,16 +1693,14 @@ body { overflow-x: hidden; }
     // Make functions globally available
     window.openEditModal = openEditModal;
     window.changeProfilePicture = changeProfilePicture;
+    window.saveProfileChanges = saveProfileChanges; // Add this line
     window.saveCampaign = saveCampaign;
     window.removeSavedCampaign = removeSavedCampaign;
     window.addPaymentMethod = addPaymentMethod;
     window.removePaymentMethod = removePaymentMethod;
     window.donateToCampaign = donateToCampaign;
-    window.searchCampaigns = searchCampaigns;
-    window.loadMoreCampaigns = loadMoreCampaigns;
-    window.viewAllCampaigns = viewAllCampaigns;
+    window.browseAllCampaigns = browseAllCampaigns;
     window.viewSavedCampaigns = viewSavedCampaigns;
-    window.findCampaigns = findCampaigns;
     window.updatePaymentMethod = updatePaymentMethod;
     window.logout = logout;
 </script>

@@ -112,9 +112,44 @@
             const progressPercentage = campaign.goalAmount > 0 ? 
                 Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100)) : 0;
             
-            const endDate = campaign.endDate?.toDate ? campaign.endDate.toDate() : new Date(campaign.endDate);
+            // Fixed date handling
+            let endDate;
+            if (campaign.endDate?.toDate) {
+                endDate = campaign.endDate.toDate();
+            } else if (campaign.endDate instanceof Date) {
+                endDate = campaign.endDate;
+            } else if (campaign.endDate) {
+                endDate = new Date(campaign.endDate);
+            } else {
+                // Default to 30 days from now if no end date
+                endDate = new Date();
+                endDate.setDate(endDate.getDate() + 30);
+            }
+            
+            // Ensure endDate is valid
+            if (isNaN(endDate.getTime())) {
+                endDate = new Date();
+                endDate.setDate(endDate.getDate() + 30);
+            }
+            
             const daysRemaining = Math.max(0, Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24)));
-            const createdAt = campaign.createdAt?.toDate ? campaign.createdAt.toDate() : new Date();
+            
+            // Handle createdAt date similarly
+            let createdAt;
+            if (campaign.createdAt?.toDate) {
+                createdAt = campaign.createdAt.toDate();
+            } else if (campaign.createdAt instanceof Date) {
+                createdAt = campaign.createdAt;
+            } else if (campaign.createdAt) {
+                createdAt = new Date(campaign.createdAt);
+            } else {
+                createdAt = new Date();
+            }
+            
+            // Ensure createdAt is valid
+            if (isNaN(createdAt.getTime())) {
+                createdAt = new Date();
+            }
             
             const userName = user ? `${user.firstName || ''} ${user.surname || ''}`.trim() : 'Anonymous Student';
             const institution = user?.institution || 'Unknown Institution';

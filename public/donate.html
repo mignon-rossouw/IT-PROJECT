@@ -195,6 +195,92 @@
             padding: 40px 20px;
             color: #6c757d;
         }
+
+        /* ===== NEW STYLES FOR SEARCH AND LIST VIEW ===== */
+        .search-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 5;
+        }
+
+        .search-input {
+            padding-left: 45px;
+        }
+
+        .view-toggle-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .view-toggle-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 16px;
+            margin-left: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn.active {
+            background-color: #012A4A;
+            color: #A9D6E5;
+        }
+
+        .view-toggle-btn:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+
+        .list-view-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .list-view-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .list-view-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .list-view-content {
+            padding: 1.5rem;
+        }
+
+        .list-view-progress {
+            margin: 1rem 0;
+        }
+
+        .list-view-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        /* Hide list view by default */
+        .list-view-container {
+            display: none;
+        }
+
+        /* Make carousel sections visible by default */
+        .carousel-section {
+            display: block;
+        }
     </style>
 </head>
 
@@ -282,14 +368,31 @@
                 <button class="btn btn-apply-filter w-100" id="applyFilters">Apply Filters</button>
                 <button class="btn btn-outline-secondary w-100 mt-2" id="resetFilters">Reset Filters</button>
                 
-                <!-- Create Campaign Button -->
-                <div class="mt-4 pt-3 border-top">
-                    <a href="campaign.html" class="btn btn-success w-100">Create a New Campaign</a>
-                </div>
+                
             </div>
 
             <!-- ===== CAMPAIGN CONTENT AREA ===== -->
             <div class="flex-grow-1 p-4">
+                <!-- ===== SEARCH AND VIEW TOGGLE ===== -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="form-control search-input" id="searchInput" placeholder="Search campaigns by title, description, or student name...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="view-toggle-container">
+                            <button class="view-toggle-btn active" id="gridViewBtn" title="Grid View">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-toggle-btn" id="listViewBtn" title="List View">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Loading Spinner -->
                 <div id="loadingSpinner" class="loading-spinner">
                     <div class="spinner-border text-primary" role="status">
@@ -298,82 +401,92 @@
                     <p class="mt-2">Loading campaigns...</p>
                 </div>
                 
-                <!-- ===== TOP CAMPAIGNS SECTION ===== -->
-                <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-graph-up-arrow me-3"></i>Top Campaigns</h2>
-                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-                    View Top Campaigns <i class="bi bi-arrow-right"></i>
-                </a>   
-                <div id="topCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner" id="topCampaignsContainer">
-                        <!-- Campaigns will be loaded here dynamically -->
-                        <div class="carousel-item active">
-                            <div class="row g-4">
-                                <div class="col-12 text-center py-4">
-                                    <p>Loading top campaigns...</p>
-                                </div>
-                            </div>
-                        </div>
+                <!-- ===== LIST VIEW CONTAINER ===== -->
+                <div id="listViewContainer" class="list-view-container">
+                    <h2 class="campaign-section-title fw-bold fs-3 mb-3">
+                        <i class="bi bi-columns-gap me-3"></i>All Campaigns
+                    </h2>
+                    <div id="listViewContent">
+                        <!-- List view content will be loaded here dynamically -->
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
-
-                <!-- ===== NEW CAMPAIGNS SECTION ===== -->
-                <h2 class="campaign-section-title fw-bold fs-3 mb-3 mt-4"><i class="bi bi-graph-up-arrow me-3"></i>New Campaigns</h2>
-                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-                    View New Campaigns <i class="bi bi-arrow-right"></i>
-                </a>
-                <div id="newCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner" id="newCampaignsContainer">
-                        <!-- Campaigns will be loaded here dynamically -->
-                        <div class="carousel-item active">
-                            <div class="row g-4">
-                                <div class="col-12 text-center py-4">
-                                    <p>Loading new campaigns...</p>
+                
+                <!-- ===== GRID VIEW CONTAINER ===== -->
+                <div id="gridViewContainer" class="carousel-section">
+                    <!-- ===== TOP CAMPAIGNS SECTION ===== -->
+                    <h2 class="campaign-section-title fw-bold fs-3 mb-3"><i class="bi bi-graph-up-arrow me-3"></i>Top Campaigns</h2>
+                    
+                    </a>   
+                    <div id="topCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" id="topCampaignsContainer">
+                            <!-- Campaigns will be loaded here dynamically -->
+                            <div class="carousel-item active">
+                                <div class="row g-4">
+                                    <div class="col-12 text-center py-4">
+                                        <p>Loading top campaigns...</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#topCampaignsCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
 
-                <!-- ===== ALL CAMPAIGNS SECTION ===== -->
-                <h2 class="campaign-section-title fw-bold mb-3 mt-4"><i class="bi bi-columns-gap me-3"></i>All Campaigns</h2>
-                <a href="/campaigns" class="text-decoration-none mb-3 d-inline-block fw-semibold">
-                    View All Campaigns <i class="bi bi-arrow-right"></i>
-                </a>
-                <div id="allCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner" id="allCampaignsContainer">
-                        <!-- Campaigns will be loaded here dynamically -->
-                        <div class="carousel-item active">
-                            <div class="row g-4">
-                                <div class="col-12 text-center py-4">
-                                    <p>Loading all campaigns...</p>
+                    <!-- ===== NEW CAMPAIGNS SECTION ===== -->
+                    <h2 class="campaign-section-title fw-bold fs-3 mb-3 mt-4"><i class="bi bi-graph-up-arrow me-3"></i>New Campaigns</h2>
+                   
+                    </a>
+                    <div id="newCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" id="newCampaignsContainer">
+                            <!-- Campaigns will be loaded here dynamically -->
+                            <div class="carousel-item active">
+                                <div class="row g-4">
+                                    <div class="col-12 text-center py-4">
+                                        <p>Loading new campaigns...</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#newCampaignsCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+
+                    <!-- ===== ALL CAMPAIGNS SECTION ===== -->
+                    <h2 class="campaign-section-title fw-bold mb-3 mt-4"><i class="bi bi-columns-gap me-3"></i>All Campaigns</h2>
+                  
+                    </a>
+                    <div id="allCampaignsCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" id="allCampaignsContainer">
+                            <!-- Campaigns will be loaded here dynamically -->
+                            <div class="carousel-item active">
+                                <div class="row g-4">
+                                    <div class="col-12 text-center py-4">
+                                        <p>Loading all campaigns...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#allCampaignsCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -530,8 +643,10 @@ class CampaignManager {
         this.unsubscribe = null;
         this.currentFilters = {
             category: 'all',
-            institution: 'all'
+            institution: 'all',
+            searchTerm: ''
         };
+        this.currentView = 'grid'; // 'grid' or 'list'
     }
 
     // Initialize the campaign manager
@@ -641,7 +756,7 @@ class CampaignManager {
         showLoading(false);
     }
 
-    // Setup event listeners for filters
+    // Setup event listeners for filters, search, and view toggle
     setupEventListeners() {
         // Filter event listeners
         document.getElementById('applyFilters').addEventListener('click', () => {
@@ -662,18 +777,66 @@ class CampaignManager {
             this.currentFilters.institution = e.target.value;
             this.applyFilters();
         });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            this.currentFilters.searchTerm = e.target.value.toLowerCase().trim();
+            this.applyFilters();
+        });
+
+        // View toggle functionality
+        document.getElementById('gridViewBtn').addEventListener('click', () => {
+            this.setView('grid');
+        });
+
+        document.getElementById('listViewBtn').addEventListener('click', () => {
+            this.setView('list');
+        });
     }
 
-    // Apply current filters
+    // Set the current view (grid or list)
+    setView(view) {
+        this.currentView = view;
+        
+        // Update button states
+        const gridBtn = document.getElementById('gridViewBtn');
+        const listBtn = document.getElementById('listViewBtn');
+        
+        if (view === 'grid') {
+            gridBtn.classList.add('active');
+            listBtn.classList.remove('active');
+            document.getElementById('gridViewContainer').style.display = 'block';
+            document.getElementById('listViewContainer').style.display = 'none';
+        } else {
+            gridBtn.classList.remove('active');
+            listBtn.classList.add('active');
+            document.getElementById('gridViewContainer').style.display = 'none';
+            document.getElementById('listViewContainer').style.display = 'block';
+            this.renderListView();
+        }
+    }
+
+    // Apply current filters and search
     applyFilters() {
         const categoryFilter = document.getElementById('categoryFilter').value;
         const institutionFilter = document.getElementById('institutionFilter').value;
+        const searchTerm = this.currentFilters.searchTerm;
         
         this.filteredCampaigns = this.campaigns.filter(campaign => {
+            // Category filter
             const categoryMatch = categoryFilter === 'all' || campaign.category === categoryFilter;
+            
+            // Institution filter
             const institutionMatch = institutionFilter === 'all' || 
                                    (campaign.institution && campaign.institution.toLowerCase().includes(institutionFilter.toLowerCase()));
-            return categoryMatch && institutionMatch;
+            
+            // Search filter
+            const searchMatch = !searchTerm || 
+                (campaign.title && campaign.title.toLowerCase().includes(searchTerm)) ||
+                (campaign.description && campaign.description.toLowerCase().includes(searchTerm)) ||
+                (campaign.student_name && campaign.student_name.toLowerCase().includes(searchTerm));
+            
+            return categoryMatch && institutionMatch && searchMatch;
         });
 
         console.log(`Filtered to ${this.filteredCampaigns.length} campaigns`);
@@ -684,7 +847,12 @@ class CampaignManager {
     resetFilters() {
         document.getElementById('categoryFilter').value = 'all';
         document.getElementById('institutionFilter').value = 'all';
-        this.currentFilters = { category: 'all', institution: 'all' };
+        document.getElementById('searchInput').value = '';
+        this.currentFilters = { 
+            category: 'all', 
+            institution: 'all',
+            searchTerm: '' 
+        };
         this.applyFilters();
     }
 
@@ -718,10 +886,145 @@ class CampaignManager {
 
     // Refresh the UI with current data
     refreshUI() {
-        this.renderCampaignSection('topCampaignsContainer', this.getTopCampaigns());
-        this.renderCampaignSection('newCampaignsContainer', this.getNewCampaigns());
-        this.renderCampaignSection('allCampaignsContainer', this.getAllCampaigns());
-        this.initializeCarousels();
+        if (this.currentView === 'grid') {
+            this.renderCampaignSection('topCampaignsContainer', this.getTopCampaigns());
+            this.renderCampaignSection('newCampaignsContainer', this.getNewCampaigns());
+            this.renderCampaignSection('allCampaignsContainer', this.getAllCampaigns());
+            this.initializeCarousels();
+        } else {
+            this.renderListView();
+        }
+    }
+
+    // Render list view
+    renderListView() {
+        const container = document.getElementById('listViewContent');
+        
+        if (!this.filteredCampaigns || this.filteredCampaigns.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-inbox display-4"></i>
+                    <p class="mt-3">No campaigns found matching your criteria.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = this.filteredCampaigns
+            .map(campaign => this.renderListViewItem(campaign))
+            .join('');
+    }
+
+    // Render individual list view item
+    renderListViewItem(campaign) {
+        // Safe data access with fallbacks
+        const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
+        const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
+        const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
+        
+        // Get student ID - try both student_id and studentId fields for compatibility
+        const studentId = campaign.student_id || campaign.studentId;
+        
+        // Format dates safely
+        const formatDate = (date) => {
+            if (!date) return '';
+            try {
+                const dateObj = date.toDate ? date.toDate() : new Date(date);
+                return dateObj.toLocaleDateString();
+            } catch (e) {
+                return '';
+            }
+        };
+
+        // Calculate days remaining
+        const getDaysRemaining = (endDate) => {
+            if (!endDate) return null;
+            try {
+                const end = typeof endDate === 'string' ? new Date(endDate) : (endDate.toDate ? endDate.toDate() : new Date(endDate));
+                const now = new Date();
+                const diffTime = end - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays > 0 ? diffDays : 0;
+            } catch (e) {
+                return null;
+            }
+        };
+
+        const daysRemaining = getDaysRemaining(campaign.end_date || campaign.endDate);
+        const studentName = campaign.student_name || 'Anonymous Student';
+        const title = campaign.title || 'Education Campaign';
+        const description = campaign.description || 'Help support this student\'s educational journey';
+        
+        // Determine image HTML - use profile icon if no image
+        let imageHtml = '';
+        if (campaign.image_url || campaign.coverImage) {
+            const imageUrl = campaign.image_url || campaign.coverImage;
+            imageHtml = `
+                <img src="${imageUrl}" 
+                     class="list-view-image" 
+                     alt="${title}"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="profile-icon-placeholder" style="display: none;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            `;
+        } else {
+            imageHtml = `
+                <div class="profile-icon-placeholder">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="list-view-item" onclick="window.location.href='student-profile.html?id=${studentId}'">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        ${imageHtml}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="list-view-content">
+                            <h5 class="fw-bold campaign-title mb-2">
+                                ${this.truncateText(title, 60)}
+                                ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
+                            </h5>
+                            <p class="text-muted mb-3">${this.truncateText(description, 150)}</p>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">${this.getCategoryDisplayName(campaign.category)}</span>
+                                <small class="text-muted">${studentName}</small>
+                            </div>
+                            <div class="list-view-progress">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" 
+                                         style="width: ${percentage}%;" 
+                                         aria-valuenow="${percentage}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        ${percentage}%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-view-stats">
+                                <div>
+                                    <small class="text-muted">Raised</small>
+                                    <div class="fw-bold">R${raisedAmount.toLocaleString()}</div>
+                                </div>
+                                <div>
+                                    <small class="text-muted">Goal</small>
+                                    <div class="fw-bold">R${goalAmount.toLocaleString()}</div>
+                                </div>
+                                ${daysRemaining !== null ? `
+                                    <div>
+                                        <small class="text-muted">Days Remaining</small>
+                                        <div class="fw-bold">${daysRemaining}</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     // Render a campaign section
@@ -763,110 +1066,110 @@ class CampaignManager {
         }).join('');
     }
 
-   // Render individual campaign card
-renderCampaignCard(campaign) {
-    // Safe data access with fallbacks
-    const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
-    const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
-    const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
-    
-    // Get student ID - try both student_id and studentId fields for compatibility
-    const studentId = campaign.student_id || campaign.studentId;
-    
-    // Format dates safely
-    const formatDate = (date) => {
-        if (!date) return '';
-        try {
-            const dateObj = date.toDate ? date.toDate() : new Date(date);
-            return dateObj.toLocaleDateString();
-        } catch (e) {
-            return '';
-        }
-    };
+    // Render individual campaign card
+    renderCampaignCard(campaign) {
+        // Safe data access with fallbacks
+        const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
+        const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
+        const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
+        
+        // Get student ID - try both student_id and studentId fields for compatibility
+        const studentId = campaign.student_id || campaign.studentId;
+        
+        // Format dates safely
+        const formatDate = (date) => {
+            if (!date) return '';
+            try {
+                const dateObj = date.toDate ? date.toDate() : new Date(date);
+                return dateObj.toLocaleDateString();
+            } catch (e) {
+                return '';
+            }
+        };
 
-    // Calculate days remaining
-    const getDaysRemaining = (endDate) => {
-        if (!endDate) return null;
-        try {
-            const end = typeof endDate === 'string' ? new Date(endDate) : (endDate.toDate ? endDate.toDate() : new Date(endDate));
-            const now = new Date();
-            const diffTime = end - now;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays > 0 ? diffDays : 0;
-        } catch (e) {
-            return null;
-        }
-    };
+        // Calculate days remaining
+        const getDaysRemaining = (endDate) => {
+            if (!endDate) return null;
+            try {
+                const end = typeof endDate === 'string' ? new Date(endDate) : (endDate.toDate ? endDate.toDate() : new Date(endDate));
+                const now = new Date();
+                const diffTime = end - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays > 0 ? diffDays : 0;
+            } catch (e) {
+                return null;
+            }
+        };
 
-    const daysRemaining = getDaysRemaining(campaign.end_date || campaign.endDate);
-    const studentName = campaign.student_name || 'Anonymous Student';
-    const title = campaign.title || 'Education Campaign';
-    const description = campaign.description || 'Help support this student\'s educational journey';
-    
-    // Determine image HTML - use profile icon if no image
-    let imageHtml = '';
-    if (campaign.image_url || campaign.coverImage) {
-        const imageUrl = campaign.image_url || campaign.coverImage;
-        imageHtml = `
-            <img src="${imageUrl}" 
-                 class="card-img-top campaign-image" 
-                 alt="${title}"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="profile-icon-placeholder" style="display: none;">
-                <i class="fas fa-user-graduate"></i>
-            </div>
-        `;
-    } else {
-        imageHtml = `
-            <div class="profile-icon-placeholder">
-                <i class="fas fa-user-graduate"></i>
+        const daysRemaining = getDaysRemaining(campaign.end_date || campaign.endDate);
+        const studentName = campaign.student_name || 'Anonymous Student';
+        const title = campaign.title || 'Education Campaign';
+        const description = campaign.description || 'Help support this student\'s educational journey';
+        
+        // Determine image HTML - use profile icon if no image
+        let imageHtml = '';
+        if (campaign.image_url || campaign.coverImage) {
+            const imageUrl = campaign.image_url || campaign.coverImage;
+            imageHtml = `
+                <img src="${imageUrl}" 
+                     class="card-img-top campaign-image" 
+                     alt="${title}"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="profile-icon-placeholder" style="display: none;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            `;
+        } else {
+            imageHtml = `
+                <div class="profile-icon-placeholder">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 campaign-card" onclick="window.location.href='student-profile.html?id=${studentId}'">
+                    ${imageHtml}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold campaign-title mb-2">
+                            ${this.truncateText(title, 40)}
+                            ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
+                        </h5>
+                        <p class="text-muted small mb-2">${this.truncateText(description, 60)}</p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary">${this.getCategoryDisplayName(campaign.category)}</span>
+                            <small class="text-muted">${studentName}</small>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: ${percentage}%;" 
+                                 aria-valuenow="${percentage}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                ${percentage}%
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <div>
+                                <small class="text-muted">Raised</small>
+                                <div class="fw-bold">R${raisedAmount.toLocaleString()}</div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">Goal</small>
+                                <div class="fw-bold">R${goalAmount.toLocaleString()}</div>
+                            </div>
+                        </div>
+                        ${daysRemaining !== null ? `
+                            <div class="mt-2 text-center">
+                                <small class="text-muted">${daysRemaining} days remaining</small>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
             </div>
         `;
     }
-    
-    return `
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
-            <div class="card h-100 campaign-card" onclick="window.location.href='student-profile.html?id=${studentId}'">
-                ${imageHtml}
-                <div class="card-body d-flex flex-column">
-                    <h5 class="fw-bold campaign-title mb-2">
-                        ${this.truncateText(title, 40)}
-                        ${campaign.verified ? '<i class="fas fa-check-circle verified-badge ms-1" title="Verified Student"></i>' : ''}
-                    </h5>
-                    <p class="text-muted small mb-2">${this.truncateText(description, 60)}</p>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge bg-primary">${this.getCategoryDisplayName(campaign.category)}</span>
-                        <small class="text-muted">${studentName}</small>
-                    </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar" role="progressbar" 
-                             style="width: ${percentage}%;" 
-                             aria-valuenow="${percentage}" 
-                             aria-valuemin="0" 
-                             aria-valuemax="100">
-                            ${percentage}%
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <div>
-                            <small class="text-muted">Raised</small>
-                            <div class="fw-bold">R${raisedAmount.toLocaleString()}</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Goal</small>
-                            <div class="fw-bold">R${goalAmount.toLocaleString()}</div>
-                        </div>
-                    </div>
-                    ${daysRemaining !== null ? `
-                        <div class="mt-2 text-center">
-                            <small class="text-muted">${daysRemaining} days remaining</small>
-                        </div>
-                    ` : ''}
-                </div>
-            </div>
-        </div>
-    `;
-}
 
     // Utility function to truncate text
     truncateText(text, maxLength = 50) {
@@ -914,6 +1217,109 @@ renderCampaignCard(campaign) {
     }
 }
 
+// ===== NEWSLETTER SUBSCRIPTION FUNCTION =====
+async function subscribeToNewsletter(email) {
+    try {
+        console.log('Attempting newsletter subscription for:', email);
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return { 
+                success: false, 
+                message: 'Please enter a valid email address.' 
+            };
+        }
+        
+        // Sanitize email for use as document ID (Firestore has restrictions)
+        const sanitizedEmail = email.toLowerCase().trim()
+            .replace(/[^a-zA-Z0-9_\-@.]/g, '_') // Replace invalid chars with underscore
+            .substring(0, 150); // Firestore doc ID max length
+        
+        console.log('Sanitized email for document ID:', sanitizedEmail);
+        
+        // Create newsletter subscription data
+        const subscriptionData = {
+            email: email.toLowerCase().trim(),
+            subscribedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            source: 'donate-page',
+            status: 'active'
+        };
+        
+        console.log('Subscription data:', subscriptionData);
+        
+        // Try to create the document
+        await db.collection('newsletterSubscriptions').doc(sanitizedEmail).set(subscriptionData);
+        
+        console.log('Newsletter subscription successful');
+        return { 
+            success: true, 
+            message: 'Thank you for subscribing to our newsletter!' 
+        };
+        
+    } catch (error) {
+        console.error('🔥 NEWSLETTER SUBSCRIPTION ERROR:', {
+            code: error.code,
+            message: error.message,
+            name: error.name,
+            stack: error.stack
+        });
+        
+        // More specific error messages
+        if (error.code === 'permission-denied') {
+            return { 
+                success: false, 
+                message: 'Newsletter subscriptions are currently unavailable. Please try again later.' 
+            };
+        } else if (error.code === 'invalid-argument') {
+            return { 
+                success: false, 
+                message: 'Invalid email format. Please check your email address.' 
+            };
+        } else if (error.code === 'already-exists') {
+            return { 
+                success: false, 
+                message: 'This email is already subscribed to our newsletter.' 
+            };
+        } else {
+            return { 
+                success: false, 
+                message: 'Failed to subscribe. Please try again in a moment.' 
+            };
+        }
+    }
+}
+
+// Alternative approach using add() instead of set() with doc()
+async function subscribeToNewsletterAlternative(email) {
+    try {
+        console.log('Alternative method - subscribing:', email);
+        
+        const subscriptionData = {
+            email: email.toLowerCase().trim(),
+            subscribedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            source: 'donate-page',
+            status: 'active'
+        };
+        
+        // Use add() instead of set() with doc() - let Firestore generate the ID
+        await db.collection('newsletterSubscriptions').add(subscriptionData);
+        
+        console.log('Newsletter subscription successful (alternative method)');
+        return { 
+            success: true, 
+            message: 'Thank you for subscribing to our newsletter!' 
+        };
+        
+    } catch (error) {
+        console.error('🔥 ALTERNATIVE NEWSLETTER ERROR:', error);
+        return { 
+            success: false, 
+            message: 'Failed to subscribe. Please try again.' 
+        };
+    }
+}
+
 // ===== PAGE INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', function() {
     let campaignManager;
@@ -934,35 +1340,71 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Setup newsletter functionality
-    function setupNewsletterForm() {
-        const newsletterForm = document.getElementById('newsletterForm');
-        const newsletterMessage = document.getElementById('newsletterMessage');
-        
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const email = document.getElementById('newsletterEmail').value;
+ // Setup newsletter functionality 
+function setupNewsletterForm() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterMessage = document.getElementById('newsletterMessage');
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('newsletterEmail');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter your email address.</div>';
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+                return;
+            }
+            
+            // Disable button and show loading state
+            const originalText = subscribeBtn.innerHTML;
+            subscribeBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing up...';
+            subscribeBtn.disabled = true;
+            
+            try {
+                // Try the main method first, fallback to alternative if it fails
+                let result = await subscribeToNewsletter(email);
                 
-                if (email && email.includes('@')) {
-                    try {
-                        // Store in Firestore
-                        await db.collection('newsletterSubscriptions').doc(email).set({
-                            email: email,
-                            subscribedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        
-                        newsletterMessage.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
-                        newsletterForm.reset();
-                    } catch (error) {
-                        newsletterMessage.innerHTML = '<div class="alert alert-danger">Failed to subscribe. Please try again.</div>';
-                    }
-                } else {
-                    newsletterMessage.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+                // If main method fails with specific errors, try alternative
+                if (!result.success && (
+                    result.message.includes('unavailable') || 
+                    result.message.includes('Invalid email format')
+                )) {
+                    console.log('Trying alternative subscription method...');
+                    result = await subscribeToNewsletterAlternative(email);
                 }
-            });
-        }
+                
+                if (result.success) {
+                    newsletterMessage.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+                    newsletterForm.reset();
+                    
+                    // Clear success message after 5 seconds
+                    setTimeout(() => {
+                        newsletterMessage.innerHTML = '';
+                    }, 5000);
+                } else {
+                    newsletterMessage.innerHTML = `<div class="alert alert-danger">${result.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Unexpected error in newsletter form:', error);
+                newsletterMessage.innerHTML = '<div class="alert alert-danger">An unexpected error occurred. Please try again later.</div>';
+            } finally {
+                // Restore button state
+                subscribeBtn.innerHTML = originalText;
+                subscribeBtn.disabled = false;
+            }
+        });
     }
+}
 
     // Initialize the application
     initializeApp();

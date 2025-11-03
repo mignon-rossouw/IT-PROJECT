@@ -5,14 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Campaign - FundMyFuture</title>
 
-     <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
+    <!-- External CSS Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom global stylesheet -->
+    <link rel="stylesheet" href="./css/styles.css">
     
+    <style>
+        .edit-container { 
+            max-width: 800px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background: #f8f9fa; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary { 
+            background-color: #012A4A; 
+            border-color: #012A4A; 
+        }
+        
+        .btn-primary:hover {
+            background-color: #013a63;
+            border-color: #013a63;
+        }
+        
+        .alert-custom {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+        
+        .navbar-custom {
+            background-color: #012A4A;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom px-3">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="index.html">FundMyFuture</a>
+            <a href="student-dashboard.html" class="btn btn-outline-light">Back to Dashboard</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="edit-container">
+            <h2 class="text-center mb-4">Edit Campaign</h2>
+            
+            <form id="editCampaignForm">
+                <div class="mb-3">
+                    <label class="form-label">Campaign Title</label>
+                    <input type="text" id="campaignTitle" class="form-control" required minlength="5">
+                    <div class="form-text">Minimum 5 characters</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Short Description</label>
+                    <input type="text" id="campaignDescription" class="form-control" required minlength="10">
+                    <div class="form-text">Minimum 10 characters</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Funding Goal (ZAR)</label>
+                        <input type="number" id="fundingGoal" class="form-control" min="100" step="100" required>
+                        <div class="form-text">Minimum R100</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">End Date</label>
+                        <input type="date" id="endDate" class="form-control" required>
+                        <div class="form-text">Must be a future date</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select id="category" class="form-select" required>
+                        <option value="">Select category</option>
+                        <option value="tuition">Tuition Fees</option>
+                        <option value="books">Books & Supplies</option>
+                        <option value="living">Living Expenses</option>
+                     
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Your Story</label>
+                    <textarea id="story" class="form-control" rows="6" required minlength="50"></textarea>
+                    <div class="form-text">Minimum 50 characters</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Current Cover Image</label>
+                    <div id="currentImage" class="mb-2">
+                        <p class="text-muted">No image selected</p>
+                    </div>
+                    <label class="form-label">Update Cover Image (Optional)</label>
+                    <input type="file" id="coverImage" class="form-control" accept="image/*">
+                    <div class="form-text">JPG, PNG up to 5MB</div>
+                    <div id="imagePreview" class="d-none mt-3"></div>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Update Campaign</button>
+                    <a href="student-dashboard.html" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Dynamic navbar -->
+    <script src="./js/navbar-auth.js"></script>
+    <!-- Newsletter Script -->
+    <script src="./js/newsletter.js"></script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
@@ -30,16 +150,39 @@
 
         let currentCampaignId = null;
         let currentCampaign = null;
+        let currentUserId = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             currentCampaignId = urlParams.get('id');
             
             if (currentCampaignId) {
-                loadCampaignForEditing();
+                // Check authentication and load campaign
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        loadCampaignForEditing();
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                });
             } else {
-                window.location.href = 'student-dashboard.html';
+                showAlert('No campaign ID provided', 'danger');
+                setTimeout(() => window.location.href = 'student-dashboard.html', 2000);
             }
+
+            // Set minimum date for end date
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const minDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('endDate').min = minDate;
+
+            // Add form submission handler
+            document.getElementById('editCampaignForm').addEventListener('submit', updateCampaign);
+            
+            // Add image preview handler
+            document.getElementById('coverImage').addEventListener('change', handleImagePreview);
         });
 
         async function loadCampaignForEditing() {
@@ -47,6 +190,15 @@
                 const campaignDoc = await getDoc(doc(db, "campaigns", currentCampaignId));
                 if (campaignDoc.exists()) {
                     currentCampaign = campaignDoc.data();
+                    
+                    // Check if current user owns this campaign
+                    const campaignOwnerId = currentCampaign.student_id || currentCampaign.studentId;
+                    if (campaignOwnerId !== currentUserId) {
+                        showAlert('You do not have permission to edit this campaign', 'danger');
+                        setTimeout(() => window.location.href = 'student-dashboard.html', 2000);
+                        return;
+                    }
+                    
                     populateEditForm(currentCampaign);
                 } else {
                     showAlert('Campaign not found', 'danger');
@@ -54,18 +206,25 @@
                 }
             } catch (error) {
                 console.error("Error loading campaign:", error);
-                showAlert('Error loading campaign', 'danger');
+                showAlert('Error loading campaign: ' + error.message, 'danger');
             }
         }
 
         function populateEditForm(campaign) {
             document.getElementById('campaignTitle').value = campaign.title || '';
             document.getElementById('campaignDescription').value = campaign.description || '';
-            document.getElementById('fundingGoal').value = campaign.goalAmount || '';
+            document.getElementById('fundingGoal').value = campaign.goal_amount || campaign.goalAmount || '';
             
             // Format date for input field
-            if (campaign.endDate) {
-                const endDate = campaign.endDate.toDate ? campaign.endDate.toDate() : new Date(campaign.endDate);
+            if (campaign.end_date) {
+                let endDate;
+                if (campaign.end_date.toDate) {
+                    endDate = campaign.end_date.toDate();
+                } else if (campaign.endDate && campaign.endDate.toDate) {
+                    endDate = campaign.endDate.toDate();
+                } else {
+                    endDate = new Date(campaign.end_date || campaign.endDate);
+                }
                 document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
             }
             
@@ -73,165 +232,220 @@
             document.getElementById('story').value = campaign.story || '';
             
             // Display current cover image
-            if (campaign.coverImage) {
+            if (campaign.image_url || campaign.coverImage) {
+                const imageUrl = campaign.image_url || campaign.coverImage;
                 document.getElementById('currentImage').innerHTML = `
-                    <img src="${campaign.coverImage}" class="img-fluid rounded mb-2" style="max-height: 200px;">
+                    <img src="${imageUrl}" class="preview-image mb-2">
                     <button type="button" class="btn btn-sm btn-danger" onclick="removeCurrentImage()">Remove Image</button>
                 `;
             }
-            
-            // Set minimum date for end date
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('endDate').min = today;
         }
 
         async function updateCampaign(event) {
             event.preventDefault();
             
-            const updates = {
-                title: document.getElementById('campaignTitle').value.trim(),
-                description: document.getElementById('campaignDescription').value.trim(),
-                goalAmount: parseFloat(document.getElementById('fundingGoal').value),
-                endDate: new Date(document.getElementById('endDate').value),
-                category: document.getElementById('category').value,
-                story: document.getElementById('story').value.trim(),
-                updatedAt: new Date()
-            };
-
-            // Handle new image upload
+            // Get form values
+            const title = document.getElementById('campaignTitle').value.trim();
+            const description = document.getElementById('campaignDescription').value.trim();
+            const goal_amount = parseFloat(document.getElementById('fundingGoal').value);
+            const end_date = document.getElementById('endDate').value;
+            const category = document.getElementById('category').value;
+            const story = document.getElementById('story').value.trim();
             const newImage = document.getElementById('coverImage').files[0];
-            if (newImage) {
-                try {
-                    const storageRef = ref(storage, `campaign-images/${currentCampaign.studentId}/${Date.now()}_${newImage.name}`);
-                    await uploadBytes(storageRef, newImage);
-                    updates.coverImage = await getDownloadURL(storageRef);
-                } catch (error) {
-                    console.error("Error uploading image:", error);
-                    showAlert('Error uploading new image', 'warning');
-                }
-            }
 
+            // Validation
+            if (!title || title.length < 5) {
+                showAlert('Campaign title must be at least 5 characters', 'warning');
+                return;
+            }
+            
+            if (!description || description.length < 10) {
+                showAlert('Description must be at least 10 characters', 'warning');
+                return;
+            }
+            
+            if (!goal_amount || goal_amount < 100) {
+                showAlert('Funding goal must be at least R100', 'warning');
+                return;
+            }
+            
+            if (!end_date) {
+                showAlert('Please select an end date for your campaign', 'warning');
+                return;
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            if (end_date <= today) {
+                showAlert('Please select a future date for campaign end', 'warning');
+                return;
+            }
+            
+            if (!category) {
+                showAlert('Please select a category for your campaign', 'warning');
+                return;
+            }
+            
+            if (!story || story.length < 50) {
+                showAlert('Your story should be at least 50 characters', 'warning');
+                return;
+            }
+            
             try {
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Updating Campaign...';
+                
+                const updates = {
+                    title: title,
+                    description: description,
+                    goal_amount: goal_amount,
+                    end_date: end_date,
+                    category: category,
+                    story: story,
+                    updated_at: new Date()
+                };
+
+                // Handle new image upload
+                if (newImage) {
+                    // Validate image
+                    validateCampaignImage(newImage);
+                    
+                    // Upload new image
+                    showAlert('Uploading new campaign image...', 'info');
+                    
+                    // Generate secure file name that matches security rule pattern
+                    const fileExtension = getFileExtension(newImage);
+                    const fileName = `${currentUserId}_${Date.now()}.${fileExtension}`;
+                    
+                    const storageRef = ref(storage, `campaign-images/${fileName}`);
+                    await uploadBytes(storageRef, newImage);
+                    updates.image_url = await getDownloadURL(storageRef);
+                }
+
                 await updateDoc(doc(db, "campaigns", currentCampaignId), updates);
                 showAlert('Campaign updated successfully!', 'success');
+                
                 setTimeout(() => {
                     window.location.href = `view-campaign.html?id=${currentCampaignId}`;
                 }, 1500);
+                
             } catch (error) {
                 console.error("Error updating campaign:", error);
-                showAlert('Error updating campaign', 'danger');
+                
+                let errorMessage = 'Error updating campaign: ' + error.message;
+                showAlert(errorMessage, 'danger');
+                
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Update Campaign';
             }
         }
 
         function removeCurrentImage() {
             document.getElementById('currentImage').innerHTML = '<p class="text-muted">No image selected</p>';
-            // You could also delete from storage here if desired
+        }
+
+        function handleImagePreview(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('imagePreview');
+            
+            if (file) {
+                try {
+                    // Validate before showing preview
+                    validateCampaignImage(file);
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.innerHTML = `
+                            <img src="${e.target.result}" class="preview-image">
+                            <p class="mt-2 text-success small">✓ New image ready for upload</p>
+                            <button type="button" class="btn btn-sm btn-danger mt-2" onclick="removeNewImage()">Remove New Image</button>
+                        `;
+                        preview.classList.remove('d-none');
+                    };
+                    reader.readAsDataURL(file);
+                    
+                } catch (error) {
+                    showAlert(error.message, 'warning');
+                    event.target.value = '';
+                    preview.classList.add('d-none');
+                }
+            }
+        }
+
+        function removeNewImage() {
+            document.getElementById('coverImage').value = '';
+            document.getElementById('imagePreview').classList.add('d-none');
+            document.getElementById('imagePreview').innerHTML = '';
+        }
+
+        // ===== IMAGE VALIDATION =====
+        function validateCampaignImage(file) {
+            // Check file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                throw new Error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+            }
+            
+            // Check file size (5MB max)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                throw new Error('Image size must be less than 5MB');
+            }
+            
+            // Check if file is empty
+            if (file.size === 0) {
+                throw new Error('File appears to be empty');
+            }
+            
+            return true;
+        }
+
+        // Get file extension safely
+        function getFileExtension(file) {
+            if (file.name) {
+                const parts = file.name.split('.');
+                if (parts.length > 1) {
+                    return parts.pop();
+                }
+            }
+            
+            // Fallback to MIME type
+            const mimeToExt = {
+                'image/jpeg': 'jpg',
+                'image/jpg': 'jpg',
+                'image/png': 'png',
+                'image/gif': 'gif',
+                'image/webp': 'webp'
+            };
+            return mimeToExt[file.type] || 'jpg';
         }
 
         function showAlert(message, type) {
+            // Remove existing alerts
+            const existingAlerts = document.querySelectorAll('.custom-alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
             const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-            alertDiv.style.cssText = 'top: 100px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.className = `alert alert-${type} custom-alert alert-custom`;
             alertDiv.innerHTML = `
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
             document.body.appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 5000);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
         }
 
+        // Make functions globally available
         window.updateCampaign = updateCampaign;
         window.removeCurrentImage = removeCurrentImage;
+        window.removeNewImage = removeNewImage;
     </script>
-
-      <!-- External CSS Libraries -->
-    <!-- Bootstrap CSS for responsive layout and components -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons for additional icon set -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Custom global stylesheet -->
-    <link rel="stylesheet" href="./css/styles.css">
-    
-<style>
-.edit-container { 
-    max-width: 800px; 
-    margin: 40px auto; 
-    padding: 30px; 
-    background: #f8f9fa; 
-    border-radius: 10px; 
-}
-
-.btn-primary { 
-    background-color: #012A4A; 
-    border-color: #012A4A; 
-}
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-custom px-3">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" href="index.html">FundMyFuture</a>
-            <a href="student-dashboard.html" class="btn btn-outline-light">Back to Dashboard</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="edit-container">
-            <h2 class="text-center mb-4">Edit Campaign</h2>
-            <form onsubmit="updateCampaign(event)">
-                <div class="mb-3">
-                    <label class="form-label">Campaign Title</label>
-                    <input type="text" id="campaignTitle" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Short Description</label>
-                    <input type="text" id="campaignDescription" class="form-control" required>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Funding Goal (ZAR)</label>
-                        <input type="number" id="fundingGoal" class="form-control" min="100" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">End Date</label>
-                        <input type="date" id="endDate" class="form-control" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Category</label>
-                    <select id="category" class="form-select" required>
-                        <option value="">Select category</option>
-                        <option value="Tuition">Tuition Fees</option>
-                        <option value="Books & Supplies">Books & Supplies</option>
-                        <option value="Living Expenses">Living Expenses</option>
-                        <option value="Technology">Technology & Equipment</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Your Story</label>
-                    <textarea id="story" class="form-control" rows="6" required></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Current Cover Image</label>
-                    <div id="currentImage" class="mb-2">
-                        <p class="text-muted">No image selected</p>
-                    </div>
-                    <label class="form-label">Update Cover Image (Optional)</label>
-                    <input type="file" id="coverImage" class="form-control" accept="image/*">
-                </div>
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Update Campaign</button>
-                    <a href="student-dashboard.html" class="btn btn-secondary">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-<!-- Dynamic navbar -->
-<script src="./js/navbar-auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

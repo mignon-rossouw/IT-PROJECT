@@ -1,27 +1,35 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Profile pictures - users can only access their own
+    // ===== PROFILE PICTURES =====
     match /profile-pictures/{fileName} {
       allow read, write: if 
         request.auth != null && 
         fileName.split('_')[0] == request.auth.uid;
     }
 
-    // Documents - users can only access their own folder
+    // ===== DOCUMENTS =====
     match /documents/{userId}/{fileName} {
       allow read, write: if 
         request.auth != null && 
         request.auth.uid == userId;
     }
 
-    // Campaign images - public read, authenticated write
+    // ===== CAMPAIGN IMAGES =====
+    // Allow public read, authenticated write with user validation
     match /campaign-images/{fileName} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if true; // Public read access
+      allow write: if 
+        request.auth != null && // Must be authenticated
+        // File type validation
+        request.resource.contentType.matches('image/.*') &&
+        // File size validation
+        request.resource.size < 5 * 1024 * 1024 &&
+        // User can only write files that start with their UID
+        fileName.split('_')[0] == request.auth.uid;
     }
 
-    // Default deny
+    // ===== DEFAULT SECURITY =====
     match /{allPaths=**} {
       allow read, write: if false;
     }

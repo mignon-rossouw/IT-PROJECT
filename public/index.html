@@ -173,6 +173,14 @@
   margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Campaign card hover effects */
+.campaign-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 /* Campaign image styling */
@@ -299,6 +307,20 @@
   #swipeCarousel .carousel-item img {
     height: 250px;
   }
+}
+
+/* Loading spinner styling */
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+  display: none;
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: #6c757d;
 }
   </style>
 
@@ -465,65 +487,18 @@
       <div class="p-3 bg-light rounded shadow-sm h-100">
         <h2 class="section-title text-center fw-bold">Featured Campaigns</h2>
         <hr>
-
-        <!-- Campaign Card 1 -->
-        <div class="campaign-card mb-3">
-          <div class="row">
-            <div class="col-4">
-              <!-- Campaign profile image -->
-              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
-            </div>
-            <div class="col-8">
-              <!-- Campaign name with clickable link -->
-              <h5 class="mb-2">
-                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
-                Campaign Name
-                </a>
-              </h5>
-              <!-- Campaign description -->
-              <p class="mb-1 text-muted small">Short description of campaign</p>
-              <!-- Campaign creator name -->
-              <p class="mb-1"><strong>John Doe</strong></p>
-              <!-- Campaign location -->
-              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Cape Town</p>
-              <!-- Funding progress bar -->
-              <div class="progress mt-2" style="height: 6px;">
-                <div class="progress-bar" style="width: 50%;"></div>
-              </div>
-              <!-- Funding status -->
-              <small class="text-muted">Raised: R5,000 (50%)</small>
-            </div>
+        
+        <!-- Loading spinner for campaigns -->
+        <div id="featuredLoading" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading featured campaigns...</span>
           </div>
+          <p class="mt-2">Loading featured campaigns...</p>
         </div>
 
-        <!-- Campaign Card 2 -->
-        <div class="campaign-card mb-3">
-          <div class="row">
-            <div class="col-4">
-              <!-- Campaign profile image -->
-              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
-            </div>
-            <div class="col-8">
-              <!-- Campaign name with clickable link -->
-              <h5 class="mb-2">
-                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
-                Campaign Name
-                </a>
-              </h5>
-              <!-- Campaign description -->
-              <p class="mb-1 text-muted small">Short description of campaign</p>
-              <!-- Campaign creator name -->
-              <p class="mb-1"><strong>Jane Smith</strong></p>
-              <!-- Campaign location -->
-              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Johannesburg</p>
-              <!-- Funding progress bar -->
-              <div class="progress mt-2" style="height: 6px;">
-                <div class="progress-bar" style="width: 30%;"></div>
-              </div>
-              <!-- Funding status -->
-              <small class="text-muted">Raised: R3,000 (30%)</small>
-            </div>
-          </div>
+        <!-- Featured campaigns container -->
+        <div id="featuredCampaignsContainer">
+          <!-- Campaigns will be loaded here dynamically -->
         </div>
 
         <!-- View more campaigns button -->
@@ -542,65 +517,18 @@
       <div class="p-3 bg-light rounded shadow-sm h-100">
         <h2 class="section-title text-center fw-bold">Trending Campaigns</h2>
         <hr>
-
-        <!-- Campaign Card 1 -->
-        <div class="campaign-card mb-3">
-          <div class="row">
-            <div class="col-4">
-              <!-- Campaign profile image -->
-              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
-            </div>
-            <div class="col-8">
-              <!-- Campaign name with clickable link -->
-              <h5 class="mb-2">
-                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
-                Campaign Name
-                </a>
-              </h5>
-              <!-- Campaign description -->
-              <p class="mb-1 text-muted small">Short description of campaign</p>
-              <!-- Campaign creator name -->
-              <p class="mb-1"><strong>Alex Brown</strong></p>
-              <!-- Campaign location -->
-              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Durban</p>
-              <!-- Funding progress bar -->
-              <div class="progress mt-2" style="height: 6px;">
-                <div class="progress-bar" style="width: 70%;"></div>
-              </div>
-              <!-- Funding status -->
-              <small class="text-muted">Raised: R7,000 (70%)</small>
-            </div>
+        
+        <!-- Loading spinner for campaigns -->
+        <div id="trendingLoading" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading trending campaigns...</span>
           </div>
+          <p class="mt-2">Loading trending campaigns...</p>
         </div>
 
-        <!-- Campaign Card 2 -->
-        <div class="campaign-card mb-3">
-          <div class="row">
-            <div class="col-4">
-              <!-- Campaign profile image -->
-              <img src="./assets/profile-user.png" alt="Campaign Image" class="img-fluid">
-            </div>
-            <div class="col-8">
-              <!-- Campaign name with clickable link -->
-              <h5 class="mb-2">
-                <a href="/campaign-details.html" class="campaign-name text-decoration-none">
-                Campaign Name
-                </a>
-              </h5>
-              <!-- Campaign description -->
-              <p class="mb-1 text-muted small">Short description of campaign</p>
-              <!-- Campaign creator name -->
-              <p class="mb-1"><strong>Lisa Green</strong></p>
-              <!-- Campaign location -->
-              <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Pretoria</p>
-              <!-- Funding progress bar -->
-              <div class="progress mt-2" style="height: 6px;">
-                <div class="progress-bar" style="width: 90%;"></div>
-              </div>
-              <!-- Funding status -->
-              <small class="text-muted">Raised: R9,000 (90%)</small>
-            </div>
-          </div>
+        <!-- Trending campaigns container -->
+        <div id="trendingCampaignsContainer">
+          <!-- Campaigns will be loaded here dynamically -->
         </div>
 
         <!-- View more campaigns button -->
@@ -638,7 +566,7 @@
             Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R22,000</strong>, funding her tools and studies. She now mentors other design students.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “Every donation was like a vote of confidence in my creativity — I’ll never forget that.”
+            "Every donation was like a vote of confidence in my creativity — I'll never forget that."
           </blockquote>
         </div>
       </div>
@@ -657,7 +585,7 @@
             Through <span class="text-success fw-semibold">FundMyFuture</span>, she raised <strong>R48,500</strong> to cover her first-semester fees and now works on 3D-printed prosthetic limbs for children.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “FundMyFuture didn’t just fund my studies—it restored my belief that people care about my dream.”
+            "FundMyFuture didn't just fund my studies—it restored my belief that people care about my dream."
           </blockquote>
         </div>
       </div>
@@ -676,7 +604,7 @@
             Her <span class="text-success fw-semibold">FundMyFuture</span> campaign raised <strong>R64,000</strong> in 12 days, allowing her to continue her MBChB studies at Stellenbosch University.
           </p>
           <blockquote class="blockquote text-muted fst-italic border-top pt-3 mt-3 mb-0">
-            “Because of FundMyFuture, I didn’t just stay in school — I found a whole community that believes in my purpose.”
+            "Because of FundMyFuture, I didn't just stay in school — I found a whole community that believes in my purpose."
           </blockquote>
         </div>
       </div>
@@ -809,6 +737,155 @@
   </div>
 
 </footer>
+
+<!-- Campaign Loading Script -->
+<script>
+// ===== CAMPAIGN MANAGEMENT FOR INDEX PAGE =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Show loading spinners
+    document.getElementById('featuredLoading').style.display = 'block';
+    document.getElementById('trendingLoading').style.display = 'block';
+    
+    // Load campaigns from Firestore
+    loadCampaigns();
+});
+
+// Function to load campaigns from Firestore
+function loadCampaigns() {
+    // Query active campaigns from Firestore
+    db.collection('campaigns')
+        .where('status', '==', 'active')
+        .limit(6) // Limit to 6 campaigns total (3 featured + 3 trending)
+        .get()
+        .then((querySnapshot) => {
+            const campaigns = [];
+            querySnapshot.forEach((doc) => {
+                const campaignData = doc.data();
+                campaigns.push({
+                    id: doc.id,
+                    ...campaignData
+                });
+            });
+            
+            console.log(`Loaded ${campaigns.length} campaigns for homepage`);
+            
+            // Sort campaigns for featured (by funding percentage) and trending (by date)
+            const sortedByPercentage = [...campaigns].sort((a, b) => {
+                const aPercentage = (a.raised_amount || 0) / (a.goal_amount || 1);
+                const bPercentage = (b.raised_amount || 0) / (b.goal_amount || 1);
+                return bPercentage - aPercentage;
+            });
+            
+            const sortedByDate = [...campaigns].sort((a, b) => {
+                const aTime = a.created_at ? (a.created_at.toDate ? a.created_at.toDate().getTime() : new Date(a.created_at).getTime()) : 0;
+                const bTime = b.created_at ? (b.created_at.toDate ? b.created_at.toDate().getTime() : new Date(b.created_at).getTime()) : 0;
+                return bTime - aTime;
+            });
+            
+            // Display featured campaigns (top 3 by percentage)
+            displayCampaigns('featuredCampaignsContainer', sortedByPercentage.slice(0, 3));
+            document.getElementById('featuredLoading').style.display = 'none';
+            
+            // Display trending campaigns (top 3 by date)
+            displayCampaigns('trendingCampaignsContainer', sortedByDate.slice(0, 3));
+            document.getElementById('trendingLoading').style.display = 'none';
+            
+        })
+        .catch((error) => {
+            console.error('Error loading campaigns:', error);
+            
+            // Hide loading spinners
+            document.getElementById('featuredLoading').style.display = 'none';
+            document.getElementById('trendingLoading').style.display = 'none';
+            
+            // Show error messages
+            document.getElementById('featuredCampaignsContainer').innerHTML = 
+                '<div class="empty-state"><p>Unable to load featured campaigns. Please try again later.</p></div>';
+            document.getElementById('trendingCampaignsContainer').innerHTML = 
+                '<div class="empty-state"><p>Unable to load trending campaigns. Please try again later.</p></div>';
+        });
+}
+
+// Function to display campaigns in the specified container
+function displayCampaigns(containerId, campaigns) {
+    const container = document.getElementById(containerId);
+    
+    if (!campaigns || campaigns.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No campaigns available at the moment.</p></div>';
+        return;
+    }
+    
+    let html = '';
+    campaigns.forEach(campaign => {
+        html += renderCampaignCard(campaign);
+    });
+    
+    container.innerHTML = html;
+}
+
+// Function to render individual campaign card
+function renderCampaignCard(campaign) {
+    // Safe data access with fallbacks
+    const goalAmount = campaign.goal_amount || campaign.goalAmount || 0;
+    const raisedAmount = campaign.raised_amount || campaign.currentAmount || 0;
+    const percentage = goalAmount > 0 ? Math.min(Math.round((raisedAmount / goalAmount) * 100), 100) : 0;
+    
+    // Get student ID for the profile link
+    const studentId = campaign.student_id || campaign.studentId || campaign.id;
+    
+    // Get student name with fallback
+    const studentName = campaign.student_name || 'Anonymous Student';
+    
+    // Get campaign title with fallback
+    const title = campaign.title || 'Education Campaign';
+    
+    // Get description with fallback
+    const description = campaign.description || 'Help support this student\'s educational journey';
+    
+    // Get institution with fallback
+    const institution = campaign.institution || 'University';
+    
+    // Truncate description for display
+    const shortDescription = description.length > 80 ? 
+        description.substring(0, 80) + '...' : description;
+    
+    // Determine image source
+    const imageSrc = campaign.image_url || campaign.coverImage || './assets/profile-user.png';
+    
+    return `
+        <div class="campaign-card mb-3" onclick="window.location.href='student-profile.html?id=${studentId}'">
+            <div class="row">
+                <div class="col-4">
+                    <!-- Campaign profile image -->
+                    <img src="${imageSrc}" alt="Campaign Image" class="img-fluid" 
+                         onerror="this.src='./assets/profile-user.png'">
+                </div>
+                <div class="col-8">
+                    <!-- Campaign name with clickable link -->
+                    <h5 class="mb-2">
+                        <a href="student-profile.html?id=${studentId}" class="campaign-name text-decoration-none">
+                        ${title}
+                        </a>
+                    </h5>
+                    <!-- Campaign description -->
+                    <p class="mb-1 text-muted small">${shortDescription}</p>
+                    <!-- Campaign creator name -->
+                    <p class="mb-1"><strong>${studentName}</strong></p>
+                    <!-- Campaign location/institution -->
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> ${institution}</p>
+                    <!-- Funding progress bar -->
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div class="progress-bar" style="width: ${percentage}%;"></div>
+                    </div>
+                    <!-- Funding status -->
+                    <small class="text-muted">Raised: R${raisedAmount.toLocaleString()} (${percentage}%)</small>
+                </div>
+            </div>
+        </div>
+    `;
+}
+</script>
+
 <!-- Dynamic navbar -->
 <script src="./js/navbar-auth.js"></script>
 <!-- Bootstrap + Font Awesome JavaScript for interactive components -->

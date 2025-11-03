@@ -386,6 +386,49 @@
   font-size: 0.85em;
   text-align: center;
 }
+
+/* Social login button styling */
+.social-login-btn {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid #012A4A;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.social-login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Social login loading state */
+.social-login-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.social-login-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 </head>
 <body class="bg-light">
@@ -455,8 +498,6 @@
       <!-- Login Title -->
       <h1 class="text-center mb-4 fw-bold">Login</h1>
       
-     
-      
       <!-- Firebase Permission Warning -->
       <div class="firebase-permission-warning d-none" id="firebasePermissionWarning">
         <strong>Firebase Permission Issue:</strong> 
@@ -507,20 +548,20 @@
         <hr class="flex-grow-1">
       </div>
 
-      <!-- Social Icons -->
-      <div class="d-flex justify-content-center gap-3">
-        <!-- Facebook Login -->
-        <a href="#" class="btn btn-facebook rounded-circle">
-          <i class="fab fa-facebook-f"></i>
-        </a>
+      <!-- Social Login Buttons -->
+      <div class="d-flex justify-content-center gap-3 mb-4">
         <!-- Google Login -->
-        <a href="#" class="btn btn-google rounded-circle">
+        <button type="button" class="social-login-btn btn-google" id="googleLoginBtn" title="Sign in with Google">
           <i class="fab fa-google"></i>
-        </a>
+        </button>
+        <!-- Facebook Login -->
+        <button type="button" class="social-login-btn btn-facebook" id="facebookLoginBtn" title="Sign in with Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </button>
         <!-- Apple Login -->
-        <a href="#" class="btn btn-apple rounded-circle">
+        <button type="button" class="social-login-btn btn-apple" id="appleLoginBtn" title="Sign in with Apple">
           <i class="fab fa-apple"></i>
-        </a>
+        </button>
       </div>
 
       <!-- Registration Prompt -->
@@ -712,6 +753,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginButton = document.getElementById("loginButton");
     const loginSpinner = document.getElementById("loginSpinner");
     const loginText = document.getElementById("loginText");
+
+    // Social login buttons
+    const googleLoginBtn = document.getElementById("googleLoginBtn");
+    const facebookLoginBtn = document.getElementById("facebookLoginBtn");
+    const appleLoginBtn = document.getElementById("appleLoginBtn");
 
     // Store user data function (session only)
     async function storeUserData(user, userData) {
@@ -999,6 +1045,237 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // ===== SOCIAL LOGIN FUNCTIONS =====
+
+    // Handle Google Login
+    async function handleGoogleLogin() {
+        try {
+            // Show loading state
+            googleLoginBtn.classList.add('social-login-loading');
+            googleLoginBtn.disabled = true;
+            
+            // Set persistence for session
+            await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+            
+            // Create Google provider
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Add scopes if needed
+            provider.addScope('email');
+            provider.addScope('profile');
+            
+            // Sign in with popup
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            
+            console.log("Google login successful:", user);
+            
+            // Check if user exists in Firestore
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            
+            if (userDoc.exists) {
+                // Existing user - store data and redirect
+                const userData = userDoc.data();
+                await storeUserData(user, userData);
+                
+                showAlert('Google login successful! Redirecting...', 'success');
+                
+                const userType = userData.userType || 'student';
+                setTimeout(() => {
+                    redirectAfterLogin(userType);
+                }, 1000);
+            } else {
+                // New user - create user document
+                await createUserFromSocialLogin(user, 'google');
+            }
+            
+        } catch (error) {
+            console.error("Google login error:", error);
+            handleSocialLoginError(error, 'Google');
+        } finally {
+            // Reset button state
+            googleLoginBtn.classList.remove('social-login-loading');
+            googleLoginBtn.disabled = false;
+        }
+    }
+
+    // Handle Facebook Login
+    async function handleFacebookLogin() {
+        try {
+            // Show loading state
+            facebookLoginBtn.classList.add('social-login-loading');
+            facebookLoginBtn.disabled = true;
+            
+            // Set persistence for session
+            await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+            
+            // Create Facebook provider
+            const provider = new firebase.auth.FacebookAuthProvider();
+            
+            // Add scopes
+            provider.addScope('email');
+            provider.addScope('public_profile');
+            
+            // Sign in with popup
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            
+            console.log("Facebook login successful:", user);
+            
+            // Check if user exists in Firestore
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            
+            if (userDoc.exists) {
+                // Existing user - store data and redirect
+                const userData = userDoc.data();
+                await storeUserData(user, userData);
+                
+                showAlert('Facebook login successful! Redirecting...', 'success');
+                
+                const userType = userData.userType || 'student';
+                setTimeout(() => {
+                    redirectAfterLogin(userType);
+                }, 1000);
+            } else {
+                // New user - create user document
+                await createUserFromSocialLogin(user, 'facebook');
+            }
+            
+        } catch (error) {
+            console.error("Facebook login error:", error);
+            handleSocialLoginError(error, 'Facebook');
+        } finally {
+            // Reset button state
+            facebookLoginBtn.classList.remove('social-login-loading');
+            facebookLoginBtn.disabled = false;
+        }
+    }
+
+    // Handle Apple Login
+    async function handleAppleLogin() {
+        try {
+            // Show loading state
+            appleLoginBtn.classList.add('social-login-loading');
+            appleLoginBtn.disabled = true;
+            
+            // Set persistence for session
+            await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+            
+            // Create Apple provider
+            const provider = new firebase.auth.OAuthProvider('apple.com');
+            
+            // Add scopes
+            provider.addScope('email');
+            provider.addScope('name');
+            
+            // Sign in with popup
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            
+            console.log("Apple login successful:", user);
+            
+            // Check if user exists in Firestore
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            
+            if (userDoc.exists) {
+                // Existing user - store data and redirect
+                const userData = userDoc.data();
+                await storeUserData(user, userData);
+                
+                showAlert('Apple login successful! Redirecting...', 'success');
+                
+                const userType = userData.userType || 'student';
+                setTimeout(() => {
+                    redirectAfterLogin(userType);
+                }, 1000);
+            } else {
+                // New user - create user document
+                await createUserFromSocialLogin(user, 'apple');
+            }
+            
+        } catch (error) {
+            console.error("Apple login error:", error);
+            handleSocialLoginError(error, 'Apple');
+        } finally {
+            // Reset button state
+            appleLoginBtn.classList.remove('social-login-loading');
+            appleLoginBtn.disabled = false;
+        }
+    }
+
+    // Create user document for social login
+    async function createUserFromSocialLogin(user, provider) {
+        try {
+            // Extract user data
+            const displayName = user.displayName || 'Social User';
+            const email = user.email;
+            const firstName = displayName.split(' ')[0] || 'User';
+            const lastName = displayName.split(' ').slice(1).join(' ') || '';
+            
+            // Create user document
+            const userData = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                userType: 'student', // Default to student
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                emailVerified: user.emailVerified || false,
+                authProvider: provider,
+                verificationStatus: 'pending'
+            };
+            
+            // Save to Firestore
+            await db.collection('users').doc(user.uid).set(userData);
+            
+            // Store in localStorage
+            await storeUserData(user, userData);
+            
+            showAlert(`${provider} login successful! Welcome to FundMyFuture!`, 'success');
+            
+            // Redirect to profile completion or dashboard
+            setTimeout(() => {
+                window.location.href = 'student-profile-setup.html';
+            }, 1500);
+            
+        } catch (error) {
+            console.error("Error creating user document:", error);
+            showAlert('Error setting up your account. Please try again.', 'error');
+        }
+    }
+
+    // Handle social login errors
+    function handleSocialLoginError(error, provider) {
+        console.error(`${provider} login error:`, error);
+        
+        const errorMap = {
+            'auth/account-exists-with-different-credential': {
+                message: 'An account already exists with the same email address but different sign-in credentials. Try signing in with a different method.'
+            },
+            'auth/popup-blocked': {
+                message: 'The sign-in popup was blocked by your browser. Please allow popups for this site.'
+            },
+            'auth/popup-closed-by-user': {
+                message: 'The sign-in popup was closed before completing the sign-in process.'
+            },
+            'auth/cancelled-popup-request': {
+                message: 'Another sign-in popup is already open.'
+            },
+            'auth/unauthorized-domain': {
+                message: 'This domain is not authorized for OAuth operations. Please contact support.'
+            },
+            'auth/operation-not-allowed': {
+                message: `${provider} sign-in is not enabled. Please contact support.`
+            }
+        };
+        
+        const errorInfo = errorMap[error.code] || {
+            message: `${provider} sign-in failed. Please try again.`
+        };
+        
+        showAlert(errorInfo.message, 'error');
+    }
+
     // Real-time validation
     document.getElementById('email').addEventListener('input', function(){
         if(this.value) {
@@ -1024,7 +1301,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hidePermissionWarning();
     });
 
-    // Submit event
+    // Submit event for email/password login
     loginForm.addEventListener('submit', async e => {
         e.preventDefault();
         console.log("Form submitted");
@@ -1037,6 +1314,11 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Form validated, attempting login...");
         await handleLogin();
     });
+
+    // Social login event listeners
+    googleLoginBtn.addEventListener('click', handleGoogleLogin);
+    facebookLoginBtn.addEventListener('click', handleFacebookLogin);
+    appleLoginBtn.addEventListener('click', handleAppleLogin);
 
     function showAlert(message, type) {
         const alertContainer = document.getElementById('alertContainer');
