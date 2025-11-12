@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./css/styles.css">
     
     <style>
+        /* Main container styling for the edit campaign form */
         .edit-container { 
             max-width: 800px; 
             margin: 40px auto; 
@@ -23,16 +24,19 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
+        /* Primary button styling */
         .btn-primary { 
             background-color: #012A4A; 
             border-color: #012A4A; 
         }
         
+        /* Primary button hover state */
         .btn-primary:hover {
             background-color: #013a63;
             border-color: #013a63;
         }
         
+        /* Custom alert positioning and styling */
         .alert-custom {
             position: fixed;
             top: 100px;
@@ -41,10 +45,12 @@
             min-width: 300px;
         }
         
+        /* Navigation bar custom color */
         .navbar-custom {
             background-color: #012A4A;
         }
         
+        /* Image preview styling */
         .preview-image {
             max-width: 100%;
             max-height: 300px;
@@ -54,6 +60,7 @@
     </style>
 </head>
 <body>
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-custom px-3">
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="index.html">FundMyFuture</a>
@@ -61,21 +68,28 @@
         </div>
     </nav>
 
+    <!-- Main content container -->
     <div class="container">
         <div class="edit-container">
             <h2 class="text-center mb-4">Edit Campaign</h2>
             
+            <!-- Campaign edit form -->
             <form id="editCampaignForm">
+                <!-- Campaign title input field -->
                 <div class="mb-3">
                     <label class="form-label">Campaign Title</label>
                     <input type="text" id="campaignTitle" class="form-control" required minlength="5">
                     <div class="form-text">Minimum 5 characters</div>
                 </div>
+                
+                <!-- Campaign description input field -->
                 <div class="mb-3">
                     <label class="form-label">Short Description</label>
                     <input type="text" id="campaignDescription" class="form-control" required minlength="10">
                     <div class="form-text">Minimum 10 characters</div>
                 </div>
+                
+                <!-- Funding goal and end date row -->
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Funding Goal (ZAR)</label>
@@ -88,6 +102,8 @@
                         <div class="form-text">Must be a future date</div>
                     </div>
                 </div>
+                
+                <!-- Campaign category selection -->
                 <div class="mb-3">
                     <label class="form-label">Category</label>
                     <select id="category" class="form-select" required>
@@ -95,14 +111,17 @@
                         <option value="tuition">Tuition Fees</option>
                         <option value="books">Books & Supplies</option>
                         <option value="living">Living Expenses</option>
-                     
                     </select>
                 </div>
+                
+                <!-- Campaign story textarea -->
                 <div class="mb-3">
                     <label class="form-label">Your Story</label>
                     <textarea id="story" class="form-control" rows="6" required minlength="50"></textarea>
                     <div class="form-text">Minimum 50 characters</div>
                 </div>
+                
+                <!-- Image upload section -->
                 <div class="mb-3">
                     <label class="form-label">Current Cover Image</label>
                     <div id="currentImage" class="mb-2">
@@ -113,6 +132,8 @@
                     <div class="form-text">JPG, PNG up to 5MB</div>
                     <div id="imagePreview" class="d-none mt-3"></div>
                 </div>
+                
+                <!-- Form action buttons -->
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary">Update Campaign</button>
                     <a href="student-dashboard.html" class="btn btn-secondary">Cancel</a>
@@ -129,11 +150,13 @@
     <script src="./js/newsletter.js"></script>
 
     <script type="module">
+        // Firebase imports for app, authentication, Firestore, and storage functionality
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+        // Firebase configuration object containing API keys and project details
         const firebaseConfig = {
             apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
             authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -143,21 +166,28 @@
             appId: "1:581912293895:web:03468061fae2124ac770a2"
         };
 
+        // Initialize Firebase services
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        // Global variables to track current campaign and user
         let currentCampaignId = null;
         let currentCampaign = null;
         let currentUserId = null;
 
+        /**
+         * Initializes the page when DOM content is loaded
+         * Sets up event listeners and loads campaign data for editing
+         */
         document.addEventListener('DOMContentLoaded', function() {
+            // Get campaign ID from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             currentCampaignId = urlParams.get('id');
             
+            // Check if campaign ID exists and user is authenticated
             if (currentCampaignId) {
-                // Check authentication and load campaign
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         currentUserId = user.uid;
@@ -171,20 +201,22 @@
                 setTimeout(() => window.location.href = 'student-dashboard.html', 2000);
             }
 
-            // Set minimum date for end date
+            // Set minimum date for end date to tomorrow
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
             const minDate = tomorrow.toISOString().split('T')[0];
             document.getElementById('endDate').min = minDate;
 
-            // Add form submission handler
+            // Add event listeners for form submission and image preview
             document.getElementById('editCampaignForm').addEventListener('submit', updateCampaign);
-            
-            // Add image preview handler
             document.getElementById('coverImage').addEventListener('change', handleImagePreview);
         });
 
+        /**
+         * Loads campaign data from Firestore for editing
+         * Validates that the current user owns the campaign
+         */
         async function loadCampaignForEditing() {
             try {
                 const campaignDoc = await getDoc(doc(db, "campaigns", currentCampaignId));
@@ -210,6 +242,10 @@
             }
         }
 
+        /**
+         * Populates the edit form with existing campaign data
+         * @param {Object} campaign - The campaign data object
+         */
         function populateEditForm(campaign) {
             document.getElementById('campaignTitle').value = campaign.title || '';
             document.getElementById('campaignDescription').value = campaign.description || '';
@@ -241,6 +277,11 @@
             }
         }
 
+        /**
+         * Handles campaign update form submission
+         * Validates form data and updates campaign in Firestore
+         * @param {Event} event - The form submission event
+         */
         async function updateCampaign(event) {
             event.preventDefault();
             
@@ -342,10 +383,17 @@
             }
         }
 
+        /**
+         * Removes the current campaign image from display
+         */
         function removeCurrentImage() {
             document.getElementById('currentImage').innerHTML = '<p class="text-muted">No image selected</p>';
         }
 
+        /**
+         * Handles image preview when a new file is selected
+         * @param {Event} event - The file input change event
+         */
         function handleImagePreview(event) {
             const file = event.target.files[0];
             const preview = document.getElementById('imagePreview');
@@ -374,13 +422,21 @@
             }
         }
 
+        /**
+         * Removes the newly selected image from the form
+         */
         function removeNewImage() {
             document.getElementById('coverImage').value = '';
             document.getElementById('imagePreview').classList.add('d-none');
             document.getElementById('imagePreview').innerHTML = '';
         }
 
-        // ===== IMAGE VALIDATION =====
+        /**
+         * Validates campaign image file for type, size, and content
+         * @param {File} file - The image file to validate
+         * @returns {boolean} True if the image is valid
+         * @throws {Error} If the image fails validation
+         */
         function validateCampaignImage(file) {
             // Check file type
             const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -402,7 +458,11 @@
             return true;
         }
 
-        // Get file extension safely
+        /**
+         * Extracts file extension from file name or MIME type
+         * @param {File} file - The file to get extension for
+         * @returns {string} The file extension
+         */
         function getFileExtension(file) {
             if (file.name) {
                 const parts = file.name.split('.');
@@ -422,6 +482,11 @@
             return mimeToExt[file.type] || 'jpg';
         }
 
+        /**
+         * Displays a temporary alert message to the user
+         * @param {string} message - The message to display
+         * @param {string} type - The alert type (success, danger, warning, info)
+         */
         function showAlert(message, type) {
             // Remove existing alerts
             const existingAlerts = document.querySelectorAll('.custom-alert');
@@ -435,6 +500,7 @@
             `;
             document.body.appendChild(alertDiv);
             
+            // Auto-remove alert after 5 seconds
             setTimeout(() => {
                 if (alertDiv.parentNode) {
                     alertDiv.remove();
@@ -442,7 +508,7 @@
             }, 5000);
         }
 
-        // Make functions globally available
+        // Make functions globally available for HTML onclick handlers
         window.updateCampaign = updateCampaign;
         window.removeCurrentImage = removeCurrentImage;
         window.removeNewImage = removeNewImage;

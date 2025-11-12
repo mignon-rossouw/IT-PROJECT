@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard - FundMyFuture</title>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK for app functionality, authentication, database, and storage -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
-    <!-- Firebase configuration -->
+    <!-- Firebase configuration and initialization -->
     <script>
+        // Firebase project configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
             authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -25,7 +26,7 @@
             measurementId: "G-LFC0R1GBE1"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase with the provided configuration
         firebase.initializeApp(firebaseConfig);
     </script>
 
@@ -41,25 +42,26 @@
     <link rel="stylesheet" href="./css/styles.css">
 
     <style>
-        /* COLOUR PALLET (dark to light)
-        Blue 1:   #012A4A
-        Blue 2:   #013A63
-        Blue 3:   #01497C
-        Blue 4:   #014F86
-        Blue 5:   #2A6F97
-        Blue 6:   #2C7DA0
-        Blue 7:   #468FAF
-        Blue 8:   #61A5C2
-        Blue 9:   #89C2D9
-        Blue 10:  #A9D6E5
-        */
+        /* 
+         * COLOUR PALLET (dark to light)
+         * Blue 1:   #012A4A
+         * Blue 2:   #013A63
+         * Blue 3:   #01497C
+         * Blue 4:   #014F86
+         * Blue 5:   #2A6F97
+         * Blue 6:   #2C7DA0
+         * Blue 7:   #468FAF
+         * Blue 8:   #61A5C2
+         * Blue 9:   #89C2D9
+         * Blue 10:  #A9D6E5
+         */
 
-        /* Prevent horizontal scrolling */
+        /* Prevent horizontal scrolling on the page */
         body {
             overflow-x: hidden;
         }
 
-        /* Dashboard header styling */
+        /* Dashboard header styling with primary blue color */
         .dashboard-header {
             background-color: #2A6F97;
             padding: 30px 0;
@@ -67,7 +69,7 @@
             color: white;
         }
 
-        /* Background pattern for profile section */
+        /* Background pattern for profile section using CSS gradients */
         .profile-background {
             width: 100%;
             background:
@@ -81,7 +83,7 @@
             background-size: 168px 194px;
         }
 
-        /* Edit Modal Styles */
+        /* Edit Modal Styles with custom colors */
         .edit-modal .modal-content {
             background-color: #A9D6E5;
             border: 3px solid #012A4A;
@@ -91,13 +93,13 @@
             font-weight: bold;
         }
 
-        /* Card Styling */
+        /* Card header styling with dark blue background */
         .card-header {
             background-color: #012A4A;
             color: #A9D6E5;
         }
 
-        /* Edit button styling - Profile */
+        /* Edit button styling - transparent with hover effects */
         .btn-edit {
             background: none;
             border: none;
@@ -111,7 +113,7 @@
             transform: scale(1.02);
         }
 
-        /* Change Profile Picture Button */
+        /* Change Profile Picture Button styling */
         .btn-change-photo {
             background-color: #012A4A;
             color: #A9D6E5;
@@ -124,7 +126,7 @@
             transform: scale(1.02);
         }
 
-        /* Campaign card styles */
+        /* Campaign card styles with hover effects */
         .campaign-card {
             transition: transform 0.2s;
         }
@@ -133,7 +135,7 @@
             box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
-        /* Alert positioning */
+        /* Alert positioning - fixed to top right */
         .alert-fixed {
             position: fixed;
             top: 100px;
@@ -142,12 +144,12 @@
             min-width: 300px;
         }
 
-        /* Loading spinner */
+        /* Loading spinner positioning */
         #loadingSpinner {
             z-index: 9999;
         }
 
-        /* Profile picture upload */
+        /* Profile picture upload container with overlay */
         .profile-picture-container {
             position: relative;
             display: inline-block;
@@ -360,7 +362,7 @@
             color: #ffd60a;
         }
 
-        /* Primary button styling */
+        /* Primary button styling with custom colors */
         .btn-primary-custom {
             background-color: #2A6F97;
             color: white;
@@ -374,7 +376,7 @@
             transform: scale(1.02);
         }
 
-        /* Navbar styling */
+        /* Navbar styling with dark blue background */
         .navbar-custom {
             background-color: #012A4A;
         }
@@ -395,7 +397,7 @@
             color: white;
         }
 
-        /* Profile card styling */
+        /* Profile card styling with rounded corners */
         .profile-card {
             border-radius: 10px;
             overflow: hidden;
@@ -409,7 +411,7 @@
             color: #A9D6E5;
         }
 
-        /* Verification Status Styles */
+        /* Verification Status Styles for different states */
         .verification-badge {
             font-size: 0.9rem;
             padding: 0.5rem 1rem;
@@ -445,7 +447,7 @@
             color: #dc3545;
         }
 
-        /* Document Upload Styles */
+        /* Document Upload Styles with dashed border */
         .upload-area {
             border: 2px dashed #89C2D9;
             border-radius: 8px;
@@ -509,7 +511,7 @@
             margin-bottom: 10px;
         }
 
-        /* Document action buttons */
+        /* Document action buttons container */
         .document-actions-container {
             display: flex;
             gap: 8px;
@@ -840,11 +842,12 @@
 
 <!-- Student Dashboard Script -->
 <script>
-    // Firebase services
+    // Firebase services initialization
     const auth = firebase.auth();
     const db = firebase.firestore();
     const storage = firebase.storage();
 
+    // Global variables for user data and state management
     let currentUser = null;
     let currentUserId = null;
     let editMode = null;
@@ -852,13 +855,18 @@
     let selectedFile = null;
     let unsubscribeCampaigns = null; // Real-time listener for campaigns
 
-    // Initialize the dashboard
+    /**
+     * Initialize the dashboard when the DOM is fully loaded
+     */
     document.addEventListener('DOMContentLoaded', function() {
         initializeDashboard();
         initializeNavbar();
     });
 
-    // Initialize navbar based on authentication state
+    /**
+     * Initialize navbar based on authentication state
+     * Displays different navigation items for logged in vs logged out users
+     */
     function initializeNavbar() {
         auth.onAuthStateChanged(user => {
             const navList = document.getElementById('navList');
@@ -919,10 +927,14 @@
         });
     }
 
+    /**
+     * Initialize the main dashboard functionality
+     * Sets up event listeners and loads user data
+     */
     async function initializeDashboard() {
         console.log('Initializing dashboard...');
         
-        // Add event listeners
+        // Add event listeners for various dashboard actions
         document.getElementById('editProfileButton')?.addEventListener('click', () => openEditModal('profile'));
         document.getElementById('editAcademicButton')?.addEventListener('click', () => openEditModal('academic'));
         document.getElementById('changePhotoButton')?.addEventListener('click', changeProfilePicture);
@@ -939,7 +951,7 @@
         document.getElementById('cancelUploadButton').addEventListener('click', cancelUpload);
         document.getElementById('submitDocumentButton').addEventListener('click', submitDocument);
 
-        // Drag and drop functionality
+        // Drag and drop functionality for document uploads
         const uploadArea = document.getElementById('uploadArea');
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -981,6 +993,10 @@
         });
     }
 
+    /**
+     * Load user data from Firestore
+     * @param {string} userId - The ID of the user to load data for
+     */
     async function loadUserData(userId) {
         try {
             const userDoc = await db.collection("users").doc(userId).get();
@@ -998,6 +1014,10 @@
         }
     }
 
+    /**
+     * Display user data in the dashboard UI
+     * @param {Object} userData - User data object from Firestore
+     */
     function displayUserData(userData) {
         // Personal Information
         document.getElementById('welcomeName').textContent = `${userData.firstName || ''} ${userData.surname || ''}`;
@@ -1046,6 +1066,10 @@
         updateCampaignCreationEligibility(userData);
     }
 
+    /**
+     * Update the verification status badge based on user data
+     * @param {Object} userData - User data object containing verification status
+     */
     function updateVerificationStatus(userData) {
         const verificationStatus = userData.verificationStatus || 'pending';
         const badge = document.getElementById('verificationStatusBadge');
@@ -1070,6 +1094,10 @@
         }
     }
 
+    /**
+     * Update document status display for all required documents
+     * @param {Object} userData - User data object containing document information
+     */
     function updateDocumentStatus(userData) {
         const documents = userData.documents || {};
         
@@ -1150,7 +1178,10 @@
         }
     }
 
-    // NEW FUNCTION: View uploaded document
+    /**
+     * View an uploaded document in a new tab
+     * @param {string} documentType - Type of document to view (idDocument, proofOfRegistration, feeStatement)
+     */
     function viewDocument(documentType) {
         if (!currentUser || !currentUser.documents || !currentUser.documents[documentType]) {
             showAlert('Document not found', 'warning');
@@ -1166,6 +1197,10 @@
         }
     }
 
+    /**
+     * Update campaign creation eligibility based on document status and verification
+     * @param {Object} userData - User data object containing verification and document status
+     */
     function updateCampaignCreationEligibility(userData) {
         const messageDiv = document.getElementById('campaignCreationMessage');
         const messageText = document.getElementById('campaignMessageText');
@@ -1204,7 +1239,10 @@
         messageDiv.classList.remove('d-none');
     }
 
-    // UPDATED FUNCTION: Now uses real-time listener for dynamic progress bars
+    /**
+     * Load user campaigns with real-time updates
+     * @param {string} userId - The ID of the user whose campaigns to load
+     */
     function loadUserCampaigns(userId) {
         try {
             const campaignsQuery = db.collection("campaigns").where("studentId", "==", userId);
@@ -1307,7 +1345,11 @@
         }
     }
 
-    // NEW FUNCTION: Calculate campaign progress with enhanced data
+    /**
+     * Calculate campaign progress with enhanced data
+     * @param {Object} campaign - Campaign data object
+     * @returns {Object} Progress data including percentage, amounts, and donor count
+     */
     function calculateCampaignProgress(campaign) {
         // Use field names from database (snake_case) with fallbacks
         const goalAmount = Number(campaign.goal_amount || campaign.goalAmount || 0);
@@ -1333,7 +1375,11 @@
         };
     }
 
-    // NEW FUNCTION: Calculate days remaining for campaign
+    /**
+     * Calculate days remaining for a campaign
+     * @param {Date} endDate - The end date of the campaign
+     * @returns {number|null} Number of days remaining or null if invalid date
+     */
     function calculateDaysRemaining(endDate) {
         if (!endDate) return null;
         
@@ -1357,7 +1403,9 @@
         }
     }
 
-    // NEW FUNCTION: Attach event listeners to campaign buttons
+    /**
+     * Attach event listeners to campaign buttons for view, edit, and delete actions
+     */
     function attachCampaignEventListeners() {
         document.querySelectorAll('.view-campaign-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -1381,6 +1429,10 @@
         });
     }
 
+    /**
+     * Open the edit modal for profile or academic information
+     * @param {string} mode - Type of information to edit ('profile' or 'academic')
+     */
     function openEditModal(mode) {
         editMode = mode;
         const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
@@ -1485,6 +1537,9 @@
         modal.show();
     }
 
+    /**
+     * Save profile changes to Firestore
+     */
     async function saveProfileChanges() {
         console.log('saveProfileChanges function called!');
         
@@ -1540,6 +1595,9 @@
         }
     }
 
+    /**
+     * Change the user's profile picture
+     */
     async function changeProfilePicture() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -1591,6 +1649,9 @@
         input.click();
     }
 
+    /**
+     * Create a new campaign - redirects to campaign creation page
+     */
     function createNewCampaign() {
         // Check if user is verified and has all documents
         const documents = currentUser.documents || {};
@@ -1613,14 +1674,26 @@
         window.location.href = 'campaign.html';
     }
 
+    /**
+     * View a specific campaign
+     * @param {string} campaignId - ID of the campaign to view
+     */
     function viewCampaign(campaignId) {
         window.location.href = `view-campaign.html?id=${campaignId}`;
     }
 
+    /**
+     * Edit a specific campaign
+     * @param {string} campaignId - ID of the campaign to edit
+     */
     function editCampaign(campaignId) {
         window.location.href = `edit-campaign.html?id=${campaignId}`;
     }
 
+    /**
+     * Delete a specific campaign after confirmation
+     * @param {string} campaignId - ID of the campaign to delete
+     */
     async function deleteCampaign(campaignId) {
         if (confirm('Are you sure you want to delete this campaign? This action cannot be undone.')) {
             try {
@@ -1638,6 +1711,11 @@
     }
 
     // Document Upload Functions
+
+    /**
+     * Open the document upload modal for a specific document type
+     * @param {string} documentType - Type of document to upload
+     */
     function openUploadModal(documentType) {
         currentDocumentType = documentType;
         const modal = new bootstrap.Modal(document.getElementById('uploadDocumentModal'));
@@ -1665,6 +1743,10 @@
         modal.show();
     }
 
+    /**
+     * Handle file selection for document upload
+     * @param {Event} event - File selection event
+     */
     function handleFileSelect(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -1713,12 +1795,18 @@
         document.getElementById('submitDocumentButton').disabled = false;
     }
 
+    /**
+     * Cancel the document upload and reset the modal
+     */
     function cancelUpload() {
         resetUploadArea();
         const modal = bootstrap.Modal.getInstance(document.getElementById('uploadDocumentModal'));
         modal.hide();
     }
 
+    /**
+     * Reset the document upload area to its initial state
+     */
     function resetUploadArea() {
         document.getElementById('documentFileInput').value = '';
         document.getElementById('documentPreview').classList.add('d-none');
@@ -1727,6 +1815,9 @@
         selectedFile = null;
     }
 
+    /**
+     * Submit the selected document to Firebase Storage and update Firestore
+     */
     async function submitDocument() {
         if (!selectedFile || !currentDocumentType) return;
         
@@ -1825,6 +1916,9 @@
         }
     }
 
+    /**
+     * Logout the current user and redirect to homepage
+     */
     async function logout() {
         try {
             // Clean up real-time listeners
@@ -1845,6 +1939,11 @@
         }
     }
 
+    /**
+     * Show a temporary alert message
+     * @param {string} message - The message to display
+     * @param {string} type - The type of alert (success, danger, warning, info)
+     */
     function showAlert(message, type) {
         // Remove any existing alerts
         const existingAlerts = document.querySelectorAll('.alert-fixed');
@@ -1866,6 +1965,10 @@
         }, 5000);
     }
 
+    /**
+     * Show or hide the loading spinner
+     * @param {boolean} show - Whether to show the loading spinner
+     */
     function showLoading(show) {
         const spinner = document.getElementById('loadingSpinner');
         if (show) {

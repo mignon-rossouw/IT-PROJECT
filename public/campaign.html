@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="./css/styles.css">
 
     <style>
+        /* Profile card styling for user information display */
         .profile-card { 
             background: #A9D6E5; 
             text-align: center; 
@@ -28,6 +29,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
+        /* Profile image styling with circular border */
         .profile-card img { 
             width: 120px; 
             height: 120px; 
@@ -37,7 +39,7 @@
             border: 3px solid #012A4A;
         }
 
-        /* Action button styling for profile actions */
+        /* Action button styling for profile navigation */
         .action-btn {
             background-color: #012A4A;
             border: none;
@@ -51,12 +53,14 @@
             width: 100%;
         }
 
+        /* Hover effect for action buttons */
         .action-btn:hover {
             color: #012A4A;
             background-color: #ffd60a;
             transform: scale(1.02);
         }
 
+        /* Campaign card styling for form container */
         .campaign-card { 
             background: #468FAF; 
             color: #012A4A; 
@@ -64,6 +68,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
+        /* Form label styling for campaign creation */
         .campaign-card label { 
             font-weight: 600; 
             color: #012A4A; 
@@ -71,6 +76,7 @@
             margin-bottom: 5px; 
         }
 
+        /* Form control styling for input fields */
         .campaign-card .form-control, .campaign-card .form-select { 
             border-radius: 8px; 
             margin-bottom: 15px; 
@@ -78,6 +84,7 @@
             padding: 10px;
         }
 
+        /* Focus state for form controls */
         .campaign-card .form-control:focus, .campaign-card .form-select:focus {
             border-color: #012A4A;
             box-shadow: 0 0 0 0.2rem rgba(1, 42, 74, 0.25);
@@ -96,18 +103,21 @@
             width: 100%;
         }
 
+        /* Hover effect for launch button */
         .launch-btn:hover {
             color: #012A4A;
             background-color: #ffd60a;
             transform: scale(1.02);
         }
 
+        /* Disabled state for launch button */
         .launch-btn:disabled { 
             opacity: 0.6; 
             cursor: not-allowed; 
             transform: none;
         }
 
+        /* Image preview container styling */
         #imagePreview { 
             border: 2px dashed #012A4A; 
             padding: 20px; 
@@ -116,17 +126,19 @@
             background-color: rgba(255,255,255,0.5);
         }
 
+        /* Section title styling with underline */
         .section-title {
             color: #012A4A;
             border-bottom: 2px solid #012A4A;
             padding-bottom: 10px;
         }
 
+        /* Dashboard container with minimum height */
         .dashboard-container {
             min-height: calc(100vh - 200px);
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments for mobile devices */
         @media (max-width: 768px) {
             .dashboard-container {
                 padding: 15px !important;
@@ -137,6 +149,7 @@
             }
         }
 
+        /* Permission help box styling */
         .permission-help {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
@@ -146,6 +159,7 @@
             font-size: 0.9em;
         }
         
+        /* Firebase error message styling */
         .firebase-error {
             background: #f8d7da;
             border: 1px solid #f5c6cb;
@@ -155,7 +169,7 @@
             color: #721c24;
         }
         
-        /* Image preview styling */
+        /* Image preview styling for uploaded images */
         .preview-image {
             max-width: 100%;
             max-height: 300px;
@@ -163,13 +177,14 @@
             border-radius: 8px;
         }
         
-        /* Aspect ratio helper */
+        /* Aspect ratio helper text styling */
         .aspect-ratio-helper {
             font-size: 0.8rem;
             color: #6c757d;
             margin-top: 5px;
         }
 
+        /* Custom alert positioning for notifications */
         .alert-custom {
             position: fixed;
             top: 100px;
@@ -267,7 +282,7 @@
                 <!-- Form Header: Clear title indicating the purpose of this section -->
                 <h3 class="section-title text-center fw-bold mb-4 fs-2">Create New Campaign</h3>
                 
-                <!-- Firebase Error Display -->
+                <!-- Firebase Error Display: Shows Firebase-related errors to the user -->
                 <div class="firebase-error d-none" id="firebaseError">
                     <strong>Firebase Error:</strong> 
                     <span id="errorMessage"></span>
@@ -276,7 +291,7 @@
                     </div>
                 </div>
                 
-                <!-- Permission Help Box -->
+                <!-- Permission Help Box: Provides guidance for Firebase permission issues -->
                 <div class="permission-help d-none" id="permissionHelp">
                     <strong>Permission Issue Detected:</strong> 
                     <p class="mb-1">To create campaigns, you need to update Firebase security rules.</p>
@@ -464,6 +479,10 @@
 <!-- Firebase Campaign Creation Script -->
 <script>
 // ===== FIREBASE CONFIGURATION =====
+/**
+ * Firebase configuration object containing all necessary API keys and identifiers
+ * for connecting to the FundMyFuture Firebase project
+ */
 const firebaseConfig = {
     apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
     authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -475,19 +494,27 @@ const firebaseConfig = {
     measurementId: "G-LFC0R1GBE1"
 };
 
-// Initialize Firebase
+// Initialize Firebase with the provided configuration
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase services
+// Initialize Firebase services for database, authentication, and storage
 const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 
 // ===== UTILITY FUNCTIONS =====
+
+/**
+ * Displays a temporary alert message to the user
+ * @param {string} message - The message to display in the alert
+ * @param {string} type - The type of alert (info, success, warning, danger)
+ */
 function showAlert(message, type = 'info') {
+    // Remove any existing alerts to prevent stacking
     const existingAlerts = document.querySelectorAll('.custom-alert');
     existingAlerts.forEach(alert => alert.remove());
     
+    // Create new alert element with Bootstrap styling
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type} custom-alert alert-custom`;
     alertDiv.innerHTML = `
@@ -496,6 +523,7 @@ function showAlert(message, type = 'info') {
     `;
     document.body.appendChild(alertDiv);
     
+    // Automatically remove alert after 5 seconds
     setTimeout(() => {
         if (alertDiv.parentNode) {
             alertDiv.remove();
@@ -503,7 +531,9 @@ function showAlert(message, type = 'info') {
     }, 5000);
 }
 
-// Show permission help
+/**
+ * Displays the permission help box when Firebase permissions are insufficient
+ */
 function showPermissionHelp() {
     const helpDiv = document.getElementById('permissionHelp');
     if (helpDiv) {
@@ -511,7 +541,9 @@ function showPermissionHelp() {
     }
 }
 
-// Hide permission help
+/**
+ * Hides the permission help box when permissions are adequate
+ */
 function hidePermissionHelp() {
     const helpDiv = document.getElementById('permissionHelp');
     if (helpDiv) {
@@ -519,7 +551,10 @@ function hidePermissionHelp() {
     }
 }
 
-// Show Firebase error
+/**
+ * Displays Firebase-specific error messages to the user
+ * @param {string} message - The error message to display
+ */
 function showFirebaseError(message) {
     const errorDiv = document.getElementById('firebaseError');
     const errorMessage = document.getElementById('errorMessage');
@@ -529,7 +564,9 @@ function showFirebaseError(message) {
     }
 }
 
-// Hide Firebase error
+/**
+ * Hides the Firebase error display when errors are resolved
+ */
 function hideFirebaseError() {
     const errorDiv = document.getElementById('firebaseError');
     if (errorDiv) {
@@ -602,6 +639,11 @@ function resizeImage(file, maxWidth = 800, maxHeight = 450) {
 }
 
 // ===== CAMPAIGN IMAGE UPLOAD =====
+/**
+ * Uploads a campaign image to Firebase Storage
+ * @param {File} file - The image file to upload
+ * @returns {Promise<string>} - Promise that resolves with the download URL
+ */
 async function uploadCampaignImage(file) {
     try {
         const user = firebase.auth().currentUser;
@@ -663,6 +705,12 @@ async function uploadCampaignImage(file) {
 }
 
 // ===== IMAGE VALIDATION =====
+/**
+ * Validates an image file before upload
+ * @param {File} file - The image file to validate
+ * @returns {boolean} - True if the image is valid
+ * @throws {Error} - If the image fails validation
+ */
 function validateCampaignImage(file) {
     // Check file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -685,8 +733,13 @@ function validateCampaignImage(file) {
 }
 
 // ===== CAMPAIGN CREATION FUNCTIONALITY =====
+
+/**
+ * Initializes the page when DOM content is loaded
+ * Sets up event listeners and checks user authentication
+ */
 document.addEventListener('DOMContentLoaded', function() {
-    // Set minimum date for end date field
+    // Set minimum date for end date field to tomorrow
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -701,7 +754,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add form submission handler
             document.getElementById('campaignForm').addEventListener('submit', handleCampaignSubmit);
             
-            // Add image preview
+            // Add image preview handler
             document.getElementById('coverImage').addEventListener('change', handleImagePreview);
 
             // Test Firestore permissions - using a safer approach
@@ -712,7 +765,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Test Firestore permissions - safer approach using existing collections
+/**
+ * Tests Firestore permissions by attempting to read user data
+ * @param {string} userId - The current user's ID
+ * @returns {Promise<boolean>} - True if permissions are adequate
+ */
 async function testFirestorePermissions(userId) {
     try {
         // Instead of creating a test collection, try to read the user's own document
@@ -743,7 +800,10 @@ async function testFirestorePermissions(userId) {
     }
 }
 
-// Load user data from Firestore
+/**
+ * Loads user data from Firestore and displays it in the profile card
+ * @param {string} userId - The current user's ID
+ */
 async function loadUserData(userId) {
     try {
         const userDoc = await db.collection("users").doc(userId).get();
@@ -779,7 +839,10 @@ async function loadUserData(userId) {
     }
 }
 
-// Display user data in the profile card
+/**
+ * Displays user data in the profile card
+ * @param {Object} userData - The user data object from Firestore
+ */
 function displayUserData(userData) {
     const profileImage = document.querySelector('.profile-card img');
     if (userData.profilePicture) {
@@ -806,7 +869,10 @@ function displayUserData(userData) {
     `;
 }
 
-// Handle image preview when a file is selected
+/**
+ * Handles image preview when a file is selected
+ * @param {Event} event - The file input change event
+ */
 function handleImagePreview(event) {
     const file = event.target.files[0];
     const preview = document.getElementById('imagePreview');
@@ -835,14 +901,20 @@ function handleImagePreview(event) {
     }
 }
 
-// Remove image from preview
+/**
+ * Removes the selected image from preview and resets the file input
+ */
 function removeImage() {
     document.getElementById('coverImage').value = '';
     document.getElementById('imagePreview').classList.add('d-none');
     document.getElementById('imagePreview').innerHTML = '';
 }
 
-// Handle campaign form submission
+/**
+ * Handles campaign form submission
+ * Validates form data, uploads image if provided, and creates campaign in Firestore
+ * @param {Event} e - The form submission event
+ */
 async function handleCampaignSubmit(e) {
     e.preventDefault();
     
@@ -968,7 +1040,7 @@ async function handleCampaignSubmit(e) {
         
         showAlert('Campaign created successfully! Redirecting to your dashboard...', 'success');
         
-        // ✅ FIXED: Redirect back to student dashboard instead of donate page
+        // Redirect back to student dashboard instead of donate page
         setTimeout(() => {
             window.location.href = 'student-dashboard.html';
         }, 2000);
@@ -995,7 +1067,7 @@ async function handleCampaignSubmit(e) {
     }
 }
 
-// Make functions globally available
+// Make functions globally available for onclick handlers
 window.removeImage = removeImage;
 </script>
 

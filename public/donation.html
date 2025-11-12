@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make a Donation - FundMyFuture</title>
     
-    <!-- Stripe.js -->
+    <!-- Stripe.js library for payment processing -->
     <script src="https://js.stripe.com/v3/"></script>
     
-    <!-- Bootstrap & Icons -->
+    <!-- Bootstrap CSS for responsive styling and components -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome icons for UI elements -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons for additional icon options -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
+        /* CSS custom properties for consistent color scheme throughout the application */
         :root {
             --primary-color: #012A4A;
             --secondary-color: #2A6F97;
@@ -22,12 +25,14 @@
             --warning-color: #ffc107;
         }
 
+        /* Main body styling with gradient background */
         body {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* Container for centering the donation card */
         .donation-container {
             min-height: 100vh;
             display: flex;
@@ -36,6 +41,7 @@
             padding: 20px;
         }
 
+        /* Main donation card styling */
         .donation-card {
             background: white;
             border-radius: 20px;
@@ -46,6 +52,7 @@
             width: 100%;
         }
 
+        /* Card header with gradient background */
         .card-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border-bottom: none;
@@ -53,16 +60,19 @@
             text-align: center;
         }
 
+        /* Card header title styling */
         .card-header h4 {
             color: white;
             margin: 0;
             font-weight: 700;
         }
 
+        /* Card body content area */
         .card-body {
             padding: 2.5rem;
         }
 
+        /* Campaign information section styling */
         .campaign-info {
             background: var(--accent-color);
             border-radius: 12px;
@@ -71,17 +81,20 @@
             border-left: 4px solid var(--primary-color);
         }
 
+        /* Campaign title styling */
         .campaign-title {
             color: var(--primary-color);
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
+        /* Campaign description text styling */
         .campaign-description {
             color: #2A6F97;
             margin-bottom: 0;
         }
 
+        /* Donation amount button styling */
         .amount-btn {
             background: white;
             border: 2px solid var(--primary-color);
@@ -93,18 +106,21 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Hover state for amount buttons */
         .amount-btn:hover {
             background: var(--primary-color);
             color: white;
             transform: translateY(-2px);
         }
 
+        /* Active state for selected amount buttons */
         .amount-btn.active {
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
         }
 
+        /* Form input field styling */
         .form-control {
             border: 2px solid #e9ecef;
             border-radius: 10px;
@@ -113,11 +129,13 @@
             transition: all 0.3s ease;
         }
 
+        /* Focus state for form inputs */
         .form-control:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.2rem rgba(1, 42, 74, 0.25);
         }
 
+        /* Input group text styling for currency symbol */
         .input-group-text {
             background: var(--primary-color);
             border: 2px solid var(--primary-color);
@@ -126,6 +144,7 @@
             border-radius: 10px 0 0 10px;
         }
 
+        /* Primary button styling */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border: none;
@@ -137,17 +156,20 @@
             width: 100%;
         }
 
+        /* Hover state for primary button */
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(1, 42, 74, 0.3);
         }
 
+        /* Disabled state for primary button */
         .btn-primary:disabled {
             background: #6c757d;
             transform: none;
             box-shadow: none;
         }
 
+        /* Security badge styling for payment trust indicators */
         .security-badge {
             background: #f8f9fa;
             border-radius: 10px;
@@ -156,18 +178,20 @@
             border: 1px solid #e9ecef;
         }
 
+        /* Security badge icon color */
         .security-badge i {
             color: var(--success-color);
             font-size: 1.2rem;
         }
 
-        /* Success Modal */
+        /* Success modal specific styling */
         .success-modal .modal-content {
             border-radius: 20px;
             border: none;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
+        /* Success modal header styling */
         .success-modal .modal-header {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border-bottom: none;
@@ -176,23 +200,27 @@
             text-align: center;
         }
 
+        /* Success modal title styling */
         .success-modal .modal-title {
             color: white;
             font-weight: 700;
             font-size: 1.5rem;
         }
 
+        /* Success modal body content area */
         .success-modal .modal-body {
             padding: 2.5rem;
             text-align: center;
         }
 
+        /* Success icon styling */
         .success-icon {
             font-size: 4rem;
             color: #28a745;
             margin-bottom: 1.5rem;
         }
 
+        /* Success message text styling */
         .success-message {
             color: var(--primary-color);
             font-size: 1.2rem;
@@ -200,17 +228,20 @@
             margin-bottom: 1rem;
         }
 
+        /* Success details text styling */
         .success-details {
             color: #6c757d;
             margin-bottom: 2rem;
         }
 
+        /* Countdown timer styling */
         .countdown {
             color: var(--secondary-color);
             font-weight: 600;
             font-size: 1.1rem;
         }
 
+        /* Success button styling */
         .btn-success {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
@@ -219,11 +250,12 @@
             font-weight: 600;
         }
 
+        /* Loading spinner color */
         .loading-spinner {
             color: var(--primary-color);
         }
 
-        /* Responsive */
+        /* Responsive design for mobile devices */
         @media (max-width: 576px) {
             .card-body {
                 padding: 1.5rem;
@@ -242,11 +274,13 @@
 
     <!-- Firebase Integration -->
     <script type="module">
+        // Import Firebase modules for app initialization, authentication, and database operations
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 
+        // Firebase configuration object containing API keys and project identifiers
         const firebaseConfig = {
             apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
             authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -258,40 +292,59 @@
             measurementId: "G-LFC0R1GBE1"
         };
 
+        // Initialize Firebase application with configuration
         const app = initializeApp(firebaseConfig);
+        // Get Firebase Auth instance for user authentication
         const auth = getAuth(app);
+        // Get Firestore instance for database operations
         const db = getFirestore(app);
-       // const functions = getFunctions(app);
+        
+        // Stripe initialization with publishable key for payment processing
+        const stripe = Stripe('pk_test_51SPVY8JiL5xkeb8dDzRwiixEgVGwG8h2C01WWnnPApG9aeCwmLk5DUIoa8SXjperH0lNz4iQPf2Q9U9gCheKxxOm004hZldDmm');
 
+        // Global variables to store current user and campaign data
         let currentUser = null;
         let currentCampaign = null;
-        const stripe = Stripe('pk_test_51SPVY8JiL5xkeb8dDzRwiixEgVGwG8h2C01WWnnPApG9aeCwmLk5DUIoa8SXjperH0lNz4iQPf2Q9U9gCheKxxOm004hZldDmm'); // Replace with your Stripe key
 
+        /**
+         * Initializes the donation page when DOM content is fully loaded
+         * Sets up authentication state listener and modal initialization
+         */
         document.addEventListener('DOMContentLoaded', function() {
             initializeDonationPage();
             
+            // Monitor authentication state changes
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     currentUser = user;
                     document.getElementById('userInfo').textContent = `Welcome, ${user.email}`;
                 } else {
+                    // Redirect to login if user is not authenticated
                     window.location.href = `login.html?returnUrl=donation.html${window.location.search}`;
                 }
             });
 
-            // Initialize Bootstrap modal
+            // Initialize Bootstrap modal for success messages
             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
         });
 
+        /**
+         * Initializes the donation page by loading campaign details and setting up event listeners
+         */
         async function initializeDonationPage() {
             await loadCampaignDetails();
             setupEventListeners();
         }
 
+        /**
+         * Loads campaign details from Firestore based on URL parameters
+         * Displays campaign information or shows error if campaign not found
+         */
         async function loadCampaignDetails() {
             const urlParams = new URLSearchParams(window.location.search);
             const campaignId = urlParams.get('campaignId');
             
+            // Validate that campaign ID is provided in URL
             if (!campaignId) {
                 showError('No campaign specified. Please select a campaign to donate to.');
                 return;
@@ -299,13 +352,16 @@
 
             try {
                 showLoading(true, 'Loading campaign details...');
+                // Fetch campaign document from Firestore
                 const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
                 
+                // Check if campaign exists
                 if (!campaignDoc.exists()) {
                     showError('Campaign not found. It may have been removed.');
                     return;
                 }
 
+                // Store campaign data and display it
                 currentCampaign = { id: campaignDoc.id, ...campaignDoc.data() };
                 displayCampaignInfo(currentCampaign);
                 showLoading(false);
@@ -317,11 +373,15 @@
             }
         }
 
+        /**
+         * Displays campaign information in the UI
+         * @param {Object} campaign - Campaign data object containing title, description, and funding information
+         */
         function displayCampaignInfo(campaign) {
             document.getElementById('campaignTitle').textContent = campaign.title;
             document.getElementById('campaignDescription').textContent = campaign.description;
             
-            // Update progress if available
+            // Calculate and display progress if funding data is available
             if (campaign.currentAmount && campaign.goalAmount) {
                 const progress = Math.min(100, Math.round((campaign.currentAmount / campaign.goalAmount) * 100));
                 document.getElementById('campaignProgress').innerHTML = `
@@ -330,31 +390,43 @@
             }
         }
 
+        /**
+         * Sets up event listeners for user interactions
+         * Includes amount buttons, custom amount input, and form submission
+         */
         function setupEventListeners() {
-            // Donation amount buttons
+            // Add click listeners to donation amount buttons
             document.querySelectorAll('.amount-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
                     document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
                     this.classList.add('active');
+                    // Set custom amount input value
                     document.getElementById('customAmount').value = this.dataset.amount;
                     validateForm();
                 });
             });
 
-            // Custom amount input
+            // Add input listener to custom amount field
             document.getElementById('customAmount').addEventListener('input', function() {
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
                 validateForm();
             });
 
-            // Donate form submission
+            // Add submit listener to donation form
             document.getElementById('donateForm').addEventListener('submit', handleDonation);
         }
 
+        /**
+         * Validates the donation form and enables/disables submit button accordingly
+         * Updates donation summary with selected amount
+         */
         function validateForm() {
             const amount = parseFloat(document.getElementById('customAmount').value);
             const submitBtn = document.getElementById('submitBtn');
             
+            // Enable submit button if amount is valid (at least R10)
             if (amount && amount >= 10) {
                 submitBtn.disabled = false;
                 document.getElementById('donationSummary').textContent = `Donation Amount: R${amount.toLocaleString()}`;
@@ -363,51 +435,65 @@
                 document.getElementById('donationSummary').textContent = '';
             }
         }
-async function handleDonation(event) {
-    event.preventDefault();
-    
-    const amountInput = document.getElementById('customAmount');
-    const amount = parseFloat(amountInput.value);
-    
-    if (!amount || amount < 10) {
-        showError('Please enter a donation amount of at least R10');
-        return;
-    }
 
-    if (!currentCampaign) {
-        showError('Campaign information not loaded. Please refresh the page.');
-        return;
-    }
+        /**
+         * Handles donation form submission and payment processing
+         * @param {Event} event - Form submission event
+         */
+        async function handleDonation(event) {
+            event.preventDefault();
+            
+            const amountInput = document.getElementById('customAmount');
+            const amount = parseFloat(amountInput.value);
+            
+            // Validate donation amount
+            if (!amount || amount < 10) {
+                showError('Please enter a donation amount of at least R10');
+                return;
+            }
 
-    try {
-        showLoading(true, 'Processing your donation...');
-        
-        // Use the callable function (import firebase-functions if not already)
-        const { getFunctions, httpsCallable } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js");
-        const functions = getFunctions(app);
-        const createCheckoutSession = httpsCallable(functions, 'createCheckoutSession');
-        
-        const result = await createCheckoutSession({
-            campaignId: currentCampaign.id,
-            amount: amount,
-            currency: 'zar'
-        });
+            // Ensure campaign information is loaded
+            if (!currentCampaign) {
+                showError('Campaign information not loaded. Please refresh the page.');
+                return;
+            }
 
-        // Redirect to Stripe Checkout
-        const { error } = await stripe.redirectToCheckout({
-            sessionId: result.data.sessionId
-        });
+            try {
+                showLoading(true, 'Processing your donation...');
+                
+                // Import Firebase Functions module for serverless function calls
+                const { getFunctions, httpsCallable } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js");
+                const functions = getFunctions(app);
+                // Create callable function reference for Stripe checkout session
+                const createCheckoutSession = httpsCallable(functions, 'createCheckoutSession');
+                
+                // Call Firebase function to create Stripe checkout session
+                const result = await createCheckoutSession({
+                    campaignId: currentCampaign.id,
+                    amount: amount,
+                    currency: 'zar'
+                });
 
-        if (error) {
-            throw error;
+                // Redirect to Stripe Checkout page
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: result.data.sessionId
+                });
+
+                if (error) {
+                    throw error;
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                showError(error.message || 'An error occurred during payment processing. Please try again.');
+                showLoading(false);
+            }
         }
-        
-    } catch (error) {
-        console.error('Payment error:', error);
-        showError(error.message || 'An error occurred during payment processing. Please try again.');
-        showLoading(false);
-    }
-}
+
+        /**
+         * Displays error message to the user
+         * @param {string} message - Error message to display
+         */
         function showError(message) {
             const alertDiv = document.createElement('div');
             alertDiv.className = 'alert alert-danger alert-dismissible fade show';
@@ -418,7 +504,7 @@ async function handleDonation(event) {
             `;
             document.getElementById('alertsContainer').appendChild(alertDiv);
             
-            // Auto remove after 5 seconds
+            // Auto-remove alert after 5 seconds
             setTimeout(() => {
                 if (alertDiv.parentNode) {
                     alertDiv.remove();
@@ -426,6 +512,11 @@ async function handleDonation(event) {
             }, 5000);
         }
 
+        /**
+         * Shows or hides loading state on the submit button
+         * @param {boolean} show - Whether to show loading state
+         * @param {string} message - Loading message to display
+         */
         function showLoading(show, message = '') {
             const submitBtn = document.getElementById('submitBtn');
             const spinner = document.getElementById('submitSpinner');
@@ -442,7 +533,10 @@ async function handleDonation(event) {
             }
         }
 
-        // Function to show success modal (called after successful payment return)
+        /**
+         * Displays success modal after successful payment
+         * Includes countdown timer for automatic redirect
+         */
         function showSuccessModal() {
             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
             const countdownElement = document.getElementById('countdown');
@@ -452,6 +546,7 @@ async function handleDonation(event) {
             
             successModal.show();
             
+            // Start countdown timer for automatic redirect
             const timer = setInterval(() => {
                 countdown--;
                 countdownElement.textContent = countdown;
@@ -462,7 +557,7 @@ async function handleDonation(event) {
                 }
             }, 1000);
             
-            // Allow manual redirect
+            // Allow manual redirect with button click
             document.getElementById('goHomeBtn').addEventListener('click', () => {
                 clearInterval(timer);
                 window.location.href = 'index.html';
@@ -477,16 +572,20 @@ async function handleDonation(event) {
     </script>
 </head>
 <body>
+    <!-- Main donation container -->
     <div class="donation-container">
         <div class="donation-card">
+            <!-- Card header with donation title -->
             <div class="card-header">
                 <h4><i class="bi bi-heart-fill me-2"></i>Make a Donation</h4>
             </div>
             
+            <!-- Card body containing donation form and information -->
             <div class="card-body">
+                <!-- Container for displaying alerts and error messages -->
                 <div id="alertsContainer"></div>
                 
-                <!-- Campaign Info -->
+                <!-- Campaign information section -->
                 <div class="campaign-info">
                     <h5 id="campaignTitle" class="campaign-title">Loading campaign...</h5>
                     <p id="campaignDescription" class="campaign-description"></p>
@@ -494,8 +593,9 @@ async function handleDonation(event) {
                     <small id="userInfo" class="text-muted"></small>
                 </div>
 
-                <!-- Donation Form -->
+                <!-- Donation form -->
                 <form id="donateForm">
+                    <!-- Donation amount selection section -->
                     <div class="mb-4">
                         <label class="form-label fw-bold text-primary">Select Donation Amount (ZAR)</label>
                         <div class="row g-2 mb-3">
@@ -524,6 +624,7 @@ async function handleDonation(event) {
                         </div>
                     </div>
 
+                    <!-- Custom amount input section -->
                     <div class="mb-4">
                         <label for="customAmount" class="form-label fw-bold text-primary">Or Enter Custom Amount</label>
                         <div class="input-group">
@@ -539,8 +640,10 @@ async function handleDonation(event) {
                         <div class="form-text text-muted">Minimum donation: R10</div>
                     </div>
 
+                    <!-- Donation summary display -->
                     <div id="donationSummary" class="mb-3 text-center fw-bold text-primary"></div>
 
+                    <!-- Submit button section -->
                     <div class="d-grid mb-4">
                         <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
                             <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner"></span>
@@ -549,6 +652,7 @@ async function handleDonation(event) {
                     </div>
                 </form>
 
+                <!-- Security information badge -->
                 <div class="security-badge">
                     <small class="text-muted">
                         <i class="bi bi-shield-check me-1"></i>
@@ -559,7 +663,7 @@ async function handleDonation(event) {
         </div>
     </div>
 
-    <!-- Success Modal -->
+    <!-- Success modal displayed after successful donation -->
     <div class="modal fade success-modal" id="successModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -588,7 +692,7 @@ async function handleDonation(event) {
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JavaScript for component functionality -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

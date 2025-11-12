@@ -1,14 +1,9 @@
 // functions/index.js
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const cors = require('cors')({ origin: true }); // Add CORS middleware
-
 admin.initializeApp();
 
 const db = admin.firestore();
-
-// Initialize Stripe with your secret key
-const stripe = require('stripe')('sk_test_51SPVY8JiL5xkeb8dzBwlM6XzwDsafQB3gcii34l0ODC1FYvYvULbe0RMyL6EdO9KNS19n6i8hGgaVtKuYZ4V6SOL00NVpYSFai');
 
 // Trigger when a new campaign is created
 exports.onCampaignCreated = functions.firestore
@@ -18,6 +13,7 @@ exports.onCampaignCreated = functions.firestore
     const campaignId = context.params.campaignId;
     
     // Send notification to admins for verification
+    // You can implement email notification here
     console.log(`New campaign created: ${campaignId}`);
     
     // Send email to student confirming submission
@@ -90,159 +86,7 @@ exports.verifyCampaign = functions.https.onCall(async (data, context) => {
   }
 });
 
-
-// Stripe Checkout Session for donations 
-exports.createCheckoutSession = functions.https.onCall(async (data, context) => {
-  // Check if user is authenticated
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      'unauthenticated', 
-      'User must be logged in to make donations'
-    );
-  }
-
-  const { campaignId, amount, currency = 'zar' } = data;
-  
-  try {
-    // Validate donation amount (minimum R10)
-    if (amount < 10) {
-      throw new functions.https.HttpsError(
-        'invalid-argument',
-        'Minimum donation amount is R10'
-      );
-    }
-
-    // Get campaign details from Firestore
-    const campaignDoc = await admin.firestore()
-      .collection('campaigns')
-      .doc(campaignId)
-      .get();
-      
-    if (!campaignDoc.exists) {
-      throw new functions.https.HttpsError(
-        'not-found',
-        'Campaign not found'
-      );
-    }
-
-    const campaign = campaignDoc.data();
-    
-    // Create Stripe Checkout Session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: currency,
-            product_data: {
-              name: `Donation to ${campaign.title}`,
-              description: `Supporting ${campaign.title}'s education fund`,
-            },
-            unit_amount: amount * 100, // Convert to cents
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: `https://fund-my-future-47844.web.app/donation.html?payment=success&campaignId=${campaignId}`,
-      cancel_url: `https://fund-my-future-47844.web.app/view-campaign.html?id=${campaignId}`,
-      client_reference_id: context.auth.uid,
-      metadata: {
-        campaignId: campaignId,
-        userId: context.auth.uid,
-      },
-    });
-
-    // Return session ID to client for redirect
-    return { sessionId: session.id };
-  } catch (error) {
-    console.error('Error creating checkout session:', error);
-    throw new functions.https.HttpsError(
-      'internal',
-      'Unable to create payment session: ' + error.message
-    );
-  }
-});
-
-// Stripe webhook to handle successful payments
-exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    // Verify webhook signature to ensure request is from Stripe
-    event = stripe.webhooks.constructEvent(
-      req.rawBody, 
-      sig, 
-      'whsec_lRg1KMZHaZIYp2Hn3cykQY5Y76KnVQqW'
-    );
-  } catch (err) {
-    console.log(`Webhook signature verification failed: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle successful payment completion
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    
-    // Process the successful payment
-    await handleSuccessfulPayment(session);
-  }
-
-  res.json({ received: true });
-});
-
-// Process successful Stripe payment and update database
-async function handleSuccessfulPayment(session) {
-  const { campaignId, userId } = session.metadata;
-  const amount = session.amount_total / 100; // Convert back from cents to dollars/rand
-  
-  const db = admin.firestore();
-  const batch = db.batch();
-  
-  try {
-    // Update campaign with new donation amount
-    const campaignRef = db.collection('campaigns').doc(campaignId);
-    batch.update(campaignRef, {
-      currentAmount: admin.firestore.FieldValue.increment(amount),
-      donorCount: admin.firestore.FieldValue.increment(1),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp()
-    });
-    
-    // Create donation record in donations collection
-    const donationRef = db.collection('donations').doc();
-    batch.set(donationRef, {
-      userId: userId,
-      campaignId: campaignId,
-      amount: amount,
-      stripeSessionId: session.id,
-      paymentStatus: 'completed',
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: 'completed'
-    });
-    
-    // Add to user's donation history
-    const userDonationsRef = db.collection('users').doc(userId)
-      .collection('donations').doc();
-    batch.set(userDonationsRef, {
-      campaignId: campaignId,
-      amount: amount,
-      date: admin.firestore.FieldValue.serverTimestamp(),
-      sessionId: session.id,
-      status: 'completed'
-    });
-    
-    // Commit all database updates
-    await batch.commit();
-    console.log(`Successfully processed donation of ${amount} for campaign ${campaignId}`);
-    
-  } catch (error) {
-    console.error('Error processing successful payment:', error);
-    throw error;
-  }
-}
-
-// Process payment (legacy function - can be removed if using Stripe)
+// Process payment (integrate with payment gateway)
 exports.processPayment = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError(
@@ -255,9 +99,20 @@ exports.processPayment = functions.https.onCall(async (data, context) => {
   const donorId = context.auth.uid;
   
   try {
-    // Legacy payment processing - kept for reference
-    // This can be removed if you're fully migrating to Stripe
+    // Here you would integrate with a payment provider
+    // For South Africa, popular options are:
+    // - PayFast
+    // - Peach Payments
+    // - Yoco
+    // - Paystack
     
+    // Example payment flow:
+    // 1. Create payment with provider
+    // 2. Get payment URL/token
+    // 3. Return to client
+    // 4. Handle webhook for payment confirmation
+    
+    // Placeholder for payment processing
     const paymentResult = {
       success: true,
       transactionId: `TXN_${Date.now()}`,
@@ -283,7 +138,7 @@ exports.processPayment = functions.https.onCall(async (data, context) => {
   }
 });
 
-// Webhook to handle payment confirmation (legacy - can be removed)
+// Webhook to handle payment confirmation
 exports.paymentWebhook = functions.https.onRequest(async (req, res) => {
   // Verify webhook signature
   // This depends on your payment provider
@@ -337,7 +192,8 @@ exports.checkExpiredCampaigns = functions.pubsub
   });
 
 // Send email notification helper function
+// You can use SendGrid, Mailgun, or Firebase Extensions
 async function sendEmail(to, subject, body) {
-  // Implement email sending logic using SendGrid, Mailgun, or Firebase Extensions
+  // Implement email sending logic
   console.log(`Email sent to ${to}: ${subject}`);
 }

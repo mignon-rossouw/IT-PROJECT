@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - FundMyFuture</title>
 
-  <!-- Bootstrap & Icons -->
+  <!-- External Libraries -->
+  <!-- Bootstrap CSS for responsive design and UI components -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* Your existing CSS remains exactly the same */
+    /* Custom styles for the FundMyFuture application */
+    
+    /* Navigation bar styling */
     .navbar-custom {
       background-color: #012A4A; 
       height: 90px;
@@ -47,6 +51,7 @@
       transform: scale(1.02);
     }
 
+    /* Button styling */
     .donate-btn {
       background-color: #00b4d8;
       color: white;
@@ -62,6 +67,7 @@
       color: #ffd60a;
     }
 
+    /* Footer styling */
     .footer {
       margin-top: 100px;
       background-color: #468FAF;
@@ -87,6 +93,7 @@
       font-size: 0.9rem;
     }
 
+    /* Form styling */
     .form-control::placeholder {
       color: #6c757d;
       opacity: 1;
@@ -108,6 +115,7 @@
       padding-left: 2rem;
     }
 
+    /* Social media icons styling */
     .social-icons i {
       font-size: 2rem;
       margin-right: 1rem;
@@ -125,6 +133,7 @@
       margin-bottom: 50px;
     }
 
+    /* Sign up button styling */
     .sign-up-btn {
       background-color: #012A4A;
       color: #A9D6E5;
@@ -139,6 +148,7 @@
       border: none;
     }
 
+    /* Dashboard header styling */
     .dashboard-header {
       background-color: #2A6F97;
       padding: 30px 0;
@@ -153,6 +163,7 @@
       color: #012A4A;
     }
 
+    /* Utility classes */
     .hidden { 
       display: none !important; 
     }
@@ -165,6 +176,7 @@
       background-color: #A9D6E5;
     }
 
+    /* Submit button styling */
     .btn-submit-sign-up {
       background-color: #012A4A;
       color: #A9D6E5;
@@ -184,6 +196,7 @@
       font-weight: bold;
     }
 
+    /* User type toggle switch styling */
     .toggle-switch {
       position: relative;
       width: 220px;
@@ -222,6 +235,7 @@
       z-index: 1;
     }
 
+    /* Form section transitions */
     .form-section {
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
@@ -237,6 +251,7 @@
       transform: translateY(0);
     }
 
+    /* Profile picture styling */
     .profile-picture-container {
       position: relative;
       display: inline-block;
@@ -318,6 +333,7 @@
       opacity: 0.8;
     }
 
+    /* Form validation styling */
     .is-invalid {
       border-color: #dc3545;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 3.6.4.4.4-.4'/%3e%3cpath d='M6 7v2'/%3e%3c/svg%3e");
@@ -363,6 +379,7 @@
       color: #dc3545;
     }
 
+    /* Alert container styling */
     .alert-container {
       position: fixed;
       top: 100px;
@@ -387,6 +404,7 @@
       }
     }
 
+    /* Form field indicators */
     .required-field::after {
       content: " *";
       color: #dc3545;
@@ -398,6 +416,7 @@
       margin-top: 0.25rem;
     }
 
+    /* Progress indicator styling */
     .progress-indicator {
       display: none;
       margin: 20px 0;
@@ -410,6 +429,7 @@
       display: none;
     }
 
+    /* Loading overlay styling */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -427,7 +447,7 @@
 </head>
 <body>
 
-<!-- Loading Overlay -->
+<!-- Loading Overlay: Displayed during form submission processing -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="text-center">
     <div class="spinner-border text-primary mb-3" role="status">
@@ -437,23 +457,23 @@
   </div>
 </div>
 
-<!-- Alert Container for Global Messages -->
+<!-- Alert Container: Displays global messages to the user -->
 <div class="alert-container" id="alertContainer"></div>
 
-<!-- Success Message -->
+<!-- Success Message: Displayed after successful account creation -->
 <div class="success-message" id="successMsg">Account created successfully! Redirecting...</div>
 
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
     <a class="navbar-brand ms-2" href="index.html">FundMyFuture</a>
 
-    <!-- Toggler triggers offcanvas -->
+    <!-- Toggler button for mobile navigation -->
     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Offcanvas menu -->
+    <!-- Offcanvas menu for mobile navigation -->
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbarOffcanvas">
       <div class="offcanvas-header">
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
@@ -497,14 +517,14 @@
   </div>
 </div>
 
-<!-- Sign Up Page -->
+<!-- Sign Up Page Content -->
 <div class="container mt-5">
   <h2 class="text-center mb-2">Sign Up</h2>
   <h6 class="text-center text-muted fw-light mb-4">
     Please fill in the following information to continue:
   </h6>
 
-  <!-- Progress Indicator -->
+  <!-- Progress Indicator: Shows during form submission -->
   <div class="progress-indicator" id="progressIndicator">
     <div class="d-flex justify-content-center">
       <div class="spinner-border text-primary" role="status">
@@ -514,7 +534,7 @@
     </div>
   </div>
 
-  <!-- User Type Toggle -->
+  <!-- User Type Toggle: Allows switching between Student and Funder forms -->
   <div class="toggle-wrapper mb-4 d-flex justify-content-center">
     <div class="toggle-switch" id="toggleSwitch">
       <div class="toggle-option student active">Student</div>
@@ -524,11 +544,11 @@
     <input type="hidden" id="userType" value="student" />
   </div>
 
-  <!-- All Form Sections -->
+  <!-- Main Sign Up Form -->
   <form id="signupForm" novalidate>
-    <!-- Profile Section -->
+    <!-- Profile Section: Common fields for both Student and Funder -->
     <div id="profileSection" class="profile-card container mt-4 p-4 rounded">
-      <!-- Profile Picture -->
+      <!-- Profile Picture Upload Area -->
       <div class="row align-items-center mb-4">
         <div class="col-md-2 text-center">
           <div class="profile-picture-container">
@@ -558,7 +578,7 @@
             </div>
           </div>
         </div>
-        <!-- ID & DOB -->
+        <!-- ID & Date of Birth Fields -->
         <div class="col-md-5">
           <div class="row">
             <div class="col-md-12 mb-3">
@@ -577,7 +597,7 @@
       </div>
     </div>
 
-    <!-- Student Fields -->
+    <!-- Student Fields: Specific fields for Student registration -->
     <div id="studentFields" class="form-section mb-4 profile-card p-4 rounded">
       <!-- Country of Citizenship, Birth, Residence -->
       <div class="row">
@@ -644,7 +664,7 @@
       </div>
     </div>
 
-    <!-- Funder Fields -->
+    <!-- Funder Fields: Specific fields for Funder registration -->
     <div id="funderFields" class="form-section hidden mb-4 profile-card p-4 rounded">
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -682,7 +702,7 @@
       </div>
     </div>
 
-    <!-- Submit Button -->
+    <!-- Submit Button and Terms Agreement -->
     <div class="text-center mt-5">
       <h6 class="text-muted fw-light small">
         By continuing, <br> you agree to our 
@@ -702,11 +722,11 @@
   </form>
 </div>
 
-<!-- Footer -->
+<!-- Footer Section -->
 <footer class="footer pt-5">
   <div class="container pb-4">
     <div class="row">
-      <!-- Newsletter -->
+      <!-- Newsletter Subscription -->
       <div class="col-md-6 mb-4">
         <h5 class="fw-bold">Stay Connected</h5>
         <p class="mb-3">Sign up for our newsletter to stay informed.</p>
@@ -717,7 +737,7 @@
         </form>
       </div>
 
-      <!-- Social -->
+      <!-- Social Media Links -->
       <div class="col-md-6 mb-4 text-md-end">
         <h5 class="fw-bold follow-us">Follow us</h5>
         <div class="social-icons mt-2">
@@ -731,7 +751,7 @@
     <hr>
 
     <div class="row text-start text-md-start">
-      <!-- Navigate -->
+      <!-- Navigation Links -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Navigate</h6>
         <ul class="list-unstyled">
@@ -744,7 +764,7 @@
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- Company Information -->
       <div class="col-6 col-md-3 mb-4">
         <h6 class="fw-bold">Company</h6>
         <ul class="list-unstyled">
@@ -753,7 +773,7 @@
         </ul>
       </div>
 
-      <!-- Contact -->
+      <!-- Contact Information -->
       <div class="col-md-6 mb-4">
         <h6 class="fw-bold">Contact</h6>
         <p class="mb-1">5th floor 112 Long St</p>
@@ -766,7 +786,7 @@
     </div>
   </div>
 
-  <!-- Bottom Bar -->
+  <!-- Footer Bottom Section with Legal Links -->
   <div class="footer-bottom py-3">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
       <div class="mb-2 mb-md-0">
@@ -780,11 +800,11 @@
   </div>
 </footer>
 
-<!-- Bootstrap JS -->
+<!-- Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// Firebase Configuration
+// Firebase Configuration: Contains all necessary Firebase project settings
 const firebaseConfig = {
   apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
   authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -796,7 +816,11 @@ const firebaseConfig = {
   measurementId: "G-LFC0R1GBE1"
 };
 
-// Global functions
+/**
+ * Displays an alert message to the user
+ * @param {string} message - The message to display
+ * @param {string} type - The type of alert (info, success, warning, danger)
+ */
 function showAlert(message, type = 'info') {
   const alertContainer = document.getElementById('alertContainer');
   const alertId = 'alert-' + Date.now();
@@ -823,16 +847,32 @@ function showAlert(message, type = 'info') {
   }, removeTime);
 }
 
+/**
+ * Validates an email address format
+ * @param {string} email - The email address to validate
+ * @returns {boolean} - True if email is valid, false otherwise
+ */
 function validateEmail(email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
 }
 
+/**
+ * Validates a phone number format
+ * @param {string} phone - The phone number to validate
+ * @returns {boolean} - True if phone is valid, false otherwise
+ */
 function validatePhone(phone) {
   const cleaned = phone.replace(/\D/g, '');
   return cleaned.length >= 10 && cleaned.length <= 15;
 }
 
+/**
+ * Resets a button to its original state after processing
+ * @param {HTMLElement} button - The button element to reset
+ * @param {HTMLElement} progressIndicator - The progress indicator element
+ * @param {string} originalText - The original text to restore to the button
+ */
 function resetButton(button, progressIndicator, originalText) {
   button.innerHTML = originalText;
   button.disabled = false;
@@ -841,7 +881,13 @@ function resetButton(button, progressIndicator, originalText) {
   }
 }
 
-// Image compression function
+/**
+ * Compresses an image file to reduce file size
+ * @param {File} file - The image file to compress
+ * @param {number} maxWidth - Maximum width for the compressed image
+ * @param {number} quality - Quality of the compressed image (0-1)
+ * @returns {Promise<Blob>} - Promise that resolves with the compressed image blob
+ */
 function compressImage(file, maxWidth = 800, quality = 0.7) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -852,7 +898,7 @@ function compressImage(file, maxWidth = 800, quality = 0.7) {
       let width = img.width;
       let height = img.height;
       
-      // Calculate new dimensions
+      // Calculate new dimensions maintaining aspect ratio
       if (width > maxWidth) {
         height = (height * maxWidth) / width;
         width = maxWidth;
@@ -861,7 +907,7 @@ function compressImage(file, maxWidth = 800, quality = 0.7) {
       canvas.width = width;
       canvas.height = height;
       
-      // Draw and compress
+      // Draw and compress the image
       ctx.drawImage(img, 0, 0, width, height);
       canvas.toBlob(resolve, 'image/jpeg', quality);
     };
@@ -870,7 +916,12 @@ function compressImage(file, maxWidth = 800, quality = 0.7) {
   });
 }
 
-// Upload profile picture after user is authenticated
+/**
+ * Uploads a profile picture to Firebase Storage
+ * @param {string} userId - The user ID to associate with the image
+ * @param {File} file - The image file to upload
+ * @returns {Promise<string>} - Promise that resolves with the download URL
+ */
 async function uploadProfilePicture(userId, file) {
   try {
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js');
@@ -879,7 +930,7 @@ async function uploadProfilePicture(userId, file) {
     const app = getApp();
     const storage = getStorage(app);
     
-    // Compress image first
+    // Compress image first to reduce upload size
     const compressedBlob = await compressImage(file);
     const compressedFile = new File([compressedBlob], `profile-${userId}.jpg`, {
       type: 'image/jpeg',
@@ -900,6 +951,10 @@ async function uploadProfilePicture(userId, file) {
   }
 }
 
+/**
+ * Handles the sign-up process including form validation and user creation
+ * @returns {Promise<void>}
+ */
 async function handleSignup() {
   const submitButton = document.getElementById('submitButton');
   const progressIndicator = document.getElementById('progressIndicator');
@@ -965,6 +1020,7 @@ async function handleSignup() {
       return;
     }
 
+    // Password validation
     if (password !== confirmPassword) {
       showAlert("Passwords do not match.", 'danger');
       resetButton(submitButton, progressIndicator, originalText);
@@ -1163,7 +1219,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
   ];
 
-  // Populate country dropdowns
+  /**
+   * Populates all country dropdowns with the country list
+   */
   function populateCountryDropdowns() {
     const countrySelects = document.querySelectorAll('select[id^="co"]');
     countrySelects.forEach(select => {
@@ -1194,7 +1252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dobInput.max = maxDate.toISOString().split('T')[0];
   }
 
-  // Toggle functionality
+  // Toggle functionality for switching between Student and Funder forms
   const studentOption = document.querySelector(".toggle-option.student");
   const funderOption = document.querySelector(".toggle-option.funder");
   const indicator = document.getElementById("toggleIndicator");
@@ -1202,6 +1260,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentFields = document.getElementById("studentFields");
   const funderFields = document.getElementById("funderFields");
 
+  /**
+   * Switches between Student and Funder form sections
+   * @param {string} type - The user type to switch to ('student' or 'funder')
+   */
   const selectUserType = (type) => {
     userTypeInput.value = type;
 
@@ -1223,7 +1285,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize with student selected
   selectUserType("student");
 
-  // Attach click handlers
+  // Attach click handlers for user type toggle
   studentOption.addEventListener("click", () => selectUserType("student"));
   funderOption.addEventListener("click", () => selectUserType("funder"));
 
@@ -1276,7 +1338,9 @@ document.addEventListener("DOMContentLoaded", () => {
     profilePictureContainer.classList.remove('has-image');
   });
 
-  // Real-time validation for email and phone fields
+  /**
+   * Sets up real-time validation for form fields
+   */
   function setupRealTimeValidation() {
     const emailFields = ['studentEmail', 'funderEmail'];
     const phoneFields = ['studentContact', 'funderContact'];
@@ -1392,7 +1456,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Comprehensive form validation
+  /**
+   * Validates the entire form before submission
+   * @returns {boolean} - True if form is valid, false otherwise
+   */
   function validateForm() {
     let isValid = true;
     
@@ -1455,9 +1522,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-
-
-<!-- Dynamic navbar -->
+<!-- Dynamic navbar script for authentication state management -->
 <script src="./js/navbar-auth.js"></script>
 
 </body>

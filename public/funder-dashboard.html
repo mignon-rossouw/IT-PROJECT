@@ -5,205 +5,238 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Funder Dashboard - FundMyFuture</title>
 
- <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
+<!-- External Scripts -->
+<!-- Newsletter subscription functionality -->
+<script src="./js/newsletter.js"></script>
 
-<!-- BOOTSTRAP -->
+<!-- External Libraries -->
+<!-- Bootstrap CSS for responsive design and UI components -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome for icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<!-- Bootstrap Icons for additional icon set -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
 <!-- Custom global stylesheet -->
 <link rel="stylesheet" href="./css/styles.css">
 
 <style>
-/* Your existing CSS styles */
+/* Custom styles for the Funder Dashboard */
+
+/* Global body styling */
 body { overflow-x: hidden; }
-.dashboard-header { background-color: #2A6F97; padding: 30px 0; }
 
-/* Profile Card Styling */
+/* Dashboard header styling */
+.dashboard-header { 
+    background-color: #2A6F97; 
+    padding: 30px 0; 
+}
+
+/* Profile card styling with brand colors */
 .profile-card { 
-  background-color: #A9D6E5; 
+    background-color: #A9D6E5; 
 }
 
-.btn-primary-custom { background-color: #012A4A; color: #A9D6E5; }
-.btn-primary-custom:hover { background-color: #2A6F97; color: #012A4A; }
+/* Custom primary button styling */
+.btn-primary-custom { 
+    background-color: #012A4A; 
+    color: #A9D6E5; 
+}
+.btn-primary-custom:hover { 
+    background-color: #2A6F97; 
+    color: #012A4A; 
+}
 
-/* Profile Information Styling */
+/* Profile information title container */
 .title-container {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  padding: 5px;
-  border-radius: 5px;
+    background-color: #012A4A;
+    color: #A9D6E5;
+    padding: 5px;
+    border-radius: 5px;
 }
 
-/* Edit Modal Styles */
+/* Edit modal styling */
 .edit-modal .modal-content {
-  background-color: #A9D6E5;
-  border: 3px solid #012A4A;
+    background-color: #A9D6E5;
+    border: 3px solid #012A4A;
 }
 .edit-modal .form-label {
-  color: #012A4A;
-  font-weight: bold;
+    color: #012A4A;
+    font-weight: bold;
 }
 
-/* Edit button styling - Profile */
+/* Edit button styling for profile section */
 .btn-edit {
-  background: none;
-  border: none;
-  color: #A9D6E5;
-  cursor: pointer;
-  transition: all 0.3s ease;
+    background: none;
+    border: none;
+    color: #A9D6E5;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-edit:hover {
-  color: #ffd60a;
-  transform: scale(1.02);
+    color: #ffd60a;
+    transform: scale(1.02);
 }
 
-/* Change Profile Picture Button */
+/* Change profile picture button styling */
 .btn-change-photo {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  transition: all 0.3s ease;
+    background-color: #012A4A;
+    color: #A9D6E5;
+    transition: all 0.3s ease;
 }
 
 .btn-change-photo:hover {
-  background-color: #ffd60a;
-  color: #012A4A;
-  transform: scale(1.02);
+    background-color: #ffd60a;
+    color: #012A4A;
+    transform: scale(1.02);
 }
 
+/* Statistics card styling with accent border */
 .stat-card {
-  border-left: 4px solid #2A6F97;
+    border-left: 4px solid #2A6F97;
 }
 
+/* Campaign card styling */
 .campaign-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-  margin-bottom: 20px;
-  border: none;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    margin-bottom: 20px;
+    border: none;
 }
+
+/* Donation button styling */
 .btn-donate {
-  background-color: #ffda1f;
-  color: #012A4A;
-  font-weight: 700;
-  border: none;
-  transition: all 0.3s ease;
+    background-color: #ffda1f;
+    color: #012A4A;
+    font-weight: 700;
+    border: none;
+    transition: all 0.3s ease;
 }
 .btn-donate:hover {
-  background-color: #e0b000;
-  color: #012A4A;
-  transform: translateY(-2px);
+    background-color: #e0b000;
+    color: #012A4A;
+    transform: translateY(-2px);
 }
+
+/* View all button styling */
 .btn-view-all {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  font-weight: 700;
-  border: none;
-  transition: all 0.3s ease;
+    background-color: #012A4A;
+    color: #A9D6E5;
+    font-weight: 700;
+    border: none;
+    transition: all 0.3s ease;
 }
 .btn-view-all:hover {
-  background-color: #2A6F97;
-  color: white;
+    background-color: #2A6F97;
+    color: white;
 }
+
+/* Section title styling */
 .section-title {
-  background-color: #012A4A;
-  color: #A9D6E5;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+    background-color: #012A4A;
+    color: #A9D6E5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
+
+/* Recent donation item styling */
 .recent-donation-item {
-  border-left: 4px solid #2A6F97;
-  padding-left: 15px;
-  margin-bottom: 15px;
+    border-left: 4px solid #2A6F97;
+    padding-left: 15px;
+    margin-bottom: 15px;
 }
+
+/* Campaign image styling */
 .campaign-image {
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px 10px 0 0;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
 }
+
+/* Progress bar styling */
 .progress {
-  height: 10px;
-  background-color: #e9ecef;
+    height: 10px;
+    background-color: #e9ecef;
 }
 .progress-bar {
-  background-color: #2A6F97;
+    background-color: #2A6F97;
 }
 
-/* Alert positioning */
+/* Fixed alert positioning */
 .alert-fixed {
-  position: fixed;
-  top: 100px;
-  right: 20px;
-  z-index: 9999;
-  min-width: 300px;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
 }
 
-/* Loading spinner */
+/* Loading spinner styling */
 #loadingSpinner {
-  z-index: 9999;
+    z-index: 9999;
 }
 
-/* User Profile Section Styling */
+/* User profile section styling */
 .dashboard-profile-title {
-  background-color: #012A4A;
+    background-color: #012A4A;
 }
 
 /* Success animation for updated fields */
 .text-success {
-  transition: color 0.5s ease;
+    transition: color 0.5s ease;
 }
 
 /* Form validation styles */
 .is-valid {
-  border-color: #198754;
+    border-color: #198754;
 }
 
 .is-invalid {
-  border-color: #dc3545;
+    border-color: #dc3545;
 }
 
 .invalid-feedback {
-  display: none;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 0.875em;
-  color: #dc3545;
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
 }
 
 .was-validated .form-control:invalid ~ .invalid-feedback,
 .form-control.is-invalid ~ .invalid-feedback {
-  display: block;
+    display: block;
 }
 
 /* Profile update success animation */
 .profile-update-success {
-  animation: highlightUpdate 2s ease;
+    animation: highlightUpdate 2s ease;
 }
 
 @keyframes highlightUpdate {
-  0% { background-color: #d4edda; }
-  100% { background-color: transparent; }
+    0% { background-color: #d4edda; }
+    100% { background-color: transparent; }
 }
 </style>
 </head>
 
 <body>
-<!-- Navigation -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
     <div class="container-fluid">
         <a class="navbar-brand ms-2 text-white fw-bold" href="index.html">FundMyFuture</a>
         <div class="navbar-nav ms-auto">
+            <!-- Logout button -->
             <button class="btn login-btn fw-bolder text-white" onclick="logout()">LOGOUT</button>
         </div>
     </div>
 </nav>
 
-<!-- Dashboard Header -->
+<!-- Dashboard Header Section -->
 <div class="container-fluid dashboard-header">
     <div class="container">
         <h1 class="text-white fw-bold">Funder Dashboard</h1>
@@ -211,35 +244,37 @@ body { overflow-x: hidden; }
     </div>
 </div>
 
-<!-- Loading Spinner -->
+<!-- Loading Spinner: Displayed during data loading operations -->
 <div id="loadingSpinner" class="d-none position-fixed top-50 start-50 translate-middle" style="z-index: 9999;">
     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 
-<!-- Main Content -->
+<!-- Main Dashboard Content -->
 <div class="container my-5">
     <!-- Profile Section -->
     <div class="row">
         <div class="col-12">
-            <!-- Profile Card - Contains all user information -->
+            <!-- Profile Card: Contains all user information -->
             <div class="card profile-card shadow border-0 rounded mb-4">
-                <!-- Title of card -->
+                <!-- Profile Card Header -->
                 <div class="card-header title-container">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="title-profile fw-bold mb-0 d-flex align-items-center">
                             <i class="bi bi-person-badge me-2 fs-3"></i> Profile Information
                         </h5>
+                        <!-- Edit Profile Button -->
                         <button class="btn btn-edit d-flex align-items-center" onclick="openEditModal('profile')">
                             <i class="bi bi-pencil me-1 fs-3"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Profile Picture Editing -->
+                <!-- Profile Card Body -->
                 <div class="card-body p-4">
                     <div class="row">
+                        <!-- Profile Picture Section -->
                         <div class="col-md-3 text-center mb-4">
                             <div class="mb-3">
                                 <img id="profileImage" src="./assets/profile-user.png" 
@@ -294,18 +329,22 @@ body { overflow-x: hidden; }
         <!-- Quick Stats Overview - Left Sidebar -->
         <div class="col-lg-2 mb-4">
             <div class="d-flex flex-column">
+                <!-- Total Donated Stat Card -->
                 <div class="stat-card shadow rounded p-4 mb-3">
                     <h6>Total Donated</h6>
                     <h4 id="totalDonated">R0</h4>
                 </div>
+                <!-- Campaigns Supported Stat Card -->
                 <div class="stat-card shadow rounded p-4 mb-3">
                     <h6>Campaigns Supported</h6>
                     <h4 id="campaignsSupported">0</h4>
                 </div>
+                <!-- Students Helped Stat Card -->
                 <div class="stat-card shadow rounded p-4 mb-3">
                     <h6>Students Helped</h6>
                     <h4 id="studentsHelped">0</h4>
                 </div>
+                <!-- Last Donation Stat Card -->
                 <div class="stat-card shadow rounded p-4">
                     <h6>Last Donation</h6>
                     <h4 id="lastDonation">-</h4>
@@ -315,7 +354,7 @@ body { overflow-x: hidden; }
         
         <!-- Main Content Area -->
         <div class="col-lg-10">
-            <!-- Dashboard Tabs -->
+            <!-- Dashboard Tabs Navigation -->
             <div class="dashboard-tabs">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
@@ -340,11 +379,12 @@ body { overflow-x: hidden; }
                     </li>
                 </ul>
 
+                <!-- Tab Content Panels -->
                 <div class="tab-content p-3">
-                    <!-- Overview Tab -->
+                    <!-- Overview Tab: Main dashboard view -->
                     <div class="tab-pane fade show active" id="overview">
                         <div class="row">
-                            <!-- Featured Campaigns -->
+                            <!-- Featured Campaigns Section -->
                             <div class="col-lg-8">
                                 <div class="section-title">
                                     <h4 class="fw-bold mb-0"><i class="fas fa-star me-2"></i>Featured Campaigns</h4>
@@ -374,7 +414,7 @@ body { overflow-x: hidden; }
 
                             <!-- Right Column: Quick Actions & Updates -->
                             <div class="col-lg-4">
-                                <!-- Quick Actions -->
+                                <!-- Quick Actions Section -->
                                 <div class="section-title">
                                     <h4 class="fw-bold mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h4>
                                 </div>
@@ -382,7 +422,6 @@ body { overflow-x: hidden; }
                                 <div class="card campaign-card mb-4">
                                     <div class="card-body">
                                         <div class="d-grid gap-2">
-                                           
                                             <button class="btn btn-view-all mb-2" onclick="viewSavedCampaigns()">
                                                 <i class="fas fa-bookmark me-2"></i>View Saved Campaigns
                                             </button>
@@ -393,7 +432,7 @@ body { overflow-x: hidden; }
                                     </div>
                                 </div>
 
-                                <!-- Campaign Updates -->
+                                <!-- Campaign Updates Section -->
                                 <div class="section-title">
                                     <h4 class="fw-bold mb-0"><i class="fas fa-bell me-2"></i>Campaign Updates</h4>
                                 </div>
@@ -405,11 +444,11 @@ body { overflow-x: hidden; }
                         </div>
                     </div>
 
-                    <!-- Donations Tab -->
+                    <!-- Donations Tab: Donation history and statistics -->
                     <div class="tab-pane fade" id="donations">
                         <h4 class="mb-4">Your Donation History</h4>
                         
-                        <!-- Donation Statistics -->
+                        <!-- Donation Statistics Cards -->
                         <div class="row mb-4">
                             <div class="col-md-3">
                                 <div class="stat-card">
@@ -445,7 +484,7 @@ body { overflow-x: hidden; }
                             </div>
                         </div>
 
-                        <!-- Donations List -->
+                        <!-- Detailed Donations List -->
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Recent Donations</h5>
@@ -456,7 +495,7 @@ body { overflow-x: hidden; }
                         </div>
                     </div>
 
-                    <!-- Saved Campaigns Tab -->
+                    <!-- Saved Campaigns Tab: Bookmarked campaigns -->
                     <div class="tab-pane fade" id="saved">
                         <h4 class="mb-4">Your Saved Campaigns</h4>
                         <div class="row" id="savedCampaignsList">
@@ -464,7 +503,7 @@ body { overflow-x: hidden; }
                         </div>
                     </div>
 
-                    <!-- Profile Tab -->
+                    <!-- Profile Tab: Detailed profile information and settings -->
                     <div class="tab-pane fade" id="profile">
                         <!-- Enhanced Profile Information -->
                         <div class="row">
@@ -513,6 +552,7 @@ body { overflow-x: hidden; }
                                 </div>
                             </div>
                             
+                            <!-- Profile Picture Section -->
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-body text-center">
@@ -551,7 +591,7 @@ body { overflow-x: hidden; }
     </div>
 </div>
 
-<!-- Edit Profile Modal -->
+<!-- Edit Profile Modal: For updating user profile information -->
 <div class="modal fade edit-modal" id="editProfileModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -574,7 +614,7 @@ body { overflow-x: hidden; }
     </div>
 </div>
 
-<!-- Add Payment Method Modal -->
+<!-- Add Payment Method Modal: For adding new payment methods -->
 <div class="modal fade" id="paymentMethodModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -616,11 +656,12 @@ body { overflow-x: hidden; }
     </div>
 </div>
 
-<!-- Bootstrap JS -->
+<!-- Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Firebase Integration -->
 <script type="module">
+    // Firebase SDK imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { 
@@ -629,7 +670,7 @@ body { overflow-x: hidden; }
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    // Firebase configuration
+    // Firebase configuration object
     const firebaseConfig = {
         apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
         authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -641,17 +682,21 @@ body { overflow-x: hidden; }
         measurementId: "G-LFC0R1GBE1"
     };
 
-    // Initialize Firebase
+    // Initialize Firebase services
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const storage = getStorage(app);
 
+    // Global variables for current user state
     let currentFunder = null;
     let currentFunderId = null;
     let editMode = null;
 
-    // Check authentication and load data
+    /**
+     * Authentication state observer - redirects to login if not authenticated
+     * @param {Object} user - Firebase user object
+     */
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentFunderId = user.uid;
@@ -666,7 +711,10 @@ body { overflow-x: hidden; }
         }
     });
 
-    // Real-time listener for profile updates
+    /**
+     * Sets up real-time listener for profile updates
+     * @param {string} userId - The user ID to listen for
+     */
     function setupProfileListener(userId) {
         const userDocRef = doc(db, "users", userId);
         
@@ -683,6 +731,10 @@ body { overflow-x: hidden; }
         });
     }
 
+    /**
+     * Loads all funder data including profile, statistics, and dashboard content
+     * @param {string} userId - The user ID to load data for
+     */
     async function loadFunderData(userId) {
         try {
             const userDoc = await getDoc(doc(db, "users", userId));
@@ -705,6 +757,10 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Displays funder data in the UI
+     * @param {Object} funderData - The funder data object
+     */
     function displayFunderData(funderData) {
         // Personal Information
         document.getElementById('welcomeName').textContent = `${funderData.firstName} ${funderData.surname}`;
@@ -714,7 +770,7 @@ body { overflow-x: hidden; }
         document.getElementById('displayOrganization').textContent = funderData.organization || 'Individual';
         document.getElementById('displayLocation').textContent = funderData.location || 'Not provided';
         
-        // Member since
+        // Member since date formatting
         if (funderData.createdAt) {
             const memberSince = funderData.createdAt.toDate ? 
                 funderData.createdAt.toDate() : new Date(funderData.createdAt);
@@ -741,7 +797,9 @@ body { overflow-x: hidden; }
         }
     }
 
-    // Function to refresh all profile displays
+    /**
+     * Refreshes all profile displays with current data
+     */
     function refreshProfileDisplay() {
         if (!currentFunder) return;
         
@@ -769,6 +827,10 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Loads and calculates funder statistics from donations
+     * @param {string} userId - The user ID to load statistics for
+     */
     async function loadFunderStatistics(userId) {
         try {
             const donationsQuery = query(
@@ -789,6 +851,7 @@ body { overflow-x: hidden; }
             const currentMonth = new Date().getMonth();
             const currentYear = new Date().getFullYear();
 
+            // Process each donation
             for (const doc of donationsSnapshot.docs) {
                 const donation = doc.data();
                 const amount = donation.amount || 0;
@@ -825,7 +888,7 @@ body { overflow-x: hidden; }
 
             const avgDonation = donationCount > 0 ? totalDonated / donationCount : 0;
 
-            // Update statistics
+            // Update statistics in UI
             document.getElementById('totalDonated').textContent = `R${totalDonated.toLocaleString()}`;
             document.getElementById('campaignsSupported').textContent = campaignsSupported.size;
             document.getElementById('studentsHelped').textContent = studentsHelped.size;
@@ -841,10 +904,15 @@ body { overflow-x: hidden; }
             document.getElementById('monthlyTotal').textContent = `R${currentMonthTotal.toLocaleString()}`;
             
         } catch (error) {
-            console.error("Error loading funder statistics:", error);
+            console.error("Error loading funder statistics:", errov);
         }
     }
 
+    /**
+     * Gets student ID from a campaign document
+     * @param {string} campaignId - The campaign ID to look up
+     * @returns {string|null} - Student ID or null if not found
+     */
     async function getStudentFromCampaign(campaignId) {
         try {
             const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
@@ -857,6 +925,9 @@ body { overflow-x: hidden; }
         return null;
     }
 
+    /**
+     * Loads featured campaigns for display on dashboard
+     */
     async function loadFeaturedCampaigns() {
         try {
             const campaignsQuery = query(
@@ -889,6 +960,13 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Creates a campaign card element
+     * @param {Object} campaign - Campaign data object
+     * @param {string} campaignId - Campaign document ID
+     * @param {HTMLElement} container - Container to append the card to
+     * @param {boolean} showSaveButton - Whether to show save button
+     */
     async function createCampaignCard(campaign, campaignId, container, showSaveButton = true) {
         // Get student name
         let studentName = 'Student';
@@ -946,6 +1024,10 @@ body { overflow-x: hidden; }
         container.appendChild(campaignCard);
     }
 
+    /**
+     * Loads recent donations for the current funder
+     * @param {string} userId - The user ID to load donations for
+     */
     async function loadRecentDonations(userId) {
         try {
             const donationsQuery = query(
@@ -987,6 +1069,11 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Creates a donation item for the recent donations list
+     * @param {Object} donation - Donation data object
+     * @param {HTMLElement} container - Container to append the item to
+     */
     async function createDonationItem(donation, container) {
         let campaignTitle = 'Campaign';
         if (donation.campaignId) {
@@ -1014,6 +1101,11 @@ body { overflow-x: hidden; }
         container.appendChild(donationItem);
     }
 
+    /**
+     * Creates a detailed donation item for the donations tab
+     * @param {Object} donation - Donation data object
+     * @param {HTMLElement} container - Container to append the item to
+     */
     async function createDetailedDonationItem(donation, container) {
         let campaignTitle = 'Campaign';
         let studentName = 'Student';
@@ -1058,6 +1150,10 @@ body { overflow-x: hidden; }
         container.appendChild(donationItem);
     }
 
+    /**
+     * Loads campaign updates for campaigns the funder has donated to
+     * @param {string} userId - The user ID to load updates for
+     */
     async function loadCampaignUpdates(userId) {
         try {
             // Get campaigns that the funder has donated to
@@ -1099,6 +1195,11 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Loads updates for a specific campaign
+     * @param {string} campaignId - The campaign ID to load updates for
+     * @param {HTMLElement} container - Container to append updates to
+     */
     async function loadCampaignUpdatesForCampaign(campaignId, container) {
         try {
             const updatesQuery = query(
@@ -1120,6 +1221,12 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Creates an update card for campaign updates
+     * @param {Object} update - Update data object
+     * @param {string} campaignId - Campaign ID for the update
+     * @param {HTMLElement} container - Container to append the card to
+     */
     async function createUpdateCard(update, campaignId, container) {
         let campaignTitle = 'Campaign';
         const campaignDoc = await getDoc(doc(db, "campaigns", campaignId));
@@ -1142,6 +1249,10 @@ body { overflow-x: hidden; }
         container.appendChild(updateCard);
     }
 
+    /**
+     * Loads saved campaigns for the current funder
+     * @param {string} userId - The user ID to load saved campaigns for
+     */
     async function loadSavedCampaigns(userId) {
         try {
             const savedQuery = query(
@@ -1179,6 +1290,13 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Creates a saved campaign card
+     * @param {Object} campaign - Campaign data object
+     * @param {string} campaignId - Campaign document ID
+     * @param {HTMLElement} container - Container to append the card to
+     * @param {string} savedId - Saved campaign document ID
+     */
     async function createSavedCampaignCard(campaign, campaignId, container, savedId) {
         let studentName = 'Student';
         if (campaign.studentId) {
@@ -1233,6 +1351,10 @@ body { overflow-x: hidden; }
         container.appendChild(campaignCard);
     }
 
+    /**
+     * Loads payment methods for the current funder
+     * @param {string} userId - The user ID to load payment methods for
+     */
     async function loadPaymentMethods(userId) {
         try {
             const paymentsQuery = query(
@@ -1278,6 +1400,11 @@ body { overflow-x: hidden; }
     }
 
     // CRUD Operations
+
+    /**
+     * Opens the edit modal for profile information
+     * @param {string} mode - The edit mode (currently only 'profile')
+     */
     function openEditModal(mode) {
         editMode = mode;
         const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
@@ -1370,6 +1497,9 @@ body { overflow-x: hidden; }
         modal.show();
     }
 
+    /**
+     * Saves profile changes from the edit modal
+     */
     async function saveProfileChanges() {
         try {
             const form = document.getElementById('editProfileForm');
@@ -1419,6 +1549,9 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Handles profile picture change
+     */
     async function changeProfilePicture() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -1481,7 +1614,11 @@ body { overflow-x: hidden; }
         input.click();
     }
 
-    // Enhanced error handler for profile operations
+    /**
+     * Enhanced error handler for profile operations
+     * @param {Error} error - The error object
+     * @param {string} operation - The operation that failed
+     */
     function handleProfileError(error, operation) {
         console.error(`Error during ${operation}:`, error);
         
@@ -1501,7 +1638,9 @@ body { overflow-x: hidden; }
         showLoading(false);
     }
 
-    // Show success animation on updated fields
+    /**
+     * Shows success animation on updated profile fields
+     */
     function showProfileUpdateSuccess() {
         // Add animation class to profile card
         const profileCard = document.querySelector('.profile-card');
@@ -1529,6 +1668,10 @@ body { overflow-x: hidden; }
         });
     }
 
+    /**
+     * Saves a campaign to the funder's saved list
+     * @param {string} campaignId - The campaign ID to save
+     */
     async function saveCampaign(campaignId) {
         try {
             // Check if already saved
@@ -1559,6 +1702,10 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Removes a campaign from the saved list
+     * @param {string} savedId - The saved campaign document ID
+     */
     async function removeSavedCampaign(savedId) {
         if (confirm('Are you sure you want to remove this campaign from your saved list?')) {
             try {
@@ -1572,12 +1719,18 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Opens the add payment method modal
+     */
     function addPaymentMethod() {
         const modal = new bootstrap.Modal(document.getElementById('paymentMethodModal'));
         document.getElementById('paymentMethodForm').reset();
         modal.show();
     }
 
+    /**
+     * Saves a new payment method
+     */
     async function savePaymentMethod() {
         try {
             const cardNumber = document.getElementById('cardNumber').value;
@@ -1620,6 +1773,10 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Removes a payment method
+     * @param {string} paymentId - The payment method document ID
+     */
     async function removePaymentMethod(paymentId) {
         if (confirm('Are you sure you want to remove this payment method?')) {
             try {
@@ -1633,24 +1790,41 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Redirects to donation page for a specific campaign
+     * @param {string} campaignId - The campaign ID to donate to
+     */
     function donateToCampaign(campaignId) {
         window.location.href = `donate.html?campaignId=${campaignId}`;
     }
 
     // Navigation functions
+
+    /**
+     * Redirects to browse all campaigns page
+     */
     function browseAllCampaigns() {
         window.location.href = 'donate.html';
     }
 
+    /**
+     * Shows the saved campaigns tab
+     */
     function viewSavedCampaigns() {
         const savedTab = new bootstrap.Tab(document.querySelector('a[href="#saved"]'));
         savedTab.show();
     }
 
+    /**
+     * Opens the add payment method modal
+     */
     function updatePaymentMethod() {
         addPaymentMethod();
     }
 
+    /**
+     * Logs out the current user
+     */
     async function logout() {
         try {
             await signOut(auth);
@@ -1660,6 +1834,11 @@ body { overflow-x: hidden; }
         }
     }
 
+    /**
+     * Shows an alert message to the user
+     * @param {string} message - The message to display
+     * @param {string} type - The alert type (success, danger, warning, info)
+     */
     function showAlert(message, type) {
         // Remove any existing alerts
         const existingAlerts = document.querySelectorAll('.alert-fixed');
@@ -1681,7 +1860,11 @@ body { overflow-x: hidden; }
         }, 5000);
     }
 
-        function showLoading(show) {
+    /**
+     * Shows or hides the loading spinner
+     * @param {boolean} show - Whether to show the spinner
+     */
+    function showLoading(show) {
         const spinner = document.getElementById('loadingSpinner');
         if (show) {
             spinner.classList.remove('d-none');
@@ -1690,10 +1873,10 @@ body { overflow-x: hidden; }
         }
     }
 
-    // Make functions globally available
+    // Make functions globally available for HTML onclick handlers
     window.openEditModal = openEditModal;
     window.changeProfilePicture = changeProfilePicture;
-    window.saveProfileChanges = saveProfileChanges; // Add this line
+    window.saveProfileChanges = saveProfileChanges;
     window.saveCampaign = saveCampaign;
     window.removeSavedCampaign = removeSavedCampaign;
     window.addPaymentMethod = addPaymentMethod;
@@ -1705,6 +1888,6 @@ body { overflow-x: hidden; }
     window.logout = logout;
 </script>
 </body>
-<!-- Dynamic navbar -->
+<!-- Dynamic navbar authentication script -->
 <script src="./js/navbar-auth.js"></script>
 </html>

@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campaign Details - FundMyFuture</title>
 
-     <!-- Newsletter Script  -->
-  <script src="./js/newsletter.js"></script>
+    <!-- Newsletter Script -->
+    <script src="./js/newsletter.js"></script>
     
     <!-- Firebase Integration -->
     <script type="module">
+    /**
+     * Firebase configuration and campaign details management
+     * This module handles the display and interaction with campaign details
+     */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    /**
+     * Firebase configuration object containing API keys and project settings
+     */
     const firebaseConfig = {
         apiKey: "AIzaSyA6ocGvYKnwjc-xmW4j6he-CuTr4je3gko",
         authDomain: "fund-my-future-47844.firebaseapp.com",
@@ -25,18 +32,26 @@
         measurementId: "G-LFC0R1GBE1"
     };
 
+    // Initialize Firebase application
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let currentCampaign = null;
-    let currentUser = null;
-    let unsubscribeCampaign = null;
+    /**
+     * Global variables for managing campaign state
+     */
+    let currentCampaign = null;      // Stores current campaign data
+    let currentUser = null;          // Stores authenticated user data
+    let unsubscribeCampaign = null;  // Function to unsubscribe from real-time updates
 
+    /**
+     * Initializes the page when DOM content is loaded
+     * Sets up authentication state listener and loads campaign details
+     */
     document.addEventListener('DOMContentLoaded', function() {
         loadCampaignDetails();
         
-        // Check if user is logged in
+        // Monitor authentication state changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 currentUser = user;
@@ -49,10 +64,15 @@
         });
     });
 
+    /**
+     * Loads campaign details based on URL parameters
+     * Sets up real-time listener for campaign updates
+     */
     async function loadCampaignDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const campaignId = urlParams.get('id');
         
+        // Check if campaign ID is provided in URL
         if (!campaignId) {
             document.getElementById('campaignDetails').innerHTML = `
                 <div class="alert alert-danger text-center">
@@ -67,7 +87,10 @@
         try {
             showLoading(true);
             
-            // Set up real-time listener for campaign updates using the correct field names
+            /**
+             * Set up real-time listener for campaign updates
+             * Listens for changes in the campaign document and updates UI accordingly
+             */
             unsubscribeCampaign = onSnapshot(doc(db, "campaigns", campaignId), 
                 async (campaignDoc) => {
                     if (!campaignDoc.exists()) {
@@ -75,6 +98,7 @@
                         return;
                     }
 
+                    // Store campaign data with document ID
                     currentCampaign = { 
                         id: campaignDoc.id, 
                         ...campaignDoc.data() 
@@ -82,7 +106,10 @@
                     
                     console.log('Campaign data loaded:', currentCampaign);
                     
-                    // Load student data using student_id field (from donate.html)
+                    /**
+                     * Load student data using student_id field
+                     * Fetches additional user information for campaign creator
+                     */
                     const studentId = currentCampaign.student_id || currentCampaign.studentId;
                     if (studentId && !currentCampaign.studentData) {
                         try {
@@ -118,6 +145,9 @@
         }
     }
 
+    /**
+     * Displays campaign not found error message
+     */
     function showCampaignNotFound() {
         document.getElementById('campaignDetails').innerHTML = `
             <div class="alert alert-danger text-center">
@@ -128,6 +158,9 @@
         `;
     }
 
+    /**
+     * Displays generic campaign loading error message
+     */
     function showCampaignError() {
         document.getElementById('campaignDetails').innerHTML = `
             <div class="alert alert-danger text-center">
@@ -138,21 +171,29 @@
         `;
     }
 
+    /**
+     * Renders campaign details in the UI
+     * @param {Object} campaign - Campaign data object containing all campaign information
+     */
     function displayCampaignDetails(campaign) {
         const progressData = calculateProgress(campaign);
         const dateData = calculateDates(campaign);
         const user = campaign.studentData || {};
         
-        // Use field names that match your database (from donate.html)
+        // Extract user information with fallback values
         const userName = user ? `${user.firstName || ''} ${user.surname || ''}`.trim() : 'Anonymous Student';
         const institution = user?.institution || 'Unknown Institution';
         const course = user?.course || 'Unknown Course';
         const userLocation = user?.location || 'Location not specified';
         const userProfilePic = user?.profilePicture || './assets/profile-user.png';
 
-        // Use image_url field from donate.html
+        // Use image_url field with fallback to coverImage
         const coverImage = campaign.image_url || campaign.coverImage;
 
+        /**
+         * Generate HTML for campaign details display
+         * Includes progress section, story, student information, and donation sidebar
+         */
         document.getElementById('campaignDetails').innerHTML = `
             <div class="row">
                 <!-- Campaign Header -->
@@ -328,6 +369,11 @@
         }, 100);
     }
 
+    /**
+     * Calculates campaign progress metrics
+     * @param {Object} campaign - Campaign data object
+     * @returns {Object} Progress calculation results including percentage, amounts, and overfunding status
+     */
     function calculateProgress(campaign) {
         // Use field names from donate.html (snake_case) with fallbacks
         const currentAmount = Number(campaign.raised_amount || campaign.currentAmount || 0);
@@ -353,6 +399,11 @@
         };
     }
 
+    /**
+     * Calculates campaign date information
+     * @param {Object} campaign - Campaign data object
+     * @returns {Object} Date calculation results including end date, creation date, and urgency status
+     */
     function calculateDates(campaign) {
         // Use field names from donate.html with fallbacks
         let endDate;
@@ -403,6 +454,11 @@
         };
     }
 
+    /**
+     * Escapes HTML special characters to prevent XSS attacks
+     * @param {string} unsafe - Unsafe string that may contain HTML
+     * @returns {string} Safe string with HTML characters escaped
+     */
     function escapeHtml(unsafe) {
         if (!unsafe) return '';
         return unsafe
@@ -414,6 +470,11 @@
             .replace(/'/g, "&#039;");
     }
 
+    /**
+     * Handles donation button click
+     * Redirects to donation page or login page if user is not authenticated
+     * @param {string} campaignId - ID of the campaign to donate to
+     */
     function donateToCampaign(campaignId) {
         if (currentUser) {
             window.location.href = `donation.html?campaignId=${campaignId}`;
@@ -422,6 +483,12 @@
         }
     }
 
+    /**
+     * Handles campaign sharing functionality
+     * Uses Web Share API if available, otherwise copies to clipboard
+     * @param {string} campaignId - ID of the campaign to share
+     * @param {string} campaignTitle - Title of the campaign to share
+     */
     function shareCampaign(campaignId, campaignTitle) {
         const url = `${window.location.origin}${window.location.pathname}?id=${campaignId}`;
         const text = `Support "${campaignTitle}" on FundMyFuture!`;
@@ -440,6 +507,10 @@
         }
     }
 
+    /**
+     * Copies text to clipboard and shows feedback message
+     * @param {string} text - Text to copy to clipboard
+     */
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
             showAlert('Campaign link copied to clipboard! Share it with your friends.', 'success');
@@ -449,6 +520,11 @@
         });
     }
 
+    /**
+     * Displays a temporary alert message to the user
+     * @param {string} message - Message to display in the alert
+     * @param {string} type - Bootstrap alert type (success, warning, danger, etc.)
+     */
     function showAlert(message, type) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
@@ -465,6 +541,10 @@
         }, 5000);
     }
 
+    /**
+     * Shows or hides the loading spinner
+     * @param {boolean} show - Whether to show the loading spinner
+     */
     function showLoading(show) {
         const spinner = document.getElementById('loadingSpinner');
         const content = document.getElementById('campaignDetails');
@@ -478,14 +558,17 @@
         }
     }
 
-    // Clean up real-time listener when leaving the page
+    /**
+     * Clean up real-time listener when leaving the page
+     * Prevents memory leaks and unnecessary Firebase reads
+     */
     window.addEventListener('beforeunload', () => {
         if (unsubscribeCampaign) {
             unsubscribeCampaign();
         }
     });
 
-    // Make functions globally available
+    // Make functions globally available for HTML onclick handlers
     window.donateToCampaign = donateToCampaign;
     window.shareCampaign = shareCampaign;
 </script>
@@ -494,9 +577,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!--CSS standard styling-->
-
- <link href="css/styles.css" rel="stylesheet">
+    <!-- CSS standard styling -->
+    <link href="css/styles.css" rel="stylesheet">
+    
+    <!-- Campaign Details Page Specific Styles -->
 <style>
     /* ===== CSS VARIABLES FOR CONSISTENT THEMING ===== */
     :root {
@@ -878,7 +962,7 @@
 </head>
 <body>
     
-<!-- Navbar -->
+<!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-custom px-3">
   <div class="container-fluid">
     <!-- Brand/Logo linking to homepage -->
@@ -923,9 +1007,9 @@
   </div>
 </nav>
 
-    <!-- Main Content -->
+    <!-- Main Content Container -->
     <div class="container my-5">
-        <!-- Loading Spinner -->
+        <!-- Loading Spinner - displayed while campaign data is being fetched -->
         <div id="loadingSpinner" class="text-center py-5">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -933,7 +1017,7 @@
             <p class="mt-3">Loading campaign details...</p>
         </div>
         
-        <!-- Campaign Details -->
+        <!-- Campaign Details Container - populated dynamically with campaign information -->
         <div id="campaignDetails" class="d-none">
             <!-- Content will be dynamically loaded here -->
         </div>
@@ -1052,8 +1136,9 @@
   </div>
 
 </footer>
-<!-- Dynamic navbar -->
-<script src="./js/navbar-auth.js"></script>
+
+    <!-- Dynamic navbar authentication script -->
+    <script src="./js/navbar-auth.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
